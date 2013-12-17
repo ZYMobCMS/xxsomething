@@ -10,7 +10,7 @@
 
 NSString *const XXBarItemBackNormal = @"";
 NSString *const XXBarItemBackSelected = @"";
-NSInteger const XXItemBarIconTopMargin = 5.f;
+NSInteger const XXItemBarIconTopMargin = 0.f;
 
 #define XXItemBarSelectTitleColor [UIColor blueColor]
 #define XXItemBarUnselectTitleColor [UIColor whiteColor]
@@ -46,22 +46,23 @@ typedef void (^XXCustomTabBarItemTapSelectBlock) (XXCustomTabBarItem *selectItem
 {
     if (self = [super initWithFrame:frame]) {
         
+        self.backgroundColor = [UIColor whiteColor];
+        
         self.iconNormal = nIcon;
         self.iconSelected = sIcon;
         
-        UIImage *normalIcon = [UIImage imageNamed:self.iconNormal];
-        CGSize iconSize = normalIcon.size;
         
-        CGFloat leftMargin = (frame.size.width-iconSize.width)/2;
+        CGFloat leftMargin = 0.f;
         
         self.backgroundView = [[UIImageView alloc]initWithFrame:CGRectMake(0,0,frame.size.width,frame.size.height)];
         [self addSubview:self.backgroundView];
         self.backgroundView.image = [UIImage imageNamed:XXBarItemBackNormal];
         
         self.iconImageView = [[UIImageView alloc]init];
-        self.iconImageView.frame = CGRectMake(leftMargin,XXItemBarIconTopMargin,iconSize.width,iconSize.height);
+        self.iconImageView.frame = CGRectMake(leftMargin,XXItemBarIconTopMargin,frame.size.width,frame.size.height);
         [self addSubview:self.iconImageView];
-        self.iconImageView.image = [UIImage imageNamed:nIcon];
+        UIImage *normalIcon = [UIImage imageNamed:self.iconNormal];
+        self.iconImageView.image = normalIcon;
         
         self.titleLabel = [[UILabel alloc]init];
         self.titleLabel.backgroundColor = [UIColor clearColor];
@@ -135,7 +136,11 @@ typedef void (^XXCustomTabBarItemTapSelectBlock) (XXCustomTabBarItem *selectItem
                 //selectAction
                 [barItem setItemTapSelectBlock:^(XXCustomTabBarItem *selectItem) {
                    
+                    XXCustomTabBarItem *unSelectedItem = (XXCustomTabBarItem*)[self viewWithTag:XXItemBarItemBaseTag+self.selectedIndex];
+                    [unSelectedItem switchToNormal];
+                    
                     self.selectedIndex = selectItem.tag-XXItemBarItemBaseTag;
+                    [selectItem switchToSelected];
                     if (_selectBlock) {
                         _selectBlock(self.selectedIndex);
                     }
@@ -144,6 +149,8 @@ typedef void (^XXCustomTabBarItemTapSelectBlock) (XXCustomTabBarItem *selectItem
                 
                 if (i==0) {
                     [barItem switchToSelected];
+                }else{
+                    [barItem switchToNormal];
                 }
                 
             }

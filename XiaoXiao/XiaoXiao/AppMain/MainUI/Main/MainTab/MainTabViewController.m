@@ -45,16 +45,16 @@
     NSMutableArray *tabBarConfigArray = [NSMutableArray array];
     for (int i=0; i<3; i++) {
         
-        NSString *iconNormal = @"normal";
-        NSString *iconSelected = @"selected";
-        NSString *title = @"test";
+        NSString *iconNormal = [NSString stringWithFormat:@"home_tab_item%d_normal",i];
+        NSString *iconSelected = [NSString stringWithFormat:@"home_tab_item%d_selected",i];
+        NSString *title = @"";
         
         NSDictionary *itemDict = @{XXBarItemNormalIconKey:iconNormal,XXBarItemSelectIconKey:iconSelected,XXBarItemTitleKey:title};
         [tabBarConfigArray addObject:itemDict];
     }
     
     customTabBar = [[XXCustomTabBar alloc]initWithFrame:self.tabBar.frame withConfigArray:tabBarConfigArray];
-    [self.tabBar addSubview:customTabBar];
+    [self.view addSubview:customTabBar];
     //set select action
     [customTabBar setTabBarDidSelectAtIndexBlock:^(NSInteger index) {
         
