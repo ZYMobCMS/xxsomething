@@ -10,4 +10,12 @@
 
 @interface XXCommonStyle : NSObject
 
+- (NSInteger)commonPostContentLineHeight;
+- (NSInteger)commonPostContentFontSize;
+- (NSString*)commonPostContentTextColor;
+- (NSString*)commonPostContentTextAlign;
+- (NSString*)commonPostContentFontFamily;
+- (NSString*)commonPostContentFontWeight;
+- (NSInteger)commonPostEmojiSize;
+
 @end

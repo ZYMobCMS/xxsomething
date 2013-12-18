@@ -8,7 +8,7 @@
 
 #import "XXFileSourceConfig.h"
 
-NSString *const XXBaseTextTemplateCSS = @"xx_base_text_template.css";
+NSString *const XXBaseTextTemplateCSS = @"xxshare_post_style.css";
 NSString *const XXEmojiTextPlist = @"xx_emoji_text.plist";
 
 @implementation XXFileSourceConfig

@@ -1,38 +1,36 @@
 //
-//  XXShareTextView.m
-//  XiaoXiao
+//  TestCell.m
+//  WordPressMobile
 //
 //  Created by ZYVincent on 13-12-16.
 //  Copyright (c) 2013年 ZYProSoft. All rights reserved.
 //
 
-#import "XXShareTextView.h"
+#import "TestCell.h"
 
-@implementation XXShareTextView
+@implementation TestCell
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super initWithFrame:frame];
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
         
-        contentAttributedView = [[DTAttributedTextContentView alloc]init];
-        contentAttributedView.frame = CGRectMake(0,0,frame.size.width,frame.size.height);
-        contentAttributedView.delegate = self;
-        [self addSubview:contentAttributedView];
+        textContentView = [[DTAttributedTextContentView alloc]init];
+        textContentView.frame = CGRectMake(0,0,self.frame.size.width,self.frame.size.height);
+        textContentView.delegate = self;
+        [self.contentView addSubview:textContentView];
         
     }
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-    // Drawing code
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
 }
-*/
 
 #pragma mark - custom DTImageView
 - (UIView*)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttachment:(DTTextAttachment *)attachment frame:(CGRect)frame
@@ -62,11 +60,11 @@
 			button.GUID = attachment.hyperLinkGUID;
 			
 			// use normal push action for opening URL
-			[button addTarget:self action:@selector(linkPushed:) forControlEvents:UIControlEventTouchUpInside];
+//			[button addTarget:self action:@selector(linkPushed:) forControlEvents:UIControlEventTouchUpInside];
 			
 			// demonstrate combination with long press
-			UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(linkLongPressed:)];
-			[button addGestureRecognizer:longPress];
+//			UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(linkLongPressed:)];
+//			[button addGestureRecognizer:longPress];
 			
 			[imageView addSubview:button];
 		}
@@ -89,7 +87,7 @@
 	BOOL didUpdate = NO;
 	
 	// update all attachments that matchin this URL (possibly multiple images with same size)
-	for (DTTextAttachment *oneAttachment in [contentAttributedView.layoutFrame textAttachmentsWithPredicate:pred])
+	for (DTTextAttachment *oneAttachment in [textContentView.layoutFrame textAttachmentsWithPredicate:pred])
 	{
 		// update attachments that have no original size, that also sets the display size
 		if (CGSizeEqualToSize(oneAttachment.originalSize, CGSizeZero))
@@ -103,40 +101,27 @@
 	if (didUpdate)
 	{
 		// layout might have changed due to image sizes
-		[contentAttributedView relayoutText];
+		[textContentView relayoutText];
 	}
 }
 
-
-- (void)setAttributedText:(NSAttributedString *)attributedText
+#pragma mark - set content
+- (void)setContentHtmlAttributedString:(NSAttributedString *)attributedString
 {
-    [contentAttributedView setAttributedString:attributedText];
+    [textContentView setAttributedString:attributedString];
+    CGSize contentSize = [textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:self.frame.size.width];
+    textContentView.frame = CGRectMake(0,0,textContentView.frame.size.width,contentSize.height);
 }
 
-+ (CGFloat)heightForAttributedText:(NSAttributedString *)attributedText forWidth:(CGFloat)width
++ (CGFloat)heightWithContentHtmlAttributedString:(NSAttributedString *)attributedString forTable:(UITableView *)table
 {
-    DTCoreTextLayouter *layouter = [[DTCoreTextLayouter alloc] initWithAttributedString:attributedText];
+    DTAttributedTextContentView *testView = [[DTAttributedTextContentView alloc]init];
+    [testView setAttributedString:attributedString];
     
-    CGRect maxRect = CGRectMake(0,0, width, CGFLOAT_HEIGHT_UNKNOWN);
-    NSRange entireString = NSMakeRange(0, [attributedText length]);
-    DTCoreTextLayoutFrame *layoutFrame = [layouter layoutFrameWithRect:maxRect range:entireString];
+    CGSize contentSize = [testView suggestedFrameSizeToFitEntireStringConstraintedToWidth:table.frame.size.width];
     
-    CGSize sizeNeeded = [layoutFrame frame].size;
+    return contentSize.height;
     
-    return sizeNeeded.height;
-}
-
-+ (CGFloat)widthForAttributedText:(NSAttributedString *)attributedText forHeight:(CGFloat)height
-{
-    DTCoreTextLayouter *layouter = [[DTCoreTextLayouter alloc] initWithAttributedString:attributedText];
-    
-    CGRect maxRect = CGRectMake(0,0, CGFLOAT_WIDTH_UNKNOWN, height);
-    NSRange entireString = NSMakeRange(0, [attributedText length]);
-    DTCoreTextLayoutFrame *layoutFrame = [layouter layoutFrameWithRect:maxRect range:entireString];
-    
-    CGSize sizeNeeded = [layoutFrame frame].size;
-    
-    return sizeNeeded.width;
 }
 
 

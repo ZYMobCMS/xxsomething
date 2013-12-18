@@ -7,3 +7,5 @@
 //
 
 #import "XXServiceUitil.h"
+#import "XXUserModel.h"
+#import "XXSharePostModel.h"

@@ -10,10 +10,12 @@
 #import "XXCommonUitil.h"
 #import "XXFileUitil.h"
 #import "XXFileSourceConfig.h"
+#import "XXSharePostTypeConfig.h"
+#import "XXSharePostStyle.h"
+#import "XXShareTemplateBuilder.h"
 
 //Share
 #import "XXShareBaseCell.h"
-#import "XXShareTextView.h"
 #import "XXBaseCell.h"
 #import "XXBaseIconLabelCell.h"
 #import "XXBaseIconLabelCountCell.h"

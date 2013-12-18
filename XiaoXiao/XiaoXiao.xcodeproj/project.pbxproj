@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B37662918619A6A000EA20C /* TestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B37662618619A6A000EA20C /* TestCell.m */; };
+		3B37662A18619A6A000EA20C /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B37662818619A6A000EA20C /* TestViewController.m */; };
+		3B3766301861B110000EA20C /* XXChatBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B37662F1861B109000EA20C /* XXChatBaseCell.m */; };
+		3B46835C186140BE002CFFA2 /* XXShareStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B46835B186140BD002CFFA2 /* XXShareStyle.m */; };
+		3B46835F18614A6C002CFFA2 /* XXSharePostModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B46835E18614A6C002CFFA2 /* XXSharePostModel.m */; };
+		3B46836518616047002CFFA2 /* XXSharePostTypeConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B46836418616043002CFFA2 /* XXSharePostTypeConfig.m */; };
 		E4E3F5D21860966A00970698 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E3F5D11860966A00970698 /* UIKit.framework */; };
 		E4E3F5D41860966A00970698 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E3F5D31860966A00970698 /* Foundation.framework */; };
 		E4E3F5D61860966A00970698 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E3F5D51860966A00970698 /* CoreGraphics.framework */; };
@@ -42,7 +48,6 @@
 		E4E3F8B71860969400970698 /* xxshare_post_style.css in Resources */ = {isa = PBXBuildFile; fileRef = E4E3F61F1860969100970698 /* xxshare_post_style.css */; };
 		E4E3F8B81860969400970698 /* XXShareBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6211860969100970698 /* XXShareBaseCell.m */; };
 		E4E3F8B91860969400970698 /* XXShareTemplateBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6231860969100970698 /* XXShareTemplateBuilder.m */; };
-		E4E3F8BA1860969400970698 /* XXShareTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6251860969100970698 /* XXShareTextView.m */; };
 		E4E3F8BB1860969400970698 /* XXBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6271860969100970698 /* XXBaseCell.m */; };
 		E4E3F8BC1860969400970698 /* XXBaseIconLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6291860969100970698 /* XXBaseIconLabelCell.m */; };
 		E4E3F8BD1860969400970698 /* XXBaseIconLabelCountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F62B1860969100970698 /* XXBaseIconLabelCountCell.m */; };
@@ -52,7 +57,6 @@
 		E4E3F8C11860969400970698 /* XXMessageBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6331860969100970698 /* XXMessageBaseCell.m */; };
 		E4E3F8C21860969400970698 /* XXSchoolChooseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6351860969100970698 /* XXSchoolChooseCell.m */; };
 		E4E3F8C31860969400970698 /* XXUserInfoBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6371860969100970698 /* XXUserInfoBaseCell.m */; };
-		E4E3F8C41860969400970698 /* xx_base_text_template.css in Resources */ = {isa = PBXBuildFile; fileRef = E4E3F6391860969100970698 /* xx_base_text_template.css */; };
 		E4E3F8C51860969400970698 /* XXBaseTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F63B1860969100970698 /* XXBaseTextView.m */; };
 		E4E3F8C61860969400970698 /* XXChatToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F63D1860969100970698 /* XXChatToolBar.m */; };
 		E4E3F8C71860969400970698 /* XXEmojiChooseView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F63F1860969100970698 /* XXEmojiChooseView.m */; };
@@ -463,6 +467,18 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3B37662518619A69000EA20C /* TestCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestCell.h; sourceTree = "<group>"; };
+		3B37662618619A6A000EA20C /* TestCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestCell.m; sourceTree = "<group>"; };
+		3B37662718619A6A000EA20C /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
+		3B37662818619A6A000EA20C /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
+		3B37662E1861B105000EA20C /* XXChatBaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXChatBaseCell.h; sourceTree = "<group>"; };
+		3B37662F1861B109000EA20C /* XXChatBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXChatBaseCell.m; sourceTree = "<group>"; };
+		3B46835A186140BD002CFFA2 /* XXShareStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXShareStyle.h; sourceTree = "<group>"; };
+		3B46835B186140BD002CFFA2 /* XXShareStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXShareStyle.m; sourceTree = "<group>"; };
+		3B46835D18614A6C002CFFA2 /* XXSharePostModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXSharePostModel.h; sourceTree = "<group>"; };
+		3B46835E18614A6C002CFFA2 /* XXSharePostModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXSharePostModel.m; sourceTree = "<group>"; };
+		3B46836318616041002CFFA2 /* XXSharePostTypeConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXSharePostTypeConfig.h; sourceTree = "<group>"; };
+		3B46836418616043002CFFA2 /* XXSharePostTypeConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXSharePostTypeConfig.m; sourceTree = "<group>"; };
 		E4E3F5CE1860966A00970698 /* XiaoXiao.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XiaoXiao.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4E3F5D11860966A00970698 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E4E3F5D31860966A00970698 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -514,8 +530,6 @@
 		E4E3F6211860969100970698 /* XXShareBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXShareBaseCell.m; sourceTree = "<group>"; };
 		E4E3F6221860969100970698 /* XXShareTemplateBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXShareTemplateBuilder.h; sourceTree = "<group>"; };
 		E4E3F6231860969100970698 /* XXShareTemplateBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXShareTemplateBuilder.m; sourceTree = "<group>"; };
-		E4E3F6241860969100970698 /* XXShareTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXShareTextView.h; sourceTree = "<group>"; };
-		E4E3F6251860969100970698 /* XXShareTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXShareTextView.m; sourceTree = "<group>"; };
 		E4E3F6261860969100970698 /* XXBaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXBaseCell.h; sourceTree = "<group>"; };
 		E4E3F6271860969100970698 /* XXBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXBaseCell.m; sourceTree = "<group>"; };
 		E4E3F6281860969100970698 /* XXBaseIconLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXBaseIconLabelCell.h; sourceTree = "<group>"; };
@@ -534,7 +548,6 @@
 		E4E3F6351860969100970698 /* XXSchoolChooseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXSchoolChooseCell.m; sourceTree = "<group>"; };
 		E4E3F6361860969100970698 /* XXUserInfoBaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXUserInfoBaseCell.h; sourceTree = "<group>"; };
 		E4E3F6371860969100970698 /* XXUserInfoBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXUserInfoBaseCell.m; sourceTree = "<group>"; };
-		E4E3F6391860969100970698 /* xx_base_text_template.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = xx_base_text_template.css; sourceTree = "<group>"; };
 		E4E3F63A1860969100970698 /* XXBaseTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXBaseTextView.h; sourceTree = "<group>"; };
 		E4E3F63B1860969100970698 /* XXBaseTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXBaseTextView.m; sourceTree = "<group>"; };
 		E4E3F63C1860969100970698 /* XXChatToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXChatToolBar.h; sourceTree = "<group>"; };
@@ -1330,6 +1343,8 @@
 			children = (
 				E4E3F6021860969000970698 /* XXUserModel.h */,
 				E4E3F6031860969000970698 /* XXUserModel.m */,
+				3B46835D18614A6C002CFFA2 /* XXSharePostModel.h */,
+				3B46835E18614A6C002CFFA2 /* XXSharePostModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1428,8 +1443,12 @@
 				E4E3F6211860969100970698 /* XXShareBaseCell.m */,
 				E4E3F6221860969100970698 /* XXShareTemplateBuilder.h */,
 				E4E3F6231860969100970698 /* XXShareTemplateBuilder.m */,
-				E4E3F6241860969100970698 /* XXShareTextView.h */,
-				E4E3F6251860969100970698 /* XXShareTextView.m */,
+				3B46835A186140BD002CFFA2 /* XXShareStyle.h */,
+				3B46835B186140BD002CFFA2 /* XXShareStyle.m */,
+				3B46836318616041002CFFA2 /* XXSharePostTypeConfig.h */,
+				3B46836418616043002CFFA2 /* XXSharePostTypeConfig.m */,
+				3B37662E1861B105000EA20C /* XXChatBaseCell.h */,
+				3B37662F1861B109000EA20C /* XXChatBaseCell.m */,
 			);
 			path = Share;
 			sourceTree = "<group>";
@@ -1437,7 +1456,6 @@
 		E4E3F6381860969100970698 /* CommonView */ = {
 			isa = PBXGroup;
 			children = (
-				E4E3F6391860969100970698 /* xx_base_text_template.css */,
 				E4E3F63A1860969100970698 /* XXBaseTextView.h */,
 				E4E3F63B1860969100970698 /* XXBaseTextView.m */,
 				E4E3F63C1860969100970698 /* XXChatToolBar.h */,
@@ -1833,6 +1851,10 @@
 		E4E3F7431860969200970698 /* UITest */ = {
 			isa = PBXGroup;
 			children = (
+				3B37662518619A69000EA20C /* TestCell.h */,
+				3B37662618619A6A000EA20C /* TestCell.m */,
+				3B37662718619A6A000EA20C /* TestViewController.h */,
+				3B37662818619A6A000EA20C /* TestViewController.m */,
 				E4E3F7441860969200970698 /* UITestViewController.h */,
 				E4E3F7451860969200970698 /* UITestViewController.m */,
 			);
@@ -2484,7 +2506,6 @@
 				E4E3F8B51860969400970698 /* xxshare_image_text_5.html in Resources */,
 				E4E3F8B61860969400970698 /* xxshare_image_text_6.html in Resources */,
 				E4E3F8B71860969400970698 /* xxshare_post_style.css in Resources */,
-				E4E3F8C41860969400970698 /* xx_base_text_template.css in Resources */,
 				E4E3F9121860969400970698 /* 1.png in Resources */,
 				E4E3F9131860969400970698 /* 10.png in Resources */,
 				E4E3F9141860969400970698 /* 11.png in Resources */,
@@ -2688,7 +2709,6 @@
 				E4E3F8A81860969400970698 /* XXServiceUitil.m in Sources */,
 				E4E3F8B81860969400970698 /* XXShareBaseCell.m in Sources */,
 				E4E3F8B91860969400970698 /* XXShareTemplateBuilder.m in Sources */,
-				E4E3F8BA1860969400970698 /* XXShareTextView.m in Sources */,
 				E4E3F8BB1860969400970698 /* XXBaseCell.m in Sources */,
 				E4E3F8BC1860969400970698 /* XXBaseIconLabelCell.m in Sources */,
 				E4E3F8BD1860969400970698 /* XXBaseIconLabelCountCell.m in Sources */,
@@ -2915,6 +2935,12 @@
 				E4E3FA051860969400970698 /* UIImage+MultiFormat.m in Sources */,
 				E4E3FA061860969400970698 /* UIImage+WebP.m in Sources */,
 				E4E3FA071860969400970698 /* UIImageView+WebCache.m in Sources */,
+				3B46835C186140BE002CFFA2 /* XXShareStyle.m in Sources */,
+				3B46835F18614A6C002CFFA2 /* XXSharePostModel.m in Sources */,
+				3B46836518616047002CFFA2 /* XXSharePostTypeConfig.m in Sources */,
+				3B37662918619A6A000EA20C /* TestCell.m in Sources */,
+				3B37662A18619A6A000EA20C /* TestViewController.m in Sources */,
+				3B3766301861B110000EA20C /* XXChatBaseCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3033,6 +3059,7 @@
 				E4E3F5ED1860966A00970698 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
