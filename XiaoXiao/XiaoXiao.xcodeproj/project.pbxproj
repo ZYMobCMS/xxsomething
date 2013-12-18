@@ -13,6 +13,8 @@
 		3B46835C186140BE002CFFA2 /* XXShareStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B46835B186140BD002CFFA2 /* XXShareStyle.m */; };
 		3B46835F18614A6C002CFFA2 /* XXSharePostModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B46835E18614A6C002CFFA2 /* XXSharePostModel.m */; };
 		3B46836518616047002CFFA2 /* XXSharePostTypeConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B46836418616043002CFFA2 /* XXSharePostTypeConfig.m */; };
+		E4312D7A1861CFB30075C273 /* SquareGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4312D791861CFB30075C273 /* SquareGuideViewController.m */; };
+		E4312D7D1861CFD70075C273 /* MessageGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4312D7C1861CFD50075C273 /* MessageGuideViewController.m */; };
 		E4E3F5D21860966A00970698 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E3F5D11860966A00970698 /* UIKit.framework */; };
 		E4E3F5D41860966A00970698 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E3F5D31860966A00970698 /* Foundation.framework */; };
 		E4E3F5D61860966A00970698 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E3F5D51860966A00970698 /* CoreGraphics.framework */; };
@@ -479,6 +481,10 @@
 		3B46835E18614A6C002CFFA2 /* XXSharePostModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXSharePostModel.m; sourceTree = "<group>"; };
 		3B46836318616041002CFFA2 /* XXSharePostTypeConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXSharePostTypeConfig.h; sourceTree = "<group>"; };
 		3B46836418616043002CFFA2 /* XXSharePostTypeConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXSharePostTypeConfig.m; sourceTree = "<group>"; };
+		E4312D781861CFB30075C273 /* SquareGuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SquareGuideViewController.h; sourceTree = "<group>"; };
+		E4312D791861CFB30075C273 /* SquareGuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SquareGuideViewController.m; sourceTree = "<group>"; };
+		E4312D7B1861CFD30075C273 /* MessageGuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageGuideViewController.h; sourceTree = "<group>"; };
+		E4312D7C1861CFD50075C273 /* MessageGuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageGuideViewController.m; sourceTree = "<group>"; };
 		E4E3F5CE1860966A00970698 /* XiaoXiao.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XiaoXiao.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4E3F5D11860966A00970698 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E4E3F5D31860966A00970698 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1578,6 +1584,8 @@
 				E4E3F68A1860969100970698 /* TeaseMeCell.m */,
 				E4E3F68B1860969100970698 /* TeaseMeListViewController.h */,
 				E4E3F68C1860969100970698 /* TeaseMeListViewController.m */,
+				E4312D7B1861CFD30075C273 /* MessageGuideViewController.h */,
+				E4312D7C1861CFD50075C273 /* MessageGuideViewController.m */,
 			);
 			path = Message;
 			sourceTree = "<group>";
@@ -1679,6 +1687,8 @@
 				E4E3F6D91860969100970698 /* NearByUserNormalFilterViewController.h */,
 				E4E3F6DA1860969100970698 /* NearByUserNormalFilterViewController.m */,
 				E4E3F6DB1860969100970698 /* Share */,
+				E4312D781861CFB30075C273 /* SquareGuideViewController.h */,
+				E4312D791861CFB30075C273 /* SquareGuideViewController.m */,
 			);
 			path = Square;
 			sourceTree = "<group>";
@@ -2941,6 +2951,8 @@
 				3B37662918619A6A000EA20C /* TestCell.m in Sources */,
 				3B37662A18619A6A000EA20C /* TestViewController.m in Sources */,
 				3B3766301861B110000EA20C /* XXChatBaseCell.m in Sources */,
+				E4312D7A1861CFB30075C273 /* SquareGuideViewController.m in Sources */,
+				E4312D7D1861CFD70075C273 /* MessageGuideViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

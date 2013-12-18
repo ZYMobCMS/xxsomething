@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+/*
+ *通用多选择Radio视图
+ */
 @interface XXRadioChooseViewController : UIViewController
 
 @end

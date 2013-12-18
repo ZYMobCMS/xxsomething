@@ -16,6 +16,11 @@
     if (self) {
         // Initialization code
         
+        backgroundImageView = [[UIImageView alloc]init];
+        backgroundImageView.frame = CGRectMake(0,0,self.frame.size.width-20,self.frame.size.height-20);
+        backgroundImageView.image = [UIImage imageNamed:@"cell_background.png"];
+//        [self.contentView addSubview:backgroundImageView];
+        
         shareTextView = [[DTAttributedTextContentView alloc]init];
         CGFloat margin = (self.frame.size.width-[XXSharePostStyle sharePostContentWidth])/2;
         shareTextView.frame = CGRectMake(margin,0,[XXSharePostStyle sharePostContentWidth],self.frame.size.height);

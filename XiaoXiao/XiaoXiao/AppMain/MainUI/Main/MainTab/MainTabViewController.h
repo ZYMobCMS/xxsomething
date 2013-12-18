@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "XXCustomTabBar.h"
+#import "SquareGuideViewController.h"
+#import "MessageGuideViewController.h"
+#import "MyHomeGuideViewController.h"
 
 @interface MainTabViewController : UITabBarController
 {

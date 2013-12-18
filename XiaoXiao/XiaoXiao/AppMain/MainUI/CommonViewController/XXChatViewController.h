@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+/*
+ *基础聊天视图列表
+ */
+
 @interface XXChatViewController : UIViewController
 
 @end

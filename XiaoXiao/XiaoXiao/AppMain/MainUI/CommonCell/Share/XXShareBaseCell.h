@@ -34,6 +34,7 @@ typedef void (^XXShareTextViewDidTapOnAudioImageBlock) (NSURL *audioUrl);
 
 @interface XXShareBaseCell : UITableViewCell<DTAttributedTextContentViewDelegate,DTLazyImageViewDelegate>
 {
+    UIImageView *backgroundImageView;
     DTAttributedTextContentView *shareTextView;
     
     XXShareTextViewDidTapOnAudioImageBlock _tapAudioBlock;

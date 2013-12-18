@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+/*
+ *通用图库或者现场拍摄选择
+ */
 @interface XXPhotoChooseViewController : UIViewController
 
 @end

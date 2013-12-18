@@ -130,6 +130,7 @@
     [self.sourceArray addObject:modelTwoImage4];
     
     self.testTable = [[UITableView alloc]init];
+//    self.testTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.testTable.frame = CGRectMake(0,0,self.view.frame.size.width,self.view.frame.size.height);
     self.testTable.delegate = self;
     self.testTable.dataSource = self;

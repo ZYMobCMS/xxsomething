@@ -8,6 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-@interface XXShareListViewController : UIViewController
+/*
+ *通用分享列表
+ */
+
+@interface XXShareListViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+{
+    UITableView *shareListTable;
+}
+@property (nonatomic,strong)NSMutableArray *sharePostModelArray;
+@property (nonatomic,strong)NSMutableArray *sharePostRowHeightArray;
+
+- (void)requestShareListNow;
 
 @end

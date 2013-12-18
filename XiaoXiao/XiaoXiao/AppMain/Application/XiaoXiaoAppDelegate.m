@@ -30,14 +30,14 @@
     [self configDDLogSettings];
     
     //testUI
-    UITestViewController *testVC = [[UITestViewController alloc]init];
+//    UITestViewController *testVC = [[UITestViewController alloc]init];
 //    self.window.rootViewController = testVC;
 //    TestViewController *testVC = [[TestViewController alloc]init];
-    self.window.rootViewController = testVC;
+//    self.window.rootViewController = testVC;
     
     //MainUI
-//    MainTabViewController *mainTabVC = [[MainTabViewController alloc]init];
-//    self.window.rootViewController = mainTabVC;
+    MainTabViewController *mainTabVC = [[MainTabViewController alloc]init];
+    self.window.rootViewController = mainTabVC;
     
     [self.window makeKeyAndVisible];
     
