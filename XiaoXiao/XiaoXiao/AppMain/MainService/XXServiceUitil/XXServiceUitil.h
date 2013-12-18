@@ -10,7 +10,7 @@
 
 static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
-#define WeakObj(x) __weak typeof(x) weakSelf = x;
+#define WeakObj(x) __weak typeof(x)x;
 
 @interface XXServiceUitil : NSObject
 

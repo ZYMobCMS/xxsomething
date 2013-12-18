@@ -56,8 +56,9 @@
     customTabBar = [[XXCustomTabBar alloc]initWithFrame:self.tabBar.frame withConfigArray:tabBarConfigArray];
     [self.view addSubview:customTabBar];
     //set select action
+    __weak typeof(self) weakSelf = self;
     [customTabBar setTabBarDidSelectAtIndexBlock:^(NSInteger index) {
-        
+        weakSelf.selectedIndex = index;
     }];
 }
 
