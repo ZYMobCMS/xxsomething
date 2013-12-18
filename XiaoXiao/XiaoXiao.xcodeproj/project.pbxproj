@@ -15,6 +15,7 @@
 		3B46836518616047002CFFA2 /* XXSharePostTypeConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B46836418616043002CFFA2 /* XXSharePostTypeConfig.m */; };
 		E4312D7A1861CFB30075C273 /* SquareGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4312D791861CFB30075C273 /* SquareGuideViewController.m */; };
 		E4312D7D1861CFD70075C273 /* MessageGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4312D7C1861CFD50075C273 /* MessageGuideViewController.m */; };
+		E4312D801861DCB30075C273 /* XXRadioChooseItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E4312D7F1861DCB30075C273 /* XXRadioChooseItem.m */; };
 		E4E3F5D21860966A00970698 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E3F5D11860966A00970698 /* UIKit.framework */; };
 		E4E3F5D41860966A00970698 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E3F5D31860966A00970698 /* Foundation.framework */; };
 		E4E3F5D61860966A00970698 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E3F5D51860966A00970698 /* CoreGraphics.framework */; };
@@ -485,6 +486,8 @@
 		E4312D791861CFB30075C273 /* SquareGuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SquareGuideViewController.m; sourceTree = "<group>"; };
 		E4312D7B1861CFD30075C273 /* MessageGuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageGuideViewController.h; sourceTree = "<group>"; };
 		E4312D7C1861CFD50075C273 /* MessageGuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageGuideViewController.m; sourceTree = "<group>"; };
+		E4312D7E1861DCB30075C273 /* XXRadioChooseItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXRadioChooseItem.h; sourceTree = "<group>"; };
+		E4312D7F1861DCB30075C273 /* XXRadioChooseItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXRadioChooseItem.m; sourceTree = "<group>"; };
 		E4E3F5CE1860966A00970698 /* XiaoXiao.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XiaoXiao.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4E3F5D11860966A00970698 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E4E3F5D31860966A00970698 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1478,6 +1481,8 @@
 				E4E3F6471860969100970698 /* XXLoadMoreView.m */,
 				E4E3F6481860969100970698 /* XXRadioChooseView.h */,
 				E4E3F6491860969100970698 /* XXRadioChooseView.m */,
+				E4312D7E1861DCB30075C273 /* XXRadioChooseItem.h */,
+				E4312D7F1861DCB30075C273 /* XXRadioChooseItem.m */,
 				E4E3F64A1860969100970698 /* XXSearchBar.h */,
 				E4E3F64B1860969100970698 /* XXSearchBar.m */,
 				E4E3F64C1860969100970698 /* XXSegmentCtrl.h */,
@@ -2953,6 +2958,7 @@
 				3B3766301861B110000EA20C /* XXChatBaseCell.m in Sources */,
 				E4312D7A1861CFB30075C273 /* SquareGuideViewController.m in Sources */,
 				E4312D7D1861CFD70075C273 /* MessageGuideViewController.m in Sources */,
+				E4312D801861DCB30075C273 /* XXRadioChooseItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
