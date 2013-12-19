@@ -9,5 +9,11 @@
 #import <Foundation/Foundation.h>
 
 @interface XXMainDataCenter : NSObject
+{
+    
+}
++ (XXMainDataCenter*)shareCenter;
+
+
 
 @end

@@ -11,9 +11,32 @@
 @implementation XXSharePostModel
 @synthesize postAudio,postContent,postImages,postType,attributedContent;
 
-- (id)init
+- (id)initWithContentDict:(NSDictionary *)contentDict
 {
     if (self = [super init]) {
+        
+        self.postId = [contentDict objectForKey:@"id"];
+        self.type = [contentDict objectForKey:@"type"];
+        self.tag = [contentDict objectForKey:@"tag"];
+        self.commentCount = [contentDict objectForKey:@"comment_count"];
+        self.forwordCount = [contentDict objectForKey:@"forword_count"];
+        self.praiseCount = [contentDict objectForKey:@"praise_count"];
+        self.userId = [contentDict objectForKey:@"user_id"];
+        self.addTime = [contentDict objectForKey:@"add_time"];
+        self.schoolId = [contentDict objectForKey:@"xuexiao_id"];
+        
+        //自定义内容字段解析
+        NSString *content = [contentDict objectForKey:@"content"];
+        NSError *decodeContentJSonError = nil;
+        NSDictionary *customContentDict = [NSJSONSerialization JSONObjectWithData:[content dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:&decodeContentJSonError];
+        if (decodeContentJSonError) {
+            DDLogVerbose(@"decode content json error -->%@",decodeContentJSonError.description);
+        }
+        self.postContent = [customContentDict objectForKey:XXSharePostJSONContentKey];
+        self.postAudio = [customContentDict objectForKey:XXSharePostJSONAudioKey];
+        self.postImages = [customContentDict objectForKey:XXSharePostJSONImageKey];
+        self.postType = [[customContentDict objectForKey:XXSharePostJSONTypeKey]intValue];
+        self.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:self forContentWidth:[XXSharePostStyle sharePostContentWidth]];
         
     }
     return self;
@@ -28,6 +51,7 @@
         self.postImages = [aDecoder decodeObjectForKey:@"postImages"];
         self.postContent = [aDecoder decodeObjectForKey:@"postContent"];
         self.attributedContent = [aDecoder decodeObjectForKey:@"attributedContent"];
+                
     }
     return self;
 }
