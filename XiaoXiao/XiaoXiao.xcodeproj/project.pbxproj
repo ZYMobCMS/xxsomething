@@ -3021,6 +3021,7 @@
 				GCC_PREFIX_HEADER = "XiaoXiao/XiaoXiao-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
 				INFOPLIST_FILE = "XiaoXiao/XiaoXiao-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/XiaoXiao/ThirdPart/DTCoreText/Core";
 				WRAPPER_EXTENSION = app;
@@ -3034,6 +3035,7 @@
 				GCC_PREFIX_HEADER = "XiaoXiao/XiaoXiao-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
 				INFOPLIST_FILE = "XiaoXiao/XiaoXiao-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/XiaoXiao/ThirdPart/DTCoreText/Core";
 				WRAPPER_EXTENSION = app;
