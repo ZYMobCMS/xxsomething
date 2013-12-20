@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 
 extern NSString *const XXBaseTextTemplateCSS;
+extern NSString *const XXCommonTextTemplateCSS;
+extern NSString *const XXCommonHtmlTemplate;
 extern NSString *const XXEmojiTextPlist;
 
 @interface XXFileSourceConfig : NSObject

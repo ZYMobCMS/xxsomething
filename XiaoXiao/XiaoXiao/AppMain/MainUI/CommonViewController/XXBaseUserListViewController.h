@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+/*
+ *通用用户列表
+ */
+
 @interface XXBaseUserListViewController : UIViewController
 
 @end

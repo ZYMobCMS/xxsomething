@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+/*
+ *通用用户条件选择
+ */
 @interface XXUserFilterViewController : UIViewController
 
 @end

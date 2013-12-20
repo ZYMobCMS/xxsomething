@@ -10,33 +10,33 @@
 
 @implementation XXCommonStyle
 
-- (NSInteger)commonPostContentLineHeight
++ (CGFloat)commonPostContentLineHeight
 {
-    
+    return 2.0f;
 }
-- (NSInteger)commonPostContentFontSize
++ (NSInteger)commonPostContentFontSize
 {
-    
+    return 14;
 }
-- (NSString*)commonPostContentTextColor
++ (NSString*)commonPostContentTextColor
 {
-    
+    return @"#463a45";
 }
-- (NSString*)commonPostContentTextAlign
++ (NSString*)commonPostContentTextAlign
 {
-    
+    return XXTextAlignLeft;
 }
-- (NSString*)commonPostContentFontFamily
++ (NSString*)commonPostContentFontFamily
 {
-    
+    return @"Helvetica";
 }
-- (NSString*)commonPostContentFontWeight
++ (NSString*)commonPostContentFontWeight
 {
-    
+    return XXFontWeightNormal;
 }
-- (NSInteger)commonPostEmojiSize
++ (NSInteger)commonPostEmojiSize
 {
-    
+    return 24;
 }
 
 @end

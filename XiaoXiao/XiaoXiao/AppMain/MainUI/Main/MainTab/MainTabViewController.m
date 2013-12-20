@@ -31,6 +31,22 @@
     //custom tab bar
     [self initCustomTabBar];
     
+    //init view controllers
+    NSMutableArray *subVCArray = [NSMutableArray array];
+    SquareGuideViewController *squareGuideVC = [[SquareGuideViewController alloc]init];
+    UINavigationController *squareNav = [[UINavigationController alloc]initWithRootViewController:squareGuideVC];
+    [subVCArray addObject:squareNav];
+    
+    MessageGuideViewController *messageGuideVC = [[MessageGuideViewController alloc]init];
+    UINavigationController *messageNav = [[UINavigationController alloc]initWithRootViewController:messageGuideVC];
+    [subVCArray addObject:messageNav];
+    
+    MyHomeGuideViewController *myHomeGuideVC = [[MyHomeGuideViewController alloc]init];
+    UINavigationController *myHomeNav = [[UINavigationController alloc]initWithRootViewController:myHomeGuideVC];
+    [subVCArray addObject:myHomeNav];
+    
+    self.viewControllers = subVCArray;
+    
 }
 
 - (void)didReceiveMemoryWarning

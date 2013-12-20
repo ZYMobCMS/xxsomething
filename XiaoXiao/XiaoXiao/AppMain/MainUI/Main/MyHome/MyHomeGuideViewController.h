@@ -7,7 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MyFansUserListViewController.h"
+#import "MyCareUserListViewController.h"
+#import "MyPeepUserListViewController.h"
+#import "MyProfileEditViewController.h"
+#import "MyShareListViewController.h"
 
-@interface MyHomeGuideViewController : UIViewController
+@interface MyHomeGuideViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+{
+    UITableView *guideTable;
+    
+    NSMutableArray *guideVCArray;
+    
+}
 
 @end

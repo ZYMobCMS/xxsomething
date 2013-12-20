@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+/*
+ *基础编辑输入视图
+ */
 @interface XXEditInputViewController : UIViewController
 
 @end

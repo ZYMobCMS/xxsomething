@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+/*
+ *通用图片裁剪视图
+ */
 @interface XXPhotoCropViewController : UIViewController
 
 @end

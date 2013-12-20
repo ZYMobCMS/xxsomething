@@ -9,6 +9,7 @@
 #import "XXShareTemplateBuilder.h"
 
 BOOL const XXLockShareCSSTemplateState = YES;
+BOOL const XXLockCommonCSSTemplateState = NO;
 
 @implementation XXShareTemplateBuilder
 
@@ -69,5 +70,83 @@ BOOL const XXLockShareCSSTemplateState = YES;
     
     return htmlTemplate;
 }
+
+#pragma mark - 通用表情文字混排
++ (NSString*)buildCommonCSSTemplateWithBundleFormatteFile:(NSString*)fileName withShareStyle:(XXShareStyle*)aStyle
+{
+    if (XXLockCommonCSSTemplateState) {
+        if (![fileName isEqualToString:XXCommonTextTemplateCSS]) {
+            
+            DDLogWarn(@"CSS Template has been locked,you can only use css file:%@",XXCommonTextTemplateCSS);
+            
+            NSString *ccsFormatteString = [XXFileUitil loadStringFromBundleForName:XXCommonTextTemplateCSS];
+            
+            return [XXShareTemplateBuilder buildCSSTemplateWithFormatte:ccsFormatteString withShareStyle:aStyle];
+            
+        }
+    }
+    NSString *ccsFormatteString = [XXFileUitil loadStringFromBundleForName:fileName];
+    
+    return [XXShareTemplateBuilder buildCSSTemplateWithBundleFormatteFile:ccsFormatteString withShareStyle:aStyle];
+}
+
++ (NSString*)buildCommonCSSTemplateWithFormatte:(NSString *)cssFormatte withShareStyle:(XXShareStyle *)aStyle
+{
+    NSString *resultString = [NSString stringWithFormat:cssFormatte,aStyle.contentLineHeight,aStyle.contentFontSize,aStyle.contentTextColor,aStyle.contentTextAlign,aStyle.contentFontWeight,aStyle.contentFontFamily,aStyle.emojiSize,aStyle.emojiSize];
+    
+    return resultString;
+}
+
++ (NSString*)buildCommonTextContentWithCSSTemplate:(NSString*)cssTemplate withConentText:(NSString*)contentText
+{
+    NSString *htmlTemplate = [XXFileUitil loadStringFromBundleForName:XXCommonHtmlTemplate];
+    
+    //替换CSS
+    htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$css$!" withString:cssTemplate];
+    
+    //替换content
+    contentText = [XXBaseTextView switchEmojiTextWithSourceText:contentText];
+    htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$content$!" withString:contentText];
+    
+    return htmlTemplate;
+}
+
++ (NSString*)buildHtmlContentWithCSSTemplate:(NSString *)cssTemplate withHtmlTemplateFile:(NSString *)htmlTemplate withConentText:(NSString *)contentText
+{
+    NSString *htmlTemp= [XXFileUitil loadStringFromBundleForName:htmlTemplate];
+
+    //替换CSS
+    htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$css$!" withString:cssTemplate];
+    
+    //替换content
+    contentText = [XXBaseTextView switchEmojiTextWithSourceText:contentText];
+    htmlTemp = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$content$!" withString:contentText];
+    
+    return htmlTemplate;
+}
+
+//user info cell
++ (NSString*)buildUserCellCSSTemplateWithBundleFormatteFile:(NSString*)fileName withShareStyle:(XXUserCellStyle*)aStyle
+{
+    
+}
++ (NSString*)buildUserCellCSSTemplateWithFormatte:(NSString*)cssFormatte withShareStyle:(XXUserCellStyle*)aStyle
+{
+    NSArray *attributesArray = aStyle.attributesArray;
+    
+    NSMutableString *resultString = [NSMutableString stringWithFormat:@"%@",cssFormatte];
+    
+    for (int i=0; i<attributesArray.count;i++) {
+        
+        
+        
+    }
+    
+}
++ (NSString*)buildUserCellContentWithCSSTemplate:(NSString*)cssTemplate withUserModel:(XXUserModel*)userModel
+{
+    
+}
+
 
 @end

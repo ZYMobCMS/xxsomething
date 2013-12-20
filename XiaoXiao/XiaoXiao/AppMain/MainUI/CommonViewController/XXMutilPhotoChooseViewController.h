@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+/*
+ *通用多选图片列表
+ */
 @interface XXMutilPhotoChooseViewController : UIViewController
 
 @end

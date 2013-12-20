@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+/*
+ *通用照片滤镜视图
+ */
 @interface XXPhotoFilterViewController : UIViewController
 
 @end

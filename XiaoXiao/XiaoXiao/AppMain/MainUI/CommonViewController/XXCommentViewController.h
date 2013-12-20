@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+/*
+ *基础评论列表
+ */
+
 @interface XXCommentViewController : UIViewController
 
 @end

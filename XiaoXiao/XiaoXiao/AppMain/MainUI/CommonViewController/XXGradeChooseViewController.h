@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+/*
+ *通用年级选择列表
+ */
 @interface XXGradeChooseViewController : UIViewController
 
 @end

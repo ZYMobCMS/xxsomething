@@ -16,5 +16,16 @@
 @property (nonatomic,strong)NSString *postAudio;
 @property (nonatomic,strong)NSString *postImages;
 
+@property (nonatomic,strong)NSString *postId;
+@property (nonatomic,strong)NSString *type;
+@property (nonatomic,strong)NSString *tag;
+@property (nonatomic,strong)NSString *commentCount;
+@property (nonatomic,strong)NSString *praiseCount;
+@property (nonatomic,strong)NSString *forwordCount;
+@property (nonatomic,strong)NSString *schoolId;
+@property (nonatomic,strong)NSString *userId;
+@property (nonatomic,strong)NSString *addTime;
+
+- (id)initWithContentDict:(NSDictionary*)contentDict;
 
 @end

@@ -98,4 +98,18 @@
     
 }
 
++ (XXShareStyle*)commonStyle
+{
+    XXShareStyle *shareStyle = [[XXShareStyle alloc]init];
+    shareStyle.contentFontFamily = [XXCommonStyle commonPostContentFontFamily];
+    shareStyle.contentFontSize = [XXCommonStyle commonPostContentFontSize];
+    shareStyle.contentFontWeight = [XXCommonStyle commonPostContentFontWeight];
+    shareStyle.contentLineHeight = [XXCommonStyle commonPostContentLineHeight];
+    shareStyle.contentTextAlign = [XXCommonStyle commonPostContentTextAlign];
+    shareStyle.contentTextColor = [XXCommonStyle commonPostContentTextColor];
+    shareStyle.emojiSize = [XXCommonStyle commonPostEmojiSize];
+    
+    return shareStyle;
+}
+
 @end

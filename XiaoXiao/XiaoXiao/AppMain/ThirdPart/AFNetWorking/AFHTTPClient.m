@@ -470,9 +470,10 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
     if (!path) {
         path = @"";
     }
-
+    
+    
     NSURL *url = [NSURL URLWithString:path relativeToURL:self.baseURL];
-    DDLogVerbose(@"url -->%@",url);
+    DDLogVerbose(@"start request url -->%@",url);
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     [request setHTTPMethod:method];
     [request setAllHTTPHeaderFields:self.defaultHeaders];

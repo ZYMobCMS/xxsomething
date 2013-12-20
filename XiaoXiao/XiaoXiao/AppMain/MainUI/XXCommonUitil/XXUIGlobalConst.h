@@ -11,7 +11,9 @@
 #import "XXFileUitil.h"
 #import "XXFileSourceConfig.h"
 #import "XXSharePostTypeConfig.h"
+#import "XXShareStyle.h"
 #import "XXSharePostStyle.h"
+#import "XXCommonStyle.h"
 #import "XXShareTemplateBuilder.h"
 
 //Share

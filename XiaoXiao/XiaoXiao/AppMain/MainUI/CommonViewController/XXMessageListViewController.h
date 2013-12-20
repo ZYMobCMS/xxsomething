@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+/*
+ *通用消息列表
+ */
 @interface XXMessageListViewController : UIViewController
 
 @end

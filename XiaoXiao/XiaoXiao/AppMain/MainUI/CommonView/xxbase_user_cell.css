@@ -1,0 +1,53 @@
+
+img.emoji{
+    width:%dpx;
+    height:%dpx;
+    border:0;
+}
+img.sextag{
+    width:%dpx;
+    height:%dpx;
+    border:0;
+}
+
+p.username{
+    line-height:%f;
+    font-size:%dpx;
+    color:%@;
+    text-align:%@;
+    font-weight:%@;
+    font-family:%@;
+}
+p.collegename{
+    line-height:%f;
+    font-size:%dpx;
+    color:%@;
+    text-align:%@;
+    font-weight:%@;
+    font-family:%@;
+}
+p.startscore{
+    line-height:%f;
+    font-size:%dpx;
+    color:%@;
+    text-align:%@;
+    font-weight:%@;
+    font-family:%@;
+}
+p.score{
+    line-height:%f;
+    font-size:%dpx;
+    color:%@;
+    text-align:%@;
+    font-weight:%@;
+    font-family:%@;
+}
+
+p.profile{
+    line-height:%f;
+    font-size:%dpx;
+    color:%@;
+    text-align:%@;
+    font-weight:%@;
+    font-family:%@;
+}
