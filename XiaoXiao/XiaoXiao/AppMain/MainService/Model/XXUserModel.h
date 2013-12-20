@@ -26,7 +26,8 @@
 @property (nonatomic,strong)NSString *constellation;
 @property (nonatomic,strong)NSString *postCount;
 @property (nonatomic,strong)NSString *registTime;
-@property (nonatomic,strong)NSAttributedString *attributedContent; 
+@property (nonatomic,strong)NSAttributedString *attributedContent;
+@property (nonatomic,strong)UIImage  *headImage;//需要用来传递图片，缓存的时候可以不存储
 
 - (id)initWithContentDict:(NSDictionary*)contentDict;
 

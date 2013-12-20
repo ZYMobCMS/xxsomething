@@ -37,6 +37,9 @@
         self.area = [aDecoder decodeObjectForKey:@"area"];
         self.type = [aDecoder decodeObjectForKey:@"type"];
 
+        //搜索的时候用来传递参数，存储的时候可以为空
+        self.searchKeyword = [aDecoder decodeObjectForKey:@"searchKeyword"];
+
     }
     return self;
 }
@@ -49,6 +52,9 @@
     [aCoder encodeObject:self.city forKey:@"city"];
     [aCoder encodeObject:self.area forKey:@"area"];
     [aCoder encodeObject:self.type forKey:@"type"];
+
+    //搜索的时候用来传递参数，存储的时候可以为空
+    [aCoder encodeObject:self.searchKeyword forKey:@"searchKeyword"];
 
 }
 

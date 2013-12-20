@@ -12,6 +12,7 @@ typedef enum {
     
     XXRequestTypeLogin = 0,
     XXRequestTypeRegist,
+    XXRequestTypeSearchSchool,
     
 }XXRequestType;
 
@@ -19,7 +20,9 @@ typedef enum {
 
 #define XX_Login_Interface @"api/passport/login/"
 
-#define XX_Regist_Interface @""
+#define XX_Regist_Interface @"/api/passport/register/"
+
+#define XX_Search_School_Interface @"/api/xuexiao/search/"
 
 
 

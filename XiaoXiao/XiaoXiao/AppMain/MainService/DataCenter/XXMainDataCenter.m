@@ -9,9 +9,11 @@
 #import "XXMainDataCenter.h"
 #import "AFJSONRequestOperation.h"
 #import "XXHTTPClient.h"
+#import "AFHTTPRequestOperation.h"
 
-#define XXLoginErrorInvalidateParam @"用户名或密码缺失"
+#define XXLoginErrorInvalidateParam @"请求参数不完整"
 #define XXNetWorkDisConnected @"网络无法链接"
+#define XXRegistDefaultHeadName @"head.jpg"
 
 @implementation XXMainDataCenter
 
@@ -34,7 +36,7 @@
     if ([[XXHTTPClient shareClient]networkReachabilityStatus]==AFNetworkReachabilityStatusNotReachable) {
         if (faild) {
             faild(XXNetWorkDisConnected);
-            
+            return;
         }
     }
     
@@ -46,16 +48,136 @@
     [[XXHTTPClient shareClient]postPath:[XXDataCenterConst switchRequestTypeToInterfaceUrl:requestType] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSDictionary *resultDict = (NSDictionary*)responseObject;
-        NSLog(@"resutl dict --->%@",resultDict);
         
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:[resultDict objectForKey:@"msg"] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
-        [alert show];
-        
+        //解析对错
+        int status = [[resultDict objectForKey:@"ret"]intValue];
+        if (status==0) {
+            
+            if (success) {
+                success(resultDict);
+            }
+        }
+        if (status==1) {
+            if (faild) {
+                faild([resultDict objectForKey:@"msg"]);
+            }
+        }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
+        if (faild) {
+            faild([error description]);
+        }
         
     }];
+    
+}
+
+#pragma mark - common upload
+- (NSString*)mediaFileTypeForFileName:(NSString*)fileName
+{
+    NSArray *nameArray = [fileName componentsSeparatedByString:@"."];
+    NSString *fileExtension = [nameArray lastObject];
+    
+    NSString *fileType = nil;
+    if ([fileExtension isEqualToString:@"jpg"]) {
+        fileType = @"image/jpg";
+    }
+    
+    if ([fileExtension isEqualToString:@"png"]) {
+        fileType = @"image/png";
+    }
+    
+    if ([fileExtension isEqualToString:@"jpeg"]) {
+        fileType = @"image/jpg";
+    }
+    
+    if ([fileExtension isEqualToString:@"amr"]) {
+        fileType = @"audio/amr";
+    }
+    
+    return fileType;
+    
+}
+- (NSData*)imageDataWithImage:(UIImage *)image WithName:(NSString*)imageName
+{
+    NSData *imageData = nil;
+    if ([imageName rangeOfString:@"png"].location!=NSNotFound) {
+        imageData = UIImagePNGRepresentation(image);
+    }
+    if ([imageName rangeOfString:@"jpg"].location!=NSNotFound || [imageName rangeOfString:@"jpeg"].location!=NSNotFound) {
+        imageData = UIImageJPEGRepresentation(image,0.5);
+    }
+    return imageData;
+}
+
+- (void)mutilPartyDataRequest:(XXRequestType)requestType withNormalParams:(NSDictionary *)normalParams withFileUploadParams:(NSDictionary*)uploadParams withHttpMethod:(NSString*)method withSucess:(void (^)(NSDictionary *resultDict))success withFaild:(void (^)(NSString *faildMsg))faild
+{
+    //是否存在网络
+    if ([[XXHTTPClient shareClient]networkReachabilityStatus]==AFNetworkReachabilityStatusNotReachable) {
+        if (faild) {
+            faild(XXNetWorkDisConnected);
+            return;
+        }
+    }
+    
+    if (method==nil) {
+        method = @"POST";
+    }
+        
+    NSMutableURLRequest *uploadRequest = [[XXHTTPClient shareClient]multipartFormRequestWithMethod:method path:[XXDataCenterConst switchRequestTypeToInterfaceUrl:requestType] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        [formData appendPartWithFormData:[uploadParams objectForKey:@"contentData"] name:@"picture"];
+    }];
+//    if (normalParams) {
+//        NSData *normalParamData = [NSJSONSerialization dataWithJSONObject:normalParams options:NSJSONWritingPrettyPrinted error:nil];
+//        [uploadRequest setHTTPBody:normalParamData];
+//    }
+    
+    NSString *postParamString = [[NSString alloc]initWithData:[uploadRequest HTTPBody]   encoding:NSUTF8StringEncoding];
+    DDLogVerbose(@"post data -->%@",postParamString);
+    
+    AFJSONRequestOperation *jsonRequest = [AFJSONRequestOperation JSONRequestOperationWithRequest:uploadRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        
+        NSDictionary *resultDict = (NSDictionary*)JSON;
+        
+        DDLogVerbose(@"resutl Dict -->%@",resultDict);
+        
+        //解析对错
+        int status = [[resultDict objectForKey:@"ret"]intValue];
+        if (status==0) {
+            
+            if (success) {
+                success(resultDict);
+            }
+        }else{
+            if (faild) {
+                faild([resultDict objectForKey:@"msg"]);
+            }
+        }
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        
+        NSDictionary *errorDict = (NSDictionary*)JSON;
+        
+        //解析对错
+        int status = [[errorDict objectForKey:@"ret"]intValue];
+        if (status==1) {
+            if (faild) {
+                faild([errorDict objectForKey:@"msg"]);
+            }
+        }else{
+            if (faild) {
+                faild([error description]);
+            }
+        }
+        DDLogVerbose(@"erro dict -->%@",errorDict);
+        
+        
+    }];
+    [jsonRequest setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+    }];
+    [[XXHTTPClient shareClient]enqueueHTTPRequestOperation:jsonRequest];
     
 }
 
@@ -79,8 +201,72 @@
     }];
 }
 
-- (void)requestRegistWithNewUser:(XXUserModel *)newUser withSuccessRegist:(void (^)(NSString *))success withFaildRegist:(void (^)(NSString *))faild
+- (void)requestRegistWithNewUser:(XXUserModel *)newUser withSuccessRegist:(XXDataCenterRequestDetailUserBlock)success withFaildRegist:(XXDataCenterRequestFaildMsgBlock)faild
 {
+    if (!newUser.account||!newUser.password||!newUser.schoolId||!newUser.grade||!newUser.headImage) {
+        if (faild) {
+            faild (XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    
+    NSDictionary *normalParams = @{@"account":newUser.account,@"password":newUser.password,@"xuexiao_id":newUser.schoolId,@"grade":newUser.grade};
+    NSData *headImageData = [self imageDataWithImage:newUser.headImage WithName:XXRegistDefaultHeadName];
+    NSDictionary *uploadParams = @{@"contentData":headImageData,@"fileName":@"picture",@"localName":XXRegistDefaultHeadName};
+    
+    [self mutilPartyDataRequest:XXRequestTypeRegist withNormalParams:normalParams withFileUploadParams:uploadParams withHttpMethod:@"POST" withSucess:^(NSDictionary *resultDict) {
+        
+        DDLogVerbose(@"regist success ->%@",resultDict);
+        
+    } withFaild:^(NSString *faildMsg) {
+        
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
+}
+
+- (void)requestSearchSchoolListWithDescription:(XXSchoolModel*)conditionSchool WithSuccessSearch:(XXDataCenterRequestSuccessListBlock)success withFaildSearch:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    //参数
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (conditionSchool.searchKeyword) {
+        [params setObject:conditionSchool.searchKeyword forKey:@"keyword"];
+    }
+    if (conditionSchool.type) {
+        [params setObject:conditionSchool.type forKey:@"type"];
+    }
+    if (conditionSchool.area) {
+        [params setObject:conditionSchool.area forKey:@"area"];
+    }
+    if (conditionSchool.city) {
+        [params setObject:conditionSchool.city forKey:@"city"];
+    }
+    if (conditionSchool.province) {
+        [params setObject:conditionSchool.province forKey:@"province"];
+    }
+    
+    [self requestXXRequest:XXRequestTypeSearchSchool withParams:params withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
+        
+        NSLog(@"resultDict -->%@",resultDict);
+        NSArray *schoolList = [resultDict objectForKey:@"data"];
+        NSMutableArray *modelResultArray = [NSMutableArray array];
+        for (NSDictionary *item in schoolList) {
+            
+            XXSchoolModel *schoolModel = [[XXSchoolModel alloc]initWithContentDict:item];
+            [modelResultArray addObject:schoolModel];
+        }
+        if (success) {
+            success(modelResultArray);
+        }
+        
+    } withFaild:^(NSString *faildMsg) {
+        
+        if (faild) {
+            faild(faildMsg);
+        }
+        
+    }];
     
 }
 

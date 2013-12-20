@@ -19,6 +19,10 @@
             resultInterface = XX_Login_Interface;
             break;
         case XXRequestTypeRegist:
+            resultInterface = XX_Regist_Interface;
+            break;
+        case XXRequestTypeSearchSchool:
+            resultInterface = XX_Search_School_Interface;
             break;
             
         default:

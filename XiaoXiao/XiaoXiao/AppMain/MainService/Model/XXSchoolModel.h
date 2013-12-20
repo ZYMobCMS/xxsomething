@@ -15,6 +15,7 @@
 @property (nonatomic,strong)NSString *city;
 @property (nonatomic,strong)NSString *area;
 @property (nonatomic,strong)NSString *type;
+@property (nonatomic,strong)NSString *searchKeyword;//搜索列表的时候可用
 
 - (id)initWithContentDict:(NSDictionary*)contentDict;
 

@@ -59,6 +59,8 @@
         self.registTime = [aDecoder decodeObjectForKey:@"registTime"];
         self.attributedContent = [aDecoder decodeObjectForKey:@"attributedContent"];
 
+        //头像
+        self.headImage = [aDecoder decodeObjectForKey:@"headImage"];
     }
     return self;
 }
@@ -82,6 +84,9 @@
     [aCoder encodeObject:self.postCount forKey:@"postCount"];
     [aCoder encodeObject:self.registTime forKey:@"registTime"];
     [aCoder encodeObject:self.attributedContent forKey:@"attributedContent"];
+
+    //头像
+    [aCoder encodeObject:self.headImage forKey:@"headImage"];
 
 }
 

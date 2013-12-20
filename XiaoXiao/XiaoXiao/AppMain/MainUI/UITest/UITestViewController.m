@@ -148,11 +148,60 @@
     XXUserModel *newUser = [[XXUserModel alloc]init];
     newUser.account = @"22222";
     newUser.password = @"11111";
-    [[XXMainDataCenter shareCenter]requestLoginWithNewUser:newUser withSuccessLogin:^(XXUserModel *detailUser) {
+//    [[XXMainDataCenter shareCenter]requestLoginWithNewUser:newUser withSuccessLogin:^(XXUserModel *detailUser) {
+//        
+//    } withFaildLogin:^(NSString *faildMsg) {
+//        
+//    }];
+    
+    //search school
+    XXSchoolModel *conditionSchool = [[XXSchoolModel alloc]init];
+    conditionSchool.searchKeyword = @"理工";
+    conditionSchool.type = @"1";
+    conditionSchool.city = @"北京";
+    
+    XXDataCenterRequestSuccessListBlock searchSchoolSccess = ^ (NSArray *resultList){
         
-    } withFaildLogin:^(NSString *faildMsg) {
+        XXSchoolModel *destSchool = [resultList objectAtIndex:0];
+        DDLogVerbose(@"destSchool id -->%@",destSchool.schoolId);
+        [self alertMessage:destSchool.schoolName];
+        
+        //测试注册
+        XXUserModel *newUser = [[XXUserModel alloc]init];
+        newUser.account = @"testuser33";
+        newUser.password = @"123456";
+        newUser.grade = @"一年级";
+        newUser.headImage = [UIImage imageNamed:@"af.jpeg"];
+        newUser.schoolId = destSchool.schoolId;
+        
+        [[XXMainDataCenter shareCenter]requestRegistWithNewUser:newUser withSuccessRegist:^(XXUserModel *detailUser) {
+            
+        } withFaildRegist:^(NSString *faildMsg) {
+            [self alertMessage:faildMsg];
+        }];
+        
+    };
+    
+    [[XXMainDataCenter shareCenter]requestSearchSchoolListWithDescription:conditionSchool WithSuccessSearch:^(NSArray *resultList) {
+        
+        //注册
+        if (searchSchoolSccess) {
+            searchSchoolSccess(resultList);
+        }
+        
+    } withFaildSearch:^(NSString *faildMsg) {
+        
+        DDLogVerbose(@"search school faild -->%@",faildMsg);
+        [self alertMessage:faildMsg];
         
     }];
+    
+    
+}
+- (void)alertMessage:(NSString*)alertMsg
+{
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:alertMsg delegate:nil cancelButtonTitle:nil otherButtonTitles:@"check", nil];
+    [alert show];
 }
 
 - (void)didReceiveMemoryWarning

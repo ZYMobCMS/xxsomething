@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+typedef void (^XXDataCenterRequestSuccessListBlock) (NSArray *resultList);
+typedef void (^XXDataCenterRequestFaildMsgBlock) (NSString *faildMsg);
+typedef void (^XXDataCenterRequestSuccessMsgBlock) (NSString *successMsg);
+typedef void (^XXDataCenterRequestDetailUserBlock) (XXUserModel *detailUser);
+
 @interface XXMainDataCenter : NSObject
 {
     
@@ -15,9 +20,10 @@
 
 + (XXMainDataCenter*)shareCenter;
 
-- (void)requestLoginWithNewUser:(XXUserModel*)newUser withSuccessLogin:(void (^) (XXUserModel *detailUser))success withFaildLogin:(void (^)(NSString *faildMsg))faild;
+- (void)requestLoginWithNewUser:(XXUserModel*)newUser withSuccessLogin:(XXDataCenterRequestDetailUserBlock)success withFaildLogin:(XXDataCenterRequestFaildMsgBlock)faild;
 
-- (void)requestRegistWithNewUser:(XXUserModel*)newUser withSuccessRegist:(void (^) (NSString *successMsg))success withFaildRegist:(void (^)(NSString *faildMsg))faild;
+- (void)requestRegistWithNewUser:(XXUserModel*)newUser withSuccessRegist:(XXDataCenterRequestDetailUserBlock)success withFaildRegist:(XXDataCenterRequestFaildMsgBlock)faild;
 
+- (void)requestSearchSchoolListWithDescription:(XXSchoolModel*)conditionSchool WithSuccessSearch:(XXDataCenterRequestSuccessListBlock)success withFaildSearch:(XXDataCenterRequestFaildMsgBlock)faild;
 
 @end
