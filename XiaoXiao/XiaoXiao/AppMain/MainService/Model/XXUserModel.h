@@ -26,6 +26,7 @@
 @property (nonatomic,strong)NSString *constellation;
 @property (nonatomic,strong)NSString *postCount;
 @property (nonatomic,strong)NSString *registTime;
+@property (nonatomic,strong)NSAttributedString *attributedContent; 
 
 - (id)initWithContentDict:(NSDictionary*)contentDict;
 

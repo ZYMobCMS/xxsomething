@@ -23,5 +23,8 @@
 //每个模板下，对应的风格设置
 + (XXShareStyle*)shareStyleForSharePostType:(XXSharePostType)sharePostType withContentWidth:(CGFloat)contentWidth;
 
++ (XXShareStyle*)commonStyle;
+
++ (XXShareStyle*)userInfoCellStyle;
 
 @end

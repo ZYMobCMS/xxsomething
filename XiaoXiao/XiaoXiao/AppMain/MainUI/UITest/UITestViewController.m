@@ -134,9 +134,25 @@
     self.testTable.frame = CGRectMake(0,0,self.view.frame.size.width,self.view.frame.size.height);
     self.testTable.delegate = self;
     self.testTable.dataSource = self;
-    [self.view addSubview:self.testTable];
+//    [self.view addSubview:self.testTable];
     
     DDLogVerbose(@"self.sourceArray --->%@",self.sourceArray);
+    
+    //test base text view
+    XXBaseTextView *baseTextView = [[XXBaseTextView alloc]init];
+    baseTextView.frame = CGRectMake(10,30,300,300);
+    [self.view addSubview:baseTextView];
+    [baseTextView setText:commonContent];
+
+    //test login
+    XXUserModel *newUser = [[XXUserModel alloc]init];
+    newUser.account = @"22222";
+    newUser.password = @"11111";
+    [[XXMainDataCenter shareCenter]requestLoginWithNewUser:newUser withSuccessLogin:^(XXUserModel *detailUser) {
+        
+    } withFaildLogin:^(NSString *faildMsg) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning

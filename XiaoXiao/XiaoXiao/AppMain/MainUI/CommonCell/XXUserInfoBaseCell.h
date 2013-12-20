@@ -7,7 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XXBaseTextView.h"
+#import "XXUserModel.h"
 
 @interface XXUserInfoBaseCell : UITableViewCell
+{
+    XXBaseTextView *contentTextView;
+}
+
++ (NSAttributedString*)buildAttributedStringWithUserModel:(XXUserModel*)userModel;
+
+- (void)setContentModel:(XXUserModel*)userModel;
+
++ (CGFloat)heightWithContentModel:(XXUserModel*)userModel;
 
 @end

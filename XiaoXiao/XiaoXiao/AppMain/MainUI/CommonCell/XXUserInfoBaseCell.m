@@ -15,6 +15,11 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        
+        contentTextView = [[XXBaseTextView alloc]init];
+        contentTextView.frame = CGRectMake(50,30,220,100);
+        [self.contentView addSubview:contentTextView];
+        
     }
     return self;
 }
@@ -24,6 +29,20 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
++ (NSAttributedString*)buildAttributedStringWithUserModel:(XXUserModel *)userModel
+{
+    
+}
+
+- (void)setContentModel:(XXUserModel *)userModel
+{
+    
+}
+
++ (CGFloat)heightWithContentModel:(XXUserModel *)userModel
+{
 }
 
 @end

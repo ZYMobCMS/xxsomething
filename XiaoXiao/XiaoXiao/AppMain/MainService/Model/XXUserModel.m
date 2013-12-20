@@ -57,6 +57,7 @@
         self.constellation = [aDecoder decodeObjectForKey:@"constellation"];
         self.postCount = [aDecoder decodeObjectForKey:@"postCount"];
         self.registTime = [aDecoder decodeObjectForKey:@"registTime"];
+        self.attributedContent = [aDecoder decodeObjectForKey:@"attributedContent"];
 
     }
     return self;
@@ -80,6 +81,7 @@
     [aCoder encodeObject:self.constellation forKey:@"constellation"];
     [aCoder encodeObject:self.postCount forKey:@"postCount"];
     [aCoder encodeObject:self.registTime forKey:@"registTime"];
+    [aCoder encodeObject:self.attributedContent forKey:@"attributedContent"];
 
 }
 

@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "XXShareStyle.h"
 #import "XXSharePostModel.h"
+#import "XXUserModel.h"
+#import "XXUserCellStyle.h"
 
 #define XXTextAlignLeft @"left"
 #define XXTextAlignRight @"right"
@@ -26,5 +28,20 @@ extern BOOL const XXLockShareCSSTemplateState;
 + (NSString *)buildCSSTemplateWithFormatte:(NSString*)cssFormatte withShareStyle:(XXShareStyle*)aStyle;
 
 + (NSString*)buildSharePostContentWithCSSTemplate:(NSString*)cssTemplate withSharePostModel:(XXSharePostModel*)aSharePost;
+
++ (NSString*)buildCommonCSSTemplateWithBundleFormatteFile:(NSString*)fileName withShareStyle:(XXShareStyle*)aStyle;
+
++ (NSString*)buildCommonCSSTemplateWithFormatte:(NSString*)cssFormatte withShareStyle:(XXShareStyle*)aStyle;
+
++ (NSString*)buildCommonTextContentWithCSSTemplate:(NSString*)cssTemplate withConentText:(NSString*)contentText;
+
++ (NSString*)buildHtmlContentWithCSSTemplate:(NSString*)cssTemplate withHtmlTemplateFile:(NSString*)htmlTemplate withConentText:(NSString*)contentText;
+
+
++ (NSString*)buildUserCellCSSTemplateWithBundleFormatteFile:(NSString*)fileName withShareStyle:(XXUserCellStyle*)aStyle;
++ (NSString*)buildUserCellCSSTemplateWithFormatte:(NSString*)cssFormatte withShareStyle:(XXUserCellStyle*)aStyle;
+
++ (NSString*)buildUserCellContentWithCSSTemplate:(NSString*)cssTemplate withUserModel:(XXUserModel*)userModel;
+
 
 @end
