@@ -33,16 +33,20 @@
     
     //init view controllers
     NSMutableArray *subVCArray = [NSMutableArray array];
+    UIImage *navigationImage = [UIImage imageNamed:@"navigation_bar.png"];
     SquareGuideViewController *squareGuideVC = [[SquareGuideViewController alloc]init];
     UINavigationController *squareNav = [[UINavigationController alloc]initWithRootViewController:squareGuideVC];
+    [squareNav.navigationBar setBackgroundImage:navigationImage forBarMetrics:UIBarMetricsDefault];
     [subVCArray addObject:squareNav];
     
     MessageGuideViewController *messageGuideVC = [[MessageGuideViewController alloc]init];
     UINavigationController *messageNav = [[UINavigationController alloc]initWithRootViewController:messageGuideVC];
+    [messageNav.navigationBar setBackgroundImage:navigationImage forBarMetrics:UIBarMetricsDefault];
     [subVCArray addObject:messageNav];
     
     MyHomeGuideViewController *myHomeGuideVC = [[MyHomeGuideViewController alloc]init];
     UINavigationController *myHomeNav = [[UINavigationController alloc]initWithRootViewController:myHomeGuideVC];
+    [myHomeNav.navigationBar setBackgroundImage:navigationImage forBarMetrics:UIBarMetricsDefault];
     [subVCArray addObject:myHomeNav];
     
     self.viewControllers = subVCArray;

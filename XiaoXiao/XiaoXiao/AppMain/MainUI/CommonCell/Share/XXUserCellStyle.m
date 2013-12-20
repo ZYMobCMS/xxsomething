@@ -14,59 +14,71 @@
 
 @implementation XXUserCellStyle
 
+- (id)init
+{
+    if (self = [super init]) {
+        
+        self.emojiDes = [[XXImageDescription alloc]init];
+        self.sexTagDes = [[XXImageDescription alloc]init];
+        self.userNameDes = [[XXFontStyleDescription alloc]init];
+        self.collegeDes = [[XXFontStyleDescription alloc]init];
+        self.starscoreDes = [[XXFontStyleDescription alloc]init];
+        self.scoreDes = [[XXFontStyleDescription alloc]init];
+        self.profileDes = [[XXFontStyleDescription alloc]init];
+        
+    }
+    return self;
+}
 
 + (XXUserCellStyle*)userCellStyle
 {
     XXUserCellStyle *userStyle = [[XXUserCellStyle alloc]init];
 
-    NSMutableArray *attributesArray = [NSMutableArray array];
-    [attributesArray addObject:XXIntNumber([XXUserInfoCellStyle emojiSize])];
-    [attributesArray addObject:XXIntNumber([XXUserInfoCellStyle emojiSize])];
-    [attributesArray addObject:XXIntNumber([XXUserInfoCellStyle sexTagWidth])];
-    [attributesArray addObject:XXIntNumber([XXUserInfoCellStyle sexTagHeight])];
+    userStyle.emojiDes.width = [XXUserInfoCellStyle emojiSize];
+    userStyle.emojiDes.height = [XXUserInfoCellStyle emojiSize];
+    userStyle.sexTagDes.width = [XXUserInfoCellStyle sexTagWidth];
+    userStyle.sexTagDes.height = [XXUserInfoCellStyle sexTagHeight];
     
     //username
-    [attributesArray addObject:XXFloatNumber([XXUserInfoCellStyle userNameContentLineHeight])];
-    [attributesArray addObject:XXIntNumber([XXUserInfoCellStyle userNameContentFontSize])];
-    [attributesArray addObject:[XXUserInfoCellStyle userNameContentTextColor]];
-    [attributesArray addObject:[XXUserInfoCellStyle userNameContentTextAlign]];
-    [attributesArray addObject:[XXUserInfoCellStyle userNameContentFontWeight]];
-    [attributesArray addObject:[XXUserInfoCellStyle userNameContentFontFamily]];
-    
+    userStyle.userNameDes.fontSize = [XXUserInfoCellStyle userNameContentFontSize];
+    userStyle.userNameDes.lineHeight = [XXUserInfoCellStyle userNameContentLineHeight];
+    userStyle.userNameDes.fontColor = [XXUserInfoCellStyle userNameContentTextColor];
+    userStyle.userNameDes.fontAlign = [XXUserInfoCellStyle userNameContentTextAlign];
+    userStyle.userNameDes.fontWeight = [XXUserInfoCellStyle userNameContentFontWeight];
+    userStyle.userNameDes.fontFamily = [XXUserInfoCellStyle userNameContentFontFamily];
     
     //college
-    [attributesArray addObject:XXFloatNumber([XXUserInfoCellStyle collegeContentLineHeight])];
-    [attributesArray addObject:XXIntNumber([XXUserInfoCellStyle collegeContentFontSize])];
-    [attributesArray addObject:[XXUserInfoCellStyle collegeContentTextColor]];
-    [attributesArray addObject:[XXUserInfoCellStyle collegeContentTextAlign]];
-    [attributesArray addObject:[XXUserInfoCellStyle collegeContentFontWeight]];
-    [attributesArray addObject:[XXUserInfoCellStyle collegeContentFontFamily]];
+    userStyle.collegeDes.fontSize = [XXUserInfoCellStyle collegeContentFontSize];
+    userStyle.collegeDes.lineHeight = [XXUserInfoCellStyle collegeContentLineHeight];
+    userStyle.collegeDes.fontColor = [XXUserInfoCellStyle collegeContentTextColor];
+    userStyle.collegeDes.fontAlign = [XXUserInfoCellStyle collegeContentTextAlign];
+    userStyle.collegeDes.fontWeight = [XXUserInfoCellStyle collegeContentFontWeight];
+    userStyle.collegeDes.fontFamily = [XXUserInfoCellStyle collegeContentFontFamily];
     
     //starscore
-    [attributesArray addObject:XXFloatNumber([XXUserInfoCellStyle starscoreContentLineHeight])];
-    [attributesArray addObject:XXIntNumber([XXUserInfoCellStyle starscoreContentFontSize])];
-    [attributesArray addObject:[XXUserInfoCellStyle starscoreContentTextColor]];
-    [attributesArray addObject:[XXUserInfoCellStyle starscoreContentTextAlign]];
-    [attributesArray addObject:[XXUserInfoCellStyle starscoreContentFontWeight]];
-    [attributesArray addObject:[XXUserInfoCellStyle starscoreContentFontFamily]];
+    userStyle.starscoreDes.fontSize = [XXUserInfoCellStyle starscoreContentFontSize];
+    userStyle.starscoreDes.lineHeight = [XXUserInfoCellStyle starscoreContentLineHeight];
+    userStyle.starscoreDes.fontColor = [XXUserInfoCellStyle starscoreContentTextColor];
+    userStyle.starscoreDes.fontAlign = [XXUserInfoCellStyle starscoreContentTextAlign];
+    userStyle.starscoreDes.fontWeight = [XXUserInfoCellStyle starscoreContentFontWeight];
+    userStyle.starscoreDes.fontFamily = [XXUserInfoCellStyle starscoreContentFontFamily];
     
     //score
-    [attributesArray addObject:XXFloatNumber([XXUserInfoCellStyle scoreContentLineHeight])];
-    [attributesArray addObject:XXIntNumber([XXUserInfoCellStyle scoreContentFontSize])];
-    [attributesArray addObject:[XXUserInfoCellStyle scoreContentTextColor]];
-    [attributesArray addObject:[XXUserInfoCellStyle scoreContentTextAlign]];
-    [attributesArray addObject:[XXUserInfoCellStyle scoreContentFontWeight]];
-    [attributesArray addObject:[XXUserInfoCellStyle scoreContentFontFamily]];
+    userStyle.scoreDes.lineHeight = [XXUserInfoCellStyle scoreContentLineHeight];
+    userStyle.scoreDes.fontSize = [XXUserInfoCellStyle scoreContentFontSize];
+    userStyle.scoreDes.fontColor = [XXUserInfoCellStyle scoreContentTextColor];
+    userStyle.scoreDes.fontAlign = [XXUserInfoCellStyle scoreContentTextAlign];
+    userStyle.scoreDes.fontWeight = [XXUserInfoCellStyle scoreContentFontWeight];
+    userStyle.scoreDes.fontFamily = [XXUserInfoCellStyle scoreContentFontFamily];
     
     //profile
-    [attributesArray addObject:XXFloatNumber([XXUserInfoCellStyle profileContentLineHeight])];
-    [attributesArray addObject:XXIntNumber([XXUserInfoCellStyle profileContentFontSize])];
-    [attributesArray addObject:[XXUserInfoCellStyle profileContentTextColor]];
-    [attributesArray addObject:[XXUserInfoCellStyle profileContentTextAlign]];
-    [attributesArray addObject:[XXUserInfoCellStyle profileContentFontWeight]];
-    [attributesArray addObject:[XXUserInfoCellStyle profileContentFontFamily]];
+    userStyle.profileDes.lineHeight = [XXUserInfoCellStyle profileContentLineHeight];
+    userStyle.profileDes.fontSize = [XXUserInfoCellStyle profileContentFontSize];
+    userStyle.profileDes.fontColor = [XXUserInfoCellStyle profileContentTextColor];
+    userStyle.profileDes.fontAlign = [XXUserInfoCellStyle profileContentTextAlign];
+    userStyle.profileDes.fontWeight = [XXUserInfoCellStyle profileContentFontWeight];
+    userStyle.profileDes.fontFamily = [XXUserInfoCellStyle profileContentFontFamily];
     
-    userStyle.attributesArray = attributesArray;
     
     return userStyle;
     

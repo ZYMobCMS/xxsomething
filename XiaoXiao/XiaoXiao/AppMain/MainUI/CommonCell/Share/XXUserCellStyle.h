@@ -7,9 +7,17 @@
 //
 
 #import "XXShareStyle.h"
+#import "XXFontStyleDescription.h"
+#import "XXImageDescription.h"
 
 @interface XXUserCellStyle : XXShareStyle
-@property (nonatomic,strong)NSMutableArray *attributesArray;
+@property (nonatomic,strong)XXImageDescription *emojiDes;
+@property (nonatomic,strong)XXImageDescription *sexTagDes;
+@property (nonatomic,strong)XXFontStyleDescription *userNameDes;
+@property (nonatomic,strong)XXFontStyleDescription *collegeDes;
+@property (nonatomic,strong)XXFontStyleDescription *starscoreDes;
+@property (nonatomic,strong)XXFontStyleDescription *scoreDes;
+@property (nonatomic,strong)XXFontStyleDescription *profileDes;
 
 + (XXUserCellStyle*)userCellStyle;
 

@@ -14,6 +14,7 @@
 + (NSInteger)sexTagWidth;
 + (NSInteger)sexTagHeight;
 + (CGFloat)lineHeight;
++ (CGFloat)contentWidth;
 
 //username
 + (CGFloat)userNameContentLineHeight;

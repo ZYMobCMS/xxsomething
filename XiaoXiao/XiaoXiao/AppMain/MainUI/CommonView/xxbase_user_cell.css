@@ -10,7 +10,7 @@ img.sextag{
     border:0;
 }
 
-p.username{
+span.username{
     line-height:%f;
     font-size:%dpx;
     color:%@;
@@ -18,7 +18,7 @@ p.username{
     font-weight:%@;
     font-family:%@;
 }
-p.collegename{
+span.college{
     line-height:%f;
     font-size:%dpx;
     color:%@;
@@ -26,7 +26,7 @@ p.collegename{
     font-weight:%@;
     font-family:%@;
 }
-p.startscore{
+span.startscore{
     line-height:%f;
     font-size:%dpx;
     color:%@;
@@ -34,7 +34,7 @@ p.startscore{
     font-weight:%@;
     font-family:%@;
 }
-p.score{
+span.score{
     line-height:%f;
     font-size:%dpx;
     color:%@;
@@ -43,7 +43,7 @@ p.score{
     font-family:%@;
 }
 
-p.profile{
+span.profile{
     line-height:%f;
     font-size:%dpx;
     color:%@;

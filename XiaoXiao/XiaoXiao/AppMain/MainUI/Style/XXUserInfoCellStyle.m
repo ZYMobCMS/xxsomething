@@ -28,6 +28,10 @@
 {
     return 1.6f;
 }
++ (CGFloat)contentWidth
+{
+    return 220;
+}
 
 //username
 + (CGFloat)userNameContentLineHeight
@@ -36,11 +40,11 @@
 }
 + (NSInteger)userNameContentFontSize
 {
-    return 11;
+    return 15;
 }
 + (NSString*)userNameContentTextColor
 {
-    return @"#463a45";
+    return @"#1f1d1d";
 }
 + (NSString*)userNameContentTextAlign
 {
@@ -62,15 +66,15 @@
 }
 + (NSInteger)collegeContentFontSize
 {
-    return 11;
+    return 15;
 }
 + (NSString*)collegeContentTextColor
 {
-    return @"#463a45";
+    return @"#1f1d1d";
 }
 + (NSString*)collegeContentTextAlign
 {
-    return XXTextAlignLeft;
+    return XXTextAlignRight;
 }
 + (NSString*)collegeContentFontFamily
 {
@@ -114,11 +118,11 @@
 }
 + (NSInteger)scoreContentFontSize
 {
-    return 11;
+    return 16;
 }
 + (NSString*)scoreContentTextColor
 {
-    return @"#463a45";
+    return @"#f20b18";
 }
 + (NSString*)scoreContentTextAlign
 {
@@ -130,7 +134,7 @@
 }
 + (NSString*)scoreContentFontWeight
 {
-    return XXFontWeightNormal;
+    return XXFontWeightBold;
 }
 
 //profile
@@ -140,7 +144,7 @@
 }
 + (NSInteger)profileContentFontSize
 {
-    return 11;
+    return 15;
 }
 + (NSString*)profileContentTextColor
 {

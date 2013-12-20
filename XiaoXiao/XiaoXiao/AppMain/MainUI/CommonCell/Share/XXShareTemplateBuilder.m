@@ -128,23 +128,39 @@ BOOL const XXLockCommonCSSTemplateState = NO;
 //user info cell
 + (NSString*)buildUserCellCSSTemplateWithBundleFormatteFile:(NSString*)fileName withShareStyle:(XXUserCellStyle*)aStyle
 {
+    NSString *ccsFormatteString = [XXFileUitil loadStringFromBundleForName:fileName];
     
+    return [XXShareTemplateBuilder buildUserCellCSSTemplateWithFormatte:ccsFormatteString withShareStyle:aStyle];
 }
 + (NSString*)buildUserCellCSSTemplateWithFormatte:(NSString*)cssFormatte withShareStyle:(XXUserCellStyle*)aStyle
 {
-    NSArray *attributesArray = aStyle.attributesArray;
     
-    NSMutableString *resultString = [NSMutableString stringWithFormat:@"%@",cssFormatte];
-    
-    for (int i=0; i<attributesArray.count;i++) {
-        
-        
-        
-    }
+    NSString *resultCSS = [NSString stringWithFormat:cssFormatte,
+                           aStyle.emojiDes.width,aStyle.emojiDes.height,aStyle.sexTagDes.width,aStyle.sexTagDes.height,
+                                aStyle.userNameDes.lineHeight,aStyle.userNameDes.fontSize,aStyle.userNameDes.fontColor,aStyle.userNameDes.fontAlign,aStyle.userNameDes.fontWeight,aStyle.userNameDes.fontFamily
+                                ,aStyle.collegeDes.lineHeight,aStyle.collegeDes.fontSize,aStyle.collegeDes.fontColor,aStyle.collegeDes.fontAlign,aStyle.collegeDes.fontWeight,aStyle.collegeDes.fontFamily
+                                ,aStyle.starscoreDes.lineHeight,aStyle.starscoreDes.fontSize,aStyle.starscoreDes.fontColor,aStyle.starscoreDes.fontAlign,aStyle.starscoreDes.fontWeight,aStyle.starscoreDes.fontFamily
+                                ,aStyle.scoreDes.lineHeight,aStyle.scoreDes.fontSize,aStyle.scoreDes.fontColor,aStyle.scoreDes.fontAlign,aStyle.scoreDes.fontWeight,aStyle.scoreDes.fontFamily
+                                ,aStyle.profileDes.lineHeight,aStyle.profileDes.fontSize,aStyle.profileDes.fontColor,aStyle.profileDes.fontAlign,aStyle.profileDes.fontWeight,aStyle.profileDes.fontFamily];
+    return resultCSS;
     
 }
 + (NSString*)buildUserCellContentWithCSSTemplate:(NSString*)cssTemplate withUserModel:(XXUserModel*)userModel
 {
+    NSString *htmlTemp= [XXFileUitil loadStringFromBundleForName:XXUserCellHtmlTemplate];
+    
+    //替换CSS
+    htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$css$!" withString:cssTemplate];
+    
+    //替换content
+    htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$sextag$!" withString:@"xiaorentou@2x.png"];
+    htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$username$!" withString:userModel.nickName];
+    htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$college$!" withString:userModel.schoolName];
+    htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$starscore$!" withString:userModel.score];
+    htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$score$!" withString:userModel.score];
+    htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$profile$!" withString:userModel.signature];
+    
+    return htmlTemp;
     
 }
 

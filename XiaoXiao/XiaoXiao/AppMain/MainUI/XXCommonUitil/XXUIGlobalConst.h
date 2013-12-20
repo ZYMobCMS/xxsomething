@@ -14,6 +14,7 @@
 #import "XXShareStyle.h"
 #import "XXSharePostStyle.h"
 #import "XXCommonStyle.h"
+#import "XXUserInfoCellStyle.h"
 #import "XXShareTemplateBuilder.h"
 
 //Share

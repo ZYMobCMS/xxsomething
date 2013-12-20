@@ -12,5 +12,7 @@
  *通用学校搜索列表
  */
 @interface XXSchoolSearchViewController : UIViewController
-
+{
+    
+}
 @end

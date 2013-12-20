@@ -129,20 +129,65 @@
     modelTwoImage4.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage4 forContentWidth:styleContent];
     [self.sourceArray addObject:modelTwoImage4];
     
+    //userlist
+    [self.sourceArray removeAllObjects];
+    XXUserModel *newUser0 = [[XXUserModel alloc]init];
+    newUser0.schoolName = @"北京理工大学";
+    newUser0.score = @"78%";
+    newUser0.nickName = @"秋风落叶";
+    newUser0.signature = @"没有过不去得坎";
+    [self.sourceArray addObject:newUser0];
+    
+    XXUserModel *newUser1 = [[XXUserModel alloc]init];
+    newUser1.schoolName = @"北京大学";
+    newUser1.score = @"48%";
+    newUser1.nickName = @"秋风";
+    newUser1.signature = @"没有得坎";
+    [self.sourceArray addObject:newUser1];
+    
+    XXUserModel *newUser2 = [[XXUserModel alloc]init];
+    newUser2.schoolName = @"北京航天航空大学";
+    newUser2.score = @"28%";
+    newUser2.nickName = @"秋";
+    newUser2.signature = @"顺利进取";
+    [self.sourceArray addObject:newUser2];
+    
+    XXUserModel *newUser3 = [[XXUserModel alloc]init];
+    newUser3.schoolName = @"清华大学";
+    newUser3.score = @"98%";
+    newUser3.nickName = @"冬天";
+    newUser3.signature = @"一日之际";
+    [self.sourceArray addObject:newUser3];
+    
+    XXUserModel *newUser4 = [[XXUserModel alloc]init];
+    newUser4.schoolName = @"北京语言大学";
+    newUser4.score = @"58%";
+    newUser4.nickName = @"铭铭";
+    newUser4.signature = @"创意无限";
+    [self.sourceArray addObject:newUser4];
+    
+    XXUserModel *newUser5 = [[XXUserModel alloc]init];
+    newUser5.schoolName = @"北京外国语大学";
+    newUser5.score = @"68%";
+    newUser5.nickName = @"春天";
+    newUser5.signature = @"你爱得一切";
+    [self.sourceArray addObject:newUser5];
+    
     self.testTable = [[UITableView alloc]init];
 //    self.testTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.testTable.frame = CGRectMake(0,0,self.view.frame.size.width,self.view.frame.size.height);
     self.testTable.delegate = self;
     self.testTable.dataSource = self;
-//    [self.view addSubview:self.testTable];
+    [self.view addSubview:self.testTable];
     
     DDLogVerbose(@"self.sourceArray --->%@",self.sourceArray);
     
     //test base text view
+    /*
     XXBaseTextView *baseTextView = [[XXBaseTextView alloc]init];
     baseTextView.frame = CGRectMake(10,30,300,300);
     [self.view addSubview:baseTextView];
-    [baseTextView setText:commonContent];
+    [baseTextView setText:commonContent];*/
 
     //test login
     XXUserModel *newUser = [[XXUserModel alloc]init];
@@ -153,6 +198,10 @@
 //    } withFaildLogin:^(NSString *faildMsg) {
 //        
 //    }];
+    
+
+    
+    
     
     //search school
     XXSchoolModel *conditionSchool = [[XXSchoolModel alloc]init];
@@ -222,18 +271,28 @@
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"CellIdentifier ";
+    /*
     XXShareBaseCell *cell = (XXShareBaseCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (!cell) {
         cell = [[XXShareBaseCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     [cell setSharePostModel:[self.sourceArray objectAtIndex:indexPath.row]];
+     */
+    XXUserInfoBaseCell *cell = (XXUserInfoBaseCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (!cell) {
+        cell = [[XXUserInfoBaseCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    [cell setContentModel:[self.sourceArray objectAtIndex:indexPath.row]];
     
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [XXShareBaseCell heightWithSharePostModel:[self.sourceArray objectAtIndex:indexPath.row] forContentWidth:[XXSharePostStyle sharePostContentWidth]];
+    /*
+    return [XXShareBaseCell heightWithSharePostModel:[self.sourceArray objectAtIndex:indexPath.row] forContentWidth:[XXSharePostStyle sharePostContentWidth]];*/
+    return [XXUserInfoBaseCell heightWithContentModel:[self.sourceArray objectAtIndex:indexPath.row]];
+    
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

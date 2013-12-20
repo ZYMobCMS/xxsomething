@@ -28,6 +28,7 @@
 @property (nonatomic,strong)NSString *registTime;
 @property (nonatomic,strong)NSAttributedString *attributedContent;
 @property (nonatomic,strong)UIImage  *headImage;//需要用来传递图片，缓存的时候可以不存储
+@property (nonatomic,strong)NSString *schoolName;
 
 - (id)initWithContentDict:(NSDictionary*)contentDict;
 
