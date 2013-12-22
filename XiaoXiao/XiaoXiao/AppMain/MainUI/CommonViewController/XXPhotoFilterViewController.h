@@ -11,6 +11,16 @@
 /*
  *通用照片滤镜视图
  */
+typedef void (^XXPhotoFilterViewControllerFinishChooseEffectBlock) (UIImage *resultImage);
+
 @interface XXPhotoFilterViewController : UIViewController
+{
+    UIImageView *effectImgView;
+    
+    XXPhotoFilterViewControllerFinishChooseEffectBlock _chooseBlock;
+}
+@property (nonatomic,strong)UIImage *currentImage;
+
+- (id)initWithCurrentImage:(UIImage*)aImage withChooseBlock:(XXPhotoFilterViewControllerFinishChooseEffectBlock)chooseBlock;
 
 @end

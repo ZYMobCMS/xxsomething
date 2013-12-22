@@ -9,5 +9,4 @@
 #import "XXCommonUitil.h"
 
 @implementation XXCommonUitil
-
 @end
