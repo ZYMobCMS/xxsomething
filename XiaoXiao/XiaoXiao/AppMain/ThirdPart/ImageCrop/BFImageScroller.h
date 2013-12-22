@@ -7,15 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UIScrollView+Screenshot.h"
+#import "UIView+Screenshot.h"
 
-@interface BFImageScroller : UIScrollView
+@interface BFImageScroller : UIScrollView<UIScrollViewDelegate>
 {
-    UIActivityIndicatorView *_indicatorView;
 }
 @property (nonatomic,retain)UIImageView *contentImageView;
 
-- (void)resetContentImageViewCenter;
-- (void)startLoading;
-- (void)stopLoading;
+- (id)initWithFrame:(CGRect)frame withTopVisiableHeight:(CGFloat)topVisiableHeight;
 
 @end

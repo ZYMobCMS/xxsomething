@@ -61,6 +61,7 @@
 
         //头像
         self.headImage = [aDecoder decodeObjectForKey:@"headImage"];
+        self.star = [aDecoder decodeObjectForKey:@"star"];
     }
     return self;
 }
@@ -87,6 +88,7 @@
 
     //头像
     [aCoder encodeObject:self.headImage forKey:@"headImage"];
+    [aCoder encodeObject:self.star forKey:@"star"];
 
 }
 

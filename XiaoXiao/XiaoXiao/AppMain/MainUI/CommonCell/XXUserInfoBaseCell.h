@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "XXBaseTextView.h"
 #import "XXUserModel.h"
+#import "XXHeadView.h"
 
 @interface XXUserInfoBaseCell : UITableViewCell
 {
     XXBaseTextView *contentTextView;
+    XXHeadView     *headView;
 }
 
 + (NSAttributedString*)buildAttributedStringWithUserModel:(XXUserModel*)userModel;

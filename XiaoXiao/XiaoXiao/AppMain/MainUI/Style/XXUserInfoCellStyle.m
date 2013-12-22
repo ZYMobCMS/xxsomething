@@ -14,7 +14,7 @@
 
 + (NSInteger)emojiSize
 {
-    return 24;
+    return 18;
 }
 + (NSInteger)sexTagWidth
 {
@@ -26,17 +26,17 @@
 }
 + (CGFloat)lineHeight
 {
-    return 1.6f;
+    return 0.8f;
 }
 + (CGFloat)contentWidth
 {
-    return 220;
+    return 195;
 }
 
 //username
 + (CGFloat)userNameContentLineHeight
 {
-    return [XXUserInfoCellStyle lineHeight];
+    return [XXUserInfoCellStyle lineHeight]-0.2;
 }
 + (NSInteger)userNameContentFontSize
 {
@@ -44,7 +44,7 @@
 }
 + (NSString*)userNameContentTextColor
 {
-    return @"#1f1d1d";
+    return @"#1d2b35";
 }
 + (NSString*)userNameContentTextAlign
 {
@@ -56,13 +56,13 @@
 }
 + (NSString*)userNameContentFontWeight
 {
-    return XXFontWeightNormal;
+    return XXFontWeightBold;
 }
 
 //college
 + (CGFloat)collegeContentLineHeight
 {
-    return [XXUserInfoCellStyle lineHeight];
+    return [XXUserInfoCellStyle lineHeight]-0.2;
 }
 + (NSInteger)collegeContentFontSize
 {
@@ -70,7 +70,7 @@
 }
 + (NSString*)collegeContentTextColor
 {
-    return @"#1f1d1d";
+    return @"#171b22";
 }
 + (NSString*)collegeContentTextAlign
 {
@@ -96,7 +96,7 @@
 }
 + (NSString*)starscoreContentTextColor
 {
-    return @"#463a45";
+    return @"#d5d5d9";
 }
 + (NSString*)starscoreContentTextAlign
 {
@@ -122,7 +122,7 @@
 }
 + (NSString*)scoreContentTextColor
 {
-    return @"#f20b18";
+    return @"#fa5c47";
 }
 + (NSString*)scoreContentTextAlign
 {
@@ -140,7 +140,7 @@
 //profile
 + (CGFloat)profileContentLineHeight
 {
-    return [XXUserInfoCellStyle lineHeight];
+    return 1.4f;
 }
 + (NSInteger)profileContentFontSize
 {
@@ -148,7 +148,7 @@
 }
 + (NSString*)profileContentTextColor
 {
-    return @"#463a45";
+    return @"#d5d5d9";
 }
 + (NSString*)profileContentTextAlign
 {

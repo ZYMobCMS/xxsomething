@@ -29,6 +29,8 @@
 @property (nonatomic,strong)NSAttributedString *attributedContent;
 @property (nonatomic,strong)UIImage  *headImage;//需要用来传递图片，缓存的时候可以不存储
 @property (nonatomic,strong)NSString *schoolName;
+@property (nonatomic,strong)NSString *star;//星座
+
 
 - (id)initWithContentDict:(NSDictionary*)contentDict;
 

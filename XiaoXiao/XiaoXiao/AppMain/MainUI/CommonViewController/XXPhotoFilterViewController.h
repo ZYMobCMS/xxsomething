@@ -20,6 +20,8 @@ typedef void (^XXPhotoFilterViewControllerFinishChooseEffectBlock) (UIImage *res
     XXPhotoFilterViewControllerFinishChooseEffectBlock _chooseBlock;
 }
 @property (nonatomic,strong)UIImage *currentImage;
+@property (nonatomic,assign)CGFloat effectImgViewHeight;
+@property (nonatomic,assign)BOOL isSettingHeadImage;
 
 - (id)initWithCurrentImage:(UIImage*)aImage withChooseBlock:(XXPhotoFilterViewControllerFinishChooseEffectBlock)chooseBlock;
 

@@ -211,18 +211,53 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (UIImage *filterImage);
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.title = @"滤镜效果";
     
-    effectImgView = [[UIImageView alloc]init];
-    effectImgView.frame = CGRectMake(50,60,220,340);
-    effectImgView.backgroundColor = [UIColor redColor];
-    effectImgView.image = self.currentImage;
-    [self.view addSubview:effectImgView];
+    CGFloat scaleCount = 0.f;
+    if (self.effectImgViewHeight > self.view.frame.size.height-115-40) {
+        scaleCount = (self.view.frame.size.height-115-20)/self.effectImgViewHeight;
+    }
+    CGFloat scaleWidth = self.view.frame.size.width*scaleCount;
+    scaleWidth = scaleWidth>0? scaleWidth:self.view.frame.size.width;
     
-    XXImageFilterChooseView *chooseView = [[XXImageFilterChooseView alloc]initWithFrame:CGRectMake(0,self.view.frame.size.height-95,self.view.frame.size.width,75) withOriginImage:self.currentImage withFinishBlock:^(UIImage *filterImage) {
+    //default
+    if (self.effectImgViewHeight==0) {
+        self.effectImgViewHeight = 250;
+    }
+    
+    XXImageFilterChooseView *chooseView = [[XXImageFilterChooseView alloc]initWithFrame:CGRectMake(0,self.view.frame.size.height-115,self.view.frame.size.width,75) withOriginImage:self.currentImage withFinishBlock:^(UIImage *filterImage) {
         effectImgView.image = filterImage;
     }];
     [self.view addSubview:chooseView];
     
+    if (self.isSettingHeadImage) {
+        // displaying the image in a circle by using a shape layer
+        // layer fill color controls the masking
+        CAShapeLayer *maskLayer = [CAShapeLayer layer];
+        maskLayer.backgroundColor = [UIColor whiteColor].CGColor;
+        UIBezierPath *layerPath = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(1, 1, 200, 200)];
+        maskLayer.path = layerPath.CGPath;
+        maskLayer.fillColor = [UIColor blackColor].CGColor;
+        
+        // use another view for clipping so that when the image size changes, the masking layer does not need to be repositioned
+        UIView *clippingViewForLayerMask = [[UIView alloc] initWithFrame:CGRectMake(60, 50, 200, 200)];
+        clippingViewForLayerMask.layer.mask = maskLayer;
+        clippingViewForLayerMask.clipsToBounds = YES;
+        [self.view addSubview:clippingViewForLayerMask];
+        
+        effectImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20,scaleWidth,self.effectImgViewHeight)];
+        effectImgView.backgroundColor = [UIColor lightGrayColor];
+        [clippingViewForLayerMask addSubview:effectImgView];
+        effectImgView.image = self.currentImage;
+        UIImage *resizeImage = [self.currentImage resizedImage:CGSizeMake(200,200) interpolationQuality:kCGInterpolationDefault];
+        effectImgView.frame = CGRectMake(0, 0, resizeImage.size.width, resizeImage.size.height);
+        effectImgView.center = CGPointMake(effectImgView.superview.frame.size.width/2, effectImgView.superview.frame.size.height/2);
+    }else{
+        effectImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20,scaleWidth,self.effectImgViewHeight)];
+        effectImgView.image = self.currentImage;
+        [self.view addSubview:effectImgView];
+    }
+ 
 }
 
 - (void)didReceiveMemoryWarning

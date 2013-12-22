@@ -33,7 +33,8 @@
     UITestViewController *testVC = [[UITestViewController alloc]init];
 //    self.window.rootViewController = testVC;
 //    TestViewController *testVC = [[TestViewController alloc]init];
-    self.window.rootViewController = testVC;
+    UINavigationController *testNav = [[UINavigationController alloc]initWithRootViewController:testVC];
+    self.window.rootViewController = testNav;
     
     //MainUI
 //    MainTabViewController *mainTabVC = [[MainTabViewController alloc]init];

@@ -156,7 +156,7 @@ BOOL const XXLockCommonCSSTemplateState = NO;
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$sextag$!" withString:@"xiaorentou@2x.png"];
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$username$!" withString:userModel.nickName];
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$college$!" withString:userModel.schoolName];
-    htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$starscore$!" withString:userModel.score];
+    htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$starscore$!" withString:userModel.star];
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$score$!" withString:userModel.score];
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$profile$!" withString:userModel.signature];
     

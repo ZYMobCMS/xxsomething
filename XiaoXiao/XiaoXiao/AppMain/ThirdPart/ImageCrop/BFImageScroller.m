@@ -19,28 +19,23 @@
         
         contentImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0,0,frame.size.width,frame.size.height)];
         [self addSubview:contentImageView];
-        contentImageView.contentMode = UIViewContentModeScaleAspectFit;
+        self.delegate = self;
+    }
+    return self;
+}
+- (id)initWithFrame:(CGRect)frame withTopVisiableHeight:(CGFloat)topVisiableHeight
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialization code
         
-        
-        _indicatorView = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-        [contentImageView addSubview:_indicatorView];
-        _indicatorView.center = contentImageView.center;
-        _indicatorView.hidden = YES;
+        contentImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0,topVisiableHeight,frame.size.width,frame.size.height)];
+        [self addSubview:contentImageView];
+        self.delegate = self;
     }
     return self;
 }
 
-- (void)startLoading
-{
-    [_indicatorView startAnimating];
-    _indicatorView.hidden = NO;
-}
-
-- (void)stopLoading
-{
-    [_indicatorView stopAnimating];
-    _indicatorView.hidden = YES;
-}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
@@ -50,9 +45,10 @@
 }
 */
 
-- (void)resetContentImageViewCenter
+#pragma mark - Scroller delegate
+- (UIView*)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
-    self.contentImageView.center = CGPointMake(0,self.contentSize.height/2);
+    return contentImageView;
 }
 
 @end

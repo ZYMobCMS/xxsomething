@@ -7,10 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QBImagePickerController.h"
 
 /*
  *通用多选图片列表
  */
-@interface XXMutilPhotoChooseViewController : UIViewController
+typedef void (^XXMutilPhotoChooseViewControllerFinishChooseBlock) (NSArray *images);
+
+@interface XXMutilPhotoChooseViewController : UIViewController<QBImagePickerControllerDelegate>
+{
+    XXMutilPhotoChooseViewControllerFinishChooseBlock _chooseBlock;
+    QBImagePickerController *_imagePickerController;
+}
+- (id)initWithMutilSelectMaxPhotoNumbers:(NSInteger)maxNumber withFinishChooseBlock:(XXMutilPhotoChooseViewControllerFinishChooseBlock)chooseBlock;
 
 @end
