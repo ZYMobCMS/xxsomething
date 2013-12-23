@@ -40,6 +40,11 @@
 //    MainTabViewController *mainTabVC = [[MainTabViewController alloc]init];
 //    self.window.rootViewController = mainTabVC;
     
+    //root
+    self.appHUD = [[MBProgressHUD alloc]initWithWindow:self.window];
+    [self.window addSubview:self.appHUD];
+    [self.appHUD hide:YES];
+    
     [self.window makeKeyAndVisible];
     
     return YES;

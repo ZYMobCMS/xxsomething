@@ -81,7 +81,7 @@
     
     NSString *fileType = nil;
     if ([fileExtension isEqualToString:@"jpg"]) {
-        fileType = @"image/jpg";
+        fileType = @"image/jpeg";
     }
     
     if ([fileExtension isEqualToString:@"png"]) {
@@ -89,7 +89,7 @@
     }
     
     if ([fileExtension isEqualToString:@"jpeg"]) {
-        fileType = @"image/jpg";
+        fileType = @"image/jpeg";
     }
     
     if ([fileExtension isEqualToString:@"amr"]) {
@@ -111,7 +111,7 @@
     return imageData;
 }
 
-- (void)mutilPartyDataRequest:(XXRequestType)requestType withNormalParams:(NSDictionary *)normalParams withFileUploadParams:(NSDictionary*)uploadParams withHttpMethod:(NSString*)method withSucess:(void (^)(NSDictionary *resultDict))success withFaild:(void (^)(NSString *faildMsg))faild
+- (void)uploadFileWithData:(NSData *)fileData withFileName:(NSString *)fileName withUploadProgressBlock:(XXDataCenterUploadFileProgressBlock)uploadProgressBlock withSuccessBlock:(XXDataCenterUploadFileSuccessBlock)success withFaildBlock:(XXDataCenterRequestFaildMsgBlock)faild
 {
     //是否存在网络
     if ([[XXHTTPClient shareClient]networkReachabilityStatus]==AFNetworkReachabilityStatusNotReachable) {
@@ -120,37 +120,34 @@
             return;
         }
     }
-    
-    if (method==nil) {
-        method = @"POST";
-    }
-        
-    NSMutableURLRequest *uploadRequest = [[XXHTTPClient shareClient]multipartFormRequestWithMethod:method path:[XXDataCenterConst switchRequestTypeToInterfaceUrl:requestType] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        [formData appendPartWithFormData:[uploadParams objectForKey:@"contentData"] name:@"picture"];
+    NSDictionary *params = @{@"Cookies":@"PHPSESSID=m1abihdg1pqq1kcb6arbbc1305",@"Connection":@"keep-alive",@"Accept-Encoding":@"gzip,deflate,sdch"};
+    NSMutableURLRequest *uploadRequest = [[XXHTTPClient shareClient]multipartFormRequestWithMethod:@"POST" path:[XXDataCenterConst switchRequestTypeToInterfaceUrl:XXRequestTypeUploadFile] parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        [formData appendPartWithFileData:fileData name:@"upload" fileName:fileName mimeType:[self mediaFileTypeForFileName:fileName]];
     }];
-//    if (normalParams) {
-//        NSData *normalParamData = [NSJSONSerialization dataWithJSONObject:normalParams options:NSJSONWritingPrettyPrinted error:nil];
-//        [uploadRequest setHTTPBody:normalParamData];
-//    }
+    uploadRequest.timeoutInterval = 240;
     
-    NSString *postParamString = [[NSString alloc]initWithData:[uploadRequest HTTPBody]   encoding:NSUTF8StringEncoding];
-    DDLogVerbose(@"post data -->%@",postParamString);
+    DDLogVerbose(@"upload request header:%@",uploadRequest.allHTTPHeaderFields);
+    DDLogVerbose(@"upload request body:%@",[[NSString alloc]initWithData:uploadRequest.HTTPBody encoding:NSUTF8StringEncoding]);
     
     AFJSONRequestOperation *jsonRequest = [AFJSONRequestOperation JSONRequestOperationWithRequest:uploadRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         
         NSDictionary *resultDict = (NSDictionary*)JSON;
         
-        DDLogVerbose(@"resutl Dict -->%@",resultDict);
+        DDLogVerbose(@"upload resutl Dict -->%@",resultDict);
+        DDLogVerbose(@"upload response --->%@",response.description);
         
         //解析对错
         int status = [[resultDict objectForKey:@"ret"]intValue];
         if (status==0) {
             
             if (success) {
-                success(resultDict);
+                
+                XXAttachmentModel *newModel = [[XXAttachmentModel alloc]initWithContentDict:[resultDict objectForKey:@"data"]];
+                success(newModel);
             }
         }else{
             if (faild) {
+                DDLogVerbose(@"status wrong!");
                 faild([resultDict objectForKey:@"msg"]);
             }
         }
@@ -175,9 +172,18 @@
         
     }];
     [jsonRequest setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        CGFloat prgoress = totalBytesWritten/totalBytesExpectedToWrite;
+        if (uploadProgressBlock) {
+            uploadProgressBlock(prgoress);
+        }
         NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
     }];
     [[XXHTTPClient shareClient]enqueueHTTPRequestOperation:jsonRequest];
+    
+}
+
+- (void)uploadFileWithData:(NSData *)fileData withFileName:(NSString *)fileName
+{
     
 }
 
@@ -203,27 +209,21 @@
 
 - (void)requestRegistWithNewUser:(XXUserModel *)newUser withSuccessRegist:(XXDataCenterRequestDetailUserBlock)success withFaildRegist:(XXDataCenterRequestFaildMsgBlock)faild
 {
-    if (!newUser.account||!newUser.password||!newUser.schoolId||!newUser.grade||!newUser.headImage) {
+    if (!newUser.account||!newUser.password||!newUser.schoolId||!newUser.grade||!newUser.headUrl) {
         if (faild) {
             faild (XXLoginErrorInvalidateParam);
             return;
         }
     }
     
-    NSDictionary *normalParams = @{@"account":newUser.account,@"password":newUser.password,@"xuexiao_id":newUser.schoolId,@"grade":newUser.grade};
-    NSData *headImageData = [self imageDataWithImage:newUser.headImage WithName:XXRegistDefaultHeadName];
-    NSDictionary *uploadParams = @{@"contentData":headImageData,@"fileName":@"picture",@"localName":XXRegistDefaultHeadName};
+    NSDictionary *normalParams = @{@"account":newUser.account,@"password":newUser.password,@"xuexiao_id":newUser.schoolId,@"grade":newUser.grade,@"picture":newUser.headUrl};
     
-    [self mutilPartyDataRequest:XXRequestTypeRegist withNormalParams:normalParams withFileUploadParams:uploadParams withHttpMethod:@"POST" withSucess:^(NSDictionary *resultDict) {
-        
-        DDLogVerbose(@"regist success ->%@",resultDict);
+    [self requestXXRequest:XXRequestTypeRegist withParams:normalParams withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
         
     } withFaild:^(NSString *faildMsg) {
         
-        if (faild) {
-            faild(faildMsg);
-        }
     }];
+    
 }
 
 - (void)requestSearchSchoolListWithDescription:(XXSchoolModel*)conditionSchool WithSuccessSearch:(XXDataCenterRequestSuccessListBlock)success withFaildSearch:(XXDataCenterRequestFaildMsgBlock)faild

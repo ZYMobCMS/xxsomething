@@ -12,5 +12,8 @@
 #define XXThemeColor [UIColor colorWithRed:10/255.0 green:216/255.0 blue:204/255.0 alpha:1]
 
 @interface XXCommonUitil : NSObject
++ (void)keywindowShowProgressHUDWithProgressValue:(CGFloat)progressValue withTitle:(NSString*)title;
++ (void)keywindowShowProgressHUDWithTitle:(NSString*)withTitle;
++ (void)keywindowShowProgressHUDHiddenNow;
 
 @end

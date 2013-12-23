@@ -91,6 +91,8 @@
 		E4312D801861DCB30075C273 /* XXRadioChooseItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E4312D7F1861DCB30075C273 /* XXRadioChooseItem.m */; };
 		E4312D861861E4AB0075C273 /* XXSchoolModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E4312D851861E4AA0075C273 /* XXSchoolModel.m */; };
 		E4312D891861EFB10075C273 /* XXCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E4312D881861EFAE0075C273 /* XXCommentModel.m */; };
+		E43CC53E1868605800DB6CF3 /* XXAttachmentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E43CC53D1868605800DB6CF3 /* XXAttachmentModel.m */; };
+		E43CC54618689C8100DB6CF3 /* zylogo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E43CC54518689C8000DB6CF3 /* zylogo.jpg */; };
 		E452EF921863177800340FB5 /* amrFileCodec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E452EF821863177800340FB5 /* amrFileCodec.mm */; };
 		E452EF931863177800340FB5 /* wav.mm in Sources */ = {isa = PBXBuildFile; fileRef = E452EF841863177800340FB5 /* wav.mm */; };
 		E452EF941863177800340FB5 /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E452EF861863177800340FB5 /* libopencore-amrnb.a */; };
@@ -601,6 +603,9 @@
 		E4312D851861E4AA0075C273 /* XXSchoolModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXSchoolModel.m; sourceTree = "<group>"; };
 		E4312D871861EFAC0075C273 /* XXCommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXCommentModel.h; sourceTree = "<group>"; };
 		E4312D881861EFAE0075C273 /* XXCommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXCommentModel.m; sourceTree = "<group>"; };
+		E43CC53C1868605800DB6CF3 /* XXAttachmentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXAttachmentModel.h; sourceTree = "<group>"; };
+		E43CC53D1868605800DB6CF3 /* XXAttachmentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXAttachmentModel.m; sourceTree = "<group>"; };
+		E43CC54518689C8000DB6CF3 /* zylogo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = zylogo.jpg; sourceTree = "<group>"; };
 		E452EF811863177800340FB5 /* amrFileCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = amrFileCodec.h; sourceTree = "<group>"; };
 		E452EF821863177800340FB5 /* amrFileCodec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = amrFileCodec.mm; sourceTree = "<group>"; };
 		E452EF831863177800340FB5 /* wav.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wav.h; sourceTree = "<group>"; };
@@ -1637,6 +1642,8 @@
 				E4312D851861E4AA0075C273 /* XXSchoolModel.m */,
 				E4312D871861EFAC0075C273 /* XXCommentModel.h */,
 				E4312D881861EFAE0075C273 /* XXCommentModel.m */,
+				E43CC53C1868605800DB6CF3 /* XXAttachmentModel.h */,
+				E43CC53D1868605800DB6CF3 /* XXAttachmentModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2019,6 +2026,7 @@
 		E4E3F6E01860969100970698 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				E43CC54518689C8000DB6CF3 /* zylogo.jpg */,
 				E4FCF2F5186673010058098B /* love.jpg */,
 				E4B591401865C6AE00B30821 /* xxx.jpg */,
 				3B1A1FCF18640FF4004D6E77 /* af.jpeg */,
@@ -2996,6 +3004,7 @@
 				E4A051BA1866FDD0002E0EBA /* SVProgressHUD.bundle in Resources */,
 				E4A051D218670177002E0EBA /* QBImagePickerController.bundle in Resources */,
 				E4A051DC18673ECE002E0EBA /* head@2x.png in Resources */,
+				E43CC54618689C8100DB6CF3 /* zylogo.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3285,6 +3294,7 @@
 				E4A051D518670177002E0EBA /* QBImagePickerGroupCell.m in Sources */,
 				E4A051D618670177002E0EBA /* QBImagePickerVideoInfoView.m in Sources */,
 				E4A051DA18671135002E0EBA /* MBProgressHUD.m in Sources */,
+				E43CC53E1868605800DB6CF3 /* XXAttachmentModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

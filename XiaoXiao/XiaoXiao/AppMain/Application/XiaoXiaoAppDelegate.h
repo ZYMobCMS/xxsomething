@@ -11,5 +11,5 @@
 @interface XiaoXiaoAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-
+@property (strong, nonatomic) MBProgressHUD *appHUD;
 @end

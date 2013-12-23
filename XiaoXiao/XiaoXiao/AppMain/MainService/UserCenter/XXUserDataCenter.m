@@ -9,5 +9,8 @@
 #import "XXUserDataCenter.h"
 
 @implementation XXUserDataCenter
-
++ (NSString*)userToken
+{
+    return @" ";
+}
 @end

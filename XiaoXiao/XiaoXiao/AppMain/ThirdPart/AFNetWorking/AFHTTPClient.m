@@ -949,6 +949,7 @@ NSTimeInterval const kAFUploadStream3GSuggestedDelay = 0.2;
     [mutableHeaders setValue:[NSString stringWithFormat:@"form-data; name=\"%@\"; filename=\"%@\"", name, fileName] forKey:@"Content-Disposition"];
     [mutableHeaders setValue:mimeType forKey:@"Content-Type"];
 
+    DDLogVerbose(@"append header --->%@",mutableHeaders);
     [self appendPartWithHeaders:mutableHeaders body:data];
 }
 

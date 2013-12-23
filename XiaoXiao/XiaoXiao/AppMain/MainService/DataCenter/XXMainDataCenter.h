@@ -12,6 +12,8 @@ typedef void (^XXDataCenterRequestSuccessListBlock) (NSArray *resultList);
 typedef void (^XXDataCenterRequestFaildMsgBlock) (NSString *faildMsg);
 typedef void (^XXDataCenterRequestSuccessMsgBlock) (NSString *successMsg);
 typedef void (^XXDataCenterRequestDetailUserBlock) (XXUserModel *detailUser);
+typedef void (^XXDataCenterUploadFileProgressBlock) (CGFloat progressValue);
+typedef void (^XXDataCenterUploadFileSuccessBlock) (XXAttachmentModel *resultModel);
 
 @interface XXMainDataCenter : NSObject
 {
@@ -19,6 +21,8 @@ typedef void (^XXDataCenterRequestDetailUserBlock) (XXUserModel *detailUser);
 }
 
 + (XXMainDataCenter*)shareCenter;
+
+- (void)uploadFileWithData:(NSData*)fileData withFileName:(NSString*)fileName withUploadProgressBlock:(XXDataCenterUploadFileProgressBlock)uploadProgressBlock withSuccessBlock:(XXDataCenterUploadFileSuccessBlock)success withFaildBlock:(XXDataCenterRequestFaildMsgBlock)faild;
 
 - (void)requestLoginWithNewUser:(XXUserModel*)newUser withSuccessLogin:(XXDataCenterRequestDetailUserBlock)success withFaildLogin:(XXDataCenterRequestFaildMsgBlock)faild;
 

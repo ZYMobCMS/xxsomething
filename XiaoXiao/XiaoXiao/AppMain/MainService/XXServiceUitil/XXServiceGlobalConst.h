@@ -9,6 +9,8 @@
 #import "XXServiceUitil.h"
 #import "XXUserModel.h"
 #import "XXSchoolModel.h"
+#import "XXAttachmentModel.h"
 #import "XXSharePostModel.h"
 #import "XXDataCenterConst.h"
 #import "XXMainDataCenter.h"
+#import "XXUserDataCenter.h"

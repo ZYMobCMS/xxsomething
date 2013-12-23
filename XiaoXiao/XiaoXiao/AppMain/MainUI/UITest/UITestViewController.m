@@ -330,7 +330,34 @@
 //        
 //    }];
     
+    //test upload
+    UIBarButtonItem *uploadItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(uploadTest)];
+    self.navigationItem.rightBarButtonItem = uploadItem;
     
+}
+
+- (void)uploadTest
+{
+    NSData *fileData = UIImageJPEGRepresentation([UIImage imageNamed:@"zylogo.jpg"],0.5);
+    DDLogVerbose(@"file data length -->%d",fileData.length);
+    [[XXMainDataCenter shareCenter]uploadFileWithData:fileData withFileName:@"zylogo.jpg" withUploadProgressBlock:^(CGFloat progressValue) {
+        
+        [XXCommonUitil keywindowShowProgressHUDWithTitle:@"正在上传"];
+        
+    } withSuccessBlock:^(XXAttachmentModel *resultModel) {
+        
+        DDLogVerbose(@"resultModel:%@",resultModel);
+        
+        [XXCommonUitil keywindowShowProgressHUDHiddenNow];
+        
+        [SVProgressHUD showWithStatus:@"上传成功"];
+        
+    } withFaildBlock:^(NSString *faildMsg) {
+        
+        [XXCommonUitil keywindowShowProgressHUDHiddenNow];
+        
+        [SVProgressHUD showErrorWithStatus:faildMsg];
+    }];
 }
 - (void)imageFitlerProcessDone:(UIImage *)image
 {

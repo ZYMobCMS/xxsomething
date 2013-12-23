@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface XXUserDataCenter : NSObject
-
++ (NSString*)userToken;
 @end

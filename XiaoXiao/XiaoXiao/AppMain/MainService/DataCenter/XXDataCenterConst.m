@@ -24,6 +24,9 @@
         case XXRequestTypeSearchSchool:
             resultInterface = XX_Search_School_Interface;
             break;
+        case XXRequestTypeUploadFile:
+            resultInterface = XX_Upload_File_Interface;
+            break;
             
         default:
             break;
