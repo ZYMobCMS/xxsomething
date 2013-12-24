@@ -84,12 +84,13 @@
 		3B46835F18614A6C002CFFA2 /* XXSharePostModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B46835E18614A6C002CFFA2 /* XXSharePostModel.m */; };
 		3B46836518616047002CFFA2 /* XXSharePostTypeConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B46836418616043002CFFA2 /* XXSharePostTypeConfig.m */; };
 		3B5DF19618693370000B50D2 /* love.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3B5DF19518693370000B50D2 /* love.mp3 */; };
+		3B5DF1E8186996E0000B50D2 /* XXRadioChooseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B5DF1E5186996E0000B50D2 /* XXRadioChooseView.m */; };
+		3B5DF1E9186996E0000B50D2 /* XXSegmentControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B5DF1E7186996E0000B50D2 /* XXSegmentControl.m */; };
 		E425ED21186479D3008B6C11 /* XXFontStyleDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = E425ED20186479D3008B6C11 /* XXFontStyleDescription.m */; };
 		E425ED2418647AB9008B6C11 /* XXImageDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = E425ED2318647AB8008B6C11 /* XXImageDescription.m */; };
 		E425ED2618649AE2008B6C11 /* navigation_bar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E425ED2518649ACC008B6C11 /* navigation_bar@2x.png */; };
 		E4312D7A1861CFB30075C273 /* SquareGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4312D791861CFB30075C273 /* SquareGuideViewController.m */; };
 		E4312D7D1861CFD70075C273 /* MessageGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4312D7C1861CFD50075C273 /* MessageGuideViewController.m */; };
-		E4312D801861DCB30075C273 /* XXRadioChooseItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E4312D7F1861DCB30075C273 /* XXRadioChooseItem.m */; };
 		E4312D861861E4AB0075C273 /* XXSchoolModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E4312D851861E4AA0075C273 /* XXSchoolModel.m */; };
 		E4312D891861EFB10075C273 /* XXCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E4312D881861EFAE0075C273 /* XXCommentModel.m */; };
 		E43CC53E1868605800DB6CF3 /* XXAttachmentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E43CC53D1868605800DB6CF3 /* XXAttachmentModel.m */; };
@@ -189,10 +190,7 @@
 		E4E3F8C91860969400970698 /* XXImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6431860969100970698 /* XXImageView.m */; };
 		E4E3F8CA1860969400970698 /* XXLoadingActiveView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6451860969100970698 /* XXLoadingActiveView.m */; };
 		E4E3F8CB1860969400970698 /* XXLoadMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6471860969100970698 /* XXLoadMoreView.m */; };
-		E4E3F8CC1860969400970698 /* XXRadioChooseView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6491860969100970698 /* XXRadioChooseView.m */; };
 		E4E3F8CD1860969400970698 /* XXSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F64B1860969100970698 /* XXSearchBar.m */; };
-		E4E3F8CE1860969400970698 /* XXSegmentCtrl.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F64D1860969100970698 /* XXSegmentCtrl.m */; };
-		E4E3F8CF1860969400970698 /* XXSegmentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F64F1860969100970698 /* XXSegmentItem.m */; };
 		E4E3F8D01860969400970698 /* XXSharePostBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6511860969100970698 /* XXSharePostBar.m */; };
 		E4E3F8D11860969400970698 /* XXStatusHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6531860969100970698 /* XXStatusHUD.m */; };
 		E4E3F8D21860969400970698 /* XXBaseUserListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6561860969100970698 /* XXBaseUserListViewController.m */; };
@@ -590,6 +588,10 @@
 		3B46836318616041002CFFA2 /* XXSharePostTypeConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXSharePostTypeConfig.h; sourceTree = "<group>"; };
 		3B46836418616043002CFFA2 /* XXSharePostTypeConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXSharePostTypeConfig.m; sourceTree = "<group>"; };
 		3B5DF19518693370000B50D2 /* love.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = love.mp3; sourceTree = "<group>"; };
+		3B5DF1E4186996E0000B50D2 /* XXRadioChooseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXRadioChooseView.h; sourceTree = "<group>"; };
+		3B5DF1E5186996E0000B50D2 /* XXRadioChooseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXRadioChooseView.m; sourceTree = "<group>"; };
+		3B5DF1E6186996E0000B50D2 /* XXSegmentControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXSegmentControl.h; sourceTree = "<group>"; };
+		3B5DF1E7186996E0000B50D2 /* XXSegmentControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXSegmentControl.m; sourceTree = "<group>"; };
 		E425ED1F186479D3008B6C11 /* XXFontStyleDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXFontStyleDescription.h; sourceTree = "<group>"; };
 		E425ED20186479D3008B6C11 /* XXFontStyleDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXFontStyleDescription.m; sourceTree = "<group>"; };
 		E425ED2218647AB8008B6C11 /* XXImageDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXImageDescription.h; sourceTree = "<group>"; };
@@ -599,8 +601,6 @@
 		E4312D791861CFB30075C273 /* SquareGuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SquareGuideViewController.m; sourceTree = "<group>"; };
 		E4312D7B1861CFD30075C273 /* MessageGuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageGuideViewController.h; sourceTree = "<group>"; };
 		E4312D7C1861CFD50075C273 /* MessageGuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageGuideViewController.m; sourceTree = "<group>"; };
-		E4312D7E1861DCB30075C273 /* XXRadioChooseItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXRadioChooseItem.h; sourceTree = "<group>"; };
-		E4312D7F1861DCB30075C273 /* XXRadioChooseItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXRadioChooseItem.m; sourceTree = "<group>"; };
 		E4312D841861E4A90075C273 /* XXSchoolModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXSchoolModel.h; sourceTree = "<group>"; };
 		E4312D851861E4AA0075C273 /* XXSchoolModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXSchoolModel.m; sourceTree = "<group>"; };
 		E4312D871861EFAC0075C273 /* XXCommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXCommentModel.h; sourceTree = "<group>"; };
@@ -768,14 +768,8 @@
 		E4E3F6451860969100970698 /* XXLoadingActiveView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXLoadingActiveView.m; sourceTree = "<group>"; };
 		E4E3F6461860969100970698 /* XXLoadMoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXLoadMoreView.h; sourceTree = "<group>"; };
 		E4E3F6471860969100970698 /* XXLoadMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXLoadMoreView.m; sourceTree = "<group>"; };
-		E4E3F6481860969100970698 /* XXRadioChooseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXRadioChooseView.h; sourceTree = "<group>"; };
-		E4E3F6491860969100970698 /* XXRadioChooseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXRadioChooseView.m; sourceTree = "<group>"; };
 		E4E3F64A1860969100970698 /* XXSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXSearchBar.h; sourceTree = "<group>"; };
 		E4E3F64B1860969100970698 /* XXSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXSearchBar.m; sourceTree = "<group>"; };
-		E4E3F64C1860969100970698 /* XXSegmentCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXSegmentCtrl.h; sourceTree = "<group>"; };
-		E4E3F64D1860969100970698 /* XXSegmentCtrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXSegmentCtrl.m; sourceTree = "<group>"; };
-		E4E3F64E1860969100970698 /* XXSegmentItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXSegmentItem.h; sourceTree = "<group>"; };
-		E4E3F64F1860969100970698 /* XXSegmentItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXSegmentItem.m; sourceTree = "<group>"; };
 		E4E3F6501860969100970698 /* XXSharePostBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXSharePostBar.h; sourceTree = "<group>"; };
 		E4E3F6511860969100970698 /* XXSharePostBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXSharePostBar.m; sourceTree = "<group>"; };
 		E4E3F6521860969100970698 /* XXStatusHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXStatusHUD.h; sourceTree = "<group>"; };
@@ -1763,6 +1757,10 @@
 		E4E3F6381860969100970698 /* CommonView */ = {
 			isa = PBXGroup;
 			children = (
+				3B5DF1E4186996E0000B50D2 /* XXRadioChooseView.h */,
+				3B5DF1E5186996E0000B50D2 /* XXRadioChooseView.m */,
+				3B5DF1E6186996E0000B50D2 /* XXSegmentControl.h */,
+				3B5DF1E7186996E0000B50D2 /* XXSegmentControl.m */,
 				E4E3F63A1860969100970698 /* XXBaseTextView.h */,
 				E4E3F63B1860969100970698 /* XXBaseTextView.m */,
 				E4E3F63C1860969100970698 /* XXChatToolBar.h */,
@@ -1777,16 +1775,8 @@
 				E4E3F6451860969100970698 /* XXLoadingActiveView.m */,
 				E4E3F6461860969100970698 /* XXLoadMoreView.h */,
 				E4E3F6471860969100970698 /* XXLoadMoreView.m */,
-				E4E3F6481860969100970698 /* XXRadioChooseView.h */,
-				E4E3F6491860969100970698 /* XXRadioChooseView.m */,
-				E4312D7E1861DCB30075C273 /* XXRadioChooseItem.h */,
-				E4312D7F1861DCB30075C273 /* XXRadioChooseItem.m */,
 				E4E3F64A1860969100970698 /* XXSearchBar.h */,
 				E4E3F64B1860969100970698 /* XXSearchBar.m */,
-				E4E3F64C1860969100970698 /* XXSegmentCtrl.h */,
-				E4E3F64D1860969100970698 /* XXSegmentCtrl.m */,
-				E4E3F64E1860969100970698 /* XXSegmentItem.h */,
-				E4E3F64F1860969100970698 /* XXSegmentItem.m */,
 				E4E3F6501860969100970698 /* XXSharePostBar.h */,
 				E4E3F6511860969100970698 /* XXSharePostBar.m */,
 				E4E3F6521860969100970698 /* XXStatusHUD.h */,
@@ -3047,10 +3037,7 @@
 				E4E3F8C91860969400970698 /* XXImageView.m in Sources */,
 				E4E3F8CA1860969400970698 /* XXLoadingActiveView.m in Sources */,
 				E4E3F8CB1860969400970698 /* XXLoadMoreView.m in Sources */,
-				E4E3F8CC1860969400970698 /* XXRadioChooseView.m in Sources */,
 				E4E3F8CD1860969400970698 /* XXSearchBar.m in Sources */,
-				E4E3F8CE1860969400970698 /* XXSegmentCtrl.m in Sources */,
-				E4E3F8CF1860969400970698 /* XXSegmentItem.m in Sources */,
 				E4E3F8D01860969400970698 /* XXSharePostBar.m in Sources */,
 				E4E3F8D11860969400970698 /* XXStatusHUD.m in Sources */,
 				E4E3F8D21860969400970698 /* XXBaseUserListViewController.m in Sources */,
@@ -3264,7 +3251,6 @@
 				3B3766301861B110000EA20C /* XXChatBaseCell.m in Sources */,
 				E4312D7A1861CFB30075C273 /* SquareGuideViewController.m in Sources */,
 				E4312D7D1861CFD70075C273 /* MessageGuideViewController.m in Sources */,
-				E4312D801861DCB30075C273 /* XXRadioChooseItem.m in Sources */,
 				E4312D861861E4AB0075C273 /* XXSchoolModel.m in Sources */,
 				E4312D891861EFB10075C273 /* XXCommentModel.m in Sources */,
 				E452EF921863177800340FB5 /* amrFileCodec.mm in Sources */,
@@ -3299,6 +3285,8 @@
 				E4A051D618670177002E0EBA /* QBImagePickerVideoInfoView.m in Sources */,
 				E4A051DA18671135002E0EBA /* MBProgressHUD.m in Sources */,
 				E43CC53E1868605800DB6CF3 /* XXAttachmentModel.m in Sources */,
+				3B5DF1E8186996E0000B50D2 /* XXRadioChooseView.m in Sources */,
+				3B5DF1E9186996E0000B50D2 /* XXSegmentControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
