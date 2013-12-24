@@ -36,6 +36,7 @@
         self.postAudio = [customContentDict objectForKey:XXSharePostJSONAudioKey];
         self.postImages = [customContentDict objectForKey:XXSharePostJSONImageKey];
         self.postType = [[customContentDict objectForKey:XXSharePostJSONTypeKey]intValue];
+        self.postAudioTime = [customContentDict objectForKey:XXSharePostJSONAudioTime];
         self.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:self forContentWidth:[XXSharePostStyle sharePostContentWidth]];
         
     }

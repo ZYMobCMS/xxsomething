@@ -12,12 +12,13 @@
 typedef void (^XXShareTextViewDidTapOnThumbImageBlock) (NSURL *imageUrl);
 typedef void (^XXShareTextViewDidTapOnAudioImageBlock) (NSURL *audioUrl);
 
-//用于加入到超链接中，以实现放大图片，播放音频类型判断 ,例如 ：  xxshare_image:http://www.test.com/1.png xxshare_audio:http://www.test.com/a.audio
+//用于加入到超链接中，以实现放大图片，播放音频类型判断 ,例如 ：  xxshare_image:http://www.test.com/1.png xxshare_audio:http://www.test.com/a.amr
 #define XXMIMETypeImageFormatte @"xxshare_image:"
 #define XXMIMETypeAudioFormatte @"xxshare_audio:"
 #define XXSharePostJSONTypeKey  @"xxshare_post_type"
 #define XXSharePostJSONImageKey @"xxshare_post_images"
 #define XXSharePostJSONAudioKey @"xxshare_post_audio"
+#define XXSharePostJSONAudioTime @"xxshare_post_audio_time"
 #define XXSharePostJSONContentKey @"xxshare_post_content"
 
 //分享内容规则

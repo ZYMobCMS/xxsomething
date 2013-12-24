@@ -33,8 +33,11 @@
         self.registTime = [contentDict objectForKey:@"reg_time"];
         self.wellknow = [contentDict objectForKey:@"wellknow"];
         self.praiseCount = [contentDict objectForKey:@"praise_count"];
-        self.tooken = [contentDict objectForKey:@"tooken"];
+        self.tooken = [contentDict objectForKey:@"token"];
         self.status = [contentDict objectForKey:@"status"];
+        self.latitude = [contentDict objectForKey:@"lat"];
+        self.longtitude = [contentDict objectForKey:@"lng"];
+        
     }
     return self;
 }
@@ -65,6 +68,8 @@
         self.praiseCount = [aDecoder decodeObjectForKey:@"praiseCount"];
         self.tooken = [aDecoder decodeObjectForKey:@"tooken"];
         self.status = [aDecoder decodeObjectForKey:@"status"];
+        self.latitude = [aDecoder decodeObjectForKey:@"latitude"];
+        self.longtitude = [aDecoder decodeObjectForKey:@"longtitude"];
 
     }
     return self;
@@ -91,8 +96,10 @@
     [aCoder encodeObject:self.attributedContent forKey:@"attributedContent"];
     [aCoder encodeObject:self.wellknow forKey:@"wellknow"];
     [aCoder encodeObject:self.praiseCount forKey:@"praiseCount"];
-    [aCoder encodeObject:self.tooken forKey:@"tooken"];
     [aCoder encodeObject:self.status forKey:@"status"];
+    [aCoder encodeObject:self.tooken forKey:@"tooken"];
+    [aCoder encodeObject:self.latitude forKey:@"latitude"];
+    [aCoder encodeObject:self.longtitude forKey:@"longtitude"];
 
 }
 

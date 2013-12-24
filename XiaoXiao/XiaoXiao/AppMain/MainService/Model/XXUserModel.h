@@ -32,6 +32,10 @@
 @property (nonatomic,strong)NSString *praiseCount;
 @property (nonatomic,strong)NSString *tooken;
 @property (nonatomic,strong)NSString *status;
+@property (nonatomic,strong)NSString *latitude;
+@property (nonatomic,strong)NSString *longtitude;
+
+@property (nonatomic,strong)NSString *keyword;//搜索关心列表时用来传值用,可以不编码保存
 
 
 - (id)initWithContentDict:(NSDictionary*)contentDict;

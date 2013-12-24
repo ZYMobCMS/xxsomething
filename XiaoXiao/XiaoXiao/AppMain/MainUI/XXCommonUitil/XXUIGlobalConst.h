@@ -19,6 +19,7 @@
 
 //Share
 #import "XXShareBaseCell.h"
+#import "XXTeaseBaseCell.h"
 #import "XXBaseCell.h"
 #import "XXBaseIconLabelCell.h"
 #import "XXBaseIconLabelCountCell.h"
@@ -38,7 +39,6 @@
 #import "XXLoadMoreView.h"
 #import "XXRadioChooseView.h"
 #import "XXSearchBar.h"
-#import "XXSegmentCtrl.h"
 #import "XXSharePostBar.h"
 #import "XXStatusHUD.h"
 #import "XXEmojiChooseView.h"

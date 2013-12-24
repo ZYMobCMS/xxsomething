@@ -58,6 +58,7 @@
             if (success) {
                 success(resultDict);
             }
+            
         }else{
             if (faild) {
                 faild([resultDict objectForKey:@"msg"]);
@@ -192,9 +193,10 @@
         DDLogVerbose(@"login result dict --->%@",resultDict);
         NSDictionary *userData = [resultDict objectForKey:@"user"];
         NSMutableDictionary *userMutil = [NSMutableDictionary dictionaryWithDictionary:userData];
-        [userMutil setObject:[resultDict objectForKey:@"tooken"] forKey:@"tooken"];
+        [userMutil setObject:[resultDict objectForKey:@"token"] forKey:@"token"];
         [userMutil setObject:@"1" forKey:@"status"];
         XXUserModel *loginUser = [[XXUserModel alloc]initWithContentDict:userMutil];
+        [XXUserDataCenter loginThisUser:loginUser];//保存当前登录用户
         if (success) {
             success(loginUser);
         }
@@ -275,6 +277,469 @@
         }
         
     }];
+    
+}
+
+/////////////=====================    ===============================//////////////////
+//潜伏学校
+- (void)requestStrollSchoolWithConditionSchool:(XXSchoolModel*)conditionSchool withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    if (!conditionSchool.schoolId) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    
+    NSDictionary *param = @{@"xuexiao_id":conditionSchool.schoolId};
+    [self requestXXRequest:XXRequestTypeStrollSchool withParams:param withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
+        DDLogVerbose(@"stroll schooll success --->%@",resultDict);
+        if (success) {
+            success([resultDict objectForKey:@"msg"]);
+        }
+    } withFaild:^(NSString *faildMsg) {
+        
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
+}
+
+//更新用户资料
+- (void)requestUpdateUserInfoWithConditionUser:(XXUserModel*)conditionUser withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (conditionUser.account) {
+        [params setObject:conditionUser.account forKey:@"account"];
+    }
+    if (conditionUser.password) {
+        [params setObject:conditionUser.password forKey:@"password"];
+    }
+    if (conditionUser.nickName) {
+        [params setObject:conditionUser.nickName forKey:@"nickname"];
+    }
+    if (conditionUser.email){
+        [params setObject:conditionUser.email forKey:@"email"];
+    }
+    if(conditionUser.grade){
+        [params setObject:conditionUser.grade forKey:@"grade"];
+    }
+    if(conditionUser.sex){
+        [params setObject:conditionUser.sex forKey:@"sex"];
+    }
+    if(conditionUser.birthDay){
+        [params setObject:conditionUser.birthDay forKey:@"birthday"];
+    }
+    if(conditionUser.signature){
+        [params setObject:conditionUser.signature forKey:@"signature"];
+    }
+    if(conditionUser.headUrl){
+        [params setObject:conditionUser.headUrl forKey:@"picture"];
+    }
+    if(conditionUser.bgImage){
+        [params setObject:conditionUser.bgImage forKey:@"bgimage"];
+    }
+    if(conditionUser.constellation){
+        [params setObject:conditionUser.constellation forKey:@"constellation"];
+    }
+    if(conditionUser.schoolId){
+        [params setObject:conditionUser.schoolId forKey:@"xuexiao_id"];
+    }
+    if(conditionUser.strollSchoolId){
+        [params setObject:conditionUser.strollSchoolId forKey:@"stroll_xuexiao_id"];
+    }
+    DDLogVerbose(@"update user info-->%@",params);
+    [self requestXXRequest:XXRequestTypeUpdateUserInfo withParams:params withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
+        if(success){
+            success([resultDict objectForKey:@"msg"]);
+        }
+    } withFaild:^(NSString *faildMsg) {
+        if(faild){
+            faild(faildMsg);
+        }
+    }];
+
+}
+
+//附件详情
+- (void)requestAttachmentDetailWithConditionAttachment:(XXAttachmentModel*)conditionAttachment withSuccess:(XXDataCenterUploadFileSuccessBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    if (!conditionAttachment.attachementId) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    NSDictionary *params = @{@"attachment_id":conditionAttachment.attachementId};
+    [self requestXXRequest:XXRequestTypeFileDetail withParams:params withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
+        DDLogVerbose(@"attchment detail:%@",resultDict);
+        if (success) {
+            XXAttachmentModel *newAttachment = [[XXAttachmentModel alloc]initWithContentDict:[resultDict objectForKey:@"attachment"]];
+            success(newAttachment);
+        }
+    } withFaild:^(NSString *faildMsg) {
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
+}
+
+//添加好友关心
+- (void)requestAddFriendCareWithConditionFriend:(XXUserModel*)conditionFriend withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    if (!conditionFriend.userId) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    NSDictionary *params = @{@"user_id":conditionFriend.userId};
+    [self requestXXRequest:XXRequestTypeAddFriendCare withParams:params withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
+        DDLogVerbose(@"add friend care resutl:%@",resultDict);
+        if (success) {
+            success([resultDict objectForKey:@"msg"]);
+        }
+    } withFaild:^(NSString *faildMsg) {
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
+}
+
+//取消好友关心
+- (void)requestCancelFriendCareWithConditionFriend:(XXUserModel*)conditionFriend withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    if (!conditionFriend.userId) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    NSDictionary *params = @{@"user_id":conditionFriend.userId};
+    [self requestXXRequest:XXRequestTypeCancelFriendCare withParams:params withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
+        DDLogVerbose(@"cancel friend care result:%@",resultDict);
+        if (success) {
+            success([resultDict objectForKey:@"msg"]);
+        }
+    } withFaild:^(NSString *faildMsg) {
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
+}
+
+//我关心的列表搜索
+- (void)requestMyCareFriendWithConditionFriend:(XXUserModel*)conditionFriend withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if(conditionFriend.keyword){
+        [params setObject:conditionFriend.keyword forKey:@"keyword"];
+    }
+    [self requestXXRequest:XXRequestTypeMyCareFriend withParams:params withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
+        DDLogVerbose(@"my care friend list:%@",resultDict);
+        if (success) {
+            NSArray *userList = [resultDict objectForKey:@"data"];
+            NSMutableArray *modelArray = [NSMutableArray array];
+            [userList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                NSDictionary *item = (NSDictionary*)obj;
+                XXUserModel *userItem = [[XXUserModel alloc]initWithContentDict:item];
+                [modelArray addObject:userItem];
+            }];
+            success(modelArray);
+        }
+    } withFaild:^(NSString *faildMsg) {
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
+}
+
+//关心我的列表搜索
+- (void)requestCareMeFriendWithConditionFriend:(XXUserModel*)conditionFriend withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if(conditionFriend.keyword){
+        [params setObject:conditionFriend.keyword forKey:@"keyword"];
+    }
+    [self requestXXRequest:XXRequestTypeCareMe withParams:params withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
+        DDLogVerbose(@"my care friend list:%@",resultDict);
+        if (success) {
+            NSArray *userList = [resultDict objectForKey:@"data"];
+            NSMutableArray *modelArray = [NSMutableArray array];
+            [userList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                NSDictionary *item = (NSDictionary*)obj;
+                XXUserModel *userItem = [[XXUserModel alloc]initWithContentDict:item];
+                [modelArray addObject:userItem];
+            }];
+            success(modelArray);
+        }
+    } withFaild:^(NSString *faildMsg) {
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
+}
+
+//发表评论
+- (void)requestPublishCommentWithConditionComment:(XXCommentModel*)conditionComment withSuccess:(XXDataCenterCommentDetailBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    
+}
+
+//评论列表
+- (void)requestCommentListWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    
+}
+
+//追捧
+- (void)requestPraisePublishWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    
+}
+
+//分享列表
+- (void)requestSharePostListWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    
+}
+
+//发表分享
+- (void)requestPostShareWithConditionSharePost:(XXSharePostModel*)conditionPost withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    if (!conditionPost.postContent&&!conditionPost.postType&&!conditionPost.postImages&&!conditionPost.postAudio) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    if (![XXUserDataCenter currentLoginUser]) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    
+    //params
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    NSMutableDictionary *content = [NSMutableDictionary dictionary];
+    if (conditionPost.postContent) {
+        [content setObject:conditionPost.postContent forKey:XXSharePostJSONContentKey];
+    }
+    if (conditionPost.postType) {
+        [content setObject:[NSNumber numberWithInt:conditionPost.postType] forKey:XXSharePostJSONTypeKey];
+    }
+    if (conditionPost.postImages) {
+        [content setObject:conditionPost.postImages forKey:XXSharePostJSONImageKey];
+    }
+    if (conditionPost.postAudio) {
+        [content setObject:conditionPost.postAudio forKey:XXSharePostJSONAudioKey];
+    }
+    if (conditionPost.postAudioTime) {
+        [content setObject:conditionPost.postAudioTime forKey:XXSharePostJSONAudioTime];
+    }
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:content options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
+    [params setObject:jsonString forKey:@"content"];
+    if (conditionPost.tag) {
+        [params setObject:conditionPost.tag forKey:@"tag"];
+    }
+    [params setObject:[XXUserDataCenter currentLoginUser].schoolId forKey:@"xuexiao_id"];
+
+    //request
+    [self requestXXRequest:XXRequestTypePostShare withParams:params withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
+        DDLogVerbose(@"post share result:%@",resultDict);
+        if(success){
+            success([resultDict objectForKey:@"msg"]);
+        }
+    } withFaild:^(NSString *faildMsg) {
+        if(faild){
+            faild(faildMsg);
+        }
+    }];
+}
+
+//发表相册
+- (void)requestPostTalkWithCondistionSharePost:(XXSharePostModel*)conditionPost withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    if (!conditionPost.postContent&&!conditionPost.postType&&!conditionPost.postImages&&!conditionPost.postAudio) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    if (![XXUserDataCenter currentLoginUser]) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    
+    //params
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    NSMutableDictionary *content = [NSMutableDictionary dictionary];
+    if (conditionPost.postContent) {
+        [content setObject:conditionPost.postContent forKey:XXSharePostJSONContentKey];
+    }
+    if (conditionPost.postType) {
+        [content setObject:[NSNumber numberWithInt:conditionPost.postType] forKey:XXSharePostJSONTypeKey];
+    }
+    if (conditionPost.postImages) {
+        [content setObject:conditionPost.postImages forKey:XXSharePostJSONImageKey];
+    }
+    if (conditionPost.postAudio) {
+        [content setObject:conditionPost.postAudio forKey:XXSharePostJSONAudioKey];
+    }
+    if (conditionPost.postAudioTime) {
+        [content setObject:conditionPost.postAudioTime forKey:XXSharePostJSONAudioTime];
+    }
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:content options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
+    [params setObject:jsonString forKey:@"content"];
+    if (conditionPost.tag) {
+        [params setObject:conditionPost.tag forKey:@"tag"];
+    }
+    [params setObject:[XXUserDataCenter currentLoginUser].schoolId forKey:@"xuexiao_id"];
+    
+    //request
+    [self requestXXRequest:XXRequestTypePostTalk withParams:params withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
+        DDLogVerbose(@"post talk result:%@",resultDict);
+        if(success){
+            success([resultDict objectForKey:@"msg"]);
+        }
+    } withFaild:^(NSString *faildMsg) {
+        if(faild){
+            faild(faildMsg);
+        }
+    }];
+
+}
+
+//校园搬家
+- (void)requestMoveHomeWithDestinationSchool:(XXSchoolModel*)conditionSchool withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    if (!conditionSchool.schoolId) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    NSDictionary *params = @{@"xuexiao_id":conditionSchool.schoolId};
+    [self requestXXRequest:XXRequestTypeMoveHome withParams:params withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
+        if (success) {
+            success([resultDict objectForKey:@"msg"]);
+        }
+    } withFaild:^(NSString *faildMsg) {
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
+}
+
+//用户详情
+- (void)requestUserDetailWithDetinationUser:(XXUserModel*)conditionUser withSuccess:(XXDataCenterRequestDetailUserBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    if (!conditionUser.userId) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    NSDictionary *params = @{@"user_id":conditionUser.userId};
+    [[XXMainDataCenter shareCenter]requestXXRequest:XXRequestTypeUserDetail withParams:params withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
+        DDLogVerbose(@"user detail :%@",resultDict);
+        if (success) {
+            XXUserModel *resultUser = [[XXUserModel alloc]initWithContentDict:[resultDict objectForKey:@"user"]];
+            success(resultUser);
+        }
+    } withFaild:^(NSString *faildMsg) {
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
+}
+
+//射孤独
+- (void)requestLonelyShootWithSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    [self requestXXRequest:XXRequestTypeLonelyShoot withParams:nil withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
+        DDLogVerbose(@"lonely shoot result:%@",resultDict);
+        if (success) {
+            NSArray *userList = [resultDict objectForKey:@"data"];
+            NSMutableArray *modelArray = [NSMutableArray array];
+            [userList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                NSDictionary *item = (NSDictionary*)obj;
+                XXUserModel *userItem = [[XXUserModel alloc]initWithContentDict:item];
+                [modelArray addObject:userItem];
+            }];
+            success(modelArray);
+        }
+    } withFaild:^(NSString *faildMsg) {
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
+}
+
+//校内人
+- (void)requestSameSchoolUsersWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    if (!condition.schoolId) {
+        
+    }
+}
+
+//挑逗
+- (void)requestTeaseUserWithCondtionTease:(XXTeaseModel *)conditionTease withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    if (!conditionTease.userId) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    if(!conditionTease.postEmoji){
+        if(faild){
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+
+    //参数
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    //conent
+    NSMutableDictionary *contentParam = [NSMutableDictionary dictionary];
+    [contentParam setObject:conditionTease.postEmoji forKey:XXTeasePostJSONEmojiKey];
+    NSData *paramData = [NSJSONSerialization dataWithJSONObject:contentParam options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *paramContentStrng = [[NSString alloc]initWithData:paramData encoding:NSUTF8StringEncoding];
+    [params setObject:paramContentStrng forKey:@"content"];
+
+    [self requestXXRequest:XXRequestTypeTeaseUser withParams:params withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
+        if(success){
+            
+        }
+    } withFaild:^(NSString *faildMsg) {
+        if(faild){
+            faild(faildMsg);
+        }
+    }];
+}
+
+//挑逗我的列表
+- (void)requestTeaseMeListWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    
+}
+
+//附近的人
+- (void)requestNearbyUserWithConditionUser:(XXUserModel*)conditionUser withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    
+}
+
+//建议反馈
+- (void)requestAdvicePublishWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
     
 }
 

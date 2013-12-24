@@ -110,6 +110,9 @@
 		E452EFA718633BA300340FB5 /* xxbase_user_cell.css in Resources */ = {isa = PBXBuildFile; fileRef = E452EFA618633BA200340FB5 /* xxbase_user_cell.css */; };
 		E452EFA918633BBD00340FB5 /* xxbase_user_template.html in Resources */ = {isa = PBXBuildFile; fileRef = E452EFA818633BBC00340FB5 /* xxbase_user_template.html */; };
 		E452EFAF1863463900340FB5 /* XXUserCellStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = E452EFAE1863462400340FB5 /* XXUserCellStyle.m */; };
+		E46CCF771869C47300DB9BD0 /* XXConditionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E46CCF761869C47300DB9BD0 /* XXConditionModel.m */; };
+		E46CCF7A1869EFEF00DB9BD0 /* XXTeaseBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E46CCF791869EFEF00DB9BD0 /* XXTeaseBaseCell.m */; };
+		E46CCF7D1869F2C100DB9BD0 /* XXTeaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E46CCF7C1869F2C100DB9BD0 /* XXTeaseModel.m */; };
 		E4A051B11866BA02002E0EBA /* choose_camerou@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A051AF1866B9CE002E0EBA /* choose_camerou@2x.png */; };
 		E4A051B21866BA02002E0EBA /* choose_library@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A051B01866B9E5002E0EBA /* choose_library@2x.png */; };
 		E4A051BA1866FDD0002E0EBA /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E4A051B71866FDD0002E0EBA /* SVProgressHUD.bundle */; };
@@ -634,6 +637,12 @@
 		E452EFA818633BBC00340FB5 /* xxbase_user_template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = xxbase_user_template.html; sourceTree = "<group>"; };
 		E452EFAD1863461900340FB5 /* XXUserCellStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXUserCellStyle.h; sourceTree = "<group>"; };
 		E452EFAE1863462400340FB5 /* XXUserCellStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXUserCellStyle.m; sourceTree = "<group>"; };
+		E46CCF751869C47300DB9BD0 /* XXConditionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXConditionModel.h; sourceTree = "<group>"; };
+		E46CCF761869C47300DB9BD0 /* XXConditionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXConditionModel.m; sourceTree = "<group>"; };
+		E46CCF781869EFEF00DB9BD0 /* XXTeaseBaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXTeaseBaseCell.h; sourceTree = "<group>"; };
+		E46CCF791869EFEF00DB9BD0 /* XXTeaseBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXTeaseBaseCell.m; sourceTree = "<group>"; };
+		E46CCF7B1869F2C100DB9BD0 /* XXTeaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXTeaseModel.h; sourceTree = "<group>"; };
+		E46CCF7C1869F2C100DB9BD0 /* XXTeaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXTeaseModel.m; sourceTree = "<group>"; };
 		E4A051AF1866B9CE002E0EBA /* choose_camerou@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "choose_camerou@2x.png"; sourceTree = "<group>"; };
 		E4A051B01866B9E5002E0EBA /* choose_library@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "choose_library@2x.png"; sourceTree = "<group>"; };
 		E4A051B71866FDD0002E0EBA /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
@@ -1640,6 +1649,10 @@
 				E4312D881861EFAE0075C273 /* XXCommentModel.m */,
 				E43CC53C1868605800DB6CF3 /* XXAttachmentModel.h */,
 				E43CC53D1868605800DB6CF3 /* XXAttachmentModel.m */,
+				E46CCF751869C47300DB9BD0 /* XXConditionModel.h */,
+				E46CCF761869C47300DB9BD0 /* XXConditionModel.m */,
+				E46CCF7B1869F2C100DB9BD0 /* XXTeaseModel.h */,
+				E46CCF7C1869F2C100DB9BD0 /* XXTeaseModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1712,6 +1725,8 @@
 				E4E3F6351860969100970698 /* XXSchoolChooseCell.m */,
 				E4E3F6361860969100970698 /* XXUserInfoBaseCell.h */,
 				E4E3F6371860969100970698 /* XXUserInfoBaseCell.m */,
+				E46CCF781869EFEF00DB9BD0 /* XXTeaseBaseCell.h */,
+				E46CCF791869EFEF00DB9BD0 /* XXTeaseBaseCell.m */,
 			);
 			path = CommonCell;
 			sourceTree = "<group>";
@@ -3287,6 +3302,9 @@
 				E43CC53E1868605800DB6CF3 /* XXAttachmentModel.m in Sources */,
 				3B5DF1E8186996E0000B50D2 /* XXRadioChooseView.m in Sources */,
 				3B5DF1E9186996E0000B50D2 /* XXSegmentControl.m in Sources */,
+				E46CCF771869C47300DB9BD0 /* XXConditionModel.m in Sources */,
+				E46CCF7A1869EFEF00DB9BD0 /* XXTeaseBaseCell.m in Sources */,
+				E46CCF7D1869F2C100DB9BD0 /* XXTeaseModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

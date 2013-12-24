@@ -7,8 +7,11 @@
 //
 
 #import "XXServiceUitil.h"
+#import "XXConditionModel.h"
+#import "XXTeaseModel.h"
 #import "XXUserModel.h"
 #import "XXSchoolModel.h"
+#import "XXCommentModel.h"
 #import "XXAttachmentModel.h"
 #import "XXSharePostModel.h"
 #import "XXDataCenterConst.h"

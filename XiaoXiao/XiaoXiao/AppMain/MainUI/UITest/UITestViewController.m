@@ -294,10 +294,102 @@
     self.navigationItem.leftBarButtonItem = uploadItem;
     
     //test login
-    UIBarButtonItem *loginTest = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(uploadTest)];
+    UIBarButtonItem *loginTest = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(testNetworkAPI)];
     self.navigationItem.rightBarButtonItem = loginTest;
     
+    
 }
+
+//================================ API Test ==================//
+- (void)testNetworkAPI
+{
+    //需要先登录
+    //潜伏学校
+//    XXSchoolModel *destSchool = [[XXSchoolModel alloc]init];
+//    destSchool.schoolId = @"10778";
+//    [[XXMainDataCenter shareCenter]requestStrollSchoolWithConditionSchool:destSchool withSuccess:^(NSString *successMsg) {
+//        [SVProgressHUD showSuccessWithStatus:successMsg];
+//    } withFaild:^(NSString *faildMsg) {
+//        [SVProgressHUD showErrorWithStatus:faildMsg];
+//    }];
+    
+    //更新资料
+//    XXUserModel *updateInfo = [XXUserDataCenter currentLoginUser];
+//    DDLogVerbose(@"update user current :%@",updateInfo);
+//    updateInfo.grade = @"三年级";
+//    updateInfo.signature = @"内心强大才是真的强大";
+//    updateInfo.constellation = @"射手座";
+//    updateInfo.sex = @"0";
+//    [[XXMainDataCenter shareCenter]requestUpdateUserInfoWithConditionUser:updateInfo withSuccess:^(NSString *successMsg) {
+//        [SVProgressHUD showSuccessWithStatus:successMsg];
+//    } withFaild:^(NSString *faildMsg) {
+//        [SVProgressHUD showErrorWithStatus:faildMsg];
+//    }];
+    
+    //附件详情
+//    XXAttachmentModel *attachment = [[XXAttachmentModel alloc]init];
+//    attachment.attachementId = @"50";
+//    [[XXMainDataCenter shareCenter]requestAttachmentDetailWithConditionAttachment:attachment withSuccess:^(XXAttachmentModel *resultModel) {
+//        
+//    } withFaild:^(NSString *faildMsg) {
+//        [SVProgressHUD showErrorWithStatus:faildMsg];
+//    }];
+    
+    //我的关心列表
+//    XXUserModel *condtionUser = [[XXUserModel alloc]init];
+//    condtionUser.keyword = @"";
+//    //空的给提示个空吧
+//    [[XXMainDataCenter shareCenter]requestMyCareFriendWithConditionFriend:condtionUser withSuccess:^(NSArray *resultList) {
+//        
+//    } withFaild:^(NSString *faildMsg) {
+//        [SVProgressHUD showErrorWithStatus:faildMsg];
+//    }];
+    
+    //发布分享
+//    XXSharePostModel *conditionPost = [[XXSharePostModel alloc]init];
+//    conditionPost.postContent = @"我的第一条分享测试，来自iPhone5s土豪金";
+//    conditionPost.postType = XXSharePostTypeImageText0;
+//    [[XXMainDataCenter shareCenter]requestPostShareWithConditionSharePost:conditionPost withSuccess:^(NSString *successMsg) {
+//        [SVProgressHUD showSuccessWithStatus:successMsg];
+//    } withFaild:^(NSString *faildMsg) {
+//        [SVProgressHUD showErrorWithStatus:faildMsg];
+//    }];
+    
+    //校园搬家
+//    XXSchoolModel *conditionSchool = [[XXSchoolModel alloc]init];
+//    conditionSchool.schoolId = @"10778";
+//    [[XXMainDataCenter shareCenter]requestMoveHomeWithDestinationSchool:conditionSchool withSuccess:^(NSString *successMsg) {
+//        [SVProgressHUD showSuccessWithStatus:successMsg];
+//    } withFaild:^(NSString *faildMsg) {
+//        [SVProgressHUD showErrorWithStatus:faildMsg];
+//    }];
+    
+    //用户详情
+//    XXUserModel *conditionUser = [[XXUserModel alloc]init];
+//    conditionUser.userId = @"30";
+//    [[XXMainDataCenter shareCenter]requestUserDetailWithDetinationUser:conditionUser withSuccess:^(XXUserModel *detailUser) {
+//        
+//    } withFaild:^(NSString *faildMsg) {
+//        [SVProgressHUD showErrorWithStatus:faildMsg];
+//    }];
+    
+    //射孤独
+//    [[XXMainDataCenter shareCenter]requestLonelyShootWithSuccess:^(NSArray *resultList) {
+//        
+//    } withFaild:^(NSString *faildMsg) {
+//        [SVProgressHUD showErrorWithStatus:faildMsg];
+//    }];
+    //挑逗别人
+    XXTeaseModel *destUser = [[XXTeaseModel alloc]init];
+    destUser.userId = @"37";
+    destUser.postEmoji = @"小样";
+    [[XXMainDataCenter shareCenter]requestTeaseUserWithCondtionTease:destUser withSuccess:^(NSString *successMsg) {
+        [SVProgressHUD showSuccessWithStatus:successMsg];
+    } withFaild:^(NSString *faildMsg) {
+        [SVProgressHUD showErrorWithStatus:faildMsg];
+    }];
+}
+//============================================================//
 - (void)loginAction
 {
     XXUserModel *registUser = [[XXUserModel alloc]init];
@@ -306,7 +398,7 @@
     [[XXMainDataCenter shareCenter]requestLoginWithNewUser:registUser withSuccessLogin:^(XXUserModel *detailUser) {
         DDLogVerbose(@"login user -->%@",detailUser);
     } withFaildLogin:^(NSString *faildMsg) {
-        
+        [SVProgressHUD showErrorWithStatus:faildMsg];
     }];
 }
 - (void)uploadTest

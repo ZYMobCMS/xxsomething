@@ -15,6 +15,7 @@
 @property (nonatomic,strong)NSString *postContent;
 @property (nonatomic,strong)NSString *postAudio;
 @property (nonatomic,strong)NSString *postImages;
+@property (nonatomic,strong)NSString *postAudioTime;
 
 @property (nonatomic,strong)NSString *postId;
 @property (nonatomic,strong)NSString *type;
