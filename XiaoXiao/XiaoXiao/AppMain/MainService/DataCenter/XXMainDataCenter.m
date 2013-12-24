@@ -120,65 +120,46 @@
             return;
         }
     }
-    NSDictionary *params = @{@"Cookies":@"PHPSESSID=m1abihdg1pqq1kcb6arbbc1305",@"Connection":@"keep-alive",@"Accept-Encoding":@"gzip,deflate,sdch"};
-    NSMutableURLRequest *uploadRequest = [[XXHTTPClient shareClient]multipartFormRequestWithMethod:@"POST" path:[XXDataCenterConst switchRequestTypeToInterfaceUrl:XXRequestTypeUploadFile] parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        [formData appendPartWithFileData:fileData name:@"upload" fileName:fileName mimeType:[self mediaFileTypeForFileName:fileName]];
-    }];
-    uploadRequest.timeoutInterval = 240;
+//    NSMutableURLRequest *uploadRequest = [[XXHTTPClient shareClient]multipartFormRequestWithMethod:@"POST" path:[XXDataCenterConst switchRequestTypeToInterfaceUrl:XXRequestTypeUploadFile] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+//        [formData appendPartWithFileData:fileData name:@"upload" fileName:fileName mimeType:[self mediaFileTypeForFileName:fileName]];
+//    }];
+//    uploadRequest.timeoutInterval = 30;
+    NSString *uploadUrl = @"http://api.quan-oo.com/api/attachment/upload";
+    NSMutableURLRequest *uploadRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:uploadUrl]];
+    [uploadRequest setHTTPMethod:@"POST"];
+    
+    NSString *stringBoundary = @"0xAbCdEfGbOuNdArY";
+    NSInteger dataLength = fileData.length + 800;
+    NSString *headerBoundary = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",stringBoundary];
+    [uploadRequest addValue:headerBoundary forHTTPHeaderField:@"Content-Type"];
+    NSMutableData *postBody = [NSMutableData data];
+    [postBody appendData:[[NSString stringWithFormat:@"--%@\r\n", stringBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [postBody appendData:[@"Content-Disposition: form-data; name=\"upload\"; filename=\"test.jpg\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    [postBody appendData:[@"Content-Type: image/jpg\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    [postBody appendData:[@"Content-Transfer-Encoding: binary\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    [postBody appendData:[[NSString stringWithFormat:@"Content-Length:%d",dataLength+500] dataUsingEncoding:NSUTF8StringEncoding]];
+    //*******************load locally store audio file********************//
+    // add it to body
+    [postBody appendData:fileData];
+    [postBody appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    // final boundary
+    [postBody appendData:[[NSString stringWithFormat:@"--%@--\r\n", stringBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    DDLogVerbose(@"fileData --->%@",fileData);
+    DDLogVerbose(@"postData ---->%@",[[NSString alloc]initWithData:postBody encoding:NSUTF8StringEncoding]);
+    [uploadRequest setHTTPBody:postBody];
+    
+    NSURLResponse *response = nil;
+    NSError *error = nil;
     
     DDLogVerbose(@"upload request header:%@",uploadRequest.allHTTPHeaderFields);
     DDLogVerbose(@"upload request body:%@",[[NSString alloc]initWithData:uploadRequest.HTTPBody encoding:NSUTF8StringEncoding]);
     
-    AFJSONRequestOperation *jsonRequest = [AFJSONRequestOperation JSONRequestOperationWithRequest:uploadRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        
-        NSDictionary *resultDict = (NSDictionary*)JSON;
-        
-        DDLogVerbose(@"upload resutl Dict -->%@",resultDict);
-        DDLogVerbose(@"upload response --->%@",response.description);
-        
-        //解析对错
-        int status = [[resultDict objectForKey:@"ret"]intValue];
-        if (status==0) {
-            
-            if (success) {
-                
-                XXAttachmentModel *newModel = [[XXAttachmentModel alloc]initWithContentDict:[resultDict objectForKey:@"data"]];
-                success(newModel);
-            }
-        }else{
-            if (faild) {
-                DDLogVerbose(@"status wrong!");
-                faild([resultDict objectForKey:@"msg"]);
-            }
-        }
-        
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        
-        NSDictionary *errorDict = (NSDictionary*)JSON;
-        
-        //解析对错
-        int status = [[errorDict objectForKey:@"ret"]intValue];
-        if (status==1) {
-            if (faild) {
-                faild([errorDict objectForKey:@"msg"]);
-            }
-        }else{
-            if (faild) {
-                faild([error description]);
-            }
-        }
-        DDLogVerbose(@"erro dict -->%@",errorDict);
-        
-        
-    }];
-    [jsonRequest setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-        CGFloat prgoress = totalBytesWritten/totalBytesExpectedToWrite;
-        if (uploadProgressBlock) {
-            uploadProgressBlock(prgoress);
-        }
-        NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
-    }];
-    [[XXHTTPClient shareClient]enqueueHTTPRequestOperation:jsonRequest];
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:uploadRequest returningResponse:&response error:&error];
+    
+    //convert data into string
+    NSString *responseString = [[NSString alloc] initWithBytes:[responseData bytes] length:[responseData length] encoding:NSUTF8StringEncoding];
+    
+    NSLog(@"Response String %@",responseString);
     
 }
 

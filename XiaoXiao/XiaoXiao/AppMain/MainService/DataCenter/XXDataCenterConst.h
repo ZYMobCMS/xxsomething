@@ -17,7 +17,7 @@ typedef enum {
     
 }XXRequestType;
 
-#define XXBase_Host_Url @"http://beat.quan-oo.com/"
+#define XXBase_Host_Url @"http://beat.quan-oo.com"
 //#define XXBase_Host_Url @"http://www.zyprosoft.com/"
 
 //登陆
