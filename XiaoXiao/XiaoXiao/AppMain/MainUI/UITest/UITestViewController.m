@@ -47,141 +47,141 @@
     CGFloat styleContent = [XXSharePostStyle sharePostContentWidth];
     
     //image audio
-    XXSharePostModel *modelOneImage0 = [[XXSharePostModel alloc]init];
-    modelOneImage0.postType = XXSharePostTypeImageAudio0;
-    modelOneImage0.postImages = @"";
-    modelOneImage0.postContent = @"";
-    modelOneImage0.postAudio = audio;
-    modelOneImage0.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelOneImage0 forContentWidth:styleContent];
-    [self.sourceArray addObject:modelOneImage0];
-//    DDLogVerbose(@"post model attributed content :%@",modelOneImage0.attributedContent);
-    
-
-    
-    XXSharePostModel *modelOneImage = [[XXSharePostModel alloc]init];
-    modelOneImage.postType = XXSharePostTypeImageAudio1;
-    modelOneImage.postImages = image0;
-    modelOneImage.postContent = @"";
-    modelOneImage.postAudio = audio;
-    modelOneImage.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelOneImage forContentWidth:styleContent];
-    [self.sourceArray addObject:modelOneImage];
-    
-    XXSharePostModel *modelOneImage2 = [[XXSharePostModel alloc]init];
-    modelOneImage2.postType = XXSharePostTypeImageAudio2;
-    modelOneImage2.postImages = [NSString stringWithFormat:@"%@|%@",image0,image1];
-    modelOneImage2.postContent = @"";
-    modelOneImage2.postAudio = audio;
-    modelOneImage2.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelOneImage2 forContentWidth:styleContent];
-    [self.sourceArray addObject:modelOneImage2];
-    
-    XXSharePostModel *modelOneImage3 = [[XXSharePostModel alloc]init];
-    modelOneImage3.postType = XXSharePostTypeImageAudio3;
-    modelOneImage3.postImages = [NSString stringWithFormat:@"%@|%@|%@",image0,image1,image2];
-    modelOneImage3.postContent = @"";
-    modelOneImage3.postAudio = audio;
-    modelOneImage3.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelOneImage3 forContentWidth:styleContent];
-    [self.sourceArray addObject:modelOneImage3];
-    
-    XXSharePostModel *modelOneImage4 = [[XXSharePostModel alloc]init];
-    modelOneImage4.postType = XXSharePostTypeImageAudio4;
-    modelOneImage4.postImages = [NSString stringWithFormat:@"%@|%@|%@|%@",image0,image1,image2,image3];
-    modelOneImage4.postContent = @"";
-    modelOneImage4.postAudio = audio;
-    modelOneImage4.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelOneImage4 forContentWidth:styleContent];
-    [self.sourceArray addObject:modelOneImage4];
-    
-    
-    //image text
-    XXSharePostModel *modelTwoImage0 = [[XXSharePostModel alloc]init];
-    modelTwoImage0.postType = XXSharePostTypeImageText0;
-    modelTwoImage0.postImages = @"";
-    modelTwoImage0.postContent = commonContent;
-    modelTwoImage0.postAudio = @"";
-    modelTwoImage0.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage0 forContentWidth:styleContent];
-    [self.sourceArray addObject:modelTwoImage0];
-    
-    XXSharePostModel *modelTwoImage1 = [[XXSharePostModel alloc]init];
-    modelTwoImage1.postType = XXSharePostTypeImageText1;
-    modelTwoImage1.postImages = [NSString stringWithFormat:@"%@",image0];
-    modelTwoImage1.postContent = commonContent;
-    modelTwoImage1.postAudio = @"";
-    modelTwoImage1.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage1 forContentWidth:styleContent];
-    [self.sourceArray addObject:modelTwoImage1];
-    
-    XXSharePostModel *modelTwoImage2 = [[XXSharePostModel alloc]init];
-    modelTwoImage2.postType = XXSharePostTypeImageText2;
-    modelTwoImage2.postImages = [NSString stringWithFormat:@"%@|%@",image0,image1];
-    modelTwoImage2.postContent = commonContent;
-    modelTwoImage2.postAudio = @"";
-    modelTwoImage2.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage2 forContentWidth:styleContent];
-    [self.sourceArray addObject:modelTwoImage2];
-    
-    XXSharePostModel *modelTwoImage3 = [[XXSharePostModel alloc]init];
-    modelTwoImage3.postType = XXSharePostTypeImageText3;
-    modelTwoImage3.postImages = [NSString stringWithFormat:@"%@|%@|%@",image0,image1,image2];
-    modelTwoImage3.postContent = commonContent;
-    modelTwoImage3.postAudio = @"";
-    modelTwoImage3.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage3 forContentWidth:styleContent];
-    [self.sourceArray addObject:modelTwoImage3];
-    
-    XXSharePostModel *modelTwoImage4 = [[XXSharePostModel alloc]init];
-    modelTwoImage4.postType = XXSharePostTypeImageText4;
-    modelTwoImage4.postImages = [NSString stringWithFormat:@"%@|%@|%@|%@",image0,image1,image2,image3];
-    modelTwoImage4.postContent = commonContent;
-    modelTwoImage4.postAudio = @"";
-    modelTwoImage4.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage4 forContentWidth:styleContent];
-    [self.sourceArray addObject:modelTwoImage4];
+//    XXSharePostModel *modelOneImage0 = [[XXSharePostModel alloc]init];
+//    modelOneImage0.postType = XXSharePostTypeImageAudio0;
+//    modelOneImage0.postImages = @"";
+//    modelOneImage0.postContent = @"";
+//    modelOneImage0.postAudio = audio;
+//    modelOneImage0.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelOneImage0 forContentWidth:styleContent];
+//    [self.sourceArray addObject:modelOneImage0];
+////    DDLogVerbose(@"post model attributed content :%@",modelOneImage0.attributedContent);
+//    
+//
+//    
+//    XXSharePostModel *modelOneImage = [[XXSharePostModel alloc]init];
+//    modelOneImage.postType = XXSharePostTypeImageAudio1;
+//    modelOneImage.postImages = image0;
+//    modelOneImage.postContent = @"";
+//    modelOneImage.postAudio = audio;
+//    modelOneImage.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelOneImage forContentWidth:styleContent];
+//    [self.sourceArray addObject:modelOneImage];
+//    
+//    XXSharePostModel *modelOneImage2 = [[XXSharePostModel alloc]init];
+//    modelOneImage2.postType = XXSharePostTypeImageAudio2;
+//    modelOneImage2.postImages = [NSString stringWithFormat:@"%@|%@",image0,image1];
+//    modelOneImage2.postContent = @"";
+//    modelOneImage2.postAudio = audio;
+//    modelOneImage2.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelOneImage2 forContentWidth:styleContent];
+//    [self.sourceArray addObject:modelOneImage2];
+//    
+//    XXSharePostModel *modelOneImage3 = [[XXSharePostModel alloc]init];
+//    modelOneImage3.postType = XXSharePostTypeImageAudio3;
+//    modelOneImage3.postImages = [NSString stringWithFormat:@"%@|%@|%@",image0,image1,image2];
+//    modelOneImage3.postContent = @"";
+//    modelOneImage3.postAudio = audio;
+//    modelOneImage3.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelOneImage3 forContentWidth:styleContent];
+//    [self.sourceArray addObject:modelOneImage3];
+//    
+//    XXSharePostModel *modelOneImage4 = [[XXSharePostModel alloc]init];
+//    modelOneImage4.postType = XXSharePostTypeImageAudio4;
+//    modelOneImage4.postImages = [NSString stringWithFormat:@"%@|%@|%@|%@",image0,image1,image2,image3];
+//    modelOneImage4.postContent = @"";
+//    modelOneImage4.postAudio = audio;
+//    modelOneImage4.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelOneImage4 forContentWidth:styleContent];
+//    [self.sourceArray addObject:modelOneImage4];
+//    
+//    
+//    //image text
+//    XXSharePostModel *modelTwoImage0 = [[XXSharePostModel alloc]init];
+//    modelTwoImage0.postType = XXSharePostTypeImageText0;
+//    modelTwoImage0.postImages = @"";
+//    modelTwoImage0.postContent = commonContent;
+//    modelTwoImage0.postAudio = @"";
+//    modelTwoImage0.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage0 forContentWidth:styleContent];
+//    [self.sourceArray addObject:modelTwoImage0];
+//    
+//    XXSharePostModel *modelTwoImage1 = [[XXSharePostModel alloc]init];
+//    modelTwoImage1.postType = XXSharePostTypeImageText1;
+//    modelTwoImage1.postImages = [NSString stringWithFormat:@"%@",image0];
+//    modelTwoImage1.postContent = commonContent;
+//    modelTwoImage1.postAudio = @"";
+//    modelTwoImage1.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage1 forContentWidth:styleContent];
+//    [self.sourceArray addObject:modelTwoImage1];
+//    
+//    XXSharePostModel *modelTwoImage2 = [[XXSharePostModel alloc]init];
+//    modelTwoImage2.postType = XXSharePostTypeImageText2;
+//    modelTwoImage2.postImages = [NSString stringWithFormat:@"%@|%@",image0,image1];
+//    modelTwoImage2.postContent = commonContent;
+//    modelTwoImage2.postAudio = @"";
+//    modelTwoImage2.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage2 forContentWidth:styleContent];
+//    [self.sourceArray addObject:modelTwoImage2];
+//    
+//    XXSharePostModel *modelTwoImage3 = [[XXSharePostModel alloc]init];
+//    modelTwoImage3.postType = XXSharePostTypeImageText3;
+//    modelTwoImage3.postImages = [NSString stringWithFormat:@"%@|%@|%@",image0,image1,image2];
+//    modelTwoImage3.postContent = commonContent;
+//    modelTwoImage3.postAudio = @"";
+//    modelTwoImage3.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage3 forContentWidth:styleContent];
+//    [self.sourceArray addObject:modelTwoImage3];
+//    
+//    XXSharePostModel *modelTwoImage4 = [[XXSharePostModel alloc]init];
+//    modelTwoImage4.postType = XXSharePostTypeImageText4;
+//    modelTwoImage4.postImages = [NSString stringWithFormat:@"%@|%@|%@|%@",image0,image1,image2,image3];
+//    modelTwoImage4.postContent = commonContent;
+//    modelTwoImage4.postAudio = @"";
+//    modelTwoImage4.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage4 forContentWidth:styleContent];
+//    [self.sourceArray addObject:modelTwoImage4];
     
     //=============== user test ==============
     //userlist
-    [self.sourceArray removeAllObjects];
-    XXUserModel *newUser0 = [[XXUserModel alloc]init];
-    newUser0.schoolName = @"北京理工大学";
-    newUser0.score = @"78%";
-    newUser0.nickName = @"秋风落叶";
-    newUser0.signature = @"没有过不去得坎";
-    newUser0.star = [NSString stringWithFormat:@"天蝎座 | 校内知名度"];
-    [self.sourceArray addObject:newUser0];
-    
-    XXUserModel *newUser1 = [[XXUserModel alloc]init];
-    newUser1.schoolName = @"北京大学";
-    newUser1.score = @"48%";
-    newUser1.nickName = @"秋风";
-    newUser1.signature = @"没有得坎[亲亲],一日之际,一日之际,一日之际,一日之际";
-    newUser1.star = [NSString stringWithFormat:@"天蝎座 | 校内知名度:"];
-    [self.sourceArray addObject:newUser1];
-    
-    XXUserModel *newUser2 = [[XXUserModel alloc]init];
-    newUser2.schoolName = @"北京航天航空大学";
-    newUser2.score = @"28%";
-    newUser2.nickName = @"秋";
-    newUser2.signature = @"顺利进取一日之际,一日之际,一日之际,一日之际,一日之际";
-    newUser2.star = [NSString stringWithFormat:@"天蝎座 | 校内知名度:"];
-    [self.sourceArray addObject:newUser2];
-    
-    XXUserModel *newUser3 = [[XXUserModel alloc]init];
-    newUser3.schoolName = @"清华大学";
-    newUser3.score = @"98%";
-    newUser3.nickName = @"冬天";
-    newUser3.signature = @"一日之际,没有过不去得坎没有过不去得坎没有过不去得坎,没有过不去得坎";
-    newUser3.star = [NSString stringWithFormat:@"天蝎座 | 校内知名度:"];
-    [self.sourceArray addObject:newUser3];
-    
-    XXUserModel *newUser4 = [[XXUserModel alloc]init];
-    newUser4.schoolName = @"北京语言大学";
-    newUser4.score = @"58%";
-    newUser4.nickName = @"铭铭";
-    newUser4.signature = @"创意无限,你爱得一切,你爱得一切";
-    newUser4.star = [NSString stringWithFormat:@"天蝎座 | 校内知名度:"];
-    [self.sourceArray addObject:newUser4];
-    
-    XXUserModel *newUser5 = [[XXUserModel alloc]init];
-    newUser5.schoolName = @"北京外国语大学";
-    newUser5.score = @"68%";
-    newUser5.nickName = @"春天";
-    newUser5.signature = @"你爱得一切,你爱得一切";
-    newUser5.star = [NSString stringWithFormat:@"天蝎座 | 校内知名度:"];
-    [self.sourceArray addObject:newUser5];
+//    [self.sourceArray removeAllObjects];
+//    XXUserModel *newUser0 = [[XXUserModel alloc]init];
+//    newUser0.schoolName = @"北京理工大学";
+//    newUser0.score = @"78%";
+//    newUser0.nickName = @"秋风落叶";
+//    newUser0.signature = @"没有过不去得坎";
+//    newUser0.constellation = [NSString stringWithFormat:@"天蝎座 | 校内知名度"];
+//    [self.sourceArray addObject:newUser0];
+//    
+//    XXUserModel *newUser1 = [[XXUserModel alloc]init];
+//    newUser1.schoolName = @"北京大学";
+//    newUser1.score = @"48%";
+//    newUser1.nickName = @"秋风";
+//    newUser1.signature = @"没有得坎[亲亲],一日之际,一日之际,一日之际,一日之际";
+//    newUser1.constellation = [NSString stringWithFormat:@"天蝎座 | 校内知名度:"];
+//    [self.sourceArray addObject:newUser1];
+//    
+//    XXUserModel *newUser2 = [[XXUserModel alloc]init];
+//    newUser2.schoolName = @"北京航天航空大学";
+//    newUser2.score = @"28%";
+//    newUser2.nickName = @"秋";
+//    newUser2.signature = @"顺利进取一日之际,一日之际,一日之际,一日之际,一日之际";
+//    newUser2.constellation = [NSString stringWithFormat:@"天蝎座 | 校内知名度:"];
+//    [self.sourceArray addObject:newUser2];
+//    
+//    XXUserModel *newUser3 = [[XXUserModel alloc]init];
+//    newUser3.schoolName = @"清华大学";
+//    newUser3.score = @"98%";
+//    newUser3.nickName = @"冬天";
+//    newUser3.signature = @"一日之际,没有过不去得坎没有过不去得坎没有过不去得坎,没有过不去得坎";
+//    newUser3.constellation = [NSString stringWithFormat:@"天蝎座 | 校内知名度:"];
+//    [self.sourceArray addObject:newUser3];
+//    
+//    XXUserModel *newUser4 = [[XXUserModel alloc]init];
+//    newUser4.schoolName = @"北京语言大学";
+//    newUser4.score = @"58%";
+//    newUser4.nickName = @"铭铭";
+//    newUser4.signature = @"创意无限,你爱得一切,你爱得一切";
+//    newUser4.constellation = [NSString stringWithFormat:@"天蝎座 | 校内知名度:"];
+//    [self.sourceArray addObject:newUser4];
+//    
+//    XXUserModel *newUser5 = [[XXUserModel alloc]init];
+//    newUser5.schoolName = @"北京外国语大学";
+//    newUser5.score = @"68%";
+//    newUser5.nickName = @"春天";
+//    newUser5.signature = @"你爱得一切,你爱得一切";
+//    newUser5.constellation = [NSString stringWithFormat:@"天蝎座 | 校内知名度:"];
+//    [self.sourceArray addObject:newUser5];
     //=============== user test ==============
     
     
@@ -190,7 +190,7 @@
     self.testTable.frame = CGRectMake(0,0,self.view.frame.size.width,self.view.frame.size.height-44);
     self.testTable.delegate = self;
     self.testTable.dataSource = self;
-    [self.view addSubview:self.testTable];
+//    [self.view addSubview:self.testTable];
     
     DDLogVerbose(@"self.sourceArray --->%@",self.sourceArray);
     
@@ -279,89 +279,98 @@
     [baseTextView setText:commonContent];*/
 
     //test login
-    XXUserModel *newUser = [[XXUserModel alloc]init];
-    newUser.account = @"22222";
-    newUser.password = @"11111";
+//    XXUserModel *newUser = [[XXUserModel alloc]init];
+//    newUser.account = @"22222";
+//    newUser.password = @"11111";
 //    [[XXMainDataCenter shareCenter]requestLoginWithNewUser:newUser withSuccessLogin:^(XXUserModel *detailUser) {
 //        
 //    } withFaildLogin:^(NSString *faildMsg) {
 //        
 //    }];
     
-    //search school
-    XXSchoolModel *conditionSchool = [[XXSchoolModel alloc]init];
-    conditionSchool.searchKeyword = @"理工";
-    conditionSchool.type = @"1";
-    conditionSchool.city = @"北京";
-    
-    XXDataCenterRequestSuccessListBlock searchSchoolSccess = ^ (NSArray *resultList){
         
-        XXSchoolModel *destSchool = [resultList objectAtIndex:0];
-        DDLogVerbose(@"destSchool id -->%@",destSchool.schoolId);
-        [self alertMessage:destSchool.schoolName];
-        
-        //测试注册
-        XXUserModel *newUser = [[XXUserModel alloc]init];
-        newUser.account = @"testuser33";
-        newUser.password = @"123456";
-        newUser.grade = @"一年级";
-        newUser.headImage = [UIImage imageNamed:@"af.jpeg"];
-        newUser.schoolId = destSchool.schoolId;
-        
-        [[XXMainDataCenter shareCenter]requestRegistWithNewUser:newUser withSuccessRegist:^(XXUserModel *detailUser) {
-            
-        } withFaildRegist:^(NSString *faildMsg) {
-            [self alertMessage:faildMsg];
-        }];
-        
-    };
-    
-//    [[XXMainDataCenter shareCenter]requestSearchSchoolListWithDescription:conditionSchool WithSuccessSearch:^(NSArray *resultList) {
-//    
-//        //注册
-//        if (searchSchoolSccess) {
-//            searchSchoolSccess(resultList);
-//        }
-//        
-//    } withFaildSearch:^(NSString *faildMsg) {
-//        
-//        DDLogVerbose(@"search school faild -->%@",faildMsg);
-//        [self alertMessage:faildMsg];
-//        
-//    }];
-    
     //test upload
-    UIBarButtonItem *uploadItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(uploadTest)];
-    self.navigationItem.rightBarButtonItem = uploadItem;
+    UIBarButtonItem *uploadItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(loginAction)];
+    self.navigationItem.leftBarButtonItem = uploadItem;
+    
+    //test login
+    UIBarButtonItem *loginTest = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(uploadTest)];
+    self.navigationItem.rightBarButtonItem = loginTest;
     
 }
-
+- (void)loginAction
+{
+    XXUserModel *registUser = [[XXUserModel alloc]init];
+    registUser.account = @"testuser33";
+    registUser.password = @"123456";
+    [[XXMainDataCenter shareCenter]requestLoginWithNewUser:registUser withSuccessLogin:^(XXUserModel *detailUser) {
+        DDLogVerbose(@"login user -->%@",detailUser);
+    } withFaildLogin:^(NSString *faildMsg) {
+        
+    }];
+}
 - (void)uploadTest
 {
-    NSData *fileData = UIImageJPEGRepresentation([UIImage imageNamed:@"zylogo.jpg"],0.5);
+//    NSData *fileData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"love" ofType:@"mp3"]];
+    NSData *fileData = UIImageJPEGRepresentation([UIImage imageNamed:@"af.jpeg"],0.5);
+    
     DDLogVerbose(@"file data length -->%d",fileData.length);
-    [[XXMainDataCenter shareCenter]uploadFileWithData:fileData withFileName:@"zylogo.jpg" withUploadProgressBlock:^(CGFloat progressValue) {
+    [[XXMainDataCenter shareCenter]uploadFileWithData:fileData withFileName:@"head.jpeg" withUploadProgressBlock:^(CGFloat progressValue) {
         
-        [XXCommonUitil keywindowShowProgressHUDWithTitle:@"正在上传"];
+        [SVProgressHUD showProgress:progressValue status:@"正在上传"];
         
     } withSuccessBlock:^(XXAttachmentModel *resultModel) {
         
-        DDLogVerbose(@"resultModel:%@",resultModel);
+        DDLogVerbose(@"resultModel:%@",resultModel.link);
+                
+        [SVProgressHUD showSuccessWithStatus:@"上传成功"];
         
-        [XXCommonUitil keywindowShowProgressHUDHiddenNow];
+        //search school
+        XXSchoolModel *conditionSchool = [[XXSchoolModel alloc]init];
+        conditionSchool.searchKeyword = @"理工";
+        conditionSchool.type = @"1";
+        conditionSchool.city = @"北京";
         
-        [SVProgressHUD showWithStatus:@"上传成功"];
+        XXDataCenterRequestSuccessListBlock searchSchoolSccess = ^ (NSArray *resultList){
+            
+            XXSchoolModel *destSchool = [resultList objectAtIndex:0];
+            DDLogVerbose(@"destSchool id -->%@",destSchool.schoolId);
+            
+            //测试注册
+            XXUserModel *newUser = [[XXUserModel alloc]init];
+            newUser.account = @"testuser35";
+            newUser.password = @"123456";
+            newUser.grade = @"一年级";
+            newUser.headUrl = resultModel.link;
+            newUser.schoolId = destSchool.schoolId;
+            
+            [[XXMainDataCenter shareCenter]requestRegistWithNewUser:newUser withSuccessRegist:^(XXUserModel *detailUser) {
+                DDLogVerbose(@"regist user -->%@",detailUser.userId);
+            } withFaildRegist:^(NSString *faildMsg) {
+                [self alertMessage:faildMsg];
+            }];
+            
+        };
+        
+        [[XXMainDataCenter shareCenter]requestSearchSchoolListWithDescription:conditionSchool WithSuccessSearch:^(NSArray *resultList) {
+            
+            //注册
+            if (searchSchoolSccess) {
+                searchSchoolSccess(resultList);
+            }
+            
+        } withFaildSearch:^(NSString *faildMsg) {
+            
+            DDLogVerbose(@"search school faild -->%@",faildMsg);
+            [self alertMessage:faildMsg];
+            
+        }];
+
         
     } withFaildBlock:^(NSString *faildMsg) {
-        
-        [XXCommonUitil keywindowShowProgressHUDHiddenNow];
-        
+                
         [SVProgressHUD showErrorWithStatus:faildMsg];
     }];
-}
-- (void)imageFitlerProcessDone:(UIImage *)image
-{
-    
 }
 
 - (void)alertMessage:(NSString*)alertMsg

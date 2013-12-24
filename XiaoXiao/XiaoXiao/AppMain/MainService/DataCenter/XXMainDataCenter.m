@@ -14,6 +14,7 @@
 #define XXLoginErrorInvalidateParam @"请求参数不完整"
 #define XXNetWorkDisConnected @"网络无法链接"
 #define XXRegistDefaultHeadName @"head.jpg"
+#define XXDefaultString @"xxdefault"
 
 @implementation XXMainDataCenter
 
@@ -48,6 +49,7 @@
     [[XXHTTPClient shareClient]postPath:[XXDataCenterConst switchRequestTypeToInterfaceUrl:requestType] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSDictionary *resultDict = (NSDictionary*)responseObject;
+        DDLogVerbose(@"normal request resutlDict -->%@",resultDict);
         
         //解析对错
         int status = [[resultDict objectForKey:@"ret"]intValue];
@@ -56,8 +58,7 @@
             if (success) {
                 success(resultDict);
             }
-        }
-        if (status==1) {
+        }else{
             if (faild) {
                 faild([resultDict objectForKey:@"msg"]);
             }
@@ -96,6 +97,10 @@
         fileType = @"audio/amr";
     }
     
+    if ([fileExtension isEqualToString:@"mp3"]) {
+        fileType = @"audio/mp3";
+    }
+    
     return fileType;
     
 }
@@ -120,52 +125,55 @@
             return;
         }
     }
-//    NSMutableURLRequest *uploadRequest = [[XXHTTPClient shareClient]multipartFormRequestWithMethod:@"POST" path:[XXDataCenterConst switchRequestTypeToInterfaceUrl:XXRequestTypeUploadFile] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-//        [formData appendPartWithFileData:fileData name:@"upload" fileName:fileName mimeType:[self mediaFileTypeForFileName:fileName]];
-//    }];
-//    uploadRequest.timeoutInterval = 30;
-    NSString *uploadUrl = @"http://api.quan-oo.com/api/attachment/upload";
-    NSMutableURLRequest *uploadRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:uploadUrl]];
-    [uploadRequest setHTTPMethod:@"POST"];
-    
-    NSString *stringBoundary = @"0xAbCdEfGbOuNdArY";
-    NSInteger dataLength = fileData.length + 800;
-    NSString *headerBoundary = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",stringBoundary];
-    [uploadRequest addValue:headerBoundary forHTTPHeaderField:@"Content-Type"];
-    NSMutableData *postBody = [NSMutableData data];
-    [postBody appendData:[[NSString stringWithFormat:@"--%@\r\n", stringBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    [postBody appendData:[@"Content-Disposition: form-data; name=\"upload\"; filename=\"test.jpg\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    [postBody appendData:[@"Content-Type: image/jpg\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    [postBody appendData:[@"Content-Transfer-Encoding: binary\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    [postBody appendData:[[NSString stringWithFormat:@"Content-Length:%d",dataLength+500] dataUsingEncoding:NSUTF8StringEncoding]];
-    //*******************load locally store audio file********************//
-    // add it to body
-    [postBody appendData:fileData];
-    [postBody appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    // final boundary
-    [postBody appendData:[[NSString stringWithFormat:@"--%@--\r\n", stringBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    DDLogVerbose(@"fileData --->%@",fileData);
-    DDLogVerbose(@"postData ---->%@",[[NSString alloc]initWithData:postBody encoding:NSUTF8StringEncoding]);
-    [uploadRequest setHTTPBody:postBody];
-    
-    NSURLResponse *response = nil;
-    NSError *error = nil;
-    
-    DDLogVerbose(@"upload request header:%@",uploadRequest.allHTTPHeaderFields);
-    DDLogVerbose(@"upload request body:%@",[[NSString alloc]initWithData:uploadRequest.HTTPBody encoding:NSUTF8StringEncoding]);
-    
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:uploadRequest returningResponse:&response error:&error];
-    
-    //convert data into string
-    NSString *responseString = [[NSString alloc] initWithBytes:[responseData bytes] length:[responseData length] encoding:NSUTF8StringEncoding];
-    
-    NSLog(@"Response String %@",responseString);
-    
-}
+    NSMutableURLRequest *uploadRequest  = [[XXHTTPClient shareClient]multipartFormRequestWithMethod:@"POST" path:[XXDataCenterConst switchRequestTypeToInterfaceUrl:XXRequestTypeUploadFile] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        [formData appendPartWithFileData:fileData name:@"upload" fileName:fileName mimeType:[self mediaFileTypeForFileName:fileName]];
+    }];
+    AFJSONRequestOperation *jsonRequest = [AFJSONRequestOperation JSONRequestOperationWithRequest:uploadRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        
+        NSDictionary *resultDict = (NSDictionary*)JSON;
+        
+        DDLogVerbose(@"resultDict -->%@",resultDict);
+        NSInteger statusCode = [[resultDict objectForKey:@"ret"]intValue];
+        if (statusCode==0) {
+            
+            NSArray *usefulProperty = @[@"attachment_id",@"user_id",@"add_time",@"filename",@"link",@"description"];
+            NSDictionary *mDict = @{@"attachment_id": @"",@"user_id":@"",@"add_time":@"",@"filename":@"",@"link":@"",@"description":@""};
+            NSMutableDictionary *modelDict = [NSMutableDictionary dictionaryWithDictionary:mDict];
+            [resultDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                if ([usefulProperty containsObject:(NSString*)key]) {
+                    [modelDict setObject:obj forKey:key];
+                }
+            }];
+            DDLogVerbose(@"fileter dict -->%@",modelDict);
+            XXAttachmentModel *attachModel = [[XXAttachmentModel alloc]initWithContentDict:modelDict];
+            DDLogVerbose(@"attachModel --->%@",attachModel);
+            if (success) {
+                success(attachModel);
+            }
+            
+        }else{
+            if (faild) {
+                faild([resultDict objectForKey:@"msg"]);
+            }
+        }
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        if (faild) {
+            faild([error description]);
+        }
+    }];
+    [jsonRequest setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        
+        CGFloat uploadKbSize = totalBytesWritten/1024.0f;
+        CGFloat totoalSize = totalBytesExpectedToWrite/1024.0f;
+        CGFloat uploadProgressValue = uploadKbSize/totoalSize;
 
-- (void)uploadFileWithData:(NSData *)fileData withFileName:(NSString *)fileName
-{
-    
+        if (uploadProgressBlock) {
+            uploadProgressBlock(uploadProgressValue);
+        }
+        
+    }];
+    [[XXHTTPClient shareClient]enqueueHTTPRequestOperation:jsonRequest];
 }
 
 - (void)requestLoginWithNewUser:(XXUserModel *)newUser withSuccessLogin:(void (^)(XXUserModel *))success withFaildLogin:(void (^)(NSString *))faild
@@ -181,10 +189,20 @@
     
     [self requestXXRequest:XXRequestTypeLogin withParams:params withHttpMethod:nil withSuccess:^(NSDictionary *resultDict) {
        
+        DDLogVerbose(@"login result dict --->%@",resultDict);
+        NSDictionary *userData = [resultDict objectForKey:@"user"];
+        NSMutableDictionary *userMutil = [NSMutableDictionary dictionaryWithDictionary:userData];
+        [userMutil setObject:[resultDict objectForKey:@"tooken"] forKey:@"tooken"];
+        [userMutil setObject:@"1" forKey:@"status"];
+        XXUserModel *loginUser = [[XXUserModel alloc]initWithContentDict:userMutil];
+        if (success) {
+            success(loginUser);
+        }
         
     } withFaild:^(NSString *faildMsg) {
-        
-        
+        if (faild) {
+            faild(faildMsg);
+        }
     }];
 }
 
@@ -201,8 +219,17 @@
     
     [self requestXXRequest:XXRequestTypeRegist withParams:normalParams withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
         
+        DDLogVerbose(@"regist result -->%@",resultDict);
+        XXUserModel *registUserModel = [[XXUserModel alloc]init];
+        registUserModel.userId = [resultDict objectForKey:@"user_id"];
+        if (success) {
+            success(registUserModel);
+        }
     } withFaild:^(NSString *faildMsg) {
-        
+        if (faild) {
+            faild(faildMsg);
+        }
+        DDLogVerbose(@"regist faild -->%@",faildMsg);
     }];
     
 }
@@ -229,7 +256,7 @@
     
     [self requestXXRequest:XXRequestTypeSearchSchool withParams:params withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
         
-        NSLog(@"resultDict -->%@",resultDict);
+        DDLogVerbose(@"resultDict -->%@",resultDict);
         NSArray *schoolList = [resultDict objectForKey:@"data"];
         NSMutableArray *modelResultArray = [NSMutableArray array];
         for (NSDictionary *item in schoolList) {

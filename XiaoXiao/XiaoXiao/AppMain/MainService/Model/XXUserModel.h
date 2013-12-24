@@ -27,9 +27,11 @@
 @property (nonatomic,strong)NSString *postCount;
 @property (nonatomic,strong)NSString *registTime;
 @property (nonatomic,strong)NSAttributedString *attributedContent;
-@property (nonatomic,strong)UIImage  *headImage;//需要用来传递图片，缓存的时候可以不存储
 @property (nonatomic,strong)NSString *schoolName;
-@property (nonatomic,strong)NSString *star;//星座
+@property (nonatomic,strong)NSString *wellknow;
+@property (nonatomic,strong)NSString *praiseCount;
+@property (nonatomic,strong)NSString *tooken;
+@property (nonatomic,strong)NSString *status;
 
 
 - (id)initWithContentDict:(NSDictionary*)contentDict;

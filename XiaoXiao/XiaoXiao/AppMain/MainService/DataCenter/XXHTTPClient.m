@@ -31,7 +31,7 @@
     
     [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
     [AFJSONRequestOperation addAcceptableContentTypes:[NSSet setWithObjects:@"text/json",@"text/javascript",@"application/json",@"text/html",@"application/xhtml+xml",@"*/*",@"application/xhtml+xml",@"image/webp", nil]];
-//    [self setDefaultHeader:@"tooken" value:@"8ebdcee1a720b5bdc155f33112314920"];
+    [self setDefaultHeader:@"tooken" value:[XXUserDataCenter currentLoginUserToken]];
     
     // Accept HTTP Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1
 	[self setDefaultHeader:@"Accept" value:@"application/json"];

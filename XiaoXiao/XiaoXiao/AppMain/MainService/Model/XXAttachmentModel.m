@@ -14,7 +14,7 @@
 {
     if (self = [super init]) {
         
-        self.attachementId = [contentDict objectForKey:@"id"];
+        self.attachementId = [contentDict objectForKey:@"attachment_id"];
         self.createUserId = [contentDict objectForKey:@"user_id"];
         self.description = [contentDict objectForKey:@"description"];
         self.link = [contentDict objectForKey:@"link"];
@@ -23,4 +23,31 @@
     }
     return self;
 }
+
+- (id)initWithCoder:(NSCoder*)aDecoder
+{
+    if (self = [super init]) {
+        
+        self.attachementId = [aDecoder decodeObjectForKey:@"attachementId"];
+        self.createUserId = [aDecoder decodeObjectForKey:@"createUserId"];
+        self.description = [aDecoder decodeObjectForKey:@"description"];
+        self.link = [aDecoder decodeObjectForKey:@"link"];
+        self.fileName = [aDecoder decodeObjectForKey:@"fileName"];
+        self.addTime = [aDecoder decodeObjectForKey:@"addTime"];
+
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder*)aCoder
+{
+    [aCoder encodeObject:self.attachementId forKey:@"attachementId"];
+    [aCoder encodeObject:self.createUserId forKey:@"createUserId"];
+    [aCoder encodeObject:self.description forKey:@"description"];
+    [aCoder encodeObject:self.link forKey:@"link"];
+    [aCoder encodeObject:self.fileName forKey:@"fileName"];
+    [aCoder encodeObject:self.addTime forKey:@"addTime"];
+
+}
+
 @end

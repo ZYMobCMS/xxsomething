@@ -83,6 +83,7 @@
 		3B46835C186140BE002CFFA2 /* XXShareStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B46835B186140BD002CFFA2 /* XXShareStyle.m */; };
 		3B46835F18614A6C002CFFA2 /* XXSharePostModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B46835E18614A6C002CFFA2 /* XXSharePostModel.m */; };
 		3B46836518616047002CFFA2 /* XXSharePostTypeConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B46836418616043002CFFA2 /* XXSharePostTypeConfig.m */; };
+		3B5DF19618693370000B50D2 /* love.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3B5DF19518693370000B50D2 /* love.mp3 */; };
 		E425ED21186479D3008B6C11 /* XXFontStyleDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = E425ED20186479D3008B6C11 /* XXFontStyleDescription.m */; };
 		E425ED2418647AB9008B6C11 /* XXImageDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = E425ED2318647AB8008B6C11 /* XXImageDescription.m */; };
 		E425ED2618649AE2008B6C11 /* navigation_bar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E425ED2518649ACC008B6C11 /* navigation_bar@2x.png */; };
@@ -588,6 +589,7 @@
 		3B46835E18614A6C002CFFA2 /* XXSharePostModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXSharePostModel.m; sourceTree = "<group>"; };
 		3B46836318616041002CFFA2 /* XXSharePostTypeConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXSharePostTypeConfig.h; sourceTree = "<group>"; };
 		3B46836418616043002CFFA2 /* XXSharePostTypeConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXSharePostTypeConfig.m; sourceTree = "<group>"; };
+		3B5DF19518693370000B50D2 /* love.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = love.mp3; sourceTree = "<group>"; };
 		E425ED1F186479D3008B6C11 /* XXFontStyleDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXFontStyleDescription.h; sourceTree = "<group>"; };
 		E425ED20186479D3008B6C11 /* XXFontStyleDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXFontStyleDescription.m; sourceTree = "<group>"; };
 		E425ED2218647AB8008B6C11 /* XXImageDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXImageDescription.h; sourceTree = "<group>"; };
@@ -2026,6 +2028,7 @@
 		E4E3F6E01860969100970698 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				3B5DF19518693370000B50D2 /* love.mp3 */,
 				E43CC54518689C8000DB6CF3 /* zylogo.jpg */,
 				E4FCF2F5186673010058098B /* love.jpg */,
 				E4B591401865C6AE00B30821 /* xxx.jpg */,
@@ -3005,6 +3008,7 @@
 				E4A051D218670177002E0EBA /* QBImagePickerController.bundle in Resources */,
 				E4A051DC18673ECE002E0EBA /* head@2x.png in Resources */,
 				E43CC54618689C8100DB6CF3 /* zylogo.jpg in Resources */,
+				3B5DF19618693370000B50D2 /* love.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

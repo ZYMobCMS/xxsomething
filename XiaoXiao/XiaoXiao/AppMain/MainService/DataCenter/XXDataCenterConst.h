@@ -17,8 +17,7 @@ typedef enum {
     
 }XXRequestType;
 
-#define XXBase_Host_Url @"http://beat.quan-oo.com"
-//#define XXBase_Host_Url @"http://www.zyprosoft.com/"
+#define XXBase_Host_Url @"http://api.quan-oo.com"
 
 //登陆
 /*
@@ -73,7 +72,6 @@ typedef enum {
  可选 POST description:附件描述
  */
 #define XX_Upload_File_Interface @"/api/attachment/upload/"
-//#define XX_Upload_File_Interface @"/mobile/myuploadnew.php/"
 
 //附件详情
 /*

@@ -31,7 +31,10 @@
         self.constellation = [contentDict objectForKey:@"constellation"];
         self.postCount = [contentDict objectForKey:@"post_count"];
         self.registTime = [contentDict objectForKey:@"reg_time"];
-
+        self.wellknow = [contentDict objectForKey:@"wellknow"];
+        self.praiseCount = [contentDict objectForKey:@"praise_count"];
+        self.tooken = [contentDict objectForKey:@"tooken"];
+        self.status = [contentDict objectForKey:@"status"];
     }
     return self;
 }
@@ -58,10 +61,11 @@
         self.postCount = [aDecoder decodeObjectForKey:@"postCount"];
         self.registTime = [aDecoder decodeObjectForKey:@"registTime"];
         self.attributedContent = [aDecoder decodeObjectForKey:@"attributedContent"];
+        self.wellknow = [aDecoder decodeObjectForKey:@"wellknow"];
+        self.praiseCount = [aDecoder decodeObjectForKey:@"praiseCount"];
+        self.tooken = [aDecoder decodeObjectForKey:@"tooken"];
+        self.status = [aDecoder decodeObjectForKey:@"status"];
 
-        //头像
-        self.headImage = [aDecoder decodeObjectForKey:@"headImage"];
-        self.star = [aDecoder decodeObjectForKey:@"star"];
     }
     return self;
 }
@@ -85,10 +89,10 @@
     [aCoder encodeObject:self.postCount forKey:@"postCount"];
     [aCoder encodeObject:self.registTime forKey:@"registTime"];
     [aCoder encodeObject:self.attributedContent forKey:@"attributedContent"];
-
-    //头像
-    [aCoder encodeObject:self.headImage forKey:@"headImage"];
-    [aCoder encodeObject:self.star forKey:@"star"];
+    [aCoder encodeObject:self.wellknow forKey:@"wellknow"];
+    [aCoder encodeObject:self.praiseCount forKey:@"praiseCount"];
+    [aCoder encodeObject:self.tooken forKey:@"tooken"];
+    [aCoder encodeObject:self.status forKey:@"status"];
 
 }
 
