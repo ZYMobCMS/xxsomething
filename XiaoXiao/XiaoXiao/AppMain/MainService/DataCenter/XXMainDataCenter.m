@@ -10,6 +10,7 @@
 #import "AFJSONRequestOperation.h"
 #import "XXHTTPClient.h"
 #import "AFHTTPRequestOperation.h"
+#import "NSDictionary+UrlEncodedString.h"
 
 #define XXLoginErrorInvalidateParam @"请求参数不完整"
 #define XXNetWorkDisConnected @"网络无法链接"
@@ -29,7 +30,7 @@
     return _sharedCenter;
 }
 
-
+//纯POST
 - (void)requestXXRequest:(XXRequestType)requestType withParams:(NSDictionary *)params withHttpMethod:(NSString *)method withSuccess:(void (^)(NSDictionary *resultDict))success withFaild:(void (^)(NSString *faildMsg))faild
 {
     
@@ -41,15 +42,9 @@
         }
     }
     
-    NSString *requestMethod = method;
-    if (!requestMethod){
-        requestMethod = @"POST";
-    }
-    
     [[XXHTTPClient shareClient]postPath:[XXDataCenterConst switchRequestTypeToInterfaceUrl:requestType] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSDictionary *resultDict = (NSDictionary*)responseObject;
-        DDLogVerbose(@"normal request resutlDict -->%@",resultDict);
         
         //解析对错
         int status = [[resultDict objectForKey:@"ret"]intValue];
@@ -73,6 +68,48 @@
         
     }];
     
+}
+//POST,GET混合
+- (void)requestXXRequest:(XXRequestType)requestType withPostParams:(NSDictionary*)pParams withGetParams:(NSDictionary*)gParams withSuccess:(void (^)(NSDictionary *resultDict))success withFaild:(void(^)(NSString *faildMsg))faild
+{
+    //是否存在网络
+    if ([[XXHTTPClient shareClient]networkReachabilityStatus]==AFNetworkReachabilityStatusNotReachable) {
+        if (faild) {
+            faild(XXNetWorkDisConnected);
+            return;
+        }
+    }
+    
+    //GetParam
+    NSString *interfaceUrl = [XXDataCenterConst switchRequestTypeToInterfaceUrl:requestType];
+    NSString *gParamString = [gParams urlEncodedString];
+    interfaceUrl = [NSString stringWithFormat:@"%@?%@",interfaceUrl,gParamString];
+    
+    [[XXHTTPClient shareClient]postPath:interfaceUrl parameters:pParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSDictionary *resultDict = (NSDictionary*)responseObject;
+        
+        //解析对错
+        int status = [[resultDict objectForKey:@"ret"]intValue];
+        if (status==0) {
+            
+            if (success) {
+                success(resultDict);
+            }
+            
+        }else{
+            if (faild) {
+                faild([resultDict objectForKey:@"msg"]);
+            }
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        if (faild) {
+            faild([error description]);
+        }
+        
+    }];
 }
 
 #pragma mark - common upload
@@ -501,7 +538,50 @@
 //分享列表
 - (void)requestSharePostListWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
 {
-    
+    NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
+    NSMutableDictionary *getParams = [NSMutableDictionary dictionary];
+    if (condition.pageIndex) {
+        [getParams setObject:condition.pageIndex forKey:@"page"];
+    }
+    if (condition.pageSize) {
+        [getParams setObject:condition.pageSize forKey:@"size"];
+    }
+    if (condition.userId) {
+        [postParams setObject:condition.userId forKey:@"user_id"];
+    }
+    if (condition.sex) {
+        [postParams setObject:condition.sex forKey:@"sex"];
+    }
+    if (condition.grade) {
+        [postParams setObject:condition.grade forKey:@"grade"];
+    }
+    if (condition.schoolId) {
+        [postParams setObject:condition.schoolId forKey:@"xuexiao_id"];
+    }
+    if (condition.type) {
+        [postParams setObject:condition.type forKey:@"type"];
+    }
+    if (condition.tag) {
+        [postParams setObject:condition.tag forKey:@"tag"];
+    }
+    [self requestXXRequest:XXRequestTypeSharePostSearch withPostParams:postParams withGetParams:getParams withSuccess:^(NSDictionary *resultDict) {
+        DDLogVerbose(@"share post search result:%@",resultDict);
+        if (success) {
+            NSArray *shareList = [[resultDict objectForKey:@"data"]objectForKey:@"table"];
+            NSMutableArray *modelArray = [NSMutableArray array];
+            [shareList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                NSDictionary *contentItem = (NSDictionary*)obj;
+                XXSharePostModel *sharePost = [[XXSharePostModel alloc]initWithContentDict:contentItem];
+                [modelArray addObject:sharePost];
+            }];
+            success(modelArray);
+        }
+        
+    } withFaild:^(NSString *faildMsg) {
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
 }
 
 //发表分享
@@ -707,6 +787,7 @@
 
     //参数
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:conditionTease.userId forKey:@"user_id"];
     //conent
     NSMutableDictionary *contentParam = [NSMutableDictionary dictionary];
     [contentParam setObject:conditionTease.postEmoji forKey:XXTeasePostJSONEmojiKey];
@@ -716,7 +797,7 @@
 
     [self requestXXRequest:XXRequestTypeTeaseUser withParams:params withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
         if(success){
-            
+            success([resultDict objectForKey:@"msg"]);
         }
     } withFaild:^(NSString *faildMsg) {
         if(faild){

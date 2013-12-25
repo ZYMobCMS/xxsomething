@@ -18,8 +18,8 @@ typedef void (^XXShareTextViewDidTapOnAudioImageBlock) (NSURL *audioUrl);
 #define XXSharePostJSONTypeKey  @"xxshare_post_type"
 #define XXSharePostJSONImageKey @"xxshare_post_images"
 #define XXSharePostJSONAudioKey @"xxshare_post_audio"
-#define XXSharePostJSONAudioTime @"xxshare_post_audio_time"
 #define XXSharePostJSONContentKey @"xxshare_post_content"
+#define XXSharePostJSONAudioTime @"xxshare_post_audio_time"
 
 //分享内容规则
 /*
@@ -29,6 +29,8 @@ typedef void (^XXShareTextViewDidTapOnAudioImageBlock) (NSURL *audioUrl);
  xxshare_post_images:xx.png|xxx.png|xxx.png;//定义分享的图片的链接, | 隔开，区分图片
  xxshare_post_audio:xx.caf;                 //定义音频地址
  xxshare_post_content:@"test share content";//定义分享的文字内容
+ 
+ xxshare_post_audio_time:@"7";               //定义分享录音得长度,如7秒，以秒数为单位
  }
  *
  */

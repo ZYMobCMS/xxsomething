@@ -297,9 +297,25 @@
     UIBarButtonItem *loginTest = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(testNetworkAPI)];
     self.navigationItem.rightBarButtonItem = loginTest;
     
-    
+    UIButton *sendTest = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [sendTest setTitle:@"send" forState:UIControlStateNormal];
+    sendTest.frame = CGRectMake(80, 150,80,40);
+    [sendTest addTarget:self action:@selector(sendMessage) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:sendTest];
 }
-
+//
+- (void)sendMessage
+{
+    ZYXMPPUser *newUser = [[ZYXMPPUser alloc]init];
+    newUser.jID = @"36";
+    ZYXMPPMessage *message = [[ZYXMPPMessage alloc]init];
+    message.content = @"test send content !!!";
+    message.user = @"vincent";
+    message.audioTime = @"";
+    message.userId = @"36";
+    message.messageType = [NSString stringWithFormat:@"%d",ZYXMPPMessageTypeText];
+    [xmppClient sendMessageToUser:newUser withContent:message];
+}
 //================================ API Test ==================//
 - (void)testNetworkAPI
 {
@@ -380,14 +396,61 @@
 //        [SVProgressHUD showErrorWithStatus:faildMsg];
 //    }];
     //挑逗别人
-    XXTeaseModel *destUser = [[XXTeaseModel alloc]init];
-    destUser.userId = @"37";
-    destUser.postEmoji = @"小样";
-    [[XXMainDataCenter shareCenter]requestTeaseUserWithCondtionTease:destUser withSuccess:^(NSString *successMsg) {
-        [SVProgressHUD showSuccessWithStatus:successMsg];
-    } withFaild:^(NSString *faildMsg) {
-        [SVProgressHUD showErrorWithStatus:faildMsg];
+//    XXTeaseModel *destUser = [[XXTeaseModel alloc]init];
+//    destUser.userId = @"36";
+//    destUser.postEmoji = @"[小样]";
+//    [[XXMainDataCenter shareCenter]requestTeaseUserWithCondtionTease:destUser withSuccess:^(NSString *successMsg) {
+//        [SVProgressHUD showSuccessWithStatus:successMsg];
+//    } withFaild:^(NSString *faildMsg) {
+//        [SVProgressHUD showErrorWithStatus:faildMsg];
+//    }];
+    
+    //测试Xmpp
+    xmppClient = [[ZYXMPPClient alloc]init];
+    [xmppClient setNeedAutoJIDWithCustomHostName:YES];
+    [xmppClient setNeedUseCustomHostAddress:YES];
+    [xmppClient setJabbredServerAddress:@"112.124.37.183"];
+    [xmppClient setConnectToServerErrorAction:^(NSString *errMsg) {
+        [SVProgressHUD showErrorWithStatus:errMsg];
     }];
+    [xmppClient setDidRecievedMessage:^(ZYXMPPMessage *newMessage) {
+        
+        //程序运行在前台，消息正常显示
+        if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
+        {
+            NSString *combineContent = [NSString stringWithFormat:@"from:%@\nsend time:%@ \n content:%@",newMessage.user,newMessage.addTime,newMessage.content];
+            [SVProgressHUD showSuccessWithStatus:combineContent];
+            
+        }else{//如果程序在后台运行，收到消息以通知类型来显示
+            UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+            localNotification.alertAction = @"Ok";
+            localNotification.alertBody = [NSString stringWithFormat:@"From: %@\n\n%@",newMessage.user,newMessage.content];//通知主体
+            localNotification.soundName = @"crunch.wav";//通知声音
+            localNotification.applicationIconBadgeNumber = 1;//标记数
+            [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];//发送通知
+        }
+        
+    }];
+    
+    [xmppClient setSendMessageFaildAction:^(ZYXMPPMessage *message, ZYXMPPUser *toUser) {
+        
+    }];
+    [xmppClient setSendMessageSuccessAction:^(ZYXMPPMessage *message, ZYXMPPUser *toUser) {
+        
+    }];
+    [xmppClient startClientWithJID:@"36" withPassword:@"123456"];
+    
+    //分享列表
+    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+        XXConditionModel *condition = [[XXConditionModel alloc]init];
+        condition.pageIndex = @"1";
+        condition.pageSize = @"10";
+        [[XXMainDataCenter shareCenter]requestSharePostListWithCondition:condition withSuccess:^(NSArray *resultList) {
+            DDLogVerbose(@"share modle list:%@",resultList);
+        } withFaild:^(NSString *faildMsg) {
+            [SVProgressHUD showErrorWithStatus:faildMsg];
+        }];
+    });
 }
 //============================================================//
 - (void)loginAction

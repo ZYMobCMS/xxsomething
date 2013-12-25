@@ -36,7 +36,7 @@
 @property (nonatomic,strong)NSString *longtitude;
 
 @property (nonatomic,strong)NSString *keyword;//搜索关心列表时用来传值用,可以不编码保存
-
+@property (nonatomic,strong)NSString *allowBackgroundChatMessageRecieve;//是否支持后台接收xmpp消息
 
 - (id)initWithContentDict:(NSDictionary*)contentDict;
 

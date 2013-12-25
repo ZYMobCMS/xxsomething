@@ -37,6 +37,16 @@
         self.postImages = [customContentDict objectForKey:XXSharePostJSONImageKey];
         self.postType = [[customContentDict objectForKey:XXSharePostJSONTypeKey]intValue];
         self.postAudioTime = [customContentDict objectForKey:XXSharePostJSONAudioTime];
+        //确保每个属性都有，即使为空字符串
+        if (!self.postContent) {
+            self.postContent = @"";
+        }
+        if (!self.postAudio) {
+            self.postAudio=@"";
+        }
+        if (!self.postImages) {
+            self.postImages=@"";
+        }
         self.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:self forContentWidth:[XXSharePostStyle sharePostContentWidth]];
         
     }

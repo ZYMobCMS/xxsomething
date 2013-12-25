@@ -17,3 +17,4 @@
 #import "SVProgressHUD.h"
 #import "MBProgressHUD.h"
 #import "UIImage+Resize.h"
+#import "ZYXMPPClient.h"
