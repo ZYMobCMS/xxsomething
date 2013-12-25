@@ -15,6 +15,7 @@
 @property (nonatomic,strong)NSString *teaseId;
 @property (nonatomic,strong)NSString *teaseTime;
 @property (nonatomic,strong)NSString *userId;
+@property (nonatomic,strong)NSString *toUserId;
 
 - (id)initWithContentDict:(NSDictionary*)contentDict;
 

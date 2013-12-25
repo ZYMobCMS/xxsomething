@@ -35,6 +35,7 @@ typedef enum {
     XXRequestTypeTeaseMeList,
     XXRequestTypeNearbyUsers,
     XXRequestTypeAdvicePublish,
+    XXRequestTypeReplyMeList,
     
 }XXRequestType;
 
@@ -253,6 +254,16 @@ typedef enum {
  */
 #define XX_Advice_Interface @"/api/proposal/publish"
 
+//回复我的列表
+/*
+ GET	page		评论页码
+ GET	size		评论每页条数
+ POST	res_id		资源ID(可选)
+ POST	res_type		资源类型(可选)
+ POST	p_id		父ID(可选)
+ POST	root_id		回复ID(可选)
+ */
+#define XX_Reply_Me_List_Interface @"/api/comment/replyme"
 
 
 

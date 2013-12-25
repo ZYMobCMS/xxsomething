@@ -288,6 +288,7 @@
 //        
 //    }];
     
+    
         
     //test upload
     UIBarButtonItem *uploadItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(loginAction)];
@@ -297,11 +298,11 @@
     UIBarButtonItem *loginTest = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(testNetworkAPI)];
     self.navigationItem.rightBarButtonItem = loginTest;
     
-    UIButton *sendTest = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [sendTest setTitle:@"send" forState:UIControlStateNormal];
-    sendTest.frame = CGRectMake(80, 150,80,40);
-    [sendTest addTarget:self action:@selector(sendMessage) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:sendTest];
+//    UIButton *sendTest = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    [sendTest setTitle:@"send" forState:UIControlStateNormal];
+//    sendTest.frame = CGRectMake(80, 150,80,40);
+//    [sendTest addTarget:self action:@selector(sendMessage) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:sendTest];
 }
 //
 - (void)sendMessage
@@ -406,51 +407,114 @@
 //    }];
     
     //测试Xmpp
-    xmppClient = [[ZYXMPPClient alloc]init];
-    [xmppClient setNeedAutoJIDWithCustomHostName:YES];
-    [xmppClient setNeedUseCustomHostAddress:YES];
-    [xmppClient setJabbredServerAddress:@"112.124.37.183"];
-    [xmppClient setConnectToServerErrorAction:^(NSString *errMsg) {
-        [SVProgressHUD showErrorWithStatus:errMsg];
-    }];
-    [xmppClient setDidRecievedMessage:^(ZYXMPPMessage *newMessage) {
-        
-        //程序运行在前台，消息正常显示
-        if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
-        {
-            NSString *combineContent = [NSString stringWithFormat:@"from:%@\nsend time:%@ \n content:%@",newMessage.user,newMessage.addTime,newMessage.content];
-            [SVProgressHUD showSuccessWithStatus:combineContent];
-            
-        }else{//如果程序在后台运行，收到消息以通知类型来显示
-            UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-            localNotification.alertAction = @"Ok";
-            localNotification.alertBody = [NSString stringWithFormat:@"From: %@\n\n%@",newMessage.user,newMessage.content];//通知主体
-            localNotification.soundName = @"crunch.wav";//通知声音
-            localNotification.applicationIconBadgeNumber = 1;//标记数
-            [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];//发送通知
-        }
-        
-    }];
-    
-    [xmppClient setSendMessageFaildAction:^(ZYXMPPMessage *message, ZYXMPPUser *toUser) {
-        
-    }];
-    [xmppClient setSendMessageSuccessAction:^(ZYXMPPMessage *message, ZYXMPPUser *toUser) {
-        
-    }];
-    [xmppClient startClientWithJID:@"36" withPassword:@"123456"];
+//    xmppClient = [[ZYXMPPClient alloc]init];
+//    [xmppClient setNeedAutoJIDWithCustomHostName:YES];
+//    [xmppClient setNeedUseCustomHostAddress:YES];
+//    [xmppClient setJabbredServerAddress:@"112.124.37.183"];
+//    [xmppClient setConnectToServerErrorAction:^(NSString *errMsg) {
+//        [SVProgressHUD showErrorWithStatus:errMsg];
+//    }];
+//    [xmppClient setDidRecievedMessage:^(ZYXMPPMessage *newMessage) {
+//        
+//        //程序运行在前台，消息正常显示
+//        if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
+//        {
+//            NSString *combineContent = [NSString stringWithFormat:@"from:%@\nsend time:%@ \n content:%@",newMessage.user,newMessage.addTime,newMessage.content];
+//            [SVProgressHUD showSuccessWithStatus:combineContent];
+//            
+//        }else{//如果程序在后台运行，收到消息以通知类型来显示
+//            UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+//            localNotification.alertAction = @"Ok";
+//            localNotification.alertBody = [NSString stringWithFormat:@"From: %@\n\n%@",newMessage.user,newMessage.content];//通知主体
+//            localNotification.soundName = @"crunch.wav";//通知声音
+//            localNotification.applicationIconBadgeNumber = 1;//标记数
+//            [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];//发送通知
+//        }
+//        
+//    }];
+//    
+//    [xmppClient setSendMessageFaildAction:^(ZYXMPPMessage *message, ZYXMPPUser *toUser) {
+//        
+//    }];
+//    [xmppClient setSendMessageSuccessAction:^(ZYXMPPMessage *message, ZYXMPPUser *toUser) {
+//        
+//    }];
+//    [xmppClient startClientWithJID:@"36" withPassword:@"123456"];
     
     //分享列表
-    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
-        XXConditionModel *condition = [[XXConditionModel alloc]init];
-        condition.pageIndex = @"1";
-        condition.pageSize = @"10";
-        [[XXMainDataCenter shareCenter]requestSharePostListWithCondition:condition withSuccess:^(NSArray *resultList) {
-            DDLogVerbose(@"share modle list:%@",resultList);
-        } withFaild:^(NSString *faildMsg) {
-            [SVProgressHUD showErrorWithStatus:faildMsg];
-        }];
-    });
+//    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+//        XXConditionModel *condition = [[XXConditionModel alloc]init];
+//        condition.pageIndex = @"1";
+//        condition.pageSize = @"10";
+//        [[XXMainDataCenter shareCenter]requestSharePostListWithCondition:condition withSuccess:^(NSArray *resultList) {
+//            DDLogVerbose(@"share modle list:%@",resultList);
+//        } withFaild:^(NSString *faildMsg) {
+//            [SVProgressHUD showErrorWithStatus:faildMsg];
+//        }];
+//    });
+    
+    //校内人
+//    XXConditionModel *condition = [[XXConditionModel alloc]init];
+//    condition.pageIndex = @"1";
+//    condition.pageSize = @"10";
+//    condition.schoolId = @"10777";
+//    [[XXMainDataCenter shareCenter]requestSameSchoolUsersWithCondition:condition withSuccess:^(NSArray *resultList) {
+//        
+//    } withFaild:^(NSString *faildMsg) {
+//        [SVProgressHUD showErrorWithStatus:faildMsg];
+//    }];
+    
+    //挑逗我的列表
+//    XXConditionModel *condition = [[XXConditionModel alloc]init];
+//    condition.pageIndex = @"1";
+//    condition.pageSize = @"10";
+//    condition.userId = [XXUserDataCenter currentLoginUser].userId;
+//    [[XXMainDataCenter shareCenter]requestTeaseMeListWithCondition:condition withSuccess:^(NSArray *resultList) {
+//        
+//    } withFaild:^(NSString *faildMsg) {
+//        [SVProgressHUD showErrorWithStatus:faildMsg];
+//    }];
+    
+    //附近的人
+//    XXUserModel *condtionUser = [[XXUserModel alloc]init];
+//    condtionUser.latitude = @"120";
+//    condtionUser.longtitude = @"50";
+//    [[XXMainDataCenter shareCenter]requestNearbyUserWithConditionUser:condtionUser withSuccess:^(NSArray *resultList) {
+//        
+//    } withFaild:^(NSString *faildMsg) {
+//        [SVProgressHUD showErrorWithStatus:faildMsg];
+//    }];
+    
+    //建议反馈
+//    XXConditionModel *condition = [[XXConditionModel alloc]init];
+//    condition.content = @"建议和反馈接口测试";
+//    [[XXMainDataCenter shareCenter]requestAdvicePublishWithCondition:condition withSuccess:^(NSString *successMsg) {
+//        [SVProgressHUD showSuccessWithStatus:successMsg];
+//    } withFaild:^(NSString *faildMsg) {
+//        [SVProgressHUD showErrorWithStatus:faildMsg];
+//    }];
+    //追捧
+//    XXConditionModel *condition = [[XXConditionModel alloc]init];
+//    condition.resId = @"2";
+//    condition.resType = @"posts";
+//    [[XXMainDataCenter shareCenter]requestPraisePublishWithCondition:condition withSuccess:^(NSString *successMsg) {
+//        [SVProgressHUD showSuccessWithStatus:successMsg];
+//    } withFaild:^(NSString *faildMsg) {
+//        [SVProgressHUD showErrorWithStatus:faildMsg];
+//    }];
+    //评论
+    XXCommentModel *newComment = [[XXCommentModel alloc]init];
+    newComment.postAudioTime = @"0";
+    newComment.postContent = @"评论测试";
+    newComment.resourceId = @"2";
+    newComment.resourceType = @"posts";
+    newComment.pCommentId = @"";
+    newComment.rootCommentId = @"2";
+    [[XXMainDataCenter shareCenter]requestPublishCommentWithConditionComment:newComment withSuccess:^(XXCommentModel *resultModel) {
+        
+    } withFaild:^(NSString *faildMsg) {
+        [SVProgressHUD showErrorWithStatus:faildMsg];
+    }];
 }
 //============================================================//
 - (void)loginAction

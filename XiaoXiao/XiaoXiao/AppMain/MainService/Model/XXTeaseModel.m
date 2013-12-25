@@ -17,6 +17,7 @@
         self.teaseTime = [contentDict objectForKey:@"add_time"];
         self.teaseId = [contentDict objectForKey:@"id"];
         self.userId = [contentDict objectForKey:@"user_id"];
+        self.toUserId = [contentDict objectForKey:@"to_user_id"];
         
         //解析内容字段
         NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:[[contentDict objectForKey:@"content"]dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:nil];
@@ -25,4 +26,5 @@
     }
     return self;
 }
+
 @end

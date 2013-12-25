@@ -26,6 +26,7 @@
 @property (nonatomic,strong)NSString *schoolId;
 @property (nonatomic,strong)NSString *userId;
 @property (nonatomic,strong)NSString *addTime;
+@property (nonatomic,strong)NSString *content;
 
 - (id)initWithContentDict:(NSDictionary*)contentDict;
 

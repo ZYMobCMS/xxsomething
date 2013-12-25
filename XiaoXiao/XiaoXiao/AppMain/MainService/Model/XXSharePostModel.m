@@ -25,10 +25,12 @@
         self.addTime = [contentDict objectForKey:@"add_time"];
         self.schoolId = [contentDict objectForKey:@"xuexiao_id"];
         
+        //如果内容完全不符合自定义结构体，考虑平台数据失误出错的可能
+        
         //自定义内容字段解析
-        NSString *content = [contentDict objectForKey:@"content"];
+        NSString *customcontent = [contentDict objectForKey:@"content"];
         NSError *decodeContentJSonError = nil;
-        NSDictionary *customContentDict = [NSJSONSerialization JSONObjectWithData:[content dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:&decodeContentJSonError];
+        NSDictionary *customContentDict = [NSJSONSerialization JSONObjectWithData:[customcontent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:&decodeContentJSonError];
         if (decodeContentJSonError) {
             DDLogVerbose(@"decode content json error -->%@",decodeContentJSonError.description);
         }

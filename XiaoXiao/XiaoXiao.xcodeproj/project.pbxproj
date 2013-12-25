@@ -244,6 +244,13 @@
 		E46CCF771869C47300DB9BD0 /* XXConditionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E46CCF761869C47300DB9BD0 /* XXConditionModel.m */; };
 		E46CCF7A1869EFEF00DB9BD0 /* XXTeaseBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E46CCF791869EFEF00DB9BD0 /* XXTeaseBaseCell.m */; };
 		E46CCF7D1869F2C100DB9BD0 /* XXTeaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E46CCF7C1869F2C100DB9BD0 /* XXTeaseModel.m */; };
+		E488DF16186B429300B01224 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E488DF0D186B429300B01224 /* FMDatabase.m */; };
+		E488DF17186B429300B01224 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E488DF0F186B429300B01224 /* FMDatabaseAdditions.m */; };
+		E488DF18186B429300B01224 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = E488DF11186B429300B01224 /* FMDatabasePool.m */; };
+		E488DF19186B429300B01224 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E488DF13186B429300B01224 /* FMDatabaseQueue.m */; };
+		E488DF1A186B429300B01224 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = E488DF15186B429300B01224 /* FMResultSet.m */; };
+		E488DF1C186B42B100B01224 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E488DF1B186B42B100B01224 /* libsqlite3.dylib */; };
+		E488DF1F186B42EB00B01224 /* XXChatCacheCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = E488DF1E186B42EB00B01224 /* XXChatCacheCenter.m */; };
 		E4A051B11866BA02002E0EBA /* choose_camerou@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A051AF1866B9CE002E0EBA /* choose_camerou@2x.png */; };
 		E4A051B21866BA02002E0EBA /* choose_library@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A051B01866B9E5002E0EBA /* choose_library@2x.png */; };
 		E4A051BA1866FDD0002E0EBA /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E4A051B71866FDD0002E0EBA /* SVProgressHUD.bundle */; };
@@ -1034,6 +1041,19 @@
 		E46CCF791869EFEF00DB9BD0 /* XXTeaseBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXTeaseBaseCell.m; sourceTree = "<group>"; };
 		E46CCF7B1869F2C100DB9BD0 /* XXTeaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXTeaseModel.h; sourceTree = "<group>"; };
 		E46CCF7C1869F2C100DB9BD0 /* XXTeaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXTeaseModel.m; sourceTree = "<group>"; };
+		E488DF0C186B429300B01224 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
+		E488DF0D186B429300B01224 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
+		E488DF0E186B429300B01224 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		E488DF0F186B429300B01224 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		E488DF10186B429300B01224 /* FMDatabasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabasePool.h; sourceTree = "<group>"; };
+		E488DF11186B429300B01224 /* FMDatabasePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabasePool.m; sourceTree = "<group>"; };
+		E488DF12186B429300B01224 /* FMDatabaseQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseQueue.h; sourceTree = "<group>"; };
+		E488DF13186B429300B01224 /* FMDatabaseQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseQueue.m; sourceTree = "<group>"; };
+		E488DF14186B429300B01224 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
+		E488DF15186B429300B01224 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
+		E488DF1B186B42B100B01224 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		E488DF1D186B42EB00B01224 /* XXChatCacheCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXChatCacheCenter.h; sourceTree = "<group>"; };
+		E488DF1E186B42EB00B01224 /* XXChatCacheCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXChatCacheCenter.m; sourceTree = "<group>"; };
 		E4A051AF1866B9CE002E0EBA /* choose_camerou@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "choose_camerou@2x.png"; sourceTree = "<group>"; };
 		E4A051B01866B9E5002E0EBA /* choose_library@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "choose_library@2x.png"; sourceTree = "<group>"; };
 		E4A051B71866FDD0002E0EBA /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
@@ -1688,6 +1708,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E488DF1C186B42B100B01224 /* libsqlite3.dylib in Frameworks */,
 				3B5DF3B8186AC4E2000B50D2 /* CoreData.framework in Frameworks */,
 				E4E3FA171860986700970698 /* Security.framework in Frameworks */,
 				E4E3FA131860985B00970698 /* libxml2.dylib in Frameworks */,
@@ -2527,6 +2548,23 @@
 			path = "opencore-amrwb";
 			sourceTree = "<group>";
 		};
+		E488DF0B186B429300B01224 /* FMDB */ = {
+			isa = PBXGroup;
+			children = (
+				E488DF0C186B429300B01224 /* FMDatabase.h */,
+				E488DF0D186B429300B01224 /* FMDatabase.m */,
+				E488DF0E186B429300B01224 /* FMDatabaseAdditions.h */,
+				E488DF0F186B429300B01224 /* FMDatabaseAdditions.m */,
+				E488DF10186B429300B01224 /* FMDatabasePool.h */,
+				E488DF11186B429300B01224 /* FMDatabasePool.m */,
+				E488DF12186B429300B01224 /* FMDatabaseQueue.h */,
+				E488DF13186B429300B01224 /* FMDatabaseQueue.m */,
+				E488DF14186B429300B01224 /* FMResultSet.h */,
+				E488DF15186B429300B01224 /* FMResultSet.m */,
+			);
+			path = FMDB;
+			sourceTree = "<group>";
+		};
 		E4A051B61866FDCF002E0EBA /* SVProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
@@ -2643,6 +2681,7 @@
 		E4E3F5D01860966A00970698 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E488DF1B186B42B100B01224 /* libsqlite3.dylib */,
 				3B5DF3B7186AC4E2000B50D2 /* CoreData.framework */,
 				3B5DF3B5186AC4C4000B50D2 /* libresolv.dylib */,
 				3B5DF3B3186AC4B0000B50D2 /* CoreLocation.framework */,
@@ -2731,6 +2770,8 @@
 			children = (
 				E4E3F5F41860969000970698 /* XXCacheCenter.h */,
 				E4E3F5F51860969000970698 /* XXCacheCenter.m */,
+				E488DF1D186B42EB00B01224 /* XXChatCacheCenter.h */,
+				E488DF1E186B42EB00B01224 /* XXChatCacheCenter.m */,
 			);
 			path = CacheCenter;
 			sourceTree = "<group>";
@@ -3353,6 +3394,7 @@
 		E4E3F7501860969200970698 /* ThirdPart */ = {
 			isa = PBXGroup;
 			children = (
+				E488DF0B186B429300B01224 /* FMDB */,
 				3B5DF1EF186AC451000B50D2 /* ZYXMPPClient */,
 				E4A051D718671133002E0EBA /* MBProgressHUD */,
 				E4A051BC18670176002E0EBA /* MutilPhotoSelect */,
@@ -4529,6 +4571,12 @@
 				3B5DF3B1186AC452000B50D2 /* ZYXMPPMessage.m in Sources */,
 				3B5DF3B2186AC452000B50D2 /* ZYXMPPUser.m in Sources */,
 				3B5DF3BB186AC5EA000B50D2 /* XXChatCell.m in Sources */,
+				E488DF16186B429300B01224 /* FMDatabase.m in Sources */,
+				E488DF17186B429300B01224 /* FMDatabaseAdditions.m in Sources */,
+				E488DF18186B429300B01224 /* FMDatabasePool.m in Sources */,
+				E488DF19186B429300B01224 /* FMDatabaseQueue.m in Sources */,
+				E488DF1A186B429300B01224 /* FMResultSet.m in Sources */,
+				E488DF1F186B42EB00B01224 /* XXChatCacheCenter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

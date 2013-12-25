@@ -22,7 +22,18 @@
         self.pCommentId = [contentDict objectForKey:@"p_id"];
         self.rootCommentId = [contentDict objectForKey:@"root_id"];
         self.addTime = [contentDict objectForKey:@"add_time"];
-
+        
+        //解析content字段
+        NSData *contentData = [self.content dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary *customContentDict = [NSJSONSerialization JSONObjectWithData:contentData options:NSJSONReadingAllowFragments error:nil];
+        NSString *audioTime = [customContentDict objectForKey:XXSharePostJSONAudioTime];
+        self.postAudioTime = audioTime;
+        if ([audioTime isEqualToString:@"0"]) {
+            self.postContent = [contentDict objectForKey:XXSharePostJSONContentKey];
+        }else{
+            self.postAudio = [contentDict objectForKey:XXSharePostJSONAudioKey];
+        }
+        
     }
     return self;
 }

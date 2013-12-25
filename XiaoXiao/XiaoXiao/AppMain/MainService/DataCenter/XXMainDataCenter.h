@@ -60,7 +60,7 @@ typedef void (^XXDataCenterCommentDetailBlock)  (XXCommentModel *resultModel);
 - (void)requestPublishCommentWithConditionComment:(XXCommentModel*)conditionComment withSuccess:(XXDataCenterCommentDetailBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
 
 //评论列表
-- (void)requestCommentListWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
+- (void)requestCommentListWithConditionComment:(XXCommentModel*)conditionComment withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
 
 //追捧
 - (void)requestPraisePublishWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
@@ -98,5 +98,7 @@ typedef void (^XXDataCenterCommentDetailBlock)  (XXCommentModel *resultModel);
 //建议反馈
 - (void)requestAdvicePublishWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
 
+//回复我的列表
+- (void)requestReplyMeListWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
 
 @end

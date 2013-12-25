@@ -17,3 +17,4 @@
 #import "XXDataCenterConst.h"
 #import "XXMainDataCenter.h"
 #import "XXUserDataCenter.h"
+#import "XXChatCacheCenter.h"

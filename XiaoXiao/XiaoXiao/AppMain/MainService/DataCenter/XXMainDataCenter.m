@@ -520,19 +520,86 @@
 //发表评论
 - (void)requestPublishCommentWithConditionComment:(XXCommentModel*)conditionComment withSuccess:(XXDataCenterCommentDetailBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
 {
+    if (!conditionComment.resourceId||!conditionComment.resourceType||!conditionComment.rootCommentId) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    if ([conditionComment.postAudioTime isEqualToString:@"0"]) {
+        if (!conditionComment.postContent) {
+            if (faild) {
+                faild(XXLoginErrorInvalidateParam);
+                return;
+            }
+        }
+    }else{
+        if (!conditionComment.postAudio) {
+            if (faild) {
+                faild(XXLoginErrorInvalidateParam);
+                return;
+            }
+        }
+    }
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:conditionComment.resourceId forKey:@"res_id"];
+    [params setObject:conditionComment.resourceType forKey:@"res_type"];
+    if (conditionComment.pCommentId) {
+        [params setObject:conditionComment.pCommentId forKey:@"p_id"];
+    }
+    [params setObject:conditionComment.rootCommentId forKey:@"root_id"];
     
+    //自定义结构体
+    NSMutableDictionary *customContent = [NSMutableDictionary dictionary];
+    if ([conditionComment.postAudioTime isEqualToString:@"0"]) {
+        [customContent setObject:conditionComment.postAudioTime forKey:XXSharePostJSONAudioTime];
+    }else{
+        [customContent setObject:conditionComment.postContent forKey:XXSharePostJSONContentKey];
+    }
+    [customContent setObject:conditionComment.postAudioTime forKey:XXSharePostJSONAudioTime];
+    NSData *customContentData = [NSJSONSerialization dataWithJSONObject:customContent options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *jsonString = [[NSString alloc]initWithData:customContentData encoding:NSUTF8StringEncoding];
+    [params setObject:jsonString forKey:@"content"];
+    
+    [self requestXXRequest:XXRequestTypeCommentPublish withParams:params withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
+        if (success) {
+            DDLogVerbose(@"publish comment :%@",resultDict);
+            success([resultDict objectForKey:@"msg"]);
+        }
+    } withFaild:^(NSString *faildMsg) {
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
 }
 
 //评论列表
 - (void)requestCommentListWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
 {
+    //接口有问题，传递参数太多
     
 }
 
 //追捧
 - (void)requestPraisePublishWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
 {
-    
+    if (!condition.resId||!condition.resType) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    NSDictionary *params = @{@"res_id":condition.resId,@"res_type":condition.resType};
+    [self requestXXRequest:XXRequestTypePraisePublish withParams:params withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
+        DDLogVerbose(@"praise publish count:%@",resultDict);
+        if (success) {
+            success([resultDict objectForKey:@"msg"]);
+        }
+    } withFaild:^(NSString *faildMsg) {
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
 }
 
 //分享列表
@@ -765,8 +832,43 @@
 - (void)requestSameSchoolUsersWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
 {
     if (!condition.schoolId) {
-        
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
     }
+    //
+    NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
+    NSMutableDictionary *getParams = [NSMutableDictionary dictionary];
+    
+    [getParams setObject:condition.pageIndex forKey:@"page"];
+    [postParams setObject:condition.pageSize forKey:@"size"];
+    
+    [postParams setObject:condition.schoolId forKey:@"xuexiao_id"];
+    if (condition.sex) {
+        [postParams setObject:condition.sex forKey:@"sex"];
+    }
+    if (condition.grade) {
+        [postParams setObject:condition.grade forKey:@"grade"];
+    }
+    [self requestXXRequest:XXRequestTypeSameSchoolUsers withPostParams:postParams withGetParams:getParams withSuccess:^(NSDictionary *resultDict) {
+        DDLogVerbose(@"same school result :%@",resultDict);
+        if (success) {
+            NSArray *resultArray = [[resultDict objectForKey:@"data"]objectForKey:@"table"];
+            NSMutableArray *modelArray = [NSMutableArray array];
+            [resultArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                NSDictionary *userItem = (NSDictionary*)obj;
+                XXUserModel *newUser = [[XXUserModel alloc]initWithContentDict:userItem];
+                [modelArray addObject:newUser];
+            }];
+            success(modelArray);
+        }
+    } withFaild:^(NSString *faildMsg) {
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
+
 }
 
 //挑逗
@@ -809,18 +911,88 @@
 //挑逗我的列表
 - (void)requestTeaseMeListWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
 {
+    if (!condition.userId) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
     
+    //param
+    NSMutableDictionary *getParams = [NSMutableDictionary dictionary];
+    [getParams setObject:condition.pageIndex forKey:@"page"];
+    [getParams setObject:condition.pageSize forKey:@"size"];
+    
+    NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
+    [postParams setObject:condition.userId forKey:@"user_id"];
+    
+    [self requestXXRequest:XXRequestTypeTeaseMeList withPostParams:postParams withGetParams:getParams withSuccess:^(NSDictionary *resultDict) {
+        DDLogVerbose(@"tease me list :%@",resultDict);
+        if (success) {
+            NSArray *resultArray = [[resultDict objectForKey:@"data"]objectForKey:@"table"];
+            NSMutableArray *modelArray = [NSMutableArray array];
+            [resultArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                NSDictionary *teaseItem = (NSDictionary*)obj;
+                XXTeaseModel *newTease = [[XXTeaseModel alloc]initWithContentDict:teaseItem];
+                [modelArray addObject:newTease];
+            }];
+            success(modelArray);
+        }
+    } withFaild:^(NSString *faildMsg) {
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
 }
 
 //附近的人
 - (void)requestNearbyUserWithConditionUser:(XXUserModel*)conditionUser withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
 {
-    
+    if (!conditionUser.latitude||!conditionUser.longtitude) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    NSDictionary *params = @{@"lat":conditionUser.latitude,@"lng":conditionUser.longtitude};
+    [self requestXXRequest:XXRequestTypeNearbyUsers withParams:params withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
+        DDLogVerbose(@"nearby success :%@",resultDict);
+        if (success) {
+            NSArray *resultArray = [resultDict objectForKey:@"data"];
+            NSMutableArray *modelArray = [NSMutableArray array];
+            [resultArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                NSDictionary *userItem = (NSDictionary*)obj;
+                XXUserModel *newUser = [[XXUserModel alloc]initWithContentDict:userItem];
+                [modelArray addObject:newUser];
+            }];
+            success(modelArray);
+        }
+    } withFaild:^(NSString *faildMsg) {
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
 }
 
 //建议反馈
 - (void)requestAdvicePublishWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
 {
+    if (!condition.content) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    NSDictionary *params = @{@"content":condition.content};
+    [self requestXXRequest:XXRequestTypeAdvicePublish withParams:params withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
+        if (success) {
+            success([resultDict objectForKey:@"msg"]);
+        }
+    } withFaild:^(NSString *faildMsg) {
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
     
 }
 

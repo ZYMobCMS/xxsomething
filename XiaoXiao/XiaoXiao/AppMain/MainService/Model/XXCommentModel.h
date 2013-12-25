@@ -17,6 +17,10 @@
 @property (nonatomic,strong)NSString *pCommentId;
 @property (nonatomic,strong)NSString *rootCommentId;
 @property (nonatomic,strong)NSString *addTime;
+@property (nonatomic,strong)NSString *postAudio;
+@property (nonatomic,strong)NSString *postAudioTime;
+@property (nonatomic,strong)NSString *postContent;
+@property (nonatomic,strong)NSAttributedString *contentAttributedString;
 
 - (id)initWithContentDict:(NSDictionary*)contentDict;
 

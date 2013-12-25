@@ -37,7 +37,7 @@
         self.status = [contentDict objectForKey:@"status"];
         self.latitude = [contentDict objectForKey:@"lat"];
         self.longtitude = [contentDict objectForKey:@"lng"];
-        
+        self.distance = [contentDict objectForKey:@"MQ_DISTANCE"];
     }
     return self;
 }
@@ -70,7 +70,7 @@
         self.status = [aDecoder decodeObjectForKey:@"status"];
         self.latitude = [aDecoder decodeObjectForKey:@"latitude"];
         self.longtitude = [aDecoder decodeObjectForKey:@"longtitude"];
-
+        
     }
     return self;
 }

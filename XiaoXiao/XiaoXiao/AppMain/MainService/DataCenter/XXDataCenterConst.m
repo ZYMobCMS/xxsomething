@@ -90,6 +90,9 @@
         case XXRequestTypeTeaseUser:
             resultInterface = XX_Tease_User_Interface;
             break;
+        case XXRequestTypeReplyMeList:
+            resultInterface = XX_Reply_Me_List_Interface;
+            break;
             
         default:
             break;
