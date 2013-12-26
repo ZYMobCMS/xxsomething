@@ -36,5 +36,10 @@ typedef enum {
 @property (nonatomic,strong)NSString *userId;
 @property (nonatomic,strong)NSString *sendStatus; //标记这条信息有没有成功被发送出去
 @property (nonatomic,strong)NSAttributedString *messageAttributedContent;//多态内容字段，用于存储到数据库中
+@property (nonatomic,strong)NSString *messageId;
+@property (nonatomic,strong)NSString *isReaded;
+@property (nonatomic,strong)NSString *conversationId;
+
++ (NSString*)conversationIdWithOtherUserId:(NSString*)oId withMyUserId:(NSString*)myId;
 
 @end

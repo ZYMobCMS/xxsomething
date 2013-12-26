@@ -8,14 +8,17 @@
 
 #import <Foundation/Foundation.h>
 #import "FMDatabase.h"
+#import "FMResultSet.h"
 #import "ZYXMPPMessage.h"
 
-#define XXChatMessageCacheDirectory @"xxchat_message_cache"
-#define XXChatMessageTableCreate @"create table xxchat_table(id primary,status,send_user_id,send_user,content,add_time,audio_time,body_content,message_type)"
-
 @interface XXChatCacheCenter : NSObject
+{
+    FMDatabase *_innerDataBase;
+    FMResultSet *_resultSet;
+}
 + (XXChatCacheCenter*)shareCenter;
-+ (void)saveMessage:(ZYXMPPMessage*)newMessage;
-+ (void)saveSomeMessages:(NSArray*)messages;
-+ (NSArray*)getCacheMessagesWithCondition:(XXConditionModel*)condition;
+- (void)saveMessage:(ZYXMPPMessage*)newMessage;
+- (void)saveSomeMessages:(NSArray*)messages;
+- (void)updateMessageSendStatusWithMessageId:(NSString*)messageId;
+- (NSArray*)getCacheMessagesWithCondition:(XXConditionModel*)condition;
 @end

@@ -291,31 +291,59 @@
     
         
     //test upload
-    UIBarButtonItem *uploadItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(loginAction)];
+    UIBarButtonItem *uploadItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(sendMessageTest:)];
     self.navigationItem.leftBarButtonItem = uploadItem;
     
     //test login
     UIBarButtonItem *loginTest = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(testNetworkAPI)];
     self.navigationItem.rightBarButtonItem = loginTest;
     
-//    UIButton *sendTest = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    [sendTest setTitle:@"send" forState:UIControlStateNormal];
-//    sendTest.frame = CGRectMake(80, 150,80,40);
-//    [sendTest addTarget:self action:@selector(sendMessage) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:sendTest];
+    UIButton *sendTest = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [sendTest setTitle:@"send" forState:UIControlStateNormal];
+    sendTest.frame = CGRectMake(80, 150,80,40);
+    [sendTest addTarget:self action:@selector(sendMessageTest:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:sendTest];
+    
+    UIButton *changeBackgroundState = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [changeBackgroundState setTitle:@"change" forState:UIControlStateNormal];
+    changeBackgroundState.frame = CGRectMake(200, 150,80,40);
+    [changeBackgroundState addTarget:self action:@selector(changeBackgroundMode) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:changeBackgroundState];
+    backgroundRecieveMsg = YES;
+}
+- (void)changeBackgroundMode
+{
+    backgroundRecieveMsg = !backgroundRecieveMsg;
+    DDLogVerbose(@"change recieve mode:%d",backgroundRecieveMsg);
+    [[ZYXMPPClient shareClient] setNeedBackgroundRecieve:backgroundRecieveMsg];
+    
+    //test check cache
+    XXConditionModel *condtion = [[XXConditionModel alloc]init];
+    condtion.userId = @"36";
+    condtion.toUserId = @"31";
+    condtion.pageIndex = 0;
+    condtion.pageSize = @"5";
+    NSArray *cacheMessages = [[XXChatCacheCenter shareCenter]getCacheMessagesWithCondition:condtion];
+    DDLogVerbose(@"cache message:%@",cacheMessages);
 }
 //
-- (void)sendMessage
+- (void)sendMessageTest:(UIButton*)sender
 {
     ZYXMPPUser *newUser = [[ZYXMPPUser alloc]init];
-    newUser.jID = @"36";
+    newUser.jID = @"31";
     ZYXMPPMessage *message = [[ZYXMPPMessage alloc]init];
     message.content = @"test send content !!!";
     message.user = @"vincent";
-    message.audioTime = @"";
+    message.audioTime = @"0";
     message.userId = @"36";
-    message.messageType = [NSString stringWithFormat:@"%d",ZYXMPPMessageTypeText];
-    [xmppClient sendMessageToUser:newUser withContent:message];
+    message.sendStatus = @"0";
+    message.conversationId = [NSString stringWithFormat:@"%@_%@",newUser.jID,message.userId];
+    message.messageType = [NSString stringWithFormat:@"%d",ZYXMPPMessageTypeText];    
+    NSString *messageId=[[ZYXMPPClient shareClient]  sendMessageToUser:newUser withContent:message];
+    message.messageId = messageId;
+    if (message.messageId) {
+        [[XXChatCacheCenter shareCenter]saveMessage:message];
+    }
 }
 //================================ API Test ==================//
 - (void)testNetworkAPI
@@ -407,39 +435,45 @@
 //    }];
     
     //测试Xmpp
-//    xmppClient = [[ZYXMPPClient alloc]init];
-//    [xmppClient setNeedAutoJIDWithCustomHostName:YES];
-//    [xmppClient setNeedUseCustomHostAddress:YES];
-//    [xmppClient setJabbredServerAddress:@"112.124.37.183"];
-//    [xmppClient setConnectToServerErrorAction:^(NSString *errMsg) {
-//        [SVProgressHUD showErrorWithStatus:errMsg];
-//    }];
-//    [xmppClient setDidRecievedMessage:^(ZYXMPPMessage *newMessage) {
-//        
-//        //程序运行在前台，消息正常显示
-//        if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
-//        {
-//            NSString *combineContent = [NSString stringWithFormat:@"from:%@\nsend time:%@ \n content:%@",newMessage.user,newMessage.addTime,newMessage.content];
-//            [SVProgressHUD showSuccessWithStatus:combineContent];
-//            
-//        }else{//如果程序在后台运行，收到消息以通知类型来显示
-//            UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-//            localNotification.alertAction = @"Ok";
-//            localNotification.alertBody = [NSString stringWithFormat:@"From: %@\n\n%@",newMessage.user,newMessage.content];//通知主体
-//            localNotification.soundName = @"crunch.wav";//通知声音
-//            localNotification.applicationIconBadgeNumber = 1;//标记数
-//            [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];//发送通知
-//        }
-//        
-//    }];
-//    
-//    [xmppClient setSendMessageFaildAction:^(ZYXMPPMessage *message, ZYXMPPUser *toUser) {
-//        
-//    }];
-//    [xmppClient setSendMessageSuccessAction:^(ZYXMPPMessage *message, ZYXMPPUser *toUser) {
-//        
-//    }];
-//    [xmppClient startClientWithJID:@"36" withPassword:@"123456"];
+    [[ZYXMPPClient shareClient] setNeedAutoJIDWithCustomHostName:YES];
+    [[ZYXMPPClient shareClient]  setNeedUseCustomHostAddress:YES];
+    [[ZYXMPPClient shareClient]  setJabbredServerAddress:@"112.124.37.183"];
+    [[ZYXMPPClient shareClient]  setConnectToServerErrorAction:^(NSString *errMsg) {
+        [SVProgressHUD showErrorWithStatus:errMsg];
+    }];
+    [[ZYXMPPClient shareClient]  setDidRecievedMessage:^(ZYXMPPMessage *newMessage) {
+        
+        //程序运行在前台，消息正常显示
+        if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
+        {
+            NSString *combineContent = [NSString stringWithFormat:@"from:%@\nsend time:%@ \n content:%@",newMessage.user,newMessage.addTime,newMessage.content];
+            [SVProgressHUD showSuccessWithStatus:combineContent];
+            newMessage.isReaded = @"1";
+            [[XXChatCacheCenter shareCenter]saveMessage:newMessage];
+            
+        }else{//如果程序在后台运行，收到消息以通知类型来显示
+            newMessage.isReaded = @"0";
+            if ([[ZYXMPPClient shareClient]backgroundActiveEnbaleState]) {
+                UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+                localNotification.alertAction = @"Ok";
+                localNotification.alertBody = [NSString stringWithFormat:@"From: %@\n\n%@",newMessage.user,newMessage.content];//通知主体
+                localNotification.soundName = @"crunch.wav";//通知声音
+                localNotification.applicationIconBadgeNumber = 1;//标记数
+                [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];//发送通知
+            }else{
+                
+            }
+            [[XXChatCacheCenter shareCenter]saveMessage:newMessage];
+        }
+        
+    }];
+    [[ZYXMPPClient shareClient]  setDidSendMessageSuccessAction:^(NSString *messageId) {
+        DDLogVerbose(@"%@",[NSString stringWithFormat:@"send message :%@ success",messageId]);
+        if (messageId) {
+            [[XXChatCacheCenter shareCenter]updateMessageSendStatusWithMessageId:messageId];
+        }
+    }];
+    [[ZYXMPPClient shareClient]  startClientWithJID:@"36" withPassword:@"123456"];
     
     //分享列表
 //    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{

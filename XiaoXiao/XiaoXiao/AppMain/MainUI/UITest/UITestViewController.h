@@ -10,7 +10,7 @@
 
 @interface UITestViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 {
-    ZYXMPPClient *xmppClient;
+    BOOL backgroundRecieveMsg;
 }
 @property (nonatomic,strong)UITableView *testTable;
 @property (nonatomic,strong)NSMutableArray *sourceArray;

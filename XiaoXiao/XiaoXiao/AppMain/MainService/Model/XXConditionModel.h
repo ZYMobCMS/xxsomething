@@ -27,4 +27,5 @@
 @property (nonatomic,strong)NSString *postId;
 @property (nonatomic,strong)NSString *content;
 @property (nonatomic,strong)NSString *desc;
+@property (nonatomic,strong)NSString *toUserId;
 @end

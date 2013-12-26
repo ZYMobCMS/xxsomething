@@ -28,6 +28,7 @@
 #import "XMPPRosterCoreDataStorage.h"
 #import "XMPPvCardAvatarModule.h"
 #import "XMPPvCardCoreDataStorage.h"
+#import "XMPPMessageDeliveryReceipts.h"
 #import "DDLog.h"
 #import "DDTTYLogger.h"
 
@@ -42,6 +43,7 @@ typedef void (^ZYXMPPClientConnectServerErrorAction) (NSString *errMsg);
 typedef void (^ZYXMPPClientSendMessageFaildAction) (ZYXMPPMessage *message,ZYXMPPUser *toUser);
 typedef void (^ZYXMPPClientSendMessageSuccessAction) (ZYXMPPMessage *message,ZYXMPPUser *toUser);
 typedef void (^ZYXMPPClientDidRecievedMessageAction) (ZYXMPPMessage *newMessage);
+typedef void (^ZYXMPPClientDidSendMessageSuccessAction) (NSString *messageId);
 
 @interface ZYXMPPClient : NSObject<XMPPRosterDelegate,TURNSocketDelegate>
 {
@@ -54,10 +56,12 @@ typedef void (^ZYXMPPClientDidRecievedMessageAction) (ZYXMPPMessage *newMessage)
 	XMPPvCardAvatarModule *xmppvCardAvatarModule;
 	XMPPCapabilities *xmppCapabilities;
 	XMPPCapabilitiesCoreDataStorage *xmppCapabilitiesStorage;
-	
+	XMPPMessageDeliveryReceipts* xmppMessageDeliveryRecipts;
+    
 	NSString *_password;
     NSString *_jId;
     NSString *_serverHost;
+    NSString *originJId;
     BOOL      shouldUseCustomHost;
     NSMutableDictionary *_actions;
 
@@ -66,6 +70,7 @@ typedef void (^ZYXMPPClientDidRecievedMessageAction) (ZYXMPPMessage *newMessage)
 	
 	BOOL isXmppConnected;
     BOOL needAutoHostForJID;
+    BOOL needBackgroundRecieve;
     
     BOOL isTraningFile;//是否正在传输文件
     NSMutableData *fileDataWillTrans;//将要传输的文件数据
@@ -78,6 +83,10 @@ typedef void (^ZYXMPPClientDidRecievedMessageAction) (ZYXMPPMessage *newMessage)
 @property (nonatomic, strong, readonly) XMPPvCardAvatarModule *xmppvCardAvatarModule;
 @property (nonatomic, strong, readonly) XMPPCapabilities *xmppCapabilities;
 @property (nonatomic, strong, readonly) XMPPCapabilitiesCoreDataStorage *xmppCapabilitiesStorage;
+@property (nonatomic, assign, readonly) BOOL hasConfigedClient;
+@property (nonatomic, assign, readonly) BOOL backgroundActiveEnbaleState;
+
++ (ZYXMPPClient*)shareClient;
 
 - (NSManagedObjectContext *)managedObjectContext_roster;
 - (NSManagedObjectContext *)managedObjectContext_capabilities;
@@ -87,10 +96,10 @@ typedef void (^ZYXMPPClientDidRecievedMessageAction) (ZYXMPPMessage *newMessage)
 - (void)startClientWithJID:(NSString *)jidString withPassword:(NSString*)password;
 - (void)setStartClientSuccessAction:(ZYXMPPClientStartSuccessAction)successAction;
 - (void)setStartClientFaildAction:(ZYXMPPClientStartFaildAction)faildAction;
-
+- (void)setDidSendMessageSuccessAction:(ZYXMPPClientDidSendMessageSuccessAction)successAction;
 - (void)setConnectToServerErrorAction:(ZYXMPPClientConnectServerErrorAction)errorAction;
 
-- (void)sendMessageToUser:(ZYXMPPUser *)toUser withContent:(ZYXMPPMessage*)newMessage;
+- (NSString*)sendMessageToUser:(ZYXMPPUser *)toUser withContent:(ZYXMPPMessage*)newMessage;
 - (void)setSendMessageSuccessAction:(ZYXMPPClientSendMessageSuccessAction)successAction;
 - (void)setSendMessageFaildAction:(ZYXMPPClientSendMessageFaildAction)faildAction;
 
@@ -98,7 +107,11 @@ typedef void (^ZYXMPPClientDidRecievedMessageAction) (ZYXMPPMessage *newMessage)
 
 - (void)setNeedUseCustomHostAddress:(BOOL)shouldUse;
 - (void)setJabbredServerAddress:(NSString*)address;
+- (void)setNeedBackgroundRecieve:(BOOL)needBackground;
 
+- (void)clientTearDown;
+- (BOOL)connect;
+- (void)disconnect;
 //-----流传送socket5byte扩展
 - (void)sendFileWithData:(NSData*)fileData withFileName:(NSString*)fileName toJID:(NSString*)jID;
 

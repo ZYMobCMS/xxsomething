@@ -9,4 +9,8 @@
 #import "ZYXMPPMessage.h"
 
 @implementation ZYXMPPMessage
++ (NSString*)conversationIdWithOtherUserId:(NSString *)oId withMyUserId:(NSString *)myId
+{
+    return [NSString stringWithFormat:@"%@_%@",oId,myId];
+}
 @end

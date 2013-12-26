@@ -27,6 +27,7 @@
 @synthesize xmppvCardAvatarModule;
 @synthesize xmppCapabilities;
 @synthesize xmppCapabilitiesStorage;
+@synthesize hasConfigedClient;
 
 #pragma mark - init 
 - (id)init
@@ -34,11 +35,25 @@
     if (self = [super init]) {
         
         _actions = [[NSMutableDictionary alloc]init];
-        
-        
+        needBackgroundRecieve = YES;//默认后台接收消息
+        // Setup the XMPP stream
+        [self setupStream];
     }
     return self;
 }
+
++ (ZYXMPPClient*)shareClient
+{
+    static ZYXMPPClient *chatClient = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        if (!chatClient) {
+            chatClient = [[ZYXMPPClient alloc]init];
+        }
+    });
+    return chatClient;
+}
+
 - (void)dealloc
 {
 	[self teardownStream];
@@ -58,23 +73,20 @@
         return;
     }
     
+    if (isXmppConnected) {
+        return;
+    }
+    if ([xmppStream isConnected]) {
+        return;
+    }
+    
     _jId = jidString;
+    originJId = jidString;
     if (needAutoHostForJID) {
         _jId = [NSString stringWithFormat:@"%@@%@",_jId,_serverHost];
     }
     _password = password;
-    
-    // Configure logging framework
-	
-	[DDLog addLogger:[DDTTYLogger sharedInstance]];
-    
-    // Setup the XMPP stream
-    if (isXmppConnected) {
-        return;
-    }
-    
-	[self setupStream];
-    
+
     if (![self connect])
 	{
 		if ([_actions objectForKey:@"clientStartFaild"]) {
@@ -90,13 +102,26 @@
             [self goOnline];
         }
     }
-    
-    
-    
+}
+- (void)clientTearDown
+{
+    [self disconnect];
+    [self teardownStream];
 }
 - (void)setJabbredServerAddress:(NSString *)address
 {
     _serverHost = address;
+}
+- (void)setNeedBackgroundRecieve:(BOOL)needBackground
+{
+    if (needBackground==needBackgroundRecieve) {
+        return;
+    }
+    needBackgroundRecieve = needBackground;
+}
+- (BOOL)backgroundActiveEnbaleState
+{
+    return needBackgroundRecieve;
 }
 - (void)setNeedUseCustomHostAddress:(BOOL)shouldUse
 {
@@ -126,6 +151,10 @@
 {
     [_actions setObject:recievedAction forKey:@"recieveMessageSuccess"];
 }
+- (void)setDidSendMessageSuccessAction:(ZYXMPPClientDidSendMessageSuccessAction)successAction
+{
+    [_actions setObject:successAction forKey:@"didSendMessageSuccess"];
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark Send  Message  and Recieve Message
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -139,9 +168,8 @@
     
     return currentDateTime;
 }
-- (void)sendMessageToUser:(ZYXMPPUser *)toUser withContent:(ZYXMPPMessage *)newMessage
+- (NSString*)sendMessageToUser:(ZYXMPPUser *)toUser withContent:(ZYXMPPMessage *)newMessage
 {
-	
     if (needAutoHostForJID) {
         toUser.jID = [NSString stringWithFormat:@"%@@%@",toUser.jID,_serverHost];
     }
@@ -162,8 +190,11 @@
         }
         NSXMLElement *audioTime = [NSXMLElement elementWithName:@"audio_time"];
         [audioTime setStringValue:newMessage.audioTime];
-        
-		NSXMLElement *message = [NSXMLElement elementWithName:@"message"];
+        NSXMLElement *receipt = [NSXMLElement elementWithName:@"request" xmlns:@"urn:xmpp:receipts"];
+
+        NSString *siID = [XMPPStream generateUUID];
+        XMPPJID *receiptUser = [XMPPJID jidWithString:toUser.jID];
+        XMPPMessage *message = [XMPPMessage messageWithType:@"chat" to:receiptUser elementID:siID];
 		[message addAttributeWithName:@"type" stringValue:@"chat"];
 		[message addAttributeWithName:@"to" stringValue:toUser.jID];
 		[message addChild:body];
@@ -172,12 +203,23 @@
         [message addChild:sendUserId];
         [message addChild:addTime];
         [message addChild:audioTime];
-
-		
-		[xmppStream sendElement:message];
+        [message addChild:receipt];
+        
+        DDLogVerbose(@"send message once time!");
+        [self.xmppStream sendElement:message];
+        
+        //将这条信息的Id返回，以判断是否发送成功
+        if ([message attributeStringValueForName:@"id"]) {
+            DDLogVerbose(@"send message id :%@",[message attributeStringValueForName:@"id"]);
+            return [message attributeStringValueForName:@"id"];
+        }else{
+            return nil;
+        }
+        
+	}else{
+        return nil;
+    }
     
-	}
-
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark XMPPStream Delegate
@@ -253,7 +295,6 @@
 	
 	NSError *error = nil;
 	
-    DDLogVerbose(@"will login password:%@",_password);
 	if (![[self xmppStream] authenticateWithPassword:_password error:&error])
 	{
 		DDLogError(@"Error authenticating: %@", error);
@@ -284,20 +325,51 @@
 	DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
     
 	// A simple example of inbound message handling.
+    if(![_jId isEqual:[message from]]) return;
     
-	if ([message isChatMessageWithBody])
-	{
-		NSString *body = [[message elementForName:@"body"] stringValue];
-		NSString *displayName = [[message elementForName:@"send_user"]stringValue];
+    //回执判断
+    NSXMLElement *request = [message elementForName:@"request"];
+    if (request)
+    {
+        if ([request.xmlns isEqualToString:@"urn:xmpp:receipts"])//消息回执
+        {
+            //组装消息回执
+            XMPPMessage *msg = [XMPPMessage messageWithType:[message attributeStringValueForName:@"type"] to:message.from elementID:[message attributeStringValueForName:@"id"]];
+            NSXMLElement *recieved = [NSXMLElement elementWithName:@"received" xmlns:@"urn:xmpp:receipts"];
+            [msg addChild:recieved];
+            
+            //发送回执
+            [self.xmppStream sendElement:msg];
+        }
+    }else
+    {
+        NSXMLElement *received = [message elementForName:@"received"];
+        if (received)
+        {
+            if ([received.xmlns isEqualToString:@"urn:xmpp:receipts"])//消息回执
+            {
+                //发送成功
+                if ([_actions objectForKey:@"didSendMessageSuccess"]) {
+                    ZYXMPPClientDidSendMessageSuccessAction didSendSuccess = [_actions objectForKey:@"didSendMessageSuccess"];
+                    didSendSuccess([message attributeStringValueForName:@"id"]);
+                }
+            }
+        }
+    }
+    //聊天消息
+    if ([message isChatMessageWithBody])
+    {
+        NSString *body = [[message elementForName:@"body"] stringValue];
+        NSString *displayName = [[message elementForName:@"send_user"]stringValue];
         NSString *addTime = [[message elementForName:@"add_time"]stringValue];
         NSString *audioTime = [[message elementForName:@"audio_time"]stringValue];
         NSString *messageType = [[message elementForName:@"message_type"]stringValue];
         NSString *sendUserId = [[message elementForName:@"send_user_id"]stringValue];
+        NSString *messageId = [message attributeStringValueForName:@"id"];
         
-		if ([_actions objectForKey:@"recieveMessageSuccess"]) {
+        if ([_actions objectForKey:@"recieveMessageSuccess"]) {
             
             ZYXMPPClientDidRecievedMessageAction recieveAction = [_actions objectForKey:@"recieveMessageSuccess"];
-            
             ZYXMPPMessage *newMessage = [[ZYXMPPMessage alloc]init];
             newMessage.user = displayName;
             newMessage.content = body;
@@ -305,9 +377,12 @@
             newMessage.audioTime = audioTime;
             newMessage.messageType = messageType;
             newMessage.userId = sendUserId;
+            newMessage.sendStatus = @"1";
+            newMessage.messageId = messageId;
+            newMessage.conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:newMessage.userId withMyUserId:originJId];
             recieveAction (newMessage);
         }
-	}
+    }
 }
 
 - (void)xmppStream:(XMPPStream *)sender didReceivePresence:(XMPPPresence *)presence
@@ -337,44 +412,6 @@
 - (void)xmppRoster:(XMPPRoster *)sender didReceiveBuddyRequest:(XMPPPresence *)presence
 {
 	DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
-	
-	XMPPUserCoreDataStorageObject *user = [xmppRosterStorage userForJID:[presence from]
-	                                                         xmppStream:xmppStream
-	                                               managedObjectContext:[self managedObjectContext_roster]];
-	
-	NSString *displayName = [user displayName];
-	NSString *jidStrBare = [presence fromStr];
-	NSString *body = nil;
-	
-	if (![displayName isEqualToString:jidStrBare])
-	{
-		body = [NSString stringWithFormat:@"Buddy request from %@ <%@>", displayName, jidStrBare];
-	}
-	else
-	{
-		body = [NSString stringWithFormat:@"Buddy request from %@", displayName];
-	}
-	
-	
-	if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
-	{
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:displayName
-		                                                    message:body
-		                                                   delegate:nil
-		                                          cancelButtonTitle:@"Not implemented"
-		                                          otherButtonTitles:nil];
-		[alertView show];
-	}
-	else
-	{
-		// We are not active, so use a local notification instead
-		UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-		localNotification.alertAction = @"Not implemented";
-		localNotification.alertBody = body;
-		
-		[[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
-	}
-	
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -418,7 +455,7 @@
 		//        If you do enableBackgroundingOnSocket on the simulator,
 		//        you will simply see an error message from the xmpp stack when it fails to set the property.
 		
-		xmppStream.enableBackgroundingOnSocket = YES;
+		xmppStream.enableBackgroundingOnSocket = needBackgroundRecieve;
 	}
 #endif
 	
@@ -440,24 +477,29 @@
 	// You can do it however you like! It's your application.
 	// But you do need to provide the roster with some storage facility.
 	
-	xmppRosterStorage = [[XMPPRosterCoreDataStorage alloc] init];
-    //	xmppRosterStorage = [[XMPPRosterCoreDataStorage alloc] initWithInMemoryStore];
+//	xmppRosterStorage = [[XMPPRosterCoreDataStorage alloc] init];
+//    xmppRosterStorage = [[XMPPRosterCoreDataStorage alloc] initWithInMemoryStore];
 	
-	xmppRoster = [[XMPPRoster alloc] initWithRosterStorage:xmppRosterStorage];
+//	xmppRoster = [[XMPPRoster alloc] initWithRosterStorage:xmppRosterStorage];
 	
-	xmppRoster.autoFetchRoster = YES;
-	xmppRoster.autoAcceptKnownPresenceSubscriptionRequests = YES;
+//	xmppRoster.autoFetchRoster = YES;
+//	xmppRoster.autoAcceptKnownPresenceSubscriptionRequests = YES;
 	
 	// Setup vCard support
 	//
 	// The vCard Avatar module works in conjuction with the standard vCard Temp module to download user avatars.
 	// The XMPPRoster will automatically integrate with XMPPvCardAvatarModule to cache roster photos in the roster.
 	
-	xmppvCardStorage = [XMPPvCardCoreDataStorage sharedInstance];
-	xmppvCardTempModule = [[XMPPvCardTempModule alloc] initWithvCardStorage:xmppvCardStorage];
+//	xmppvCardStorage = [XMPPvCardCoreDataStorage sharedInstance];
+//	xmppvCardTempModule = [[XMPPvCardTempModule alloc] initWithvCardStorage:xmppvCardStorage];
+//	
+//	xmppvCardAvatarModule = [[XMPPvCardAvatarModule alloc] initWithvCardTempModule:xmppvCardTempModule];
 	
-	xmppvCardAvatarModule = [[XMPPvCardAvatarModule alloc] initWithvCardTempModule:xmppvCardTempModule];
-	
+    //消息回执
+//    xmppMessageDeliveryRecipts = [[XMPPMessageDeliveryReceipts alloc] initWithDispatchQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
+//    xmppMessageDeliveryRecipts.autoSendMessageDeliveryReceipts = YES;
+//    xmppMessageDeliveryRecipts.autoSendMessageDeliveryRequests = YES;
+    
 	// Setup capabilities
 	//
 	// The XMPPCapabilities module handles all the complex hashing of the caps protocol (XEP-0115).
@@ -477,24 +519,25 @@
 	// The XMPPCapabilitiesCoreDataStorage is an ideal solution.
 	// It can also be shared amongst multiple streams to further reduce hash lookups.
 	
-	xmppCapabilitiesStorage = [XMPPCapabilitiesCoreDataStorage sharedInstance];
-    xmppCapabilities = [[XMPPCapabilities alloc] initWithCapabilitiesStorage:xmppCapabilitiesStorage];
-    
-    xmppCapabilities.autoFetchHashedCapabilities = YES;
-    xmppCapabilities.autoFetchNonHashedCapabilities = NO;
+//	xmppCapabilitiesStorage = [XMPPCapabilitiesCoreDataStorage sharedInstance];
+//    xmppCapabilities = [[XMPPCapabilities alloc] initWithCapabilitiesStorage:xmppCapabilitiesStorage];
+//    
+//    xmppCapabilities.autoFetchHashedCapabilities = YES;
+//    xmppCapabilities.autoFetchNonHashedCapabilities = NO;
     
 	// Activate xmpp modules
     
-	[xmppReconnect         activate:xmppStream];
-	[xmppRoster            activate:xmppStream];
-	[xmppvCardTempModule   activate:xmppStream];
-	[xmppvCardAvatarModule activate:xmppStream];
-	[xmppCapabilities      activate:xmppStream];
+//	[xmppReconnect         activate:xmppStream];
+//	[xmppRoster            activate:xmppStream];
+//	[xmppvCardTempModule   activate:xmppStream];
+//	[xmppvCardAvatarModule activate:xmppStream];
+//	[xmppCapabilities      activate:xmppStream];
+    [xmppMessageDeliveryRecipts activate:xmppStream];
     
 	// Add ourself as a delegate to anything we may be interested in
     
-	[xmppStream addDelegate:self delegateQueue:dispatch_get_main_queue()];
-	[xmppRoster addDelegate:self delegateQueue:dispatch_get_main_queue()];
+	[xmppStream addDelegate:self delegateQueue:dispatch_get_current_queue()];
+//	[xmppRoster addDelegate:self delegateQueue:dispatch_get_main_queue()];
     
 	// Optional:
 	//
@@ -512,6 +555,7 @@
     }
 //    [xmppStream setHostPort:5222];
 	
+
     
 	// You may need to alter these settings depending on the server you're connecting to
 	allowSelfSignedCertificates = NO;
@@ -521,25 +565,27 @@
 - (void)teardownStream
 {
 	[xmppStream removeDelegate:self];
-	[xmppRoster removeDelegate:self];
+//	[xmppRoster removeDelegate:self];
 	
 	[xmppReconnect         deactivate];
-	[xmppRoster            deactivate];
-	[xmppvCardTempModule   deactivate];
-	[xmppvCardAvatarModule deactivate];
-	[xmppCapabilities      deactivate];
+//	[xmppRoster            deactivate];
+//	[xmppvCardTempModule   deactivate];
+//	[xmppvCardAvatarModule deactivate];
+//	[xmppCapabilities      deactivate];
+    [xmppMessageDeliveryRecipts deactivate];
 	
 	[xmppStream disconnect];
 	
 	xmppStream = nil;
 	xmppReconnect = nil;
-    xmppRoster = nil;
-	xmppRosterStorage = nil;
-	xmppvCardStorage = nil;
-    xmppvCardTempModule = nil;
-	xmppvCardAvatarModule = nil;
-	xmppCapabilities = nil;
-	xmppCapabilitiesStorage = nil;
+    xmppMessageDeliveryRecipts=nil;
+//    xmppRoster = nil;
+//	xmppRosterStorage = nil;
+//	xmppvCardStorage = nil;
+//    xmppvCardTempModule = nil;
+//	xmppvCardAvatarModule = nil;
+//	xmppCapabilities = nil;
+//	xmppCapabilitiesStorage = nil;
 }
 
 // It's easy to create XML elments to send and to read received XML elements.
@@ -617,6 +663,7 @@
 	[self goOffline];
 	[xmppStream disconnect];
 }
+
 
 //================================ turnsocket 文件传输  ===================
 - (void)sendFileWithData:(NSData *)fileData withFileName:(NSString *)fileName toJID:(NSString *)jID
