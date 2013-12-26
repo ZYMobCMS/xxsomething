@@ -100,10 +100,11 @@
         DDLogVerbose(@"query cache message need two user id to find conversation");
         return nil;
     }
-    NSString *conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:condition.userId withMyUserId:condition.toUserId];
+    NSString *conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:condition.toUserId withMyUserId:condition.userId];
     
     NSString *querySql = [NSString stringWithFormat:@"select * from xxchat_table where conversation_id='%@' limit %d,%d",conversationId,[condition.pageIndex intValue],[condition.pageSize intValue]];
     
+    DDLogVerbose(@"query sql --->%@",querySql);
     NSMutableArray *modelArray = [NSMutableArray array];
     FMResultSet *resultSet = [_innerDataBase executeQuery:querySql];
     while ([resultSet next]) {
