@@ -17,5 +17,8 @@
 #import "SVProgressHUD.h"
 #import "MBProgressHUD.h"
 #import "UIImage+Resize.h"
+#import "SDWebImageManager.h"
+#import "DAProgressOverlayView.h"
+#import "UIImageView+WebCache.h"
 #import "ZYXMPPClient.h"
 #import "SSZipArchive.h"

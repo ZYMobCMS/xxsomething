@@ -29,6 +29,8 @@
 #import "XMPPvCardAvatarModule.h"
 #import "XMPPvCardCoreDataStorage.h"
 #import "XMPPMessageDeliveryReceipts.h"
+#import "XMPPMUC.h"
+#import "XMPPRoom.h"
 #import "DDLog.h"
 #import "DDTTYLogger.h"
 
@@ -57,6 +59,8 @@ typedef void (^ZYXMPPClientDidSendMessageSuccessAction) (NSString *messageId);
 	XMPPCapabilities *xmppCapabilities;
 	XMPPCapabilitiesCoreDataStorage *xmppCapabilitiesStorage;
 	XMPPMessageDeliveryReceipts* xmppMessageDeliveryRecipts;
+    
+    //聊天室
     
 	NSString *_password;
     NSString *_jId;

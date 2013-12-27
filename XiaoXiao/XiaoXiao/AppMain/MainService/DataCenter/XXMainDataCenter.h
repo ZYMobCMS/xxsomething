@@ -18,7 +18,6 @@ typedef void (^XXDataCenterCommentDetailBlock)  (XXCommentModel *resultModel);
 typedef void (^XXDataCenterRequestSchoolDataBaseUpdateSuccessBlock) (NSString *newDataBaseUrl,NSString *newVersion);
 
 @interface XXMainDataCenter : NSObject
-
 + (XXMainDataCenter*)shareCenter;
 
 //上传文件
@@ -104,5 +103,8 @@ typedef void (^XXDataCenterRequestSchoolDataBaseUpdateSuccessBlock) (NSString *n
 
 //下载文件
 - (void)downloadFileWithLinkPath:(NSString*)linkPath WithDestSavePath:(NSString*)savePath withSuccess:(XXDataCenterRequestSuccessMsgBlock)sucess withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
+
+//退出上传请求
+- (void)cancelAllUploadRequest;
 
 @end

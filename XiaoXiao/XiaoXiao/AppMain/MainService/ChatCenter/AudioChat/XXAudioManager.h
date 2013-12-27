@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
+#import "XXMainDataCenter.h"
 
-typedef void (^XXAudioManagerFinishRecordBlock) (NSURL *audioTempURL);
+typedef void (^XXAudioManagerFinishRecordBlock) (NSString *audioSavePath);
 
 @interface XXAudioManager : NSObject <AVAudioRecorderDelegate, AVAudioPlayerDelegate>
 {
@@ -24,6 +25,8 @@ typedef void (^XXAudioManagerFinishRecordBlock) (NSURL *audioTempURL);
 - (void)audioManagerEndRecord;
 
 - (void)audioManagerPlayAudioForRemoteAMRUrl:(NSString*)remoteAMRUrl;
+
+- (NSString*)getFileNameFromUrl:(NSString*)urlString;
 
 //自己录音的时候，保存一个与远程服务器的映射
 - (void)saveLocalAudioFile:(NSString*)localFilePath forRemoteAMRFile:(NSString*)remoteAMRUrl;

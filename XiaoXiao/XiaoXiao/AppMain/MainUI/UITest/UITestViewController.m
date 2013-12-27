@@ -295,22 +295,32 @@
     self.navigationItem.leftBarButtonItem = uploadItem;
     
     //test login
-    UIBarButtonItem *loginTest = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(testNetworkAPI)];
+    UIBarButtonItem *loginTest = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(uploadTest)];
     self.navigationItem.rightBarButtonItem = loginTest;
     
-//    UIButton *sendTest = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    [sendTest setTitle:@"send" forState:UIControlStateNormal];
-//    sendTest.frame = CGRectMake(80, 150,80,40);
-//    [sendTest addTarget:self action:@selector(sendMessageTest:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:sendTest];
-//    
-//    UIButton *changeBackgroundState = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    [changeBackgroundState setTitle:@"change" forState:UIControlStateNormal];
-//    changeBackgroundState.frame = CGRectMake(200, 150,80,40);
-//    [changeBackgroundState addTarget:self action:@selector(changeBackgroundMode) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:changeBackgroundState];
-//    backgroundRecieveMsg = YES;
-//    
+    //cancel request
+    UIButton *sendTest = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [sendTest setTitle:@"send" forState:UIControlStateNormal];
+    sendTest.frame = CGRectMake(80, 150,80,40);
+    [sendTest addTarget:self action:@selector(startRecord) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:sendTest];
+    
+    //image test
+//    testDownload = [[XXImageView alloc]initWithFrame:CGRectMake(40,210,80,80) withNeedOverlay:YES];
+//    [self.view addSubview:testDownload];
+//
+//    testUpload = [[XXImageView alloc]initWithFrame:CGRectMake(130,220,80,80) withNeedOverlay:YES];
+//    [self.view addSubview:testUpload];
+    
+    
+//
+    UIButton *changeBackgroundState = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [changeBackgroundState setTitle:@"change" forState:UIControlStateNormal];
+    changeBackgroundState.frame = CGRectMake(200, 150,80,40);
+    [changeBackgroundState addTarget:self action:@selector(endRecord) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:changeBackgroundState];
+    backgroundRecieveMsg = YES;
+//
 //    UIButton *persistMessages = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 //    [persistMessages setTitle:@"persist" forState:UIControlStateNormal];
 //    persistMessages.frame = CGRectMake(150, 210,80,40);
@@ -320,22 +330,70 @@
 //    messageShowTextView = [[XXBaseTextView alloc]initWithFrame:CGRectMake(20,255,280,225)];
 //    [self.view addSubview:messageShowTextView];
     
-    inputTextField = [[UITextField alloc]init];
-    inputTextField.borderStyle = UITextBorderStyleRoundedRect;
-    inputTextField.frame = CGRectMake(10,5,300,40);
-    inputTextField.delegate = self;
-    [self.view addSubview:inputTextField];
-    //
-    searchTable = [[UITableView alloc]init];
-    searchTable.frame = CGRectMake(0,45,320,self.view.frame.size.height-44-40-80);
-    searchTable.delegate = self;
-    searchTable.dataSource = self;
-    [self.view addSubview:searchTable];
-    keywordCurrentPage = 0;
-    keywordCurrentPage = 15;
+//    inputTextField = [[UITextField alloc]init];
+//    inputTextField.borderStyle = UITextBorderStyleRoundedRect;
+//    inputTextField.frame = CGRectMake(10,5,300,40);
+//    inputTextField.delegate = self;
+//    [self.view addSubview:inputTextField];
+//    //
+//    searchTable = [[UITableView alloc]init];
+//    searchTable.frame = CGRectMake(0,45,320,self.view.frame.size.height-44-40-80);
+//    searchTable.delegate = self;
+//    searchTable.dataSource = self;
+//    [self.view addSubview:searchTable];
+//    keywordCurrentPage = 0;
+//    keywordCurrentPage = 15;
+//    
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(valueChanged:) name:UITextFieldTextDidChangeNotification object:nil];
     
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(valueChanged:) name:UITextFieldTextDidChangeNotification object:nil];
 }
+- (void)startRecord
+{
+    [[XXAudioManager shareManager]audioManagerStartRecordWithFinishRecordAction:^(NSString *audioSavePath) {
+        
+        //发送到服务器
+        DDLogVerbose(@"audio tempUrl:%@",audioSavePath);
+        NSData *armdata = [NSData dataWithContentsOfFile:audioSavePath];
+        NSString *fileName = [[XXAudioManager shareManager]getFileNameFromUrl:audioSavePath];
+        NSString *fileWithExtension = [fileName stringByAppendingPathExtension:@"amr"];        
+        DDLogVerbose(@"rocord final file:%@",fileWithExtension);
+        [[XXMainDataCenter shareCenter]uploadFileWithData:armdata withFileName:fileWithExtension withUploadProgressBlock:^(CGFloat progressValue) {
+            [SVProgressHUD showProgress:progressValue status:@"正在发送..."];
+        } withSuccessBlock:^(XXAttachmentModel *resultModel) {
+            [SVProgressHUD showSuccessWithStatus:@"发送成功"];
+            [[XXAudioManager shareManager]saveLocalAudioFile:audioSavePath forRemoteAMRFile:resultModel.link];
+            DDLogVerbose(@"new audio:%@",resultModel);
+        } withFaildBlock:^(NSString *faildMsg) {
+            [SVProgressHUD showErrorWithStatus:faildMsg];
+        }];
+    }];
+}
+- (void)endRecord
+{
+    [[XXAudioManager shareManager]audioManagerEndRecord];
+}
+
+- (void)imageTest
+{
+    [testDownload setImageUrl:@"http://g.hiphotos.baidu.com/image/h%3D800%3Bcrop%3D0%2C0%2C1280%2C800/sign=a23c3c1a95dda144c50961b2828cb3d0/d439b6003af33a8747bb9813c45c10385243b5e1.jpg"];
+    
+    [testUpload setContentImage:[UIImage imageNamed:@"af.jpeg"]];
+        NSData *fileData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"love" ofType:@"mp3"]];
+    [[XXMainDataCenter shareCenter]uploadFileWithData:fileData withFileName:@"test.jpg" withUploadProgressBlock:^(CGFloat progressValue) {
+        [testUpload uploadImageWithProgress:progressValue];
+    } withSuccessBlock:^(XXAttachmentModel *resultModel) {
+        
+    } withFaildBlock:^(NSString *faildMsg) {
+        
+    }];
+}
+
+- (void)cancelUpload
+{
+    [[XXMainDataCenter shareCenter]cancelAllUploadRequest];
+    [SVProgressHUD showSuccessWithStatus:@"cancel upload"];
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
@@ -640,8 +698,8 @@
 }
 - (void)uploadTest
 {
-//    NSData *fileData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"love" ofType:@"mp3"]];
-    NSData *fileData = UIImageJPEGRepresentation([UIImage imageNamed:@"af.jpeg"],0.5);
+    NSData *fileData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"love" ofType:@"mp3"]];
+//    NSData *fileData = UIImageJPEGRepresentation([UIImage imageNamed:@"af.jpeg"],0.5);
     
     DDLogVerbose(@"file data length -->%d",fileData.length);
     [[XXMainDataCenter shareCenter]uploadFileWithData:fileData withFileName:@"head.jpeg" withUploadProgressBlock:^(CGFloat progressValue) {

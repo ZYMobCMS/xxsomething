@@ -117,7 +117,6 @@
 
 - (NSURL*)buildRecordSavePath
 {
-    
     //template file name
     NSString *soundFileName = [NSString stringWithFormat:@"%@.wav",[self getCurrentTimeString]] ;
     
@@ -182,7 +181,7 @@
         NSString *amrFile = [NSString stringWithFormat:@"%@.amr",[self getFileNameFromUrl:self.audioRecorder.url.absoluteString]];
         [VoiceConverter wavToAmr:self.audioRecorder.url.absoluteString amrSavePath:[self buildCachePathForFileName:amrFile]];
         if (_finishBlock) {
-            _finishBlock([NSURL URLWithString:[self buildCachePathForFileName:amrFile]]);
+            _finishBlock([self buildCachePathForFileName:amrFile]);
         }
     }
 }
@@ -258,10 +257,13 @@
         }
         
     });
-    
-    
 }
 
+//录音结束立马发送
+- (void)audioManagerStartRecordWithFinishRecordAction
+{
+    
+}
 
 
 @end

@@ -111,8 +111,8 @@ static dispatch_queue_t XXCacheCenterQueue = nil;
 
 - (void)searchSchoolWithKeyword:(NSString *)keyword withResult:(void (^)(NSArray *))result withPageIndex:(NSInteger)pageIndex withPageSize:(NSInteger)pageSize
 {
-    NSString *likeKeyword = [NSString stringWithFormat:@"%@%",keyword];
-    NSString *searchSql = [NSString stringWithFormat:@"select * from school where name like '%%%@%%' limit %d,%d",keyword,pageIndex,pageSize];
+    NSInteger startIndex = pageIndex*pageSize;
+    NSString *searchSql = [NSString stringWithFormat:@"select * from school where name like '%%%@%%' limit %d,%d",keyword,startIndex,pageSize];
     DDLogVerbose(@"search sql -->%@",searchSql);
     NSMutableArray *resultModelArray = [NSMutableArray array];
     

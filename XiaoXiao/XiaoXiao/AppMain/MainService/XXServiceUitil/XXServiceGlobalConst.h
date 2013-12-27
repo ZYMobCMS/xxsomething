@@ -19,3 +19,4 @@
 #import "XXMainDataCenter.h"
 #import "XXUserDataCenter.h"
 #import "XXChatCacheCenter.h"
+#import "XXAudioManager.h"

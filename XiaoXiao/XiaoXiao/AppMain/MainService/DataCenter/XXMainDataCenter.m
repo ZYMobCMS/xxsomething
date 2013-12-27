@@ -18,7 +18,6 @@
 #define XXDefaultString @"xxdefault"
 
 @implementation XXMainDataCenter
-
 + (XXMainDataCenter*)shareCenter
 {
     static XXMainDataCenter *_sharedCenter = nil;
@@ -43,7 +42,6 @@
 //纯POST
 - (void)requestXXRequest:(XXRequestType)requestType withParams:(NSDictionary *)params withHttpMethod:(NSString *)method withSuccess:(void (^)(NSDictionary *resultDict))success withFaild:(void (^)(NSString *faildMsg))faild
 {
-    
     //是否存在网络
     [self checkNetWorkWithFaildBlck:faild];
     
@@ -71,8 +69,7 @@
             faild([error description]);
         }
         
-    }];
-    
+    }];   
 }
 //POST,GET混合
 - (void)requestXXRequest:(XXRequestType)requestType withPostParams:(NSDictionary*)pParams withGetParams:(NSDictionary*)gParams withSuccess:(void (^)(NSDictionary *resultDict))success withFaild:(void(^)(NSString *faildMsg))faild
@@ -87,8 +84,7 @@
     
     [[XXHTTPClient shareClient] postPath:interfaceUrl parameters:pParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSDictionary *resultDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-//        NSDictionary *resultDict = (NSDictionary*)responseObject;
+        NSDictionary *resultDict = (NSDictionary*)responseObject;
 
         //解析对错
         int status = [[resultDict objectForKey:@"ret"]intValue];
@@ -193,15 +189,17 @@
         }
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        if (faild) {
-            faild([error description]);
+        if (error.code!=-999) {
+            if (faild) {
+                faild([error description]);
+            }
         }
     }];
     [jsonRequest setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
         
         CGFloat uploadKbSize = totalBytesWritten/1024.0f;
         CGFloat totoalSize = totalBytesExpectedToWrite/1024.0f;
-        CGFloat uploadProgressValue = uploadKbSize/totoalSize;
+        CGFloat uploadProgressValue = (uploadKbSize/1024.f)/(totoalSize/1024.f);
 
         if (uploadProgressBlock) {
             uploadProgressBlock(uploadProgressValue);
@@ -867,7 +865,6 @@
             faild(faildMsg);
         }
     }];
-
 }
 
 //挑逗
@@ -1046,6 +1043,11 @@
         DDLogVerbose(@"download complete!");
     }];
     [[XXHTTPClient shareClient] enqueueHTTPRequestOperation:downloadOperation];
+}
+
+- (void)cancelAllUploadRequest
+{
+    [[XXHTTPClient shareClient]cancelAllHTTPOperationsWithMethod:@"POST" path:[XXDataCenterConst switchRequestTypeToInterfaceUrl:XXRequestTypeUploadFile]];
 }
 
 @end

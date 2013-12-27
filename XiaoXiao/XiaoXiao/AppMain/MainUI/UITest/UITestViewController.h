@@ -18,6 +18,9 @@
     NSInteger keywordCurrentPage;
     NSInteger keywordPageSize;
     BOOL needLoadMore;
+    NSString *uploadFlag;
+    XXImageView *testDownload;
+    XXImageView *testUpload;
 }
 @property (nonatomic,strong)UITableView *testTable;
 @property (nonatomic,strong)NSMutableArray *sourceArray;

@@ -27,7 +27,6 @@
         self.description = [contentDict objectForKey:@"description"];
         self.link = [contentDict objectForKey:@"link"];
         self.fileName = [contentDict objectForKey:@"filename"];
-        self.addTime = [contentDict objectForKey:@"add_time"];
     }
     return self;
 }
@@ -42,7 +41,6 @@
         self.link = [aDecoder decodeObjectForKey:@"link"];
         self.fileName = [aDecoder decodeObjectForKey:@"fileName"];
         self.addTime = [aDecoder decodeObjectForKey:@"addTime"];
-
     }
     return self;
 }

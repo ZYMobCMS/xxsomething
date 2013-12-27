@@ -7,7 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DAProgressOverlayView.h"
 
 @interface XXImageView : UIView
-
+{
+    UIImageView *_contentImageView;
+    DAProgressOverlayView *_overlayView;
+    BOOL needOverlay;
+}
+- (id)initWithFrame:(CGRect)frame withNeedOverlay:(BOOL)needState;
+- (void)setImageUrl:(NSString*)imageUrl;
+- (void)setContentImage:(UIImage*)image;
+- (void)uploadImageWithProgress:(CGFloat)progress;
 @end
