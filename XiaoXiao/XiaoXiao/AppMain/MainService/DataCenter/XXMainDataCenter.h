@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AFHTTPClient.h"
 
 typedef void (^XXDataCenterRequestSuccessListBlock) (NSArray *resultList);
 typedef void (^XXDataCenterRequestFaildMsgBlock) (NSString *faildMsg);
@@ -19,9 +18,6 @@ typedef void (^XXDataCenterCommentDetailBlock)  (XXCommentModel *resultModel);
 typedef void (^XXDataCenterRequestSchoolDataBaseUpdateSuccessBlock) (NSString *newDataBaseUrl,NSString *newVersion);
 
 @interface XXMainDataCenter : NSObject
-{
-    AFHTTPClient *_innerClient;
-}
 
 + (XXMainDataCenter*)shareCenter;
 

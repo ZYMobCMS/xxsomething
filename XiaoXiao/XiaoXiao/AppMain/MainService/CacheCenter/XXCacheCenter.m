@@ -75,6 +75,7 @@ static dispatch_queue_t XXCacheCenterQueue = nil;
     }
     
 }
+
 //现在更新学校数据库
 - (void)updateSchoolDataBaseNow
 {
@@ -82,10 +83,12 @@ static dispatch_queue_t XXCacheCenterQueue = nil;
         NSString *downloadZipFile = [[self schoolDataBaseDir]stringByAppendingPathComponent:XXCacheCenterSchoolDataZip];
         [[XXMainDataCenter shareCenter]downloadFileWithLinkPath:newDataBaseUrl WithDestSavePath:downloadZipFile withSuccess:^(NSString *successMsg) {
             //解压
-            [SSZipArchive unzipFileAtPath:downloadZipFile toDestination:[self schoolDataBaseDir]];
-            DDLogVerbose(@"download and zip new school database success!");
-            DDLogVerbose(@"new school database path :%@",[self schoolDataBasePath]);
-            [[NSUserDefaults standardUserDefaults]setObject:newVersion forKey:XXCacheCenterSchoolVersionUDF];
+            dispatch_async(XXCacheCenterQueue, ^{
+                [SSZipArchive unzipFileAtPath:downloadZipFile toDestination:[self schoolDataBaseDir]];
+                DDLogVerbose(@"download and zip new school database success!");
+                DDLogVerbose(@"new school database path :%@",[self schoolDataBasePath]);
+                [[NSUserDefaults standardUserDefaults]setObject:newVersion forKey:XXCacheCenterSchoolVersionUDF];
+            });
         } withFaild:^(NSString *faildMsg) {
             DDLogVerbose(@"download new school database faild!");
         }];
@@ -100,15 +103,34 @@ static dispatch_queue_t XXCacheCenterQueue = nil;
     }];
 }
 
-//模糊搜索
+//模糊搜索,默认15条
 - (void)searchSchoolWithKeyword:(NSString *)keyword withResult:(void (^)(NSArray *))result
 {
-    NSString *searchSql = [NSString stringWithFormat:@"select * from school where name like '%@' ",keyword];
-    NSMutableArray *resultModelArray = [NSMutableArray array];
-    dispatch_async(XXCacheCenterQueue, ^{
-        
-        
-        
-    });
+    [self searchSchoolWithKeyword:keyword withResult:result withPageIndex:0 withPageSize:15];
 }
+
+- (void)searchSchoolWithKeyword:(NSString *)keyword withResult:(void (^)(NSArray *))result withPageIndex:(NSInteger)pageIndex withPageSize:(NSInteger)pageSize
+{
+    NSString *likeKeyword = [NSString stringWithFormat:@"%@%",keyword];
+    NSString *searchSql = [NSString stringWithFormat:@"select * from school where name like '%%%@%%' limit %d,%d",keyword,pageIndex,pageSize];
+    DDLogVerbose(@"search sql -->%@",searchSql);
+    NSMutableArray *resultModelArray = [NSMutableArray array];
+    
+    FMResultSet *resultSet = [_innerDataBase executeQuery:searchSql];
+    while ([resultSet next]) {
+        
+        XXSchoolModel *newSchool = [[XXSchoolModel alloc]init];
+        newSchool.schoolId = [resultSet stringForColumn:@"id"];
+        newSchool.province = [resultSet stringForColumn:@"province"];
+        newSchool.city = [resultSet stringForColumn:@"city"];
+        newSchool.area = [resultSet stringForColumn:@"area"];
+        newSchool.type = [resultSet stringForColumn:@"type"];
+        newSchool.schoolName = [resultSet stringForColumn:@"name"];
+        [resultModelArray addObject:newSchool];
+    }
+    if (result) {
+        result(resultModelArray);
+    }
+}
+
 @end

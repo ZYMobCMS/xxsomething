@@ -68,7 +68,6 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
 - (void)saveMessage:(ZYXMPPMessage*)newMessage
 {
     NSString *insertSql = [NSString stringWithFormat:@"insert into xxchat_table(send_user_id,status,send_user,add_time,audio_time,body_content,message_type,is_readed,message_id,conversation_id)values('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",newMessage.userId,newMessage.sendStatus,newMessage.user,newMessage.addTime,newMessage.audioTime,newMessage.messageAttributedContent,newMessage.messageType,newMessage.isReaded,newMessage.messageId,newMessage.conversationId];
-    DDLogVerbose(@"save message sql :%@",insertSql);
     NSError *saveMessageError = nil;
     BOOL saveResult = [_innerDataBase update:insertSql withErrorAndBindings:&saveMessageError];
     DDLogVerbose(@"save message :%@ result:%d",newMessage.messageId,saveResult);

@@ -298,37 +298,76 @@
     UIBarButtonItem *loginTest = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(testNetworkAPI)];
     self.navigationItem.rightBarButtonItem = loginTest;
     
-    UIButton *sendTest = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [sendTest setTitle:@"send" forState:UIControlStateNormal];
-    sendTest.frame = CGRectMake(80, 150,80,40);
-    [sendTest addTarget:self action:@selector(sendMessageTest:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:sendTest];
+//    UIButton *sendTest = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    [sendTest setTitle:@"send" forState:UIControlStateNormal];
+//    sendTest.frame = CGRectMake(80, 150,80,40);
+//    [sendTest addTarget:self action:@selector(sendMessageTest:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:sendTest];
+//    
+//    UIButton *changeBackgroundState = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    [changeBackgroundState setTitle:@"change" forState:UIControlStateNormal];
+//    changeBackgroundState.frame = CGRectMake(200, 150,80,40);
+//    [changeBackgroundState addTarget:self action:@selector(changeBackgroundMode) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:changeBackgroundState];
+//    backgroundRecieveMsg = YES;
+//    
+//    UIButton *persistMessages = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    [persistMessages setTitle:@"persist" forState:UIControlStateNormal];
+//    persistMessages.frame = CGRectMake(150, 210,80,40);
+//    [persistMessages addTarget:self action:@selector(persistMessages) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:persistMessages];
     
-    UIButton *changeBackgroundState = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [changeBackgroundState setTitle:@"change" forState:UIControlStateNormal];
-    changeBackgroundState.frame = CGRectMake(200, 150,80,40);
-    [changeBackgroundState addTarget:self action:@selector(changeBackgroundMode) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:changeBackgroundState];
-    backgroundRecieveMsg = YES;
+//    messageShowTextView = [[XXBaseTextView alloc]initWithFrame:CGRectMake(20,255,280,225)];
+//    [self.view addSubview:messageShowTextView];
     
-    UIButton *persistMessages = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [persistMessages setTitle:@"persist" forState:UIControlStateNormal];
-    persistMessages.frame = CGRectMake(150, 210,80,40);
-    [persistMessages addTarget:self action:@selector(persistMessages) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:persistMessages];
+    inputTextField = [[UITextField alloc]init];
+    inputTextField.borderStyle = UITextBorderStyleRoundedRect;
+    inputTextField.frame = CGRectMake(10,5,300,40);
+    inputTextField.delegate = self;
+    [self.view addSubview:inputTextField];
+    //
+    searchTable = [[UITableView alloc]init];
+    searchTable.frame = CGRectMake(0,45,320,self.view.frame.size.height-44-40-80);
+    searchTable.delegate = self;
+    searchTable.dataSource = self;
+    [self.view addSubview:searchTable];
+    keywordCurrentPage = 0;
+    keywordCurrentPage = 15;
     
-    messageShowTextView = [[XXBaseTextView alloc]initWithFrame:CGRectMake(20,255,280,225)];
-    [self.view addSubview:messageShowTextView];
-    
-    //后台更新学校数据库
-//    [[XXCacheCenter shareCenter]updateSchoolDataBaseNow];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(valueChanged:) name:UITextFieldTextDidChangeNotification object:nil];
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+- (void)valueChanged:(NSNotification*)noti
+{
+    [self.sourceArray removeAllObjects];
+    keywordCurrentPage = 0;
+    needLoadMore = YES;
+    [[XXCacheCenter shareCenter]searchSchoolWithKeyword:inputTextField.text  withResult:^(NSArray *resultArray) {
+        if (resultArray.count<keywordPageSize) {
+            needLoadMore = NO;
+        }
+        [self.sourceArray addObjectsFromArray:resultArray];
+        [searchTable reloadData];
+    }];
 }
 - (void)persistMessages
 {
     XXConditionModel *condition = [[XXConditionModel alloc]init];
-    condition.userId = @"31";
+    condition.userId = @"36";
     condition.toUserId = @"36";
     [[XXChatCacheCenter shareCenter]persistMessagesWithCondition:condition];
+    
+    //学校模糊搜索
+    [[XXCacheCenter shareCenter]searchSchoolWithKeyword:@"北京" withResult:^(NSArray *resultArray) {
+       [resultArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+           XXSchoolModel *existSchool = (XXSchoolModel*)obj;
+           DDLogVerbose(@"exist school name:%@",existSchool.schoolName);
+       }];
+    }];
 }
 - (void)changeBackgroundMode
 {
@@ -338,7 +377,7 @@
     
     //test check cache
     XXConditionModel *condtion = [[XXConditionModel alloc]init];
-    condtion.userId = @"31";
+    condtion.userId = @"36";
     condtion.toUserId = @"36";
     condtion.pageIndex = 0;
     condtion.pageSize = @"10";
@@ -348,7 +387,7 @@
     
     //unread message
     XXConditionModel *condtionUnRead = [[XXConditionModel alloc]init];
-    condtionUnRead.userId = @"31";
+    condtionUnRead.userId = @"36";
     condtionUnRead.toUserId = @"36";
     [[XXChatCacheCenter shareCenter]getUnReadMessagesWithCondition:condtionUnRead withFinish:^(NSArray *resultArray) {
         DDLogVerbose(@"cache unread message:%@",resultArray);
@@ -363,7 +402,7 @@
     message.content = @"今天很[可怜],我只想要[亲亲]!!!";
     message.user = @"vincent";
     message.audioTime = @"0";
-    message.userId = @"31";
+    message.userId = @"36";
     message.sendStatus = @"0";
     message.isReaded = @"1";
     message.conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:newUser.jID withMyUserId:message.userId];
@@ -508,7 +547,7 @@
             [[XXChatCacheCenter shareCenter]updateMessageSendStatusWithMessageIdForCacheDict:messageId];
         }
     }];
-    [[ZYXMPPClient shareClient]  startClientWithJID:@"31" withPassword:@"123456"];
+    [[ZYXMPPClient shareClient]  startClientWithJID:@"36" withPassword:@"123456"];
     
     //分享列表
 //    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
@@ -695,11 +734,19 @@
     }
     [cell setSharePostModel:[self.sourceArray objectAtIndex:indexPath.row]];*/
     
+    /*
     XXUserInfoBaseCell *cell = (XXUserInfoBaseCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
         cell = [[XXUserInfoBaseCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    [cell setContentModel:[self.sourceArray objectAtIndex:indexPath.row]];
+    [cell setContentModel:[self.sourceArray objectAtIndex:indexPath.row]];*/
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (!cell) {
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    XXSchoolModel *school = [self.sourceArray objectAtIndex:indexPath.row];
+    cell.textLabel.text = school.schoolName;
     
     return cell;
 }
@@ -708,7 +755,25 @@
     
     /*
     return [XXShareBaseCell heightWithSharePostModel:[self.sourceArray objectAtIndex:indexPath.row] forContentWidth:[XXSharePostStyle sharePostContentWidth]];*/
-    return [XXUserInfoBaseCell heightWithContentModel:[self.sourceArray objectAtIndex:indexPath.row]];
+    /*return [XXUserInfoBaseCell heightWithContentModel:[self.sourceArray objectAtIndex:indexPath.row]];*/
+    return 44.0f;
+    
+}
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row == self.sourceArray.count-1 &&  needLoadMore) {
+        keywordCurrentPage++;
+        [[XXCacheCenter shareCenter]searchSchoolWithKeyword:inputTextField.text withResult:^(NSArray *resultArray) {
+            if (resultArray.count<15) {
+                needLoadMore = NO;
+            }
+            [self.sourceArray addObjectsFromArray:resultArray];
+        } withPageIndex:keywordCurrentPage withPageSize:15];
+        [searchTable reloadData];
+    }
+}
+- (void)addMoreResult
+{
     
 }
 

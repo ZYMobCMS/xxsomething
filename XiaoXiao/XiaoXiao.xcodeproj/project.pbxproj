@@ -18,6 +18,7 @@
 		3B438E07186D74B500E9A879 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 3B438E00186D74B500E9A879 /* zip.c */; };
 		3B438E08186D74B500E9A879 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B438E03186D74B500E9A879 /* SSZipArchive.m */; };
 		3B438E0A186D7B9200E9A879 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B438E09186D7B9100E9A879 /* libz.dylib */; };
+		3B438E0D186D97FC00E9A879 /* XXHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B438E0C186D97FC00E9A879 /* XXHTTPClient.m */; };
 		3B46835C186140BE002CFFA2 /* XXShareStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B46835B186140BD002CFFA2 /* XXShareStyle.m */; };
 		3B46835F18614A6C002CFFA2 /* XXSharePostModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B46835E18614A6C002CFFA2 /* XXSharePostModel.m */; };
 		3B46836518616047002CFFA2 /* XXSharePostTypeConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B46836418616043002CFFA2 /* XXSharePostTypeConfig.m */; };
@@ -597,6 +598,8 @@
 		3B438E02186D74B500E9A879 /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
 		3B438E03186D74B500E9A879 /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
 		3B438E09186D7B9100E9A879 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		3B438E0B186D97FC00E9A879 /* XXHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXHTTPClient.h; sourceTree = "<group>"; };
+		3B438E0C186D97FC00E9A879 /* XXHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXHTTPClient.m; sourceTree = "<group>"; };
 		3B46835A186140BD002CFFA2 /* XXShareStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXShareStyle.h; sourceTree = "<group>"; };
 		3B46835B186140BD002CFFA2 /* XXShareStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXShareStyle.m; sourceTree = "<group>"; };
 		3B46835D18614A6C002CFFA2 /* XXSharePostModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXSharePostModel.h; sourceTree = "<group>"; };
@@ -2714,6 +2717,8 @@
 		E4E3F5F91860969000970698 /* DataCenter */ = {
 			isa = PBXGroup;
 			children = (
+				3B438E0B186D97FC00E9A879 /* XXHTTPClient.h */,
+				3B438E0C186D97FC00E9A879 /* XXHTTPClient.m */,
 				3B5DF1EA186A73C0000B50D2 /* NSDictionary+UrlEncodedString.h */,
 				3B5DF1EB186A73C0000B50D2 /* NSDictionary+UrlEncodedString.m */,
 				E4E3F5FA1860969000970698 /* XXMainDataCenter.h */,
@@ -4359,6 +4364,7 @@
 				3B438E06186D74B500E9A879 /* unzip.c in Sources */,
 				3B438E07186D74B500E9A879 /* zip.c in Sources */,
 				3B438E08186D74B500E9A879 /* SSZipArchive.m in Sources */,
+				3B438E0D186D97FC00E9A879 /* XXHTTPClient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

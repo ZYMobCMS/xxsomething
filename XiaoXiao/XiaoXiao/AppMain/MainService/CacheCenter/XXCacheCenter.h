@@ -19,5 +19,6 @@
 }
 + (XXCacheCenter *)shareCenter;
 - (void)updateSchoolDataBaseNow;
+- (void)searchSchoolWithKeyword:(NSString*)keyword withResult:(void (^) (NSArray*resultArray))result withPageIndex:(NSInteger)pageIndex withPageSize:(NSInteger)pageSize;
 - (void)searchSchoolWithKeyword:(NSString*)keyword withResult:(void (^) (NSArray*resultArray))result;
 @end

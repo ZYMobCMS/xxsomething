@@ -9,6 +9,7 @@
 #import "XXMainDataCenter.h"
 #import "AFJSONRequestOperation.h"
 #import "AFHTTPRequestOperation.h"
+#import "XXHTTPClient.h"
 #import "NSDictionary+UrlEncodedString.h"
 
 #define XXLoginErrorInvalidateParam @"请求参数不完整"
@@ -18,23 +19,12 @@
 
 @implementation XXMainDataCenter
 
-- (id)init
-{
-    if (self = [super init]) {
-        
-        _innerClient = [[AFHTTPClient alloc]initWithBaseURL:[NSURL URLWithString:XXBase_Host_Url]];
-        [AFJSONRequestOperation addAcceptableContentTypes:[NSSet setWithObjects:@"text/json",@"text/javascript",@"application/json",@"text/html",@"application/xhtml+xml",@"*/*",@"application/xhtml+xml",@"image/webp", nil]];
-        [_innerClient registerHTTPOperationClass:[AFJSONRequestOperation class]];
-        [_innerClient setDefaultHeader:@"tooken" value:[XXUserDataCenter currentLoginUserToken]];
-    }
-    return self;
-}
 + (XXMainDataCenter*)shareCenter
 {
     static XXMainDataCenter *_sharedCenter = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _sharedCenter = [[XXMainDataCenter alloc]init];
+        _sharedCenter = [[self alloc]init];
     });
     
     return _sharedCenter;
@@ -42,7 +32,7 @@
 - (void)checkNetWorkWithFaildBlck:(XXDataCenterRequestFaildMsgBlock)faild
 {
     //是否存在网络
-    if ([_innerClient networkReachabilityStatus]==AFNetworkReachabilityStatusNotReachable) {
+    if ([[XXHTTPClient shareClient] networkReachabilityStatus]==AFNetworkReachabilityStatusNotReachable) {
         if (faild) {
             faild(XXNetWorkDisConnected);
             return;
@@ -57,7 +47,7 @@
     //是否存在网络
     [self checkNetWorkWithFaildBlck:faild];
     
-    [_innerClient postPath:[XXDataCenterConst switchRequestTypeToInterfaceUrl:requestType] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[XXHTTPClient shareClient] postPath:[XXDataCenterConst switchRequestTypeToInterfaceUrl:requestType] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSDictionary *resultDict = (NSDictionary*)responseObject;
         
@@ -95,10 +85,11 @@
     NSString *gParamString = [gParams urlEncodedString];
     interfaceUrl = [NSString stringWithFormat:@"%@?%@",interfaceUrl,gParamString];
     
-    [_innerClient postPath:interfaceUrl parameters:pParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[XXHTTPClient shareClient] postPath:interfaceUrl parameters:pParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSDictionary *resultDict = (NSDictionary*)responseObject;
-        
+        NSDictionary *resultDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+//        NSDictionary *resultDict = (NSDictionary*)responseObject;
+
         //解析对错
         int status = [[resultDict objectForKey:@"ret"]intValue];
         if (status==0) {
@@ -169,7 +160,7 @@
     //是否存在网络
     [self checkNetWorkWithFaildBlck:faild];
 
-    NSMutableURLRequest *uploadRequest  = [_innerClient multipartFormRequestWithMethod:@"POST" path:[XXDataCenterConst switchRequestTypeToInterfaceUrl:XXRequestTypeUploadFile] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    NSMutableURLRequest *uploadRequest  = [[XXHTTPClient shareClient] multipartFormRequestWithMethod:@"POST" path:[XXDataCenterConst switchRequestTypeToInterfaceUrl:XXRequestTypeUploadFile] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         [formData appendPartWithFileData:fileData name:@"upload" fileName:fileName mimeType:[self mediaFileTypeForFileName:fileName]];
     }];
     AFJSONRequestOperation *jsonRequest = [AFJSONRequestOperation JSONRequestOperationWithRequest:uploadRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
@@ -217,7 +208,7 @@
         }
         
     }];
-    [_innerClient enqueueHTTPRequestOperation:jsonRequest];
+    [[XXHTTPClient shareClient] enqueueHTTPRequestOperation:jsonRequest];
 }
 
 - (void)requestLoginWithNewUser:(XXUserModel *)newUser withSuccessLogin:(void (^)(XXUserModel *))success withFaildLogin:(void (^)(NSString *))faild
@@ -1004,6 +995,12 @@
     
 }
 
+//回复我的列表
+- (void)requestReplyMeListWithCondition:(XXConditionModel *)condition withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    
+}
+
 //更新学校数据库
 - (void)updateSchoolDatabaseWithSuccess:(XXDataCenterRequestSchoolDataBaseUpdateSuccessBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
 {
@@ -1048,7 +1045,7 @@
         }
         DDLogVerbose(@"download complete!");
     }];
-    [_innerClient enqueueHTTPRequestOperation:downloadOperation];
+    [[XXHTTPClient shareClient] enqueueHTTPRequestOperation:downloadOperation];
 }
 
 @end

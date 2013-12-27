@@ -8,10 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UITestViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface UITestViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 {
     BOOL backgroundRecieveMsg;
     XXBaseTextView *messageShowTextView;
+    UITextView *searchResultTextView;
+    UITextField *inputTextField;
+    UITableView *searchTable;
+    NSInteger keywordCurrentPage;
+    NSInteger keywordPageSize;
+    BOOL needLoadMore;
 }
 @property (nonatomic,strong)UITableView *testTable;
 @property (nonatomic,strong)NSMutableArray *sourceArray;
