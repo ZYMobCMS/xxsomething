@@ -14,13 +14,20 @@
 {
     if (self = [super init]) {
         
+        //默认值
+        self.schoolId = @"";
+        self.schoolName = @"";
+        self.province = @"";
+        self.city = @"";
+        self.area = @"";
+        self.type = @"";
+
         self.schoolId = [contentDict objectForKey:@"id"];
         self.schoolName = [contentDict objectForKey:@"title"];
         self.province = [contentDict objectForKey:@"province"];
         self.city = [contentDict objectForKey:@"city"];
         self.area = [contentDict objectForKey:@"area"];
         self.type = [contentDict objectForKey:@"type"];
-
         
     }
     return self;

@@ -93,6 +93,9 @@
         case XXRequestTypeReplyMeList:
             resultInterface = XX_Reply_Me_List_Interface;
             break;
+        case XXRequestTypeUpdateSchoolDatabase:
+            resultInterface = XX_School_Update_Interface;
+            break;
             
         default:
             break;

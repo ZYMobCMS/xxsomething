@@ -14,6 +14,13 @@
 {
     if (self = [super init]) {
         
+        //默认值
+        self.teaseTime = @"";
+        self.teaseId = @"";
+        self.userId = @"";
+        self.toUserId = @"";
+        self.postEmoji = @"";
+
         self.teaseTime = [contentDict objectForKey:@"add_time"];
         self.teaseId = [contentDict objectForKey:@"id"];
         self.userId = [contentDict objectForKey:@"user_id"];

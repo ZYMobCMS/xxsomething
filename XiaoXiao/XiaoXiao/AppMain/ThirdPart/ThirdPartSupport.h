@@ -18,3 +18,4 @@
 #import "MBProgressHUD.h"
 #import "UIImage+Resize.h"
 #import "ZYXMPPClient.h"
+#import "SSZipArchive.h"

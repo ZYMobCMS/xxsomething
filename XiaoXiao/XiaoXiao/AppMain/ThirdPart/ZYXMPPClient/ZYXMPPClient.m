@@ -168,7 +168,7 @@
     
     return currentDateTime;
 }
-- (NSString*)sendMessageToUser:(ZYXMPPUser *)toUser withContent:(ZYXMPPMessage *)newMessage
+- (void)sendMessageToUser:(ZYXMPPUser *)toUser withContent:(ZYXMPPMessage *)newMessage withSendResult:(void (^)(NSString *, NSString *))sendResult
 {
     if (needAutoHostForJID) {
         toUser.jID = [NSString stringWithFormat:@"%@@%@",toUser.jID,_serverHost];
@@ -184,7 +184,8 @@
         NSXMLElement *sendUserId = [NSXMLElement elementWithName:@"send_user_id"];
         [sendUserId setStringValue:newMessage.userId];
         NSXMLElement *addTime = [NSXMLElement elementWithName:@"add_time"];
-		[addTime setStringValue:[self returnCurrentDateTime]];
+        NSString *currentTime = [self returnCurrentDateTime];
+		[addTime setStringValue:currentTime];
         if (![newMessage.content isEqualToString:@""]) {
             newMessage.audioTime = @"0";
         }
@@ -211,14 +212,12 @@
         //将这条信息的Id返回，以判断是否发送成功
         if ([message attributeStringValueForName:@"id"]) {
             DDLogVerbose(@"send message id :%@",[message attributeStringValueForName:@"id"]);
-            return [message attributeStringValueForName:@"id"];
-        }else{
-            return nil;
+            if (sendResult) {
+                sendResult ([message attributeStringValueForName:@"id"],currentTime);
+            }
+            
         }
-        
-	}else{
-        return nil;
-    }
+	}
     
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -324,9 +323,7 @@
 {
 	DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
     
-	// A simple example of inbound message handling.
-    if(![_jId isEqual:[message from]]) return;
-    
+	// A simple example of inbound message handling.    
     //回执判断
     NSXMLElement *request = [message elementForName:@"request"];
     if (request)
@@ -380,6 +377,7 @@
             newMessage.sendStatus = @"1";
             newMessage.messageId = messageId;
             newMessage.conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:newMessage.userId withMyUserId:originJId];
+            newMessage.messageAttributedContent = [ZYXMPPMessage attributedContentStringWithMessage:newMessage];
             recieveAction (newMessage);
         }
     }
@@ -536,7 +534,7 @@
     
 	// Add ourself as a delegate to anything we may be interested in
     
-	[xmppStream addDelegate:self delegateQueue:dispatch_get_current_queue()];
+	[xmppStream addDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0)];
 //	[xmppRoster addDelegate:self delegateQueue:dispatch_get_main_queue()];
     
 	// Optional:

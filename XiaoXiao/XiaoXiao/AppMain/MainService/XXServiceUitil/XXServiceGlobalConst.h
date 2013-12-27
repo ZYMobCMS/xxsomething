@@ -14,6 +14,7 @@
 #import "XXCommentModel.h"
 #import "XXAttachmentModel.h"
 #import "XXSharePostModel.h"
+#import "XXCacheCenter.h"
 #import "XXDataCenterConst.h"
 #import "XXMainDataCenter.h"
 #import "XXUserDataCenter.h"

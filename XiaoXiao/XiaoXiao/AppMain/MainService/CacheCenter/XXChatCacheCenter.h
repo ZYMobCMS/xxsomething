@@ -14,11 +14,21 @@
 @interface XXChatCacheCenter : NSObject
 {
     FMDatabase *_innerDataBase;
-    FMResultSet *_resultSet;
+    
+    //内存缓存
+    NSMutableDictionary *_innerCacheDict;
 }
 + (XXChatCacheCenter*)shareCenter;
 - (void)saveMessage:(ZYXMPPMessage*)newMessage;
 - (void)saveSomeMessages:(NSArray*)messages;
 - (void)updateMessageSendStatusWithMessageId:(NSString*)messageId;
-- (NSArray*)getCacheMessagesWithCondition:(XXConditionModel*)condition;
+- (void)getCacheMessagesWithCondition:(XXConditionModel*)condition withFinish:(void(^)(NSArray*resultArray))finish;
+- (void)getUnReadMessagesWithCondition:(XXConditionModel*)condition withFinish:(void(^)(NSArray*resultArray))finish;
+
+
+//内存运行缓存
+- (void)saveMessageForCacheDict:(ZYXMPPMessage*)newMessage;
+- (void)saveSomeMessagesForCacheDict:(NSArray*)messages;
+- (void)updateMessageSendStatusWithMessageIdForCacheDict:(NSString*)messageId;
+- (void)persistMessagesWithCondition:(XXConditionModel*)condition;
 @end

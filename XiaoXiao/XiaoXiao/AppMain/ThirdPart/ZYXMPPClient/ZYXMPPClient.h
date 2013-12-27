@@ -99,7 +99,7 @@ typedef void (^ZYXMPPClientDidSendMessageSuccessAction) (NSString *messageId);
 - (void)setDidSendMessageSuccessAction:(ZYXMPPClientDidSendMessageSuccessAction)successAction;
 - (void)setConnectToServerErrorAction:(ZYXMPPClientConnectServerErrorAction)errorAction;
 
-- (NSString*)sendMessageToUser:(ZYXMPPUser *)toUser withContent:(ZYXMPPMessage*)newMessage;
+- (void)sendMessageToUser:(ZYXMPPUser *)toUser withContent:(ZYXMPPMessage*)newMessage withSendResult:(void (^)(NSString *messageId,NSString *addTime))sendResult;
 - (void)setSendMessageSuccessAction:(ZYXMPPClientSendMessageSuccessAction)successAction;
 - (void)setSendMessageFaildAction:(ZYXMPPClientSendMessageFaildAction)faildAction;
 

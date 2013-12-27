@@ -160,7 +160,7 @@ BOOL const XXLockCommonCSSTemplateState = NO;
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$starscore$!" withString:userModel.constellation];
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$score$!" withString:userModel.score];
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$profile$!" withString:userModel.signature];
-    
+
     return htmlTemp;
     
 }

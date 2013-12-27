@@ -36,6 +36,7 @@ typedef enum {
     XXRequestTypeNearbyUsers,
     XXRequestTypeAdvicePublish,
     XXRequestTypeReplyMeList,
+    XXRequestTypeUpdateSchoolDatabase,
     
 }XXRequestType;
 
@@ -264,6 +265,9 @@ typedef enum {
  POST	root_id		回复ID(可选)
  */
 #define XX_Reply_Me_List_Interface @"/api/comment/replyme"
+
+//学校数据库更新
+#define XX_School_Update_Interface @"/api/update/xuexiao"
 
 
 

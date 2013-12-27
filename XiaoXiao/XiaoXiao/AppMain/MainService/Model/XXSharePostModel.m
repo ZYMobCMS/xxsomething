@@ -15,6 +15,18 @@
 {
     if (self = [super init]) {
         
+        //给个默认值
+        self.postId = @"";
+        self.type = @"";
+        self.tag = @"";
+        self.commentCount = @"";
+        self.forwordCount = @"";
+        self.praiseCount = @"";
+        self.userId = @"";
+        self.addTime = @"";
+        self.schoolId = @"";
+        self.content = @"";
+
         self.postId = [contentDict objectForKey:@"id"];
         self.type = [contentDict objectForKey:@"type"];
         self.tag = [contentDict objectForKey:@"tag"];
@@ -28,9 +40,9 @@
         //如果内容完全不符合自定义结构体，考虑平台数据失误出错的可能
         
         //自定义内容字段解析
-        NSString *customcontent = [contentDict objectForKey:@"content"];
+        self.content= [contentDict objectForKey:@"content"];
         NSError *decodeContentJSonError = nil;
-        NSDictionary *customContentDict = [NSJSONSerialization JSONObjectWithData:[customcontent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:&decodeContentJSonError];
+        NSDictionary *customContentDict = [NSJSONSerialization JSONObjectWithData:[self.content dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:&decodeContentJSonError];
         if (decodeContentJSonError) {
             DDLogVerbose(@"decode content json error -->%@",decodeContentJSonError.description);
         }

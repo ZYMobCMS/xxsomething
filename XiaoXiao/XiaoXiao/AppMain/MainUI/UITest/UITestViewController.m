@@ -291,7 +291,7 @@
     
         
     //test upload
-    UIBarButtonItem *uploadItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(sendMessageTest:)];
+    UIBarButtonItem *uploadItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(loginAction)];
     self.navigationItem.leftBarButtonItem = uploadItem;
     
     //test login
@@ -310,6 +310,25 @@
     [changeBackgroundState addTarget:self action:@selector(changeBackgroundMode) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:changeBackgroundState];
     backgroundRecieveMsg = YES;
+    
+    UIButton *persistMessages = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [persistMessages setTitle:@"persist" forState:UIControlStateNormal];
+    persistMessages.frame = CGRectMake(150, 210,80,40);
+    [persistMessages addTarget:self action:@selector(persistMessages) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:persistMessages];
+    
+    messageShowTextView = [[XXBaseTextView alloc]initWithFrame:CGRectMake(20,255,280,225)];
+    [self.view addSubview:messageShowTextView];
+    
+    //后台更新学校数据库
+//    [[XXCacheCenter shareCenter]updateSchoolDataBaseNow];
+}
+- (void)persistMessages
+{
+    XXConditionModel *condition = [[XXConditionModel alloc]init];
+    condition.userId = @"31";
+    condition.toUserId = @"36";
+    [[XXChatCacheCenter shareCenter]persistMessagesWithCondition:condition];
 }
 - (void)changeBackgroundMode
 {
@@ -319,31 +338,47 @@
     
     //test check cache
     XXConditionModel *condtion = [[XXConditionModel alloc]init];
-    condtion.userId = @"36";
-    condtion.toUserId = @"31";
+    condtion.userId = @"31";
+    condtion.toUserId = @"36";
     condtion.pageIndex = 0;
-    condtion.pageSize = @"5";
-    NSArray *cacheMessages = [[XXChatCacheCenter shareCenter]getCacheMessagesWithCondition:condtion];
-    DDLogVerbose(@"cache message:%@",cacheMessages);
+    condtion.pageSize = @"10";
+    [[XXChatCacheCenter shareCenter]getCacheMessagesWithCondition:condtion withFinish:^(NSArray *resultArray) {
+        DDLogVerbose(@"cache message:%@",resultArray);
+    }];
+    
+    //unread message
+    XXConditionModel *condtionUnRead = [[XXConditionModel alloc]init];
+    condtionUnRead.userId = @"31";
+    condtionUnRead.toUserId = @"36";
+    [[XXChatCacheCenter shareCenter]getUnReadMessagesWithCondition:condtionUnRead withFinish:^(NSArray *resultArray) {
+        DDLogVerbose(@"cache unread message:%@",resultArray);
+    }];
 }
 //
 - (void)sendMessageTest:(UIButton*)sender
 {
     ZYXMPPUser *newUser = [[ZYXMPPUser alloc]init];
-    newUser.jID = @"31";
+    newUser.jID = @"36";
     ZYXMPPMessage *message = [[ZYXMPPMessage alloc]init];
-    message.content = @"test send content !!!";
+    message.content = @"今天很[可怜],我只想要[亲亲]!!!";
     message.user = @"vincent";
     message.audioTime = @"0";
-    message.userId = @"36";
+    message.userId = @"31";
     message.sendStatus = @"0";
-    message.conversationId = [NSString stringWithFormat:@"%@_%@",newUser.jID,message.userId];
-    message.messageType = [NSString stringWithFormat:@"%d",ZYXMPPMessageTypeText];    
-    NSString *messageId=[[ZYXMPPClient shareClient]  sendMessageToUser:newUser withContent:message];
-    message.messageId = messageId;
-    if (message.messageId) {
-        [[XXChatCacheCenter shareCenter]saveMessage:message];
-    }
+    message.isReaded = @"1";
+    message.conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:newUser.jID withMyUserId:message.userId];
+    message.messageType = [NSString stringWithFormat:@"%d",ZYXMPPMessageTypeText];
+    message.messageAttributedContent = [ZYXMPPMessage attributedContentStringWithMessage:message];
+    [[ZYXMPPClient shareClient]  sendMessageToUser:newUser withContent:message withSendResult:^(NSString *messageId, NSString *addTime) {
+        message.messageId = messageId;
+        message.addTime = addTime;
+        if (message.messageId) {
+            //发消息肯定在前台，所以存入内存缓存中
+            [[XXChatCacheCenter shareCenter]saveMessageForCacheDict:message];
+        }
+    }];
+    [messageShowTextView setAttributedString:message.messageAttributedContent];
+    
 }
 //================================ API Test ==================//
 - (void)testNetworkAPI
@@ -449,7 +484,8 @@
             NSString *combineContent = [NSString stringWithFormat:@"from:%@\nsend time:%@ \n content:%@",newMessage.user,newMessage.addTime,newMessage.content];
             [SVProgressHUD showSuccessWithStatus:combineContent];
             newMessage.isReaded = @"1";
-            [[XXChatCacheCenter shareCenter]saveMessage:newMessage];
+            //前台运行就存到内存缓存中
+            [[XXChatCacheCenter shareCenter]saveMessageForCacheDict:newMessage];
             
         }else{//如果程序在后台运行，收到消息以通知类型来显示
             newMessage.isReaded = @"0";
@@ -460,9 +496,8 @@
                 localNotification.soundName = @"crunch.wav";//通知声音
                 localNotification.applicationIconBadgeNumber = 1;//标记数
                 [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];//发送通知
-            }else{
-                
             }
+            //后台运行存入数据库
             [[XXChatCacheCenter shareCenter]saveMessage:newMessage];
         }
         
@@ -470,10 +505,10 @@
     [[ZYXMPPClient shareClient]  setDidSendMessageSuccessAction:^(NSString *messageId) {
         DDLogVerbose(@"%@",[NSString stringWithFormat:@"send message :%@ success",messageId]);
         if (messageId) {
-            [[XXChatCacheCenter shareCenter]updateMessageSendStatusWithMessageId:messageId];
+            [[XXChatCacheCenter shareCenter]updateMessageSendStatusWithMessageIdForCacheDict:messageId];
         }
     }];
-    [[ZYXMPPClient shareClient]  startClientWithJID:@"36" withPassword:@"123456"];
+    [[ZYXMPPClient shareClient]  startClientWithJID:@"31" withPassword:@"123456"];
     
     //分享列表
 //    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
@@ -493,7 +528,9 @@
 //    condition.pageSize = @"10";
 //    condition.schoolId = @"10777";
 //    [[XXMainDataCenter shareCenter]requestSameSchoolUsersWithCondition:condition withSuccess:^(NSArray *resultList) {
-//        
+//        DDLogVerbose(@"friend result list:%@",resultList);
+//        [self.sourceArray addObjectsFromArray:resultList];
+//        [self.testTable reloadData];
 //    } withFaild:^(NSString *faildMsg) {
 //        [SVProgressHUD showErrorWithStatus:faildMsg];
 //    }];
@@ -537,18 +574,18 @@
 //        [SVProgressHUD showErrorWithStatus:faildMsg];
 //    }];
     //评论
-    XXCommentModel *newComment = [[XXCommentModel alloc]init];
-    newComment.postAudioTime = @"0";
-    newComment.postContent = @"评论测试";
-    newComment.resourceId = @"2";
-    newComment.resourceType = @"posts";
-    newComment.pCommentId = @"";
-    newComment.rootCommentId = @"2";
-    [[XXMainDataCenter shareCenter]requestPublishCommentWithConditionComment:newComment withSuccess:^(XXCommentModel *resultModel) {
-        
-    } withFaild:^(NSString *faildMsg) {
-        [SVProgressHUD showErrorWithStatus:faildMsg];
-    }];
+//    XXCommentModel *newComment = [[XXCommentModel alloc]init];
+//    newComment.postAudioTime = @"0";
+//    newComment.postContent = @"评论测试";
+//    newComment.resourceId = @"2";
+//    newComment.resourceType = @"posts";
+//    newComment.pCommentId = @"";
+//    newComment.rootCommentId = @"2";
+//    [[XXMainDataCenter shareCenter]requestPublishCommentWithConditionComment:newComment withSuccess:^(XXCommentModel *resultModel) {
+//        
+//    } withFaild:^(NSString *faildMsg) {
+//        [SVProgressHUD showErrorWithStatus:faildMsg];
+//    }];
 }
 //============================================================//
 - (void)loginAction

@@ -49,8 +49,7 @@
 
 - (void)setContentModel:(XXUserModel *)userModel
 {
-    NSAttributedString *attributedContent = [XXUserInfoBaseCell buildAttributedStringWithUserModel:userModel];
-    [contentTextView setAttributedString:attributedContent];
+    [contentTextView setAttributedString:userModel.attributedContent];
     CGFloat contentHeight = [XXUserInfoBaseCell heightWithContentModel:userModel];
     [contentTextView setFrame:CGRectMake(contentTextView.frame.origin.x,contentTextView.frame.origin.y,contentTextView.frame.size.width,contentHeight-30)];
 }

@@ -13,7 +13,34 @@
 - (id)initWithContentDict:(NSDictionary *)contentDict
 {
     if (self = [super init]) {
-        
+        //给个默认值
+        self.userId = @"";
+        self.account = @"";
+        self.password = @"";
+        self.nickName = @"";
+        self.score = @"";
+        self.schoolId = @"";
+        self.strollSchoolId = @"";
+        self.headUrl = @"";
+        self.email = @"";
+        self.grade = @"";
+        self.sex = @"";
+        self.birthDay = @"";
+        self.signature = @"";
+        self.bgImage = @"";
+        self.constellation = @"";
+        self.postCount = @"";
+        self.registTime = @"";
+        self.wellknow = @"";
+        self.praiseCount = @"";
+        self.tooken = @"";
+        self.status = @"";
+        self.latitude = @"";
+        self.longtitude = @"";
+        self.distance = @"";
+        self.schoolName = @"";
+
+        //填充获取的值
         self.userId = [contentDict objectForKey:@"id"];
         self.account = [contentDict objectForKey:@"account"];
         self.password = [contentDict objectForKey:@"password"];
@@ -37,6 +64,7 @@
         self.status = [contentDict objectForKey:@"status"];
         self.latitude = [contentDict objectForKey:@"lat"];
         self.longtitude = [contentDict objectForKey:@"lng"];
+//        self.schoolName = [contentDict objectForKey:@"xuexiao_name"];
         self.distance = [contentDict objectForKey:@"MQ_DISTANCE"];
     }
     return self;
@@ -70,7 +98,8 @@
         self.status = [aDecoder decodeObjectForKey:@"status"];
         self.latitude = [aDecoder decodeObjectForKey:@"latitude"];
         self.longtitude = [aDecoder decodeObjectForKey:@"longtitude"];
-        
+        self.schoolName = [aDecoder decodeObjectForKey:@"schoolName"];
+
     }
     return self;
 }
@@ -100,6 +129,7 @@
     [aCoder encodeObject:self.tooken forKey:@"tooken"];
     [aCoder encodeObject:self.latitude forKey:@"latitude"];
     [aCoder encodeObject:self.longtitude forKey:@"longtitude"];
+    [aCoder encodeObject:self.schoolName forKey:@"schoolName"];
 
 }
 

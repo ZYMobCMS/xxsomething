@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AFHTTPClient.h"
 
 typedef void (^XXDataCenterRequestSuccessListBlock) (NSArray *resultList);
 typedef void (^XXDataCenterRequestFaildMsgBlock) (NSString *faildMsg);
@@ -15,10 +16,11 @@ typedef void (^XXDataCenterRequestDetailUserBlock) (XXUserModel *detailUser);
 typedef void (^XXDataCenterUploadFileProgressBlock) (CGFloat progressValue);
 typedef void (^XXDataCenterUploadFileSuccessBlock) (XXAttachmentModel *resultModel);
 typedef void (^XXDataCenterCommentDetailBlock)  (XXCommentModel *resultModel);
+typedef void (^XXDataCenterRequestSchoolDataBaseUpdateSuccessBlock) (NSString *newDataBaseUrl,NSString *newVersion);
 
 @interface XXMainDataCenter : NSObject
 {
-    
+    AFHTTPClient *_innerClient;
 }
 
 + (XXMainDataCenter*)shareCenter;
@@ -100,5 +102,11 @@ typedef void (^XXDataCenterCommentDetailBlock)  (XXCommentModel *resultModel);
 
 //回复我的列表
 - (void)requestReplyMeListWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
+
+//更新学校数据库
+- (void)updateSchoolDatabaseWithSuccess:(XXDataCenterRequestSchoolDataBaseUpdateSuccessBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
+
+//下载文件
+- (void)downloadFileWithLinkPath:(NSString*)linkPath WithDestSavePath:(NSString*)savePath withSuccess:(XXDataCenterRequestSuccessMsgBlock)sucess withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
 
 @end

@@ -28,4 +28,5 @@
 @property (nonatomic,strong)NSString *content;
 @property (nonatomic,strong)NSString *desc;
 @property (nonatomic,strong)NSString *toUserId;
+@property (nonatomic,strong)NSString *isReaded;
 @end

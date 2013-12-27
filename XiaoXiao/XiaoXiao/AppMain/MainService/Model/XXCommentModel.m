@@ -14,6 +14,16 @@
 {
     if (self = [super init]) {
         
+        //默认值
+        self.commentId = @"";
+        self.resourceType = @"";
+        self.resourceId = @"";
+        self.content = @"";
+        self.userId = @"";
+        self.pCommentId = @"";
+        self.rootCommentId = @"";
+        self.addTime = @"";
+
         self.commentId = [contentDict objectForKey:@"id"];
         self.resourceType = [contentDict objectForKey:@"res_type"];
         self.resourceId = [contentDict objectForKey:@"res_id"];

@@ -11,6 +11,7 @@
 @interface UITestViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 {
     BOOL backgroundRecieveMsg;
+    XXBaseTextView *messageShowTextView;
 }
 @property (nonatomic,strong)UITableView *testTable;
 @property (nonatomic,strong)NSMutableArray *sourceArray;
