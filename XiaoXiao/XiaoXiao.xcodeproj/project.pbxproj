@@ -574,6 +574,8 @@
 		E4E3FA171860986700970698 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E3FA161860986700970698 /* Security.framework */; };
 		E4E3FA191860986D00970698 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E3FA181860986D00970698 /* CoreText.framework */; };
 		E4E3FA1B1860987400970698 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E3FA1A1860987300970698 /* SystemConfiguration.framework */; };
+		E4F2B18F186F841A0076B3F0 /* ZYXMPPRoomConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = E4F2B18E186F84180076B3F0 /* ZYXMPPRoomConfig.m */; };
+		E4F2B192186F93B80076B3F0 /* ZYXMPPLocalPersist.m in Sources */ = {isa = PBXBuildFile; fileRef = E4F2B191186F93B60076B3F0 /* ZYXMPPLocalPersist.m */; };
 		E4FCF2F6186673010058098B /* love.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E4FCF2F5186673010058098B /* love.jpg */; };
 		E4FCF314186685C50058098B /* UIScrollView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FCF309186685C50058098B /* UIScrollView+Screenshot.m */; };
 		E4FCF315186685C50058098B /* UIView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FCF30B186685C50058098B /* UIView+Screenshot.m */; };
@@ -1587,6 +1589,10 @@
 		E4E3FA161860986700970698 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		E4E3FA181860986D00970698 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		E4E3FA1A1860987300970698 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		E4F2B18D186F84150076B3F0 /* ZYXMPPRoomConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYXMPPRoomConfig.h; sourceTree = "<group>"; };
+		E4F2B18E186F84180076B3F0 /* ZYXMPPRoomConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYXMPPRoomConfig.m; sourceTree = "<group>"; };
+		E4F2B190186F93B40076B3F0 /* ZYXMPPLocalPersist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYXMPPLocalPersist.h; sourceTree = "<group>"; };
+		E4F2B191186F93B60076B3F0 /* ZYXMPPLocalPersist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYXMPPLocalPersist.m; sourceTree = "<group>"; };
 		E4FCF2F5186673010058098B /* love.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = love.jpg; sourceTree = "<group>"; };
 		E4FCF308186685C50058098B /* UIScrollView+Screenshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Screenshot.h"; sourceTree = "<group>"; };
 		E4FCF309186685C50058098B /* UIScrollView+Screenshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+Screenshot.m"; sourceTree = "<group>"; };
@@ -1667,6 +1673,10 @@
 				3B5DF332186AC452000B50D2 /* ZYXMPPMessage.m */,
 				3B5DF333186AC452000B50D2 /* ZYXMPPUser.h */,
 				3B5DF334186AC452000B50D2 /* ZYXMPPUser.m */,
+				E4F2B18D186F84150076B3F0 /* ZYXMPPRoomConfig.h */,
+				E4F2B18E186F84180076B3F0 /* ZYXMPPRoomConfig.m */,
+				E4F2B190186F93B40076B3F0 /* ZYXMPPLocalPersist.h */,
+				E4F2B191186F93B60076B3F0 /* ZYXMPPLocalPersist.m */,
 			);
 			path = ZYXMPPClient;
 			sourceTree = "<group>";
@@ -4383,6 +4393,8 @@
 				3B438E08186D74B500E9A879 /* SSZipArchive.m in Sources */,
 				3B438E0D186D97FC00E9A879 /* XXHTTPClient.m in Sources */,
 				E4B77EFC186DE823002838BD /* DAProgressOverlayView.m in Sources */,
+				E4F2B18F186F841A0076B3F0 /* ZYXMPPRoomConfig.m in Sources */,
+				E4F2B192186F93B80076B3F0 /* ZYXMPPLocalPersist.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

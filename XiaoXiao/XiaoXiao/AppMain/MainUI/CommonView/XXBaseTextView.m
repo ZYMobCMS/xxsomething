@@ -96,13 +96,11 @@ NSString *const XXEmojiTagFormate = @"[]";
     if (!source) {
         return nil;
     }
-    
     NSString *leftEmojiTag = [XXEmojiTagFormate substringWithRange:NSMakeRange(0,1)];
     NSString *rightEmojiTag = [XXEmojiTagFormate substringWithRange:NSMakeRange(1,1)];
     NSString *leftImageTag = [XXEmojiCSSFormate substringWithRange:NSMakeRange(0,1)];
     
     NSMutableString *resultString = [NSMutableString string];
-    
     NSArray *arrayByLeftTag = [source componentsSeparatedByString:leftEmojiTag];
     
     if (arrayByLeftTag.count > 1) {

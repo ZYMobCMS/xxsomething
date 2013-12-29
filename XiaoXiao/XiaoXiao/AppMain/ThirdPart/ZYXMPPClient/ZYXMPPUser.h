@@ -15,5 +15,7 @@
 @property (nonatomic,strong)NSString *resource;
 @property (nonatomic,strong)NSString *state;
 @property (nonatomic,strong)NSString *password;
+@property (nonatomic,strong)NSString *roomId;
+@property (nonatomic,strong)NSString *nickName;
 
 @end

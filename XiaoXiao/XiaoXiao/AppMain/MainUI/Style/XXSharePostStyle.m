@@ -36,11 +36,11 @@
 }
 + (NSInteger)sharePostEmojiSize
 {
-    return 24;
+    return 12;
 }
 + (NSInteger)sharePostAudioImageWidth
 {
-    return 166;
+    return 90;
 }
 + (NSInteger)sharePostAudioImageHeight
 {

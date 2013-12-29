@@ -14,6 +14,7 @@
     XXBaseTextView *messageShowTextView;
     UITextView *searchResultTextView;
     UITextField *inputTextField;
+    UITextField *roomTextField;
     UITableView *searchTable;
     NSInteger keywordCurrentPage;
     NSInteger keywordPageSize;

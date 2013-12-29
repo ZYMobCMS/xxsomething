@@ -39,6 +39,7 @@ typedef enum {
 @property (nonatomic,strong)NSString *messageId;
 @property (nonatomic,strong)NSString *isReaded;
 @property (nonatomic,strong)NSString *conversationId;
+@property (nonatomic,strong)NSString *groupRoomId;
 
 + (NSString*)conversationIdWithOtherUserId:(NSString*)oId withMyUserId:(NSString*)myId;
 + (NSAttributedString*)attributedContentStringWithMessage:(ZYXMPPMessage*)aMessage;

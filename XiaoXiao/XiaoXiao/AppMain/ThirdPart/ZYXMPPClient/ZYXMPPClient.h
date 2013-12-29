@@ -19,6 +19,8 @@
 #import <CoreData/CoreData.h>
 #import "ZYXMPPUser.h"
 #import "ZYXMPPMessage.h"
+#import "ZYXMPPRoomConfig.h"
+#import "ZYXMPPLocalPersist.h"
 
 #import "XMPPFramework.h"
 #import "GCDAsyncSocket.h"
@@ -30,9 +32,17 @@
 #import "XMPPvCardCoreDataStorage.h"
 #import "XMPPMessageDeliveryReceipts.h"
 #import "XMPPMUC.h"
+#import "XMPPRoomCoreDataStorage.h"
+#import "XMPPRoomHybridStorage.h"
+#import "XMPPRoomHybridStorageProtected.h"
+#import "XMPPRoomMessage.h"
+#import "XMPPRoomMessageMemoryStorageObject.h"
+#import "XMPPRoomPrivate.h"
+#import "XMPPRoomOccupantMemoryStorageObject.h"
 #import "XMPPRoom.h"
 #import "DDLog.h"
 #import "DDTTYLogger.h"
+
 
 //文件传输协议
 #import "TURNSocket.h"
@@ -46,8 +56,12 @@ typedef void (^ZYXMPPClientSendMessageFaildAction) (ZYXMPPMessage *message,ZYXMP
 typedef void (^ZYXMPPClientSendMessageSuccessAction) (ZYXMPPMessage *message,ZYXMPPUser *toUser);
 typedef void (^ZYXMPPClientDidRecievedMessageAction) (ZYXMPPMessage *newMessage);
 typedef void (^ZYXMPPClientDidSendMessageSuccessAction) (NSString *messageId);
+typedef void (^ZYXMPPClientDidRecievedGroupChatMessage) (ZYXMPPMessage *newMessage);
+typedef void (^ZYXMPPClientRoomExcuteResultAction) (BOOL state,NSString *message);
+typedef void (^ZYXMPPClientGetRoomMemberListResultAction) (NSArray *memberList);
 
-@interface ZYXMPPClient : NSObject<XMPPRosterDelegate,TURNSocketDelegate>
+
+@interface ZYXMPPClient : NSObject<XMPPRosterDelegate,TURNSocketDelegate,XMPPRoomDelegate,XMPPRoomStorage,XMPPMUCDelegate>
 {
     XMPPStream *xmppStream;
 	XMPPReconnect *xmppReconnect;
@@ -61,6 +75,9 @@ typedef void (^ZYXMPPClientDidSendMessageSuccessAction) (NSString *messageId);
 	XMPPMessageDeliveryReceipts* xmppMessageDeliveryRecipts;
     
     //聊天室
+    XMPPRoomCoreDataStorage *xmppRoomStorage;
+    XMPPRoom                *xmppRoom;
+    NSMutableDictionary     *xmppRooms;
     
 	NSString *_password;
     NSString *_jId;
@@ -68,6 +85,9 @@ typedef void (^ZYXMPPClientDidSendMessageSuccessAction) (NSString *messageId);
     NSString *originJId;
     BOOL      shouldUseCustomHost;
     NSMutableDictionary *_actions;
+    ZYXMPPRoomConfig *myRoomConfig;
+    NSMutableDictionary *_innerConfigDict;
+    NSInteger roomsCount;
 
 	BOOL allowSelfSignedCertificates;
 	BOOL allowSSLHostNameMismatch;
@@ -87,6 +107,7 @@ typedef void (^ZYXMPPClientDidSendMessageSuccessAction) (NSString *messageId);
 @property (nonatomic, strong, readonly) XMPPvCardAvatarModule *xmppvCardAvatarModule;
 @property (nonatomic, strong, readonly) XMPPCapabilities *xmppCapabilities;
 @property (nonatomic, strong, readonly) XMPPCapabilitiesCoreDataStorage *xmppCapabilitiesStorage;
+@property (nonatomic, strong, readonly) XMPPRoom *xmppRoom;
 @property (nonatomic, assign, readonly) BOOL hasConfigedClient;
 @property (nonatomic, assign, readonly) BOOL backgroundActiveEnbaleState;
 
@@ -119,5 +140,38 @@ typedef void (^ZYXMPPClientDidSendMessageSuccessAction) (NSString *messageId);
 //-----流传送socket5byte扩展
 - (void)sendFileWithData:(NSData*)fileData withFileName:(NSString*)fileName toJID:(NSString*)jID;
 
+//--------------------------------- 群聊天 ----------------------------
+//设置通用响应操作
+- (void)setCreateRoomSuccessAction:(ZYXMPPClientRoomExcuteResultAction)resultAction;
+- (void)setLeaveRoomSuccessAction:(ZYXMPPClientRoomExcuteResultAction)resultAction;
+- (void)setDestroyRoomSuccessAction:(ZYXMPPClientRoomExcuteResultAction)resultAction;
+- (void)setJoinRoomSuccessAction:(ZYXMPPClientRoomExcuteResultAction)resultAction;
+
+//群聊
+- (void)setDidRecievedGroupMessageAction:(ZYXMPPClientDidRecievedGroupChatMessage)successAction;
+
+//创建默认配置聊天室
+- (void)createDefaultConfigRoomUseMyJID;
+//根据配置创建
+- (void)createGroupChatRoomWithRoomConfig:(ZYXMPPRoomConfig*)roomConfig;
+//根据名字创建聊天，其他采用默认配置
+- (void)createDefaultConfigGroupChatRoomSpecialWithRoomName:(NSString*)roomName;
+
+//加入聊天室
+- (void)joinGroupChatRoomWithRoomId:(NSString*)roomID withNickName:(NSString*)nickName;
+
+//退群,实现退群就是从服务器和本地数据库上把属于我的这个群的配置信息给删掉，在客户端再也不登陆这个聊天室就实现退群
+- (void)quitFromRoom:(NSString*)roomID withQuitResult:(ZYXMPPClientRoomExcuteResultAction)resultAction;
+
+//创始人解散这个群
+- (void)destoryRoomWithRoomID:(NSString*)roomID;
+
+//设置管理员 admins:   xxx@host 中的 xxx 组成的数组
+- (void)setAdminsForRoom:(NSString*)roomID withAdmins:(NSArray*)admins;
+
+//获取群用户
+- (void)getMemberListFomRoom:(NSString*)roomID withSuccessAction:(ZYXMPPClientGetRoomMemberListResultAction)successAction;
+
+- (void)sendRoomChatMessage:(ZYXMPPMessage*)newMessage toRoomJID:(NSString*)roomJID;
 
 @end

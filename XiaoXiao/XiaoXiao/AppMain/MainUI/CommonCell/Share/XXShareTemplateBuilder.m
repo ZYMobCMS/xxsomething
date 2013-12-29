@@ -33,7 +33,6 @@ BOOL const XXLockCommonCSSTemplateState = NO;
 
 + (NSString*)buildCSSTemplateWithFormatte:(NSString *)cssFormatte withShareStyle:(XXShareStyle *)aStyle
 {
-    DDLogVerbose(@"cssFormatte :%@",cssFormatte);
     NSString *resultString = [NSString stringWithFormat:cssFormatte,aStyle.contentLineHeight,aStyle.contentFontSize,aStyle.contentTextColor,aStyle.contentTextAlign,aStyle.contentFontWeight,aStyle.contentFontFamily,aStyle.emojiSize,aStyle.emojiSize,aStyle.thumbImageSize,aStyle.thumbImageSize,aStyle.audioImageWidth,aStyle.audioImageHeight];
     
     return resultString;

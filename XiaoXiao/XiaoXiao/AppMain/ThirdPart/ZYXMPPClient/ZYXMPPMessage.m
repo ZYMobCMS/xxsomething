@@ -9,6 +9,23 @@
 #import "ZYXMPPMessage.h"
 
 @implementation ZYXMPPMessage
+- (id)init
+{
+    if (self = [super init]) {
+        
+        self.content = @"";
+        self.sendStatus = @"0";
+        self.user = @"";
+        self.userId = @"";
+        self.messageId = @"";
+        self.messageType = @"";
+        self.addTime = @"";
+        self.audioTime = @"";
+        self.groupRoomId = @"";
+        self.isReaded = @"0";
+    }
+    return self;
+}
 + (NSString*)conversationIdWithOtherUserId:(NSString *)oId withMyUserId:(NSString *)myId
 {
     return [NSString stringWithFormat:@"%@_%@",oId,myId];

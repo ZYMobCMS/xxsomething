@@ -47,90 +47,90 @@
     CGFloat styleContent = [XXSharePostStyle sharePostContentWidth];
     
     //image audio
-//    XXSharePostModel *modelOneImage0 = [[XXSharePostModel alloc]init];
-//    modelOneImage0.postType = XXSharePostTypeImageAudio0;
-//    modelOneImage0.postImages = @"";
-//    modelOneImage0.postContent = @"";
-//    modelOneImage0.postAudio = audio;
-//    modelOneImage0.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelOneImage0 forContentWidth:styleContent];
-//    [self.sourceArray addObject:modelOneImage0];
-////    DDLogVerbose(@"post model attributed content :%@",modelOneImage0.attributedContent);
-//    
-//
-//    
-//    XXSharePostModel *modelOneImage = [[XXSharePostModel alloc]init];
-//    modelOneImage.postType = XXSharePostTypeImageAudio1;
-//    modelOneImage.postImages = image0;
-//    modelOneImage.postContent = @"";
-//    modelOneImage.postAudio = audio;
-//    modelOneImage.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelOneImage forContentWidth:styleContent];
-//    [self.sourceArray addObject:modelOneImage];
-//    
-//    XXSharePostModel *modelOneImage2 = [[XXSharePostModel alloc]init];
-//    modelOneImage2.postType = XXSharePostTypeImageAudio2;
-//    modelOneImage2.postImages = [NSString stringWithFormat:@"%@|%@",image0,image1];
-//    modelOneImage2.postContent = @"";
-//    modelOneImage2.postAudio = audio;
-//    modelOneImage2.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelOneImage2 forContentWidth:styleContent];
-//    [self.sourceArray addObject:modelOneImage2];
-//    
-//    XXSharePostModel *modelOneImage3 = [[XXSharePostModel alloc]init];
-//    modelOneImage3.postType = XXSharePostTypeImageAudio3;
-//    modelOneImage3.postImages = [NSString stringWithFormat:@"%@|%@|%@",image0,image1,image2];
-//    modelOneImage3.postContent = @"";
-//    modelOneImage3.postAudio = audio;
-//    modelOneImage3.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelOneImage3 forContentWidth:styleContent];
-//    [self.sourceArray addObject:modelOneImage3];
-//    
-//    XXSharePostModel *modelOneImage4 = [[XXSharePostModel alloc]init];
-//    modelOneImage4.postType = XXSharePostTypeImageAudio4;
-//    modelOneImage4.postImages = [NSString stringWithFormat:@"%@|%@|%@|%@",image0,image1,image2,image3];
-//    modelOneImage4.postContent = @"";
-//    modelOneImage4.postAudio = audio;
-//    modelOneImage4.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelOneImage4 forContentWidth:styleContent];
-//    [self.sourceArray addObject:modelOneImage4];
-//    
-//    
-//    //image text
-//    XXSharePostModel *modelTwoImage0 = [[XXSharePostModel alloc]init];
-//    modelTwoImage0.postType = XXSharePostTypeImageText0;
-//    modelTwoImage0.postImages = @"";
-//    modelTwoImage0.postContent = commonContent;
-//    modelTwoImage0.postAudio = @"";
-//    modelTwoImage0.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage0 forContentWidth:styleContent];
-//    [self.sourceArray addObject:modelTwoImage0];
-//    
-//    XXSharePostModel *modelTwoImage1 = [[XXSharePostModel alloc]init];
-//    modelTwoImage1.postType = XXSharePostTypeImageText1;
-//    modelTwoImage1.postImages = [NSString stringWithFormat:@"%@",image0];
-//    modelTwoImage1.postContent = commonContent;
-//    modelTwoImage1.postAudio = @"";
-//    modelTwoImage1.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage1 forContentWidth:styleContent];
-//    [self.sourceArray addObject:modelTwoImage1];
-//    
-//    XXSharePostModel *modelTwoImage2 = [[XXSharePostModel alloc]init];
-//    modelTwoImage2.postType = XXSharePostTypeImageText2;
-//    modelTwoImage2.postImages = [NSString stringWithFormat:@"%@|%@",image0,image1];
-//    modelTwoImage2.postContent = commonContent;
-//    modelTwoImage2.postAudio = @"";
-//    modelTwoImage2.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage2 forContentWidth:styleContent];
-//    [self.sourceArray addObject:modelTwoImage2];
-//    
-//    XXSharePostModel *modelTwoImage3 = [[XXSharePostModel alloc]init];
-//    modelTwoImage3.postType = XXSharePostTypeImageText3;
-//    modelTwoImage3.postImages = [NSString stringWithFormat:@"%@|%@|%@",image0,image1,image2];
-//    modelTwoImage3.postContent = commonContent;
-//    modelTwoImage3.postAudio = @"";
-//    modelTwoImage3.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage3 forContentWidth:styleContent];
-//    [self.sourceArray addObject:modelTwoImage3];
-//    
-//    XXSharePostModel *modelTwoImage4 = [[XXSharePostModel alloc]init];
-//    modelTwoImage4.postType = XXSharePostTypeImageText4;
-//    modelTwoImage4.postImages = [NSString stringWithFormat:@"%@|%@|%@|%@",image0,image1,image2,image3];
-//    modelTwoImage4.postContent = commonContent;
-//    modelTwoImage4.postAudio = @"";
-//    modelTwoImage4.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage4 forContentWidth:styleContent];
-//    [self.sourceArray addObject:modelTwoImage4];
+    XXSharePostModel *modelOneImage0 = [[XXSharePostModel alloc]init];
+    modelOneImage0.postType = XXSharePostTypeImageAudio0;
+    modelOneImage0.postImages = @"";
+    modelOneImage0.postContent = @"";
+    modelOneImage0.postAudio = audio;
+    modelOneImage0.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelOneImage0 forContentWidth:styleContent];
+    [self.sourceArray addObject:modelOneImage0];
+//    DDLogVerbose(@"post model attributed content :%@",modelOneImage0.attributedContent);
+    
+
+    
+    XXSharePostModel *modelOneImage = [[XXSharePostModel alloc]init];
+    modelOneImage.postType = XXSharePostTypeImageAudio1;
+    modelOneImage.postImages = image0;
+    modelOneImage.postContent = @"";
+    modelOneImage.postAudio = audio;
+    modelOneImage.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelOneImage forContentWidth:styleContent];
+    [self.sourceArray addObject:modelOneImage];
+    
+    XXSharePostModel *modelOneImage2 = [[XXSharePostModel alloc]init];
+    modelOneImage2.postType = XXSharePostTypeImageAudio2;
+    modelOneImage2.postImages = [NSString stringWithFormat:@"%@|%@",image0,image1];
+    modelOneImage2.postContent = @"";
+    modelOneImage2.postAudio = audio;
+    modelOneImage2.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelOneImage2 forContentWidth:styleContent];
+    [self.sourceArray addObject:modelOneImage2];
+    
+    XXSharePostModel *modelOneImage3 = [[XXSharePostModel alloc]init];
+    modelOneImage3.postType = XXSharePostTypeImageAudio3;
+    modelOneImage3.postImages = [NSString stringWithFormat:@"%@|%@|%@",image0,image1,image2];
+    modelOneImage3.postContent = @"";
+    modelOneImage3.postAudio = audio;
+    modelOneImage3.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelOneImage3 forContentWidth:styleContent];
+    [self.sourceArray addObject:modelOneImage3];
+    
+    XXSharePostModel *modelOneImage4 = [[XXSharePostModel alloc]init];
+    modelOneImage4.postType = XXSharePostTypeImageAudio4;
+    modelOneImage4.postImages = [NSString stringWithFormat:@"%@|%@|%@|%@",image0,image1,image2,image3];
+    modelOneImage4.postContent = @"";
+    modelOneImage4.postAudio = audio;
+    modelOneImage4.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelOneImage4 forContentWidth:styleContent];
+    [self.sourceArray addObject:modelOneImage4];
+    
+    
+    //image text
+    XXSharePostModel *modelTwoImage0 = [[XXSharePostModel alloc]init];
+    modelTwoImage0.postType = XXSharePostTypeImageText0;
+    modelTwoImage0.postImages = @"";
+    modelTwoImage0.postContent = commonContent;
+    modelTwoImage0.postAudio = @"";
+    modelTwoImage0.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage0 forContentWidth:styleContent];
+    [self.sourceArray addObject:modelTwoImage0];
+    
+    XXSharePostModel *modelTwoImage1 = [[XXSharePostModel alloc]init];
+    modelTwoImage1.postType = XXSharePostTypeImageText1;
+    modelTwoImage1.postImages = [NSString stringWithFormat:@"%@",image0];
+    modelTwoImage1.postContent = commonContent;
+    modelTwoImage1.postAudio = @"";
+    modelTwoImage1.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage1 forContentWidth:styleContent];
+    [self.sourceArray addObject:modelTwoImage1];
+    
+    XXSharePostModel *modelTwoImage2 = [[XXSharePostModel alloc]init];
+    modelTwoImage2.postType = XXSharePostTypeImageText2;
+    modelTwoImage2.postImages = [NSString stringWithFormat:@"%@|%@",image0,image1];
+    modelTwoImage2.postContent = commonContent;
+    modelTwoImage2.postAudio = @"";
+    modelTwoImage2.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage2 forContentWidth:styleContent];
+    [self.sourceArray addObject:modelTwoImage2];
+    
+    XXSharePostModel *modelTwoImage3 = [[XXSharePostModel alloc]init];
+    modelTwoImage3.postType = XXSharePostTypeImageText3;
+    modelTwoImage3.postImages = [NSString stringWithFormat:@"%@|%@|%@",image0,image1,image2];
+    modelTwoImage3.postContent = commonContent;
+    modelTwoImage3.postAudio = @"";
+    modelTwoImage3.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage3 forContentWidth:styleContent];
+    [self.sourceArray addObject:modelTwoImage3];
+    
+    XXSharePostModel *modelTwoImage4 = [[XXSharePostModel alloc]init];
+    modelTwoImage4.postType = XXSharePostTypeImageText4;
+    modelTwoImage4.postImages = [NSString stringWithFormat:@"%@|%@|%@|%@",image0,image1,image2,image3];
+    modelTwoImage4.postContent = commonContent;
+    modelTwoImage4.postAudio = @"";
+    modelTwoImage4.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:modelTwoImage4 forContentWidth:styleContent];
+    [self.sourceArray addObject:modelTwoImage4];
     
     //=============== user test ==============
     //userlist
@@ -295,14 +295,14 @@
     self.navigationItem.leftBarButtonItem = uploadItem;
     
     //test login
-    UIBarButtonItem *loginTest = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(uploadTest)];
+    UIBarButtonItem *loginTest = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(testNetworkAPI)];
     self.navigationItem.rightBarButtonItem = loginTest;
     
     //cancel request
     UIButton *sendTest = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [sendTest setTitle:@"send" forState:UIControlStateNormal];
     sendTest.frame = CGRectMake(80, 150,80,40);
-    [sendTest addTarget:self action:@selector(startRecord) forControlEvents:UIControlEventTouchUpInside];
+    [sendTest addTarget:self action:@selector(sendMessageTest:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:sendTest];
     
     //image test
@@ -313,11 +313,11 @@
 //    [self.view addSubview:testUpload];
     
     
-//
+
     UIButton *changeBackgroundState = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [changeBackgroundState setTitle:@"change" forState:UIControlStateNormal];
     changeBackgroundState.frame = CGRectMake(200, 150,80,40);
-    [changeBackgroundState addTarget:self action:@selector(endRecord) forControlEvents:UIControlEventTouchUpInside];
+    [changeBackgroundState addTarget:self action:@selector(sendGroupMessage) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:changeBackgroundState];
     backgroundRecieveMsg = YES;
 //
@@ -330,11 +330,24 @@
 //    messageShowTextView = [[XXBaseTextView alloc]initWithFrame:CGRectMake(20,255,280,225)];
 //    [self.view addSubview:messageShowTextView];
     
-//    inputTextField = [[UITextField alloc]init];
-//    inputTextField.borderStyle = UITextBorderStyleRoundedRect;
-//    inputTextField.frame = CGRectMake(10,5,300,40);
-//    inputTextField.delegate = self;
-//    [self.view addSubview:inputTextField];
+    inputTextField = [[UITextField alloc]init];
+    inputTextField.borderStyle = UITextBorderStyleRoundedRect;
+    inputTextField.frame = CGRectMake(10,5,300,40);
+    inputTextField.delegate = self;
+    [self.view addSubview:inputTextField];
+    
+    roomTextField = [[UITextField alloc]init];
+    roomTextField.borderStyle = UITextBorderStyleRoundedRect;
+    roomTextField.frame = CGRectMake(10,45,300,40);
+    roomTextField.delegate = self;
+    [self.view addSubview:roomTextField];
+    
+    UIButton *joinRoom = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [joinRoom setTitle:@"join" forState:UIControlStateNormal];
+    joinRoom.frame = CGRectMake(200, 190,80,40);
+    [joinRoom addTarget:self action:@selector(joinRoom) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:joinRoom];
+    
 //    //
 //    searchTable = [[UITableView alloc]init];
 //    searchTable.frame = CGRectMake(0,45,320,self.view.frame.size.height-44-40-80);
@@ -346,6 +359,10 @@
 //    
 //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(valueChanged:) name:UITextFieldTextDidChangeNotification object:nil];
     
+}
+- (void)joinRoom
+{
+    [[ZYXMPPClient shareClient]joinGroupChatRoomWithRoomId:roomTextField.text withNickName:inputTextField.text];
 }
 - (void)startRecord
 {
@@ -368,9 +385,26 @@
         }];
     }];
 }
+- (void)sendGroupMessage
+{
+     ZYXMPPUser *newUser = [[ZYXMPPUser alloc]init];
+     newUser.jID = @"36";
+     ZYXMPPMessage *message = [[ZYXMPPMessage alloc]init];
+     message.content = @"今天很[可怜],我只想要[亲亲]!!!今天很[可怜],我只想要[亲亲]!!!今天很[可怜],我只想要[亲亲]!!!今天很[可怜],我只想要[亲亲]!!!今天很[可怜],我只想要[亲亲]!!!";
+     message.user = @"vincent";
+     message.audioTime = @"0";
+     message.userId = @"36";
+     message.sendStatus = @"0";
+     message.isReaded = @"1";
+     message.messageType = [NSString stringWithFormat:@"%d",ZYXMPPMessageTypeText];
+     message.messageAttributedContent = [ZYXMPPMessage attributedContentStringWithMessage:message];
+    [[ZYXMPPClient shareClient]  sendRoomChatMessage:message toRoomJID:nil];
+//     [messageShowTextView setAttributedString:message.messageAttributedContent];
+}
+
 - (void)endRecord
 {
-    [[XXAudioManager shareManager]audioManagerEndRecord];
+//    [[XXAudioManager shareManager]audioManagerEndRecord];
 }
 
 - (void)imageTest
@@ -454,10 +488,11 @@
 //
 - (void)sendMessageTest:(UIButton*)sender
 {
+    /*
     ZYXMPPUser *newUser = [[ZYXMPPUser alloc]init];
     newUser.jID = @"36";
     ZYXMPPMessage *message = [[ZYXMPPMessage alloc]init];
-    message.content = @"今天很[可怜],我只想要[亲亲]!!!";
+    message.content = @"今天很[可怜],我只想要[亲亲]!!!今天很[可怜],我只想要[亲亲]!!!今天很[可怜],我只想要[亲亲]!!!今天很[可怜],我只想要[亲亲]!!!今天很[可怜],我只想要[亲亲]!!!";
     message.user = @"vincent";
     message.audioTime = @"0";
     message.userId = @"36";
@@ -474,7 +509,11 @@
             [[XXChatCacheCenter shareCenter]saveMessageForCacheDict:message];
         }
     }];
-    [messageShowTextView setAttributedString:message.messageAttributedContent];
+    [messageShowTextView setAttributedString:message.messageAttributedContent];*/
+    
+    //群聊
+//    [[ZYXMPPClient shareClient]sendRoomChatMessage:nil toRoomJID:nil];
+    [[ZYXMPPClient shareClient]createDefaultConfigRoomUseMyJID];
     
 }
 //================================ API Test ==================//
@@ -599,13 +638,19 @@
         }
         
     }];
+    [[ZYXMPPClient shareClient] setCreateRoomSuccessAction:^(BOOL state, NSString *message) {
+        [SVProgressHUD showSuccessWithStatus:message];
+    }];
     [[ZYXMPPClient shareClient]  setDidSendMessageSuccessAction:^(NSString *messageId) {
         DDLogVerbose(@"%@",[NSString stringWithFormat:@"send message :%@ success",messageId]);
         if (messageId) {
             [[XXChatCacheCenter shareCenter]updateMessageSendStatusWithMessageIdForCacheDict:messageId];
         }
     }];
-    [[ZYXMPPClient shareClient]  startClientWithJID:@"36" withPassword:@"123456"];
+    [[ZYXMPPClient shareClient] setDidRecievedGroupMessageAction:^(ZYXMPPMessage *newMessage) {
+        [SVProgressHUD showSuccessWithStatus:newMessage.content];
+    }];
+    [[ZYXMPPClient shareClient]  startClientWithJID:inputTextField.text withPassword:@"123456"];
     
     //分享列表
 //    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
@@ -784,13 +829,13 @@
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"CellIdentifier ";
-    /*
+    
     XXShareBaseCell *cell = (XXShareBaseCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (!cell) {
         cell = [[XXShareBaseCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    [cell setSharePostModel:[self.sourceArray objectAtIndex:indexPath.row]];*/
+    [cell setSharePostModel:[self.sourceArray objectAtIndex:indexPath.row]];
     
     /*
     XXUserInfoBaseCell *cell = (XXUserInfoBaseCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -799,24 +844,25 @@
     }
     [cell setContentModel:[self.sourceArray objectAtIndex:indexPath.row]];*/
     
+    /*
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     XXSchoolModel *school = [self.sourceArray objectAtIndex:indexPath.row];
-    cell.textLabel.text = school.schoolName;
+    cell.textLabel.text = school.schoolName;*/
     
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    return [XXShareBaseCell heightWithSharePostModel:[self.sourceArray objectAtIndex:indexPath.row] forContentWidth:[XXSharePostStyle sharePostContentWidth]];
     
-    /*
-    return [XXShareBaseCell heightWithSharePostModel:[self.sourceArray objectAtIndex:indexPath.row] forContentWidth:[XXSharePostStyle sharePostContentWidth]];*/
     /*return [XXUserInfoBaseCell heightWithContentModel:[self.sourceArray objectAtIndex:indexPath.row]];*/
-    return 44.0f;
+    //return 44.0f;
     
 }
+/*
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == self.sourceArray.count-1 &&  needLoadMore) {
@@ -829,7 +875,7 @@
         } withPageIndex:keywordCurrentPage withPageSize:15];
         [searchTable reloadData];
     }
-}
+}*/
 - (void)addMoreResult
 {
     
