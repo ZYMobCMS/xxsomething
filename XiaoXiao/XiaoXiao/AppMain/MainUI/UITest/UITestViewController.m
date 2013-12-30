@@ -513,7 +513,7 @@
     
     //群聊
 //    [[ZYXMPPClient shareClient]sendRoomChatMessage:nil toRoomJID:nil];
-    [[ZYXMPPClient shareClient]createDefaultConfigRoomUseMyJID];
+    [[ZYXMPPClient shareClient]createRoomsWithRoomIndex:0];
     
 }
 //================================ API Test ==================//

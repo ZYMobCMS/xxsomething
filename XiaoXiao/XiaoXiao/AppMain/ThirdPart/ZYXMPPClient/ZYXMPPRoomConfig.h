@@ -53,6 +53,7 @@ extern NSString *const ZYXMPPRoomRoleAnyone;
 @property (nonatomic,strong)NSString *roomID;//  xxx@conference.host 中的xxx
 @property (nonatomic,assign)NSInteger reconfigState;//是否需要重新发送聊天室配置信息
 @property (nonatomic,strong)NSString *myNickName;
+@property (nonatomic,assign)NSInteger roomIndex;
 
 + (NSString*)realRoomJIDWithID:(NSString*)qId withHostName:(NSString*)host;
 

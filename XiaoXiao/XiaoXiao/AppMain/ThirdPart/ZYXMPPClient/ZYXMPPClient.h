@@ -78,6 +78,8 @@ typedef void (^ZYXMPPClientGetRoomMemberListResultAction) (NSArray *memberList);
     XMPPRoomCoreDataStorage *xmppRoomStorage;
     XMPPRoom                *xmppRoom;
     NSMutableDictionary     *xmppRooms;
+    NSMutableArray          *xmppRoomConfigs;
+    NSInteger                roomIndex;
     
 	NSString *_password;
     NSString *_jId;
@@ -168,6 +170,8 @@ typedef void (^ZYXMPPClientGetRoomMemberListResultAction) (NSArray *memberList);
 
 //设置管理员 admins:   xxx@host 中的 xxx 组成的数组
 - (void)setAdminsForRoom:(NSString*)roomID withAdmins:(NSArray*)admins;
+
+- (void)createRoomsWithRoomIndex:(NSInteger)roomIndex;
 
 //获取群用户
 - (void)getMemberListFomRoom:(NSString*)roomID withSuccessAction:(ZYXMPPClientGetRoomMemberListResultAction)successAction;

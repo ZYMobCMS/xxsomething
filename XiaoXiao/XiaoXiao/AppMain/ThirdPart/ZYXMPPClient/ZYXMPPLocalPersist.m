@@ -19,7 +19,7 @@
 
 #define ZYXMPPLocalPersistCreateUserTable @"create table zy_xmpp_user (user_id text primary key,nick_name text,room_id text,status text)"
 
-#define ZYXMPPLocalPersistInsertUserRow @"insert into zy_xmpp_user (user_id,nick_name,room_id,status)values('%@','%@','%@','%@','%@')"
+#define ZYXMPPLocalPersistInsertUserRow @"insert into zy_xmpp_user (user_id,nick_name,room_id,status)values('%@','%@','%@','%@')"
 
 static dispatch_queue_t ZYXMPPLocalPersistQueue = nil;
 
