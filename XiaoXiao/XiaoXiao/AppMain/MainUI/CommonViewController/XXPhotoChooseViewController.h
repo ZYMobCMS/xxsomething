@@ -21,6 +21,8 @@ typedef void (^XXPhotoChooseViewControllerFinishChooseBlock) (NSArray *resultIma
 @interface XXPhotoChooseViewController : UIViewController<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 {
     XXPhotoChooseViewControllerFinishChooseBlock _chooseBlock;
+    XXCommonNavigationNextStepBlock _nextStepBlock;
+    XXNavigationNextStepItemBlock _returnStepBlock;
     NSInteger _maxChooseNumber;
 }
 @property (nonatomic, strong) UIImagePickerController *imagePicker;
@@ -32,5 +34,6 @@ typedef void (^XXPhotoChooseViewControllerFinishChooseBlock) (NSArray *resultIma
 
 - (id)initWithSinglePhotoChooseFinishAction:(XXPhotoChooseViewControllerFinishChooseBlock)chooseBlock;
 - (id)initWithMutilPhotoChooseWithMaxChooseNumber:(NSInteger)maxNumber withFinishBlock:(XXPhotoChooseViewControllerFinishChooseBlock)chooseBlock;
-
+- (void)setNextStepAction:(XXCommonNavigationNextStepBlock)nextStepBlock;
+- (void)setReturnStepBlock:(XXNavigationNextStepItemBlock)returnStepBlock;
 @end

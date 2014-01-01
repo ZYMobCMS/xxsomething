@@ -7,12 +7,27 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XXSchoolModel.h"
+#import "XXSearchBar.h"
 
 /*
  *通用学校搜索列表
  */
-@interface XXSchoolSearchViewController : UIViewController
+typedef void (^XXSchoolSearchViewControllerFinishChooseBlock) (XXSchoolModel *chooseSchool);
+
+@interface XXSchoolSearchViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
 {
-    
+    XXSchoolSearchViewControllerFinishChooseBlock _chooseBlock;
+    XXCommonNavigationNextStepBlock _nextStepBlock;
+    UITableView *_resultTableView;
+    NSMutableArray *_resultSchoolArray;
+    XXSearchBar *_searchBar;
+    NSInteger   _currentResultPageIndex;
+    NSInteger   _pageSize;
+    NSInteger   _selectIndex;
+    BOOL        _needLoadMore;
 }
+- (void)setFinishChooseSchool:(XXSchoolSearchViewControllerFinishChooseBlock)chooseBlock;
+- (void)setNextStepAction:(XXCommonNavigationNextStepBlock)nextStepBlock;
+
 @end

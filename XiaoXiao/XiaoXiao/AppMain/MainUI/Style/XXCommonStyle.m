@@ -39,4 +39,63 @@
     return 24;
 }
 
+//UI style
++ (UIColor*)xxThemeBlueColor
+{
+    return rgb(5,232,219,1);
+}
++ (UIColor*)xxThemeBlueSelectedColor
+{
+    return rgb(10,216,204,1);
+}
++ (UIColor*)xxThemeRedColor
+{
+    return rgb(232,75,55,1);
+}
++ (UIColor*)xxThemeRedSelectedColor
+{
+    return rgb(255,87,65,1);
+}
++ (UIColor*)xxThemeTeaseBackColor
+{
+    return rgb(249,79,115,1);
+}
++ (UIColor *)xxThemeTeaseBackSelectedColor
+{
+    return rgb(238,62,99,1);
+}
++ (UIColor*)xxThemeButtonBoardColor
+{
+    return rgb(227,230,232,1);
+}
++ (CGFloat)xxThemeButtonBoardWidth
+{
+    return 1.0f;
+}
++ (UIColor*)xxThemeButtonTitleColor
+{
+    return [UIColor blackColor];
+}
++ (CGFloat)xxThemeButtonCornerRadius
+{
+    return 3.0f;
+}
++ (CGFloat)xxThemeNavigationBarCornerRadius
+{
+    return 4.0f;
+}
++ (CGFloat)xxThemeLoginGuideButtonRadius
+{
+    return 6.0f;
+}
+
+//school choose cell
++ (UIColor *)schoolChooseCellTitleColor
+{
+    return rgb(94,94,94,1);
+}
++ (UIFont*)schoolChooseCellTitleFont
+{
+    return [UIFont systemFontOfSize:16];
+}
 @end

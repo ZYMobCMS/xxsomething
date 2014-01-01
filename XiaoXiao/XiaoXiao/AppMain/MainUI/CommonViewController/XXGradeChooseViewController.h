@@ -11,6 +11,16 @@
 /*
  *通用年级选择列表
  */
-@interface XXGradeChooseViewController : UIViewController
+typedef void (^XXGradeChooseViewControllerFinishChooseBlock) (NSString *resultString);
 
+@interface XXGradeChooseViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+{
+    XXGradeChooseViewControllerFinishChooseBlock _finishBlock;
+    XXCommonNavigationNextStepBlock _nextStepBlock;
+    UITableView *_tableView;
+    NSArray *_gradeArray;
+    NSInteger _selectIndex;
+}
+- (void)setFinishBlock:(XXGradeChooseViewControllerFinishChooseBlock)finishBlock;
+- (void)setNextStepAction:(XXCommonNavigationNextStepBlock)nextStepBlock;
 @end

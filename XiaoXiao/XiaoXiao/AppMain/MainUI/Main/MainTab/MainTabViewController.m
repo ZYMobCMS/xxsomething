@@ -33,7 +33,7 @@
     
     //init view controllers
     NSMutableArray *subVCArray = [NSMutableArray array];
-    UIImage *navigationImage = [UIImage imageNamed:@"navigation_bar.png"];
+    UIImage *navigationImage = [UIImage imageNamed:@"nav_bar.png"];
     SquareGuideViewController *squareGuideVC = [[SquareGuideViewController alloc]init];
     UINavigationController *squareNav = [[UINavigationController alloc]initWithRootViewController:squareGuideVC];
     [squareNav.navigationBar setBackgroundImage:navigationImage forBarMetrics:UIBarMetricsDefault];

@@ -10,6 +10,7 @@
 #import "UITestViewController.h"
 #import "MainTabViewController.h"
 #import "TestViewController.h"
+#import "GuideViewController.h"
 
 @implementation XiaoXiaoAppDelegate
 
@@ -30,15 +31,21 @@
     [self configDDLogSettings];
     
     //testUI
-    UITestViewController *testVC = [[UITestViewController alloc]init];
+//    UITestViewController *testVC = [[UITestViewController alloc]init];
 //    self.window.rootViewController = testVC;
 //    TestViewController *testVC = [[TestViewController alloc]init];
-    UINavigationController *testNav = [[UINavigationController alloc]initWithRootViewController:testVC];
-    self.window.rootViewController = testNav;
+//    UINavigationController *testNav = [[UINavigationController alloc]initWithRootViewController:testVC];
+//    self.window.rootViewController = testNav;
     
     //MainUI
 //    MainTabViewController *mainTabVC = [[MainTabViewController alloc]init];
 //    self.window.rootViewController = mainTabVC;
+    
+    //login Guide
+    GuideViewController *guideVC = [[GuideViewController alloc]init];
+    self.loginGuideNavController = [[UINavigationController alloc]initWithRootViewController:guideVC];
+    [self.loginGuideNavController.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar.png"] forBarMetrics:UIBarMetricsDefault];
+    self.window.rootViewController = self.loginGuideNavController;
     
     //root
     self.appHUD = [[MBProgressHUD alloc]initWithWindow:self.window];

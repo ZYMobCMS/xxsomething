@@ -27,6 +27,14 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.title = @"校校注册";
+    [XXCommonUitil setCommonNavigationReturnItemForViewController:self];
+    
+    CGFloat totalWidth = self.view.frame.size.width;
+    
+    self.formView = [[XXFormView alloc]initWithFrame:CGRectMake(20,30,totalWidth-40,110)];
+    [self.view addSubview:self.formView];
+    
 }
 
 - (void)didReceiveMemoryWarning

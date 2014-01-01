@@ -43,11 +43,13 @@
         
         _chooseBlock = [chooseBlock copy];
         self.imagePicker = [[UIImagePickerController alloc]init];
-        self.imagePicker.delegate = self;
-        self.chooseType = XXPhotoChooseTypeSingle;
-        
+        self.imagePicker.delegate = self;        
         _maxChooseNumber = maxNumber;
-        self.chooseType = XXPhotoChooseTypeMutil;
+        if (maxNumber>1) {
+            self.chooseType = XXPhotoChooseTypeMutil;
+        }else{
+            self.chooseType = XXPhotoChooseTypeSingle;
+        }
     }
     return self;
 }
@@ -56,6 +58,11 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [XXCommonUitil setCommonNavigationReturnItemForViewController:self withBackStepAction:^{
+        if (_returnStepBlock) {
+            _returnStepBlock();
+        }
+    }];
     
     UIButton *chooseCamerou = [UIButton buttonWithType:UIButtonTypeCustom];
     chooseCamerou.frame = CGRectMake(50,50,220,40);
@@ -92,7 +99,7 @@
         }
     }
     if (type==1) {
-        if (XXPhotoChooseTypeMutil) {
+        if (self.chooseType==XXPhotoChooseTypeMutil) {
             XXMutilPhotoChooseViewController *mutilVC = [[XXMutilPhotoChooseViewController alloc]initWithMutilSelectMaxPhotoNumbers:_maxChooseNumber withFinishChooseBlock:^(NSArray *images) {
                 if (_chooseBlock) {
                     _chooseBlock(images);
@@ -101,14 +108,15 @@
             [self.navigationController pushViewController:mutilVC animated:YES];
         }else{
             self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            [self.navigationController presentModalViewController:self.imagePicker animated:YES];
+            [self presentModalViewController:self.imagePicker animated:YES];
         }
     }
 }
 
 - (void)imagePickerController:(UIImagePickerController *)aPicker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    [self.navigationController dismissModalViewControllerAnimated:YES];
+    DDLogVerbose(@"need crop:%d",self.needCrop);
+    [self dismissModalViewControllerAnimated:YES];
     UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
     if (self.needCrop) {
         XXPhotoCropViewController *cropVC = [[XXPhotoCropViewController alloc]initWithOriginImage:image withFinishCropBlock:^(UIImage *resultImage) {
@@ -123,23 +131,55 @@
                 }];
                 filterVC.effectImgViewHeight = self.singleImageCropHeight;
                 filterVC.isSettingHeadImage = self.isSetHeadImage;
+                [filterVC setNextStepAction:^(NSDictionary *resultDict) {
+                    if (_nextStepBlock) {
+                        _nextStepBlock(resultDict);
+                    }
+                }];
+                [XXCommonUitil setCommonNavigationReturnItemForViewController:filterVC withBackStepAction:^{
+                    if (_returnStepBlock) {
+                        _returnStepBlock();
+                    }
+                }];
                 [self.navigationController pushViewController:filterVC animated:YES];
             }else{
                 if (_chooseBlock) {
                     NSArray *resultImages = @[resultImage];
                     _chooseBlock(resultImages);
                 }
-                [self.navigationController dismissModalViewControllerAnimated:YES];
             }
         }];
         cropVC.visiableHeight = self.singleImageCropHeight;
         [self.navigationController pushViewController:cropVC animated:YES];
     }else{
-        if (_chooseBlock) {
-            NSArray *resultImages = @[image];
-            _chooseBlock(resultImages);
+        if (self.needFilter) {
+            XXPhotoFilterViewController *filterVC = [[XXPhotoFilterViewController alloc]initWithCurrentImage:image withChooseBlock:^(UIImage *resultImage) {
+                if (_chooseBlock) {
+                    NSArray *chooseImages = @[resultImage];
+                    if (_chooseBlock) {
+                        _chooseBlock(chooseImages);
+                    }
+                }
+            }];
+            filterVC.effectImgViewHeight = self.singleImageCropHeight;
+            filterVC.isSettingHeadImage = self.isSetHeadImage;
+            [filterVC setNextStepAction:^(NSDictionary *resultDict) {
+                if (_nextStepBlock) {
+                    _nextStepBlock(resultDict);
+                }
+            }];
+            [XXCommonUitil setCommonNavigationReturnItemForViewController:filterVC withBackStepAction:^{
+                if (_returnStepBlock) {
+                    _returnStepBlock();
+                }
+            }];
+            [self.navigationController pushViewController:filterVC animated:YES];
+        }else{
+            if (_chooseBlock) {
+                NSArray *resultImages = @[image];
+                _chooseBlock(resultImages);
+            }
         }
-        [self.navigationController dismissModalViewControllerAnimated:YES];
     }
     
 }
@@ -149,5 +189,13 @@
     [self.navigationController dismissModalViewControllerAnimated:YES];
 }
 
-
+#pragma mark - next step
+- (void)setNextStepAction:(XXCommonNavigationNextStepBlock)nextStepBlock
+{
+    _nextStepBlock = [nextStepBlock copy];
+}
+- (void)setReturnStepBlock:(XXNavigationNextStepItemBlock)returnStepBlock
+{
+    _returnStepBlock = [returnStepBlock copy];
+}
 @end

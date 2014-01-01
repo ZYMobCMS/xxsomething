@@ -18,11 +18,12 @@ typedef void (^XXPhotoFilterViewControllerFinishChooseEffectBlock) (UIImage *res
     UIImageView *effectImgView;
     
     XXPhotoFilterViewControllerFinishChooseEffectBlock _chooseBlock;
+    XXCommonNavigationNextStepBlock _nextStepBlock;
 }
 @property (nonatomic,strong)UIImage *currentImage;
 @property (nonatomic,assign)CGFloat effectImgViewHeight;
 @property (nonatomic,assign)BOOL isSettingHeadImage;
 
 - (id)initWithCurrentImage:(UIImage*)aImage withChooseBlock:(XXPhotoFilterViewControllerFinishChooseEffectBlock)chooseBlock;
-
+- (void)setNextStepAction:(XXCommonNavigationNextStepBlock)nextStepBlock;
 @end

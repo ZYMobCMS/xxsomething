@@ -212,6 +212,12 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (UIImage *filterImage);
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.title = @"滤镜效果";
+    [XXCommonUitil setCommonNavigationNextStepItemForViewController:self withNextStepAction:^{
+        if (_nextStepBlock) {
+            NSDictionary *resultDict = @{@"result":effectImgView.image};
+            _nextStepBlock(resultDict);
+        }
+    }];
     
     CGFloat scaleCount = 0.f;
     if (self.effectImgViewHeight > self.view.frame.size.height-115-40) {
@@ -227,6 +233,9 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (UIImage *filterImage);
     
     XXImageFilterChooseView *chooseView = [[XXImageFilterChooseView alloc]initWithFrame:CGRectMake(0,self.view.frame.size.height-115,self.view.frame.size.width,75) withOriginImage:self.currentImage withFinishBlock:^(UIImage *filterImage) {
         effectImgView.image = filterImage;
+        if (_chooseBlock) {
+            _chooseBlock(filterImage);
+        }
     }];
     [self.view addSubview:chooseView];
     
@@ -275,6 +284,11 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (UIImage *filterImage);
         _chooseBlock = [chooseBlock copy];
     }
     return self;
+}
+#pragma mark next step
+- (void)setNextStepAction:(XXCommonNavigationNextStepBlock)nextStepBlock
+{
+    _nextStepBlock = [nextStepBlock copy];
 }
 
 @end

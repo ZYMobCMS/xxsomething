@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void (^LoginGuideFinishLoginBlock) (BOOL loginResult);
+
 @interface GuideViewController : UIViewController
 {
-    
+    LoginGuideFinishLoginBlock _finishBlock;
 }
+- (void)setLoginGuideFinish:(LoginGuideFinishLoginBlock)finishBlock;
+
 @end

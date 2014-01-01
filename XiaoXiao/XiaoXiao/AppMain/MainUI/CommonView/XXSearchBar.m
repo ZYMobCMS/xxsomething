@@ -16,20 +16,21 @@
     if (self) {
         // Initialization code
         CGFloat rightIconWidth = 25;
+        self.placeHoldString = @"请输入学校关键字";
         
         backgroundImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,frame.size.width,frame.size.height)];
-        backgroundImageView.backgroundColor = [UIColor blueColor];
+        backgroundImageView.image = [UIImage imageNamed:@"search_bar_back.png"];
         [self addSubview:backgroundImageView];
         
-        contentTextField = [[UITextField alloc]initWithFrame:CGRectMake(8,5,frame.size.width-8,frame.size.height-10)];
-        [self addSubview:contentTextField];
-        contentTextField.placeholder = self.placeHoldString;
-        contentTextField.delegate = self;
-        contentTextField.returnKeyType = UIReturnKeySearch;
-        contentTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        self.contentTextField = [[UITextField alloc]initWithFrame:CGRectMake(8,5,frame.size.width-8,frame.size.height-10)];
+        [self addSubview:self.contentTextField];
+        self.contentTextField.placeholder = self.placeHoldString;
+        self.contentTextField.delegate = self;
+        self.contentTextField.returnKeyType = UIReturnKeySearch;
+        self.contentTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         
         rightIconImageView = [[UIImageView alloc]initWithFrame:CGRectMake(frame.size.width-25-8,9,rightIconWidth,rightIconWidth)];
-        rightIconImageView.backgroundColor = [UIColor redColor];
+        rightIconImageView.image = [UIImage imageNamed:@"search_icon.png"];
         [self addSubview:rightIconImageView];
         rightIconImageView.hidden = YES;
         
@@ -81,28 +82,29 @@
 - (void)searchInputValueChanged:(NSNotification*)noti
 {
     if (_valueChangeBlock ) {
-        if (contentTextField.text.length>0) {
-            BOOL enableState = [XXSearchBar formValidateIsAllSpace:contentTextField.text];
-            NSString *msg = @"字符串合法";
-            if (enableState) {
-                msg = @"不能全部为空字符或者全部为空格";
-            }
-            _valueChangeBlock(enableState,msg);
+        if (self.contentTextField.text.length>0) {
+            self.searchText = self.contentTextField.text;
+            _valueChangeBlock(YES,self.contentTextField.text);
         }
     }
 }
 #pragma mark - textfield delegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (contentTextField.text.length>0) {
-        return ![XXSearchBar formValidateIsAllSpace:contentTextField.text];
+    if (![textField.text isEqualToString:@""]) {
+        [textField resignFirstResponder];
+        return YES;
     }else{
         return NO;
     }
 }
 - (void)finishChooseWithNameText:(NSString *)name
 {
+    [self.contentTextField resignFirstResponder];
+    self.contentTextField.text = name;
+    self.searchText = name;
     rightIconImageView.hidden = NO;
+    rightIconImageView.image = [UIImage imageNamed:@"blue_right_selected.png"];
 }
 
 @end

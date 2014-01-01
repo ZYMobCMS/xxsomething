@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XXFormView.h"
 
 @interface RegistViewController : UIViewController
+{
+    
+}
+@property (nonatomic,strong)XXFormView *formView;
 
 @end

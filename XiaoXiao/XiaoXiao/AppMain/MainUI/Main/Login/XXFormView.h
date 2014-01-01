@@ -9,5 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface XXFormView : UIView
+{
+    
+    
+}
+@property (nonatomic,strong)UITextField *accountTextField;
+@property (nonatomic,strong)UITextField *passwordTextField;
 
 @end

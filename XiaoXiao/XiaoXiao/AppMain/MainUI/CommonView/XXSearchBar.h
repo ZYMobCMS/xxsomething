@@ -13,7 +13,6 @@ typedef void (^XXSearchBarValueChangeBlock) (BOOL canEnableNextStep,NSString *ms
 @interface XXSearchBar : UIView<UITextFieldDelegate>
 {
     UIImageView *backgroundImageView;
-    UITextField *contentTextField;
     UIImageView *rightIconImageView;
     
     XXSearchBarDidBeginSearchBlock _beginBlock;
@@ -21,6 +20,7 @@ typedef void (^XXSearchBarValueChangeBlock) (BOOL canEnableNextStep,NSString *ms
 }
 @property (nonatomic,strong)NSString *searchText;
 @property (nonatomic,strong)NSString *placeHoldString;
+@property (nonatomic,strong)UITextField *contentTextField;
 
 + (BOOL)formValidateIsAllSpace:(NSString*)sourceString;
 

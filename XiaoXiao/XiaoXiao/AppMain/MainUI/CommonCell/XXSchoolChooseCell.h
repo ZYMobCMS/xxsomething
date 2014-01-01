@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XXSchoolModel.h"
 
 @interface XXSchoolChooseCell : UITableViewCell
-
+{
+}
+@property (strong,nonatomic)UILabel *titleLabel;
+- (void)setContentModel:(XXSchoolModel*)contentModel;
+- (void)setTitle:(NSString*)title;
 @end

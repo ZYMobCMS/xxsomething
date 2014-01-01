@@ -42,6 +42,8 @@
 #import "XXSharePostBar.h"
 #import "XXStatusHUD.h"
 #import "XXEmojiChooseView.h"
+#import "XXCustomButton.h"
+#import "XXResponseButton.h"
 
 //common ViewController
 #import "XXBaseUserListViewController.h"

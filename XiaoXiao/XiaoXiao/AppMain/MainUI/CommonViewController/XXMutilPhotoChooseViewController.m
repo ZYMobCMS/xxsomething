@@ -41,8 +41,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    UINavigationController *imageNav = [[UINavigationController alloc]initWithRootViewController:_imagePickerController];
-    [self presentModalViewController:imageNav animated:YES];
+    [self.navigationController pushViewController:_imagePickerController animated:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -69,8 +68,6 @@
         NSDictionary *mediaInfo = (NSDictionary *)info;
         NSLog(@"Selected: %@", mediaInfo);
     }
-    
-    [self dismissViewControllerAnimated:YES completion:NULL];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

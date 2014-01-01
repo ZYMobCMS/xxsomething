@@ -37,6 +37,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.title = @"裁剪图片";
+    [XXCommonUitil setCommonNavigationReturnItemForViewController:self];
+    
     //visiableHeight
     if (self.visiableHeight==0) {
         

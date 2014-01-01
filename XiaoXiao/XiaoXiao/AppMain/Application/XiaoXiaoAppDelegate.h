@@ -12,4 +12,6 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) MBProgressHUD *appHUD;
+@property (strong, nonatomic) UINavigationController *loginGuideNavController;
+
 @end

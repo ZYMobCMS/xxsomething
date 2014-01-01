@@ -254,21 +254,21 @@
 //    [self.view addSubview:filterVC.view];
     
     //test photo
-//    UIImageView *resultImageView = [[UIImageView alloc]init];
-//    resultImageView.frame = CGRectMake(70, 150,150,150);
-//    [self.view addSubview:resultImageView];
-//    XXPhotoCropViewController *cropVC = [[XXPhotoCropViewController alloc]initWithOriginImage:[UIImage imageNamed:@"love.jpg"] withFinishCropBlock:^(UIImage *resultImage) {
-//        resultImageView.image = resultImage;
-//        [self.navigationController popViewControllerAnimated:YES];
-//    }];
-//    XXPhotoChooseViewController *chooseVC = [[XXPhotoChooseViewController alloc]initWithMutilPhotoChooseWithMaxChooseNumber:6 withFinishBlock:^(NSArray *resultImages) {
-//        
-//    }];
-//    chooseVC.needCrop = YES;
-//    chooseVC.needFilter = YES;
-//    chooseVC.singleImageCropHeight = 230;
-//    chooseVC.isSetHeadImage = NO;
-//    [self.navigationController pushViewController:chooseVC animated:YES];
+    UIImageView *resultImageView = [[UIImageView alloc]init];
+    resultImageView.frame = CGRectMake(70, 150,150,150);
+    [self.view addSubview:resultImageView];
+    XXPhotoCropViewController *cropVC = [[XXPhotoCropViewController alloc]initWithOriginImage:[UIImage imageNamed:@"love.jpg"] withFinishCropBlock:^(UIImage *resultImage) {
+        resultImageView.image = resultImage;
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
+    XXPhotoChooseViewController *chooseVC = [[XXPhotoChooseViewController alloc]initWithMutilPhotoChooseWithMaxChooseNumber:6 withFinishBlock:^(NSArray *resultImages) {
+        
+    }];
+    chooseVC.needCrop = YES;
+    chooseVC.needFilter = YES;
+    chooseVC.singleImageCropHeight = 230;
+    chooseVC.isSetHeadImage = NO;
+    [self.navigationController pushViewController:chooseVC animated:YES];
     
     
     //test base text view
