@@ -24,6 +24,7 @@ typedef void (^XXCommonNavigationNextStepBlock) (NSDictionary *resultDict);
 + (void)setCommonNavigationReturnItemForViewController:(UIViewController*)aViewController withBackStepAction:(XXNavigationNextStepItemBlock)stepAction;
 + (void)setCommonNavigationNextStepItemForViewController:(UIViewController*)aViewController withNextStepAction:(XXNavigationNextStepItemBlock)nextAction;
 + (void)setCommonNavigationNextStepItemForViewController:(UIViewController*)aViewController withNextStepAction:(XXNavigationNextStepItemBlock)nextAction withTitle:(NSString*)title;
++ (void)setCommonNavigationTitle:(NSString*)title forViewController:(UIViewController*)aViewController;
 
 + (void)keywindowShowProgressHUDWithProgressValue:(CGFloat)progressValue withTitle:(NSString*)title;
 + (void)keywindowShowProgressHUDWithTitle:(NSString*)withTitle;

@@ -32,6 +32,16 @@
     [appDelegate.appHUD show:YES];
 }
 
++ (void)setCommonNavigationTitle:(NSString *)title forViewController:(UIViewController *)aViewController
+{
+    UILabel *customTitleLabel = [[UILabel alloc]init];
+    customTitleLabel.frame = CGRectMake(30,4,aViewController.view.frame.size.width-60,aViewController.navigationController.navigationBar.frame.size.height-8);
+    customTitleLabel.backgroundColor = [UIColor clearColor];
+    customTitleLabel.text = aViewController.title;
+    customTitleLabel.textAlignment = NSTextAlignmentCenter;
+    customTitleLabel.textColor = [UIColor blackColor];
+    aViewController.navigationItem.titleView = customTitleLabel;
+}
 + (void)setCommonNavigationReturnItemForViewController:(UIViewController *)aViewController
 {
     XXResponseButton *returnCustomButton = [[XXResponseButton alloc]initWithFrame:CGRectMake(0,0,26.5,26.5)];

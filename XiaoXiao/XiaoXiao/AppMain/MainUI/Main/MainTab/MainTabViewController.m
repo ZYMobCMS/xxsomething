@@ -35,6 +35,7 @@
     NSMutableArray *subVCArray = [NSMutableArray array];
     UIImage *navigationImage = [UIImage imageNamed:@"nav_bar.png"];
     SquareGuideViewController *squareGuideVC = [[SquareGuideViewController alloc]init];
+    [XXCommonUitil setCommonNavigationTitle:@"校广场" forViewController:self];
     UINavigationController *squareNav = [[UINavigationController alloc]initWithRootViewController:squareGuideVC];
     [squareNav.navigationBar setBackgroundImage:navigationImage forBarMetrics:UIBarMetricsDefault];
     [subVCArray addObject:squareNav];

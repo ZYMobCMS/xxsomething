@@ -15,8 +15,13 @@
     if (self = [super init]) {
         
         _backgroundImageView = [[UIImageView alloc]init];
-        _backgroundImageView.frame = CGRectMake(0,0,self.frame.size.width,self.frame.size.height-bottomMargin);
+        _backgroundImageView.frame = CGRectMake(0,0,self.frame.size.width-20,self.frame.size.height-bottomMargin);
         [self.contentView addSubview:_backgroundImageView];
+        if (bottomMargin!=0) {
+            _backgroundImageView.image = [UIImage imageNamed:@"cell_round_back.png"];
+        }else{
+            
+        }
         
         _iconImageView = [[UIImageView alloc]init];
         _iconImageView.frame = CGRectMake(8,7,30,30);
