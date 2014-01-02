@@ -9,5 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface XXLoadMoreView : UIView
-
+{
+    UIActivityIndicatorView *_indicatorView;
+    UILabel                 *_titleLabel;
+}
+- (void)startLoading;
+- (void)endLoading;
 @end

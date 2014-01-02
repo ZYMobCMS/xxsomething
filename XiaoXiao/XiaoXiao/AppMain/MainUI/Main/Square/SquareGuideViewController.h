@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SquareGuideViewController : UIViewController
+@interface SquareGuideViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+{
+    UITableView *_guideTableView;
+    NSMutableArray *_guideTitleArray;
+}
 
 @end

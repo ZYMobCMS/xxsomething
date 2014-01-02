@@ -60,7 +60,7 @@ typedef void (^XXImageEffectItemSelectBlock) (XXImageEffectItem *selectItem);
 }
 @end
 
-typedef void (^XXImageFilterChooseViewFinishBlock) (UIImage *filterImage);
+typedef void (^XXImageFilterChooseViewFinishBlock) (IFFilterType filterType);
 @interface XXImageFilterChooseView : UIView
 {
     XXImageFilterChooseViewFinishBlock _finishBlock;
@@ -74,6 +74,7 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (UIImage *filterImage);
 #define XXImageFilterChooseViewItemMargin 20
 #define XXImageFilterChooseViewTopMargin 5
 #define XXImageFilterChooseViewItemWidth 50
+#define XXImageFilterItemBaseTag 3333990
 
 - (id)initWithFrame:(CGRect)frame withOriginImage:(UIImage *)originImage withFinishBlock:(XXImageFilterChooseViewFinishBlock)finishBlock
 {
@@ -83,7 +84,7 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (UIImage *filterImage);
         self.currentImage = originImage;
         
         //
-        NSArray *effectNames = [NSArray arrayWithObjects:@"原图",@"LOMO",@"黑白",@"复古",@"哥特",@"锐色",@"淡雅",@"酒红",@"青柠",@"浪漫",@"光晕",@"蓝调",@"梦幻",@"夜色", nil];
+        NSArray *effectNames = [NSArray arrayWithObjects:@"原图",@"LOMO",@"黑白",@"复古",@"锐色",@"淡雅",@"酒红",@"青柠",@"浪漫",@"光晕",@"蓝调",@"梦幻",@"夜色",@"唯美",@"清新",@"阳光",@"怀旧",@"复古",nil];
         UIScrollView *scrollView = [[UIScrollView alloc]init];
         scrollView.backgroundColor = [UIColor blackColor];
         scrollView.frame = CGRectMake(0,0,frame.size.width,frame.size.height);
@@ -94,13 +95,14 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (UIImage *filterImage);
             
             XXImageEffectItem *item = [[XXImageEffectItem alloc]initWithFrame:itemRect withImage:self.currentImage withSelectBlock:^(XXImageEffectItem *selectItem) {
                 
+                NSInteger selectIndex = selectItem.tag-XXImageFilterItemBaseTag;
                 if (_finishBlock) {
-                    _finishBlock(selectItem.effectImgView.image);
+                    _finishBlock([self filterTypeAtIndex:selectIndex]);
                 }
                 
             }];
-            item.effectImgView.image = [self changeImage:i];
             item.titleLabel.text = [effectNames objectAtIndex:i];
+            item.tag = XXImageFilterItemBaseTag+i;
             [scrollView addSubview:item];
         }
         CGFloat totalContentWidth = (effectNames.count+1)*XXImageFilterChooseViewItemMargin+effectNames.count*XXImageFilterChooseViewItemWidth;
@@ -110,84 +112,105 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (UIImage *filterImage);
     return self;
 }
 
--(UIImage *)changeImage:(int)index
+-(IFFilterType)filterTypeAtIndex:(int)index
 {
-    UIImage *image;
+    IFFilterType filterType;
     switch (index) {
         case 0:
         {
-            return self.currentImage;
+            filterType = IF_NORMAL_FILTER;
         }
             break;
         case 1:
         {
-            image = [ImageUtil imageWithImage:self.currentImage withColorMatrix:colormatrix_lomo];
+            filterType = IF_1977_FILTER;
         }
             break;
         case 2:
         {
-            image = [ImageUtil imageWithImage:self.currentImage withColorMatrix:colormatrix_heibai];
+            filterType = IF_AMARO_FILTER;
         }
             break;
         case 3:
         {
-            image = [ImageUtil imageWithImage:self.currentImage withColorMatrix:colormatrix_huajiu];
+            filterType = IF_BRANNAN_FILTER;
         }
             break;
         case 4:
         {
-            image = [ImageUtil imageWithImage:self.currentImage withColorMatrix:colormatrix_gete];
+            filterType = IF_FILTER_TOTAL_NUMBER;
         }
             break;
         case 5:
         {
-            image = [ImageUtil imageWithImage:self.currentImage withColorMatrix:colormatrix_ruise];
+            filterType = IF_HEFE_FILTER;
         }
             break;
         case 6:
         {
-            image = [ImageUtil imageWithImage:self.currentImage withColorMatrix:colormatrix_danya];
+            filterType = IF_HUDSON_FILTER;
         }
             break;
         case 7:
         {
-            image = [ImageUtil imageWithImage:self.currentImage withColorMatrix:colormatrix_jiuhong];
+            filterType = IF_INKWELL_FILTER;
         }
             break;
         case 8:
         {
-            image = [ImageUtil imageWithImage:self.currentImage withColorMatrix:colormatrix_qingning];
+            filterType = IF_LOMOFI_FILTER;
         }
             break;
         case 9:
         {
-            image = [ImageUtil imageWithImage:self.currentImage withColorMatrix:colormatrix_langman];
+            filterType = IF_LORDKELVIN_FILTER;
         }
             break;
         case 10:
         {
-            image = [ImageUtil imageWithImage:self.currentImage withColorMatrix:colormatrix_guangyun];
+            filterType = IF_NASHVILLE_FILTER;
+            
         }
             break;
         case 11:
         {
-            image = [ImageUtil imageWithImage:self.currentImage withColorMatrix:colormatrix_landiao];
+            filterType = IF_RISE_FILTER;
             
         }
             break;
         case 12:
         {
-            image = [ImageUtil imageWithImage:self.currentImage withColorMatrix:colormatrix_menghuan];
+            filterType = IF_SIERRA_FILTER;
             
         }
             break;
-        case 13:
+        case 13 :
         {
-            image = [ImageUtil imageWithImage:self.currentImage withColorMatrix:colormatrix_yese];
-            
+            filterType = IF_SUTRO_FILTER;
         }
+            break;
+        case 14:
+        {
+            filterType = IF_TOASTER_FILTER;
+        }
+            break;
+        case 15:
+        {
+            filterType = IF_VALENCIA_FILTER;
+        }
+            break;
+        case 16:
+        {
+            filterType = IF_WALDEN_FILTER;
+        }
+            break;
+        case 17:
+        {
+            filterType = IF_XPROII_FILTER;
+        }
+            break;
     }
-    return image;
+    return filterType;
 }
 
 @end
@@ -214,11 +237,22 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (UIImage *filterImage);
     self.title = @"滤镜效果";
     [XXCommonUitil setCommonNavigationNextStepItemForViewController:self withNextStepAction:^{
         if (_nextStepBlock) {
-            NSDictionary *resultDict = @{@"result":effectImgView.image};
-            _nextStepBlock(resultDict);
+            if (self.isSettingHeadImage) {
+                NSDictionary *resultDict = @{@"result":effectHeadImgView.image};
+                _nextStepBlock(resultDict);
+            }else{
+                NSDictionary *resultDict = @{@"result":effectImgView.image};
+                _nextStepBlock(resultDict);
+            }
         }
     }];
     
+    //default
+    if (self.effectImgViewHeight==0) {
+        self.effectImgViewHeight = 250;
+    }
+    
+    //image filter
     CGFloat scaleCount = 0.f;
     if (self.effectImgViewHeight > self.view.frame.size.height-115-40) {
         scaleCount = (self.view.frame.size.height-115-20)/self.effectImgViewHeight;
@@ -226,42 +260,44 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (UIImage *filterImage);
     CGFloat scaleWidth = self.view.frame.size.width*scaleCount;
     scaleWidth = scaleWidth>0? scaleWidth:self.view.frame.size.width;
     
-    //default
-    if (self.effectImgViewHeight==0) {
-        self.effectImgViewHeight = 250;
+    if (self.isSettingHeadImage) {
+        CGFloat orignx = (self.view.frame.size.width-77)/2;
+        CGFloat origny = (self.view.frame.size.height-44-75-77)/2;
+        _imageFilter = [[ZYImageFilter alloc]initWithSaveQuality:YES withShowEffectImageViewFrame:CGRectMake(orignx,origny,77,77)];
+    }else{
+        _imageFilter = [[ZYImageFilter alloc]initWithSaveQuality:YES withShowEffectImageViewFrame:CGRectMake(0,0,scaleWidth,self.effectImgViewHeight)];
     }
-    
-    XXImageFilterChooseView *chooseView = [[XXImageFilterChooseView alloc]initWithFrame:CGRectMake(0,self.view.frame.size.height-115,self.view.frame.size.width,75) withOriginImage:self.currentImage withFinishBlock:^(UIImage *filterImage) {
-        effectImgView.image = filterImage;
-        if (_chooseBlock) {
-            _chooseBlock(filterImage);
-        }
+    _imageFilter.rawImage = self.currentImage;
+    [self.view addSubview:_imageFilter.gpuImageView];
+    [_imageFilter switchFilter:IF_NORMAL_FILTER];
+    _imageFilter.gpuImageView.hidden = YES;
+
+    XXImageFilterChooseView *chooseView = [[XXImageFilterChooseView alloc]initWithFrame:CGRectMake(0,self.view.frame.size.height-115,self.view.frame.size.width,75) withOriginImage:self.currentImage withFinishBlock:^(IFFilterType filterType) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_imageFilter switchFilter:filterType];
+            UIImage *currentEffectImage = [_imageFilter currentEffectImage];
+            if (self.isSettingHeadImage) {
+                effectHeadImgView.image = currentEffectImage;
+                [effectHeadImgView setNeedsDisplay];
+            }else{
+                effectImgView.image = currentEffectImage;
+            }
+        });
     }];
     [self.view addSubview:chooseView];
     
     if (self.isSettingHeadImage) {
-        // displaying the image in a circle by using a shape layer
-        // layer fill color controls the masking
-        CAShapeLayer *maskLayer = [CAShapeLayer layer];
-        maskLayer.backgroundColor = [UIColor whiteColor].CGColor;
-        UIBezierPath *layerPath = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(1, 1, 200, 200)];
-        maskLayer.path = layerPath.CGPath;
-        maskLayer.fillColor = [UIColor blackColor].CGColor;
+        effectHeadImgView.hidden = NO;
+        effectImgView.hidden = YES;
         
-        // use another view for clipping so that when the image size changes, the masking layer does not need to be repositioned
-        UIView *clippingViewForLayerMask = [[UIView alloc] initWithFrame:CGRectMake(60, 50, 200, 200)];
-        clippingViewForLayerMask.layer.mask = maskLayer;
-        clippingViewForLayerMask.clipsToBounds = YES;
-        [self.view addSubview:clippingViewForLayerMask];
+        CGFloat originx = (self.view.frame.size.width-self.effectImgViewHeight)/2;
+        effectHeadImgView = [[AGMedallionView alloc] initWithFrame:CGRectMake(originx,80,self.effectImgViewHeight,self.effectImgViewHeight)];
+        effectHeadImgView.image = self.currentImage;
+        [self.view addSubview:effectHeadImgView];
         
-        effectImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20,scaleWidth,self.effectImgViewHeight)];
-        effectImgView.backgroundColor = [UIColor lightGrayColor];
-        [clippingViewForLayerMask addSubview:effectImgView];
-        effectImgView.image = self.currentImage;
-        UIImage *resizeImage = [self.currentImage resizedImage:CGSizeMake(200,200) interpolationQuality:kCGInterpolationDefault];
-        effectImgView.frame = CGRectMake(0, 0, resizeImage.size.width, resizeImage.size.height);
-        effectImgView.center = CGPointMake(effectImgView.superview.frame.size.width/2, effectImgView.superview.frame.size.height/2);
     }else{
+        effectHeadImgView.hidden = YES;
+        effectImgView.hidden = NO;
         effectImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20,scaleWidth,self.effectImgViewHeight)];
         effectImgView.image = self.currentImage;
         [self.view addSubview:effectImgView];

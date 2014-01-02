@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class MainTabViewController;
+
 @interface XiaoXiaoAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) MBProgressHUD *appHUD;
 @property (strong, nonatomic) UINavigationController *loginGuideNavController;
+@property (strong, nonatomic) MainTabViewController *mainTabController;
 
 @end

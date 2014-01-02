@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XXFormView.h"
+
+typedef void (^LoginViewControllerResultBlock) (BOOL resultState);
 
 @interface LoginViewController : UIViewController
-
+{
+    XXFormView *_FormView;
+    LoginViewControllerResultBlock _resultBlock;
+}
+- (void)setLoginResultBlock:(LoginViewControllerResultBlock)resultBlock;
 @end

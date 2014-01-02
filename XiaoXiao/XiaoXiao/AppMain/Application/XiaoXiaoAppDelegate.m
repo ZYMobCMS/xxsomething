@@ -37,14 +37,22 @@
 //    UINavigationController *testNav = [[UINavigationController alloc]initWithRootViewController:testVC];
 //    self.window.rootViewController = testNav;
     
-    //MainUI
-//    MainTabViewController *mainTabVC = [[MainTabViewController alloc]init];
-//    self.window.rootViewController = mainTabVC;
     
     //login Guide
     GuideViewController *guideVC = [[GuideViewController alloc]init];
     self.loginGuideNavController = [[UINavigationController alloc]initWithRootViewController:guideVC];
     [self.loginGuideNavController.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar.png"] forBarMetrics:UIBarMetricsDefault];
+    [guideVC setLoginGuideFinish:^(BOOL loginResult) {
+        if (loginResult) {
+            //MainUI
+            self.mainTabController = [[MainTabViewController alloc]init];
+            self.window.rootViewController = self.mainTabController;
+            self.mainTabController.view.alpha = 0;
+            [UIView animateWithDuration:0.5 animations:^{
+                self.mainTabController.view.alpha = 1;
+            }];
+        }
+    }];
     self.window.rootViewController = self.loginGuideNavController;
     
     //root

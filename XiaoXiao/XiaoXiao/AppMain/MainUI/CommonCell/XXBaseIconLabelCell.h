@@ -9,5 +9,13 @@
 #import "XXBaseCell.h"
 
 @interface XXBaseIconLabelCell : XXBaseCell
+{
+    UIImageView *_backgroundImageView;
+    UIImageView  *_iconImageView;
+    UILabel      *_titleLabel;
+    CGFloat     _bottomMargin;
+}
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withBottomMargin:(CGFloat)bottomMargin;
+- (void)setIconImage:(UIImage *)iconImage withTitle:(NSString*)title;
 
 @end

@@ -12,6 +12,19 @@
  *通用用户列表
  */
 
-@interface XXBaseUserListViewController : UIViewController
+@interface XXBaseUserListViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+{
+    UITableView *_userListTable;
+    NSMutableArray *_userListArray;
+    NSInteger   _currentPageIndex;
+    NSInteger   _pageSize;
+    BOOL        _hiddenLoadMore;
+    
+}
+
+- (void)refresh;
+- (void)requestUserList;
+- (void)loadMoreResult;
+- (void)finishRequestWithResultArray:(NSArray*)resultArray;
 
 @end

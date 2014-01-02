@@ -113,7 +113,13 @@
 - (void)loginAction
 {
     LoginViewController *loginVC = [[LoginViewController alloc]init];
+    [loginVC setLoginResultBlock:^(BOOL resultState) {
+        if (_finishBlock) {
+            _finishBlock(resultState);
+        }
+    }];
     [self.navigationController pushViewController:loginVC animated:YES];
+    
 }
 - (void)registAction
 {

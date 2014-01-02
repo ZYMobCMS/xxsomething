@@ -10,11 +10,32 @@
 
 @implementation XXBaseIconLabelCell
 
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withBottomMargin:(CGFloat)bottomMargin
+{
+    if (self = [super init]) {
+        
+        _backgroundImageView = [[UIImageView alloc]init];
+        _backgroundImageView.frame = CGRectMake(0,0,self.frame.size.width,self.frame.size.height-bottomMargin);
+        [self.contentView addSubview:_backgroundImageView];
+        
+        _iconImageView = [[UIImageView alloc]init];
+        _iconImageView.frame = CGRectMake(8,7,30,30);
+        [_backgroundImageView addSubview:_iconImageView];
+        
+        _titleLabel = [[UILabel alloc]init];
+        _titleLabel.backgroundColor = [UIColor clearColor];
+        _titleLabel.frame = CGRectMake(45,0,_backgroundImageView.frame.size.width-45*2,_backgroundImageView.frame.size.height);
+        [_backgroundImageView addSubview:_titleLabel];
+        
+    }
+    return self;
+}
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+       
     }
     return self;
 }
@@ -27,5 +48,9 @@
     // Drawing code
 }
 */
-
+- (void)setIconImage:(UIImage *)iconImage withTitle:(NSString *)title
+{
+    _iconImageView.image = iconImage;
+    _titleLabel.text = title;
+}
 @end

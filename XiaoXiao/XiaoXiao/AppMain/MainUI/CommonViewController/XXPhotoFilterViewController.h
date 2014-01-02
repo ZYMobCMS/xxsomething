@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AGMedallionView.h"
+#import "ZYImageFilter.h"
 
 /*
  *通用照片滤镜视图
@@ -15,7 +17,9 @@ typedef void (^XXPhotoFilterViewControllerFinishChooseEffectBlock) (UIImage *res
 
 @interface XXPhotoFilterViewController : UIViewController
 {
-    UIImageView *effectImgView;
+    AGMedallionView *effectHeadImgView;
+    UIImageView     *effectImgView;
+    ZYImageFilter   *_imageFilter;
     
     XXPhotoFilterViewControllerFinishChooseEffectBlock _chooseBlock;
     XXCommonNavigationNextStepBlock _nextStepBlock;

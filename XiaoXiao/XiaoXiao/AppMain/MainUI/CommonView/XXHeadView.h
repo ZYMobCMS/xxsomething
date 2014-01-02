@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AGMedallionView.h"
+
 #define XXHeadViewWidth 80
+
 @interface XXHeadView : UIView
 {
     
 }
-@property (nonatomic,strong)UIImageView *contentImageView;
+@property (nonatomic,strong)AGMedallionView  *contentImageView;
 
 @end

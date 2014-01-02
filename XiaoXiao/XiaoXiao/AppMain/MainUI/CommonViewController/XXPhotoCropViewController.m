@@ -121,13 +121,18 @@
 - (void)finishCropPhotoAction
 {
     //获取当前的截图
-    UIImage *visiableImage = [contentScroller  imageByRenderingCurrentVisibleRect];
-    //截图图片始终会是定义区域的一半，所以我们需要都放大一倍
-    CGImageRef cropImageRef = CGImageCreateWithImageInRect(visiableImage.CGImage,CGRectMake(0,topVisiableHeight*2,self.view.frame.size.width*2,self.visiableHeight*2));
-    UIImage *cropImage = [UIImage imageWithCGImage:cropImageRef];
-    if (_finishBlock) {
-        _finishBlock(cropImage);
-    }
+    [SVProgressHUD showWithStatus:@"正在裁剪..."];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIImage *visiableImage = [contentScroller  imageByRenderingCurrentVisibleRect];
+        //截图图片始终会是定义区域的一半，所以我们需要都放大一倍
+        CGImageRef cropImageRef = CGImageCreateWithImageInRect(visiableImage.CGImage,CGRectMake(0,topVisiableHeight*2,self.view.frame.size.width*2,self.visiableHeight*2));
+        UIImage *cropImage = [UIImage imageWithCGImage:cropImageRef];
+        if (_finishBlock) {
+            _finishBlock(cropImage);
+        }
+        [SVProgressHUD showSuccessWithStatus:@"裁剪完成"];
+    });
+    
 }
 - (void)cancelCropAction
 {

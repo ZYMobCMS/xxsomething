@@ -17,6 +17,7 @@
 #import "SVProgressHUD.h"
 #import "MBProgressHUD.h"
 #import "UIImage+Resize.h"
+#import "ISRefreshControl.h"
 #import "SDWebImageManager.h"
 #import "DAProgressOverlayView.h"
 #import "UIImageView+WebCache.h"
@@ -24,3 +25,5 @@
 #import "SSZipArchive.h"
 #import "DAKeyboardControl.h"
 #import "DAKeyboardControl.h"
+#import "ZYImageFilter.h"
+#import "AGMedallionView.h"
