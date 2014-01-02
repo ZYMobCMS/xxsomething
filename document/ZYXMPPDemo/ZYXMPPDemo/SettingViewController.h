@@ -1,0 +1,16 @@
+//
+//  SettingViewController.h
+//  ZYXMPPDemo
+//
+//  Created by ZYVincent on 13-12-31.
+//  Copyright (c) 2013年 ZYProSoft. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface SettingViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UITextField *hostTextField;
+@property (weak, nonatomic) IBOutlet UITextField *portTextField;
+- (IBAction)finishSettingAction:(id)sender;
+
+@end
