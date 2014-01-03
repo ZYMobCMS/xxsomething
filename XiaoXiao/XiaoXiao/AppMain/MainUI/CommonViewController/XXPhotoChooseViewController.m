@@ -58,23 +58,28 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [XXCommonUitil setCommonNavigationReturnItemForViewController:self withBackStepAction:^{
-        if (_returnStepBlock) {
-            _returnStepBlock();
-        }
-    }];
+    [XXCommonUitil setCommonNavigationReturnItemForViewController:self];
     
-    UIButton *chooseCamerou = [UIButton buttonWithType:UIButtonTypeCustom];
-    chooseCamerou.frame = CGRectMake(50,50,220,40);
+    
+    XXCustomButton *chooseCamerou = [[XXCustomButton alloc]initWithFrame:CGRectMake(50,50,220,40)];
     chooseCamerou.tag = 238790;
-    [chooseCamerou setBackgroundImage:[UIImage imageNamed:@"choose_camerou.png"] forState:UIControlStateNormal];
+    chooseCamerou.backgroundColor = [XXCommonStyle xxThemeBlueColor];
+    chooseCamerou.layer.cornerRadius = 4.0f;
+    chooseCamerou.iconImageView.image = [UIImage imageNamed:@"photo_choose_camerou.png"];
+    chooseCamerou.iconImageView.frame = CGRectMake(76,3,34,34);
+    chooseCamerou.customTitleLabel.text = @"现场拍照";
+    chooseCamerou.customTitleLabel.frame = CGRectMake(115,3,80,34);
     [self.view addSubview:chooseCamerou];
     [chooseCamerou addTarget:self action:@selector(chooseTypeAction:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *chooseLibrary = [UIButton buttonWithType:UIButtonTypeCustom];
-    chooseLibrary.frame = CGRectMake(10,130,220,40);
+    XXCustomButton *chooseLibrary = [[XXCustomButton alloc]initWithFrame:CGRectMake(10,130,220,40)];
     chooseLibrary.tag = 238791;
-    [chooseLibrary setBackgroundImage:[UIImage imageNamed:@"choose_library.png"] forState:UIControlStateNormal];
+    chooseLibrary.backgroundColor = [XXCommonStyle xxThemeBlueColor];
+    chooseLibrary.layer.cornerRadius = 4.0f;
+    chooseLibrary.iconImageView.image = [UIImage imageNamed:@"photo_choose_lib.png"];
+    chooseLibrary.customTitleLabel.text = @"照片库选择";
+    chooseLibrary.iconImageView.frame = CGRectMake(76,3,34,34);
+    chooseLibrary.customTitleLabel.frame = CGRectMake(115,3,80,34);
     [self.view addSubview:chooseLibrary];
     [chooseLibrary addTarget:self action:@selector(chooseTypeAction:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -93,7 +98,7 @@
     if (type==0) {
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
             self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-            [self.navigationController presentModalViewController:self.imagePicker animated:YES];
+            [self.navigationController presentViewController:self.imagePicker animated:YES completion:nil];
         }else{
             [SVProgressHUD showErrorWithStatus:@"此设备不支持拍照哦～"];
         }
@@ -108,7 +113,9 @@
             [self.navigationController pushViewController:mutilVC animated:YES];
         }else{
             self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            [self presentModalViewController:self.imagePicker animated:YES];
+            [self presentViewController:self.imagePicker animated:YES completion:^{
+                
+            }];
         }
     }
 }
@@ -116,7 +123,7 @@
 - (void)imagePickerController:(UIImagePickerController *)aPicker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     DDLogVerbose(@"need crop:%d",self.needCrop);
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
     UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
     if (self.needCrop) {
         XXPhotoCropViewController *cropVC = [[XXPhotoCropViewController alloc]initWithOriginImage:image withFinishCropBlock:^(UIImage *resultImage) {
@@ -186,7 +193,7 @@
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)aPicker
 {
-    [self.navigationController dismissModalViewControllerAnimated:YES];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - next step

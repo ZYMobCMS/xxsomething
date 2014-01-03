@@ -156,6 +156,7 @@
 		3B5DF3B6186AC4C4000B50D2 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B5DF3B5186AC4C4000B50D2 /* libresolv.dylib */; };
 		3B5DF3B8186AC4E2000B50D2 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B5DF3B7186AC4E2000B50D2 /* CoreData.framework */; };
 		3B5DF3BB186AC5EA000B50D2 /* XXChatCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B5DF3BA186AC5E9000B50D2 /* XXChatCell.m */; };
+		3BB5AD3218765FA000B39640 /* nav_bar_ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BB5AD3118765FA000B39640 /* nav_bar_ios7@2x.png */; };
 		E425ED21186479D3008B6C11 /* XXFontStyleDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = E425ED20186479D3008B6C11 /* XXFontStyleDescription.m */; };
 		E425ED2418647AB9008B6C11 /* XXImageDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = E425ED2318647AB8008B6C11 /* XXImageDescription.m */; };
 		E4312D7A1861CFB30075C273 /* SquareGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4312D791861CFB30075C273 /* SquareGuideViewController.m */; };
@@ -1067,6 +1068,7 @@
 		3B5DF3B7186AC4E2000B50D2 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3B5DF3B9186AC5E9000B50D2 /* XXChatCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXChatCell.h; sourceTree = "<group>"; };
 		3B5DF3BA186AC5E9000B50D2 /* XXChatCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXChatCell.m; sourceTree = "<group>"; };
+		3BB5AD3118765FA000B39640 /* nav_bar_ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_bar_ios7@2x.png"; sourceTree = "<group>"; };
 		E425ED1F186479D3008B6C11 /* XXFontStyleDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXFontStyleDescription.h; sourceTree = "<group>"; };
 		E425ED20186479D3008B6C11 /* XXFontStyleDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXFontStyleDescription.m; sourceTree = "<group>"; };
 		E425ED2218647AB8008B6C11 /* XXImageDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXImageDescription.h; sourceTree = "<group>"; };
@@ -3066,6 +3068,7 @@
 				E4B6DB6218744CBE007BFFE2 /* image_small_default@2x.png */,
 				E4B6DB6318744CBE007BFFE2 /* input_box@2x.png */,
 				E4B6DB6418744CBE007BFFE2 /* nav_bar@2x.png */,
+				3BB5AD3118765FA000B39640 /* nav_bar_ios7@2x.png */,
 				E4B6DB6518744CBE007BFFE2 /* nav_button@2x.png */,
 				E4B6DB6618744CBE007BFFE2 /* nav_condition@2x.png */,
 				E4B6DB6718744CBE007BFFE2 /* nav_location@2x.png */,
@@ -4566,6 +4569,7 @@
 				E4E3F9161860969400970698 /* 13.png in Resources */,
 				E4E3F9171860969400970698 /* 14.png in Resources */,
 				E4E3F9181860969400970698 /* 15.png in Resources */,
+				3BB5AD3218765FA000B39640 /* nav_bar_ios7@2x.png in Resources */,
 				E4E3F9191860969400970698 /* 16.png in Resources */,
 				E4E3F91A1860969400970698 /* 17.png in Resources */,
 				E4E3F91B1860969400970698 /* 18.png in Resources */,
@@ -5357,7 +5361,7 @@
 				GCC_PREFIX_HEADER = "XiaoXiao/XiaoXiao-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "XiaoXiao/XiaoXiao-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/XiaoXiao/AppMain/MainService/ChatCenter/AudioChat/VoiceConvert/lib\"",
@@ -5379,7 +5383,7 @@
 				GCC_PREFIX_HEADER = "XiaoXiao/XiaoXiao-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "XiaoXiao/XiaoXiao-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/XiaoXiao/AppMain/MainService/ChatCenter/AudioChat/VoiceConvert/lib\"",

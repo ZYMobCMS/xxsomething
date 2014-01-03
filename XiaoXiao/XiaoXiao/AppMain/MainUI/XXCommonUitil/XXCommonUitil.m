@@ -14,6 +14,8 @@
 {
     XiaoXiaoAppDelegate *appDelegate = (XiaoXiaoAppDelegate*)[[UIApplication sharedApplication]delegate];
     [appDelegate.appHUD hide:YES];
+    
+    
 }
 + (void)keywindowShowProgressHUDWithProgressValue:(CGFloat)progressValue withTitle:(NSString *)title
 {
@@ -44,7 +46,7 @@
 }
 + (void)setCommonNavigationReturnItemForViewController:(UIViewController *)aViewController
 {
-    XXResponseButton *returnCustomButton = [[XXResponseButton alloc]initWithFrame:CGRectMake(0,0,26.5,26.5)];
+    XXResponseButton *returnCustomButton = [[XXResponseButton alloc]initWithFrame:CGRectMake(0,0,26.5,26.5)];    
     [returnCustomButton setBackgroundImage:[UIImage imageNamed:@"nav_return_button.png"] forState:UIControlStateNormal];
     [returnCustomButton setResponseButtonTapped:^{
         [aViewController.navigationController popViewControllerAnimated:YES];

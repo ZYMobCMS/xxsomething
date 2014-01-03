@@ -172,23 +172,21 @@
         UploadChooseImageBlock(resultImage);
     };
     
+    //photo choose
+    XXPhotoChooseViewController *chooseVC = [[XXPhotoChooseViewController alloc]initWithMutilPhotoChooseWithMaxChooseNumber:1 withFinishBlock:^(NSArray *resultImages) {
+    }];
+    chooseVC.needCrop = YES;
+    chooseVC.needFilter = YES;
+    chooseVC.singleImageCropHeight = 230;
+    chooseVC.isSetHeadImage = YES;
+    [chooseVC setNextStepAction:^(NSDictionary *resultDict) {
+        finishChooseImage(resultDict);
+    }];
+    
     //grade choose
     XXGradeChooseViewController *gradeChooseVC = [[XXGradeChooseViewController alloc]init];
     [gradeChooseVC setNextStepAction:^(NSDictionary *resultDict) {
-        
-        //photo choose
-        XXPhotoChooseViewController *chooseVC = [[XXPhotoChooseViewController alloc]initWithMutilPhotoChooseWithMaxChooseNumber:1 withFinishBlock:^(NSArray *resultImages) {
-        }];
-        chooseVC.needCrop = YES;
-        chooseVC.needFilter = YES;
-        chooseVC.singleImageCropHeight = 230;
-        chooseVC.isSetHeadImage = YES;
-        [chooseVC setNextStepAction:^(NSDictionary *resultDict) {
-            finishChooseImage(resultDict);
-        }];
-        [chooseVC setReturnStepBlock:^{
-            [self.navigationController popToViewController:chooseSchoolVC animated:YES];
-        }];
+        DDLogVerbose(@"grade choose will push photo choose :%@!",chooseVC);
         [self.navigationController pushViewController:chooseVC animated:YES];
     }];
     [gradeChooseVC setFinishBlock:^(NSString *resultString) {

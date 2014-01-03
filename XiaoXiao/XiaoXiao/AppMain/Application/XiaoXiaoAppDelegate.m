@@ -41,7 +41,11 @@
     //login Guide
     GuideViewController *guideVC = [[GuideViewController alloc]init];
     self.loginGuideNavController = [[UINavigationController alloc]initWithRootViewController:guideVC];
-    [self.loginGuideNavController.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar.png"] forBarMetrics:UIBarMetricsDefault];
+    if (IS_IOS_7) {
+        [self.loginGuideNavController.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar_ios7.png"] forBarMetrics:UIBarMetricsDefault];
+    }else{
+        [self.loginGuideNavController.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar.png"] forBarMetrics:UIBarMetricsDefault];
+    }
     [guideVC setLoginGuideFinish:^(BOOL loginResult) {
         if (loginResult) {
             //MainUI

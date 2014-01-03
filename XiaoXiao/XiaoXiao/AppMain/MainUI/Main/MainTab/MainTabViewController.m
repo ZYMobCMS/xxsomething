@@ -33,7 +33,12 @@
     
     //init view controllers
     NSMutableArray *subVCArray = [NSMutableArray array];
-    UIImage *navigationImage = [UIImage imageNamed:@"nav_bar.png"];
+    UIImage *navigationImage = nil;
+    if (IS_IOS_7) {
+        navigationImage = [UIImage imageNamed:@"nav_bar_ios7.png"];
+    }else{
+        navigationImage = [UIImage imageNamed:@"nav_bar.png"];
+    }
     SquareGuideViewController *squareGuideVC = [[SquareGuideViewController alloc]init];
     [XXCommonUitil setCommonNavigationTitle:@"校广场" forViewController:self];
     UINavigationController *squareNav = [[UINavigationController alloc]initWithRootViewController:squareGuideVC];
