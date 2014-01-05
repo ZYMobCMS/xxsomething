@@ -11,6 +11,15 @@
 /*
  *基础编辑输入视图
  */
-@interface XXEditInputViewController : UIViewController
+typedef void (^XXEditInputViewControllerFinishBlock) (NSString *resultText);
+
+@interface XXEditInputViewController : UIViewController<UITextViewDelegate>
+{
+    UITextView  *_inputTextView;
+    UIImageView *_backgroundImageView;
+    XXEditInputViewControllerFinishBlock _finishBlock;
+}
+- (id)initWithFinishAction:(XXEditInputViewControllerFinishBlock)finishBlock;
+- (NSString*)resultText;
 
 @end

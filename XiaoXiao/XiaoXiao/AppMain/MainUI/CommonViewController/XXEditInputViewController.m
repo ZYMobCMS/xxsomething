@@ -22,13 +22,37 @@
     }
     return self;
 }
+- (id)initWithFinishAction:(XXEditInputViewControllerFinishBlock)finishBlock
+{
+    if (self = [super init]) {
+        
+        _finishBlock = [finishBlock copy];
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [XXCommonUitil setCommonNavigationNextStepItemForViewController:self withNextStepAction:^{
+        if (_finishBlock) {
+            _finishBlock(_inputTextView.text);
+        }
+    } withTitle:@"完成"];
+    
+    _inputTextView = [[UITextView alloc]init];
+    _inputTextView.frame = CGRectMake(10,30,self.view.frame.size.width-20,50);
+    _inputTextView.delegate = self;
+    _inputTextView.returnKeyType = UIReturnKeyDone;
+    [_inputTextView becomeFirstResponder];
+    [self.view addSubview:_inputTextView];
+    
 }
-
+- (NSString*)resultText
+{
+    return _inputTextView.text;
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

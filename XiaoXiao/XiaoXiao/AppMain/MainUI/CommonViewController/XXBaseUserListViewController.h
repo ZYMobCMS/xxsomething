@@ -15,10 +15,12 @@
 @interface XXBaseUserListViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
 {
     UITableView *_userListTable;
+    UIRefreshControl *_refreshControl;
     NSMutableArray *_userListArray;
     NSInteger   _currentPageIndex;
     NSInteger   _pageSize;
     BOOL        _hiddenLoadMore;
+    BOOL        _isRefresh;
     
 }
 

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CTAssetsPickerController.h"
 
 typedef enum{
     XXPhotoChooseTypeSingle=0,
@@ -18,7 +19,7 @@ typedef void (^XXPhotoChooseViewControllerFinishChooseBlock) (NSArray *resultIma
 /*
  *通用图库或者现场拍摄选择
  */
-@interface XXPhotoChooseViewController : UIViewController<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface XXPhotoChooseViewController : UIViewController<UIImagePickerControllerDelegate, UINavigationControllerDelegate,CTAssetsPickerControllerDelegate>
 {
     XXPhotoChooseViewControllerFinishChooseBlock _chooseBlock;
     XXCommonNavigationNextStepBlock _nextStepBlock;

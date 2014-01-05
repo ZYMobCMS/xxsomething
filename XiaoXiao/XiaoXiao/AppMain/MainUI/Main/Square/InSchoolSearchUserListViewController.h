@@ -9,5 +9,7 @@
 #import "XXBaseUserListViewController.h"
 
 @interface InSchoolSearchUserListViewController : XXBaseUserListViewController
-
+{
+    
+}
 @end

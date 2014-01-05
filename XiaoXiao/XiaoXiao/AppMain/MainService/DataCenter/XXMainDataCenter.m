@@ -854,6 +854,8 @@
             [resultArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 NSDictionary *userItem = (NSDictionary*)obj;
                 XXUserModel *newUser = [[XXUserModel alloc]initWithContentDict:userItem];
+                //暂时取代，接口目前没有返回学校名字
+                newUser.schoolName = newUser.grade;
                 newUser.attributedContent = [XXUserInfoBaseCell buildAttributedStringWithUserModel:newUser];
                 [modelArray addObject:newUser];
             }];
@@ -959,6 +961,7 @@
             [resultArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 NSDictionary *userItem = (NSDictionary*)obj;
                 XXUserModel *newUser = [[XXUserModel alloc]initWithContentDict:userItem];
+                newUser.attributedContent = [XXUserInfoBaseCell buildAttributedStringWithUserModel:newUser];
                 [modelArray addObject:newUser];
             }];
             success(modelArray);

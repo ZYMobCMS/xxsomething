@@ -64,7 +64,7 @@
         self.status = [contentDict objectForKey:@"status"];
         self.latitude = [contentDict objectForKey:@"lat"];
         self.longtitude = [contentDict objectForKey:@"lng"];
-//        self.schoolName = [contentDict objectForKey:@"xuexiao_name"];
+        self.schoolName = [contentDict objectForKey:@"school_name"];
         self.distance = [contentDict objectForKey:@"MQ_DISTANCE"];
     }
     return self;
@@ -99,7 +99,7 @@
         self.latitude = [aDecoder decodeObjectForKey:@"latitude"];
         self.longtitude = [aDecoder decodeObjectForKey:@"longtitude"];
         self.schoolName = [aDecoder decodeObjectForKey:@"schoolName"];
-
+        self.isUserInfoWell = [aDecoder decodeObjectForKey:@"isUserInfoWell"];
     }
     return self;
 }
@@ -130,6 +130,7 @@
     [aCoder encodeObject:self.latitude forKey:@"latitude"];
     [aCoder encodeObject:self.longtitude forKey:@"longtitude"];
     [aCoder encodeObject:self.schoolName forKey:@"schoolName"];
+    [aCoder encodeObject:self.isUserInfoWell forKey:@"isUserInfoWell"];
 
 }
 

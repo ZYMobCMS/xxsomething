@@ -8,6 +8,9 @@
 
 #import "SquareGuideViewController.h"
 #import "XXBaseIconLabelCell.h"
+#import "InSchoolSearchUserListViewController.h"
+#import "NearByUserListViewController.h"
+#import "SquareShareListViewController.h"
 
 @interface SquareGuideViewController ()
 
@@ -32,15 +35,15 @@
     _guideTitleArray = [[NSMutableArray alloc]init];
     //configArray
     NSMutableArray *firstSecction = [NSMutableArray array];
-    NSDictionary *item0 = @{@"icon":@"cell_stroll.png",@"title":@"校内人"};
-    NSDictionary *item1 = @{@"icon":@"cell_square.png",@"title":@"校广场"};
+    NSDictionary *item0 = @{@"icon":@"cell_stroll.png",@"title":@"校内人",@"class":@"InSchoolSearchUserListViewController"};
+    NSDictionary *item1 = @{@"icon":@"cell_square.png",@"title":@"校说吧",@"class":@"SquareShareListViewController"};
     [firstSecction addObject:item0];
     [firstSecction addObject:item1];
     
     //section 1
     NSMutableArray *secondSecction = [NSMutableArray array];
-    NSDictionary *item2 = @{@"icon":@"cell_shoot.png",@"title":@"射孤独"};
-    NSDictionary *item3 = @{@"icon":@"cell_nearby.png",@"title":@"附近得同学"};
+    NSDictionary *item2 = @{@"icon":@"cell_shoot.png",@"title":@"射孤独",@"class":@""};
+    NSDictionary *item3 = @{@"icon":@"cell_nearby.png",@"title":@"附近得同学",@"class":@"NearByUserListViewController"};
     [secondSecction addObject:item2];
     [secondSecction addObject:item3];
     
@@ -50,10 +53,11 @@
     
     //
     CGFloat totalHeight = self.view.frame.size.height-44;
-    _guideTableView = [[UITableView alloc]initWithFrame:CGRectMake(0,0,self.view.frame.size.width,totalHeight) style:UITableViewStyleGrouped];
+    _guideTableView = [[UITableView alloc]initWithFrame:CGRectMake(0,0,self.view.frame.size.width,totalHeight) style:UITableViewStylePlain];
     _guideTableView.delegate = self;
     _guideTableView.dataSource = self;
     _guideTableView.backgroundColor = [UIColor whiteColor];
+    _guideTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:_guideTableView];
 }
 
@@ -95,8 +99,16 @@
     
     return cell;
 }
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 44.f;
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSDictionary *item = [[_guideTitleArray objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
+    NSString *className = [item objectForKey:@"class"];
+    UIViewController *selectVC = [[NSClassFromString(className) alloc]init];
+    [self.navigationController pushViewController:selectVC animated:YES];
 }
 
 @end

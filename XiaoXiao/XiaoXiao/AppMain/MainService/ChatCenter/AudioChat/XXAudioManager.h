@@ -10,7 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "XXMainDataCenter.h"
 
-typedef void (^XXAudioManagerFinishRecordBlock) (NSString *audioSavePath);
+typedef void (^XXAudioManagerFinishRecordBlock) (NSString *audioSavePath,NSString *wavSavePath);
 
 @interface XXAudioManager : NSObject <AVAudioRecorderDelegate, AVAudioPlayerDelegate>
 {
@@ -25,6 +25,7 @@ typedef void (^XXAudioManagerFinishRecordBlock) (NSString *audioSavePath);
 - (void)audioManagerEndRecord;
 
 - (void)audioManagerPlayAudioForRemoteAMRUrl:(NSString*)remoteAMRUrl;
+- (void)audioManagerPlayLocalWavWithPath:(NSString*)filePath;
 
 - (NSString*)getFileNameFromUrl:(NSString*)urlString;
 

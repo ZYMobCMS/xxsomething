@@ -9,7 +9,6 @@
 #import "XXPhotoChooseViewController.h"
 #import "XXPhotoCropViewController.h"
 #import "XXPhotoFilterViewController.h"
-#import "XXMutilPhotoChooseViewController.h"
 
 @interface XXPhotoChooseViewController ()
 
@@ -59,7 +58,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [XXCommonUitil setCommonNavigationReturnItemForViewController:self];
-    
+    DDLogVerbose(@"self.view :%@",NSStringFromCGRect(self.view.frame));
     
     XXCustomButton *chooseCamerou = [[XXCustomButton alloc]initWithFrame:CGRectMake(50,50,220,40)];
     chooseCamerou.tag = 238790;
@@ -105,19 +104,37 @@
     }
     if (type==1) {
         if (self.chooseType==XXPhotoChooseTypeMutil) {
-            XXMutilPhotoChooseViewController *mutilVC = [[XXMutilPhotoChooseViewController alloc]initWithMutilSelectMaxPhotoNumbers:_maxChooseNumber withFinishChooseBlock:^(NSArray *images) {
-                if (_chooseBlock) {
-                    _chooseBlock(images);
-                }
-            }];
-            [self.navigationController pushViewController:mutilVC animated:YES];
+            CTAssetsPickerController *pickController=[[CTAssetsPickerController alloc]init];
+            pickController.assetsFilter = [ALAssetsFilter allAssets];
+            pickController.maximumNumberOfSelection = _maxChooseNumber;
+            pickController.delegate = self;
+            [self presentViewController:pickController animated:YES completion:Nil];
         }else{
             self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            [self presentViewController:self.imagePicker animated:YES completion:^{
-                
-            }];
+            [self presentViewController:self.imagePicker animated:YES completion:Nil];
         }
     }
+}
+//CTAssetsPickerController delegate
+- (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
+{
+    DDLogVerbose(@"mutil image select :%@",assets);
+    NSMutableArray *imageArray = [NSMutableArray array];
+    [assets enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+       
+        ALAsset *item = (ALAsset*)obj;
+        UIImage *aImage = [UIImage imageWithCGImage:item.thumbnail];
+        [imageArray addObject:aImage];
+        
+    }];
+    if (_chooseBlock) {
+        _chooseBlock(imageArray);
+    }
+    [self.navigationController popViewControllerAnimated:YES];
+}
+- (void)assetsPickerControllerDidCancel:(CTAssetsPickerController *)picker
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)aPicker didFinishPickingMediaWithInfo:(NSDictionary *)info
@@ -144,9 +161,7 @@
                     }
                 }];
                 [XXCommonUitil setCommonNavigationReturnItemForViewController:filterVC withBackStepAction:^{
-                    if (_returnStepBlock) {
-                        _returnStepBlock();
-                    }
+                    [self.navigationController popViewControllerAnimated:YES];
                 }];
                 [self.navigationController pushViewController:filterVC animated:YES];
             }else{

@@ -11,11 +11,28 @@
 #define rgb(r,g,b,a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
 #define XXThemeColor [UIColor colorWithRed:10/255.0 green:216/255.0 blue:204/255.0 alpha:1]
 #define IS_IOS_7  [[[UIDevice currentDevice]systemVersion]floatValue]>=7.0
+#define CGRectX(x,y,w,h) CGRectMake(x,(y+(IS_IOS_7?20:0)),w,h)
+#define StringInt(x) [NSString stringWithFormat:@"%d",x]
+#define StringFloat(x) [NSString stringWithFormat:@"%f",x]
+#define StringLong(x) [NSString stringWithFormat:@"%ld",x]
+
+#define XXNavContentHeight [UIScreen mainScreen].bounds.size.height-20
 
 typedef enum {
     XXSchoolTypeHighSchool = 0,
     XXSchoolTypeCollege,
 }XXSchoolType;
+
+typedef enum {
+    
+    XXBaseCellTypeTop = 0,
+    XXBaseCellTypeMiddel,
+    XXBaseCellTypeBottom,
+    XXBaseCellTypeRoundSingle,
+    XXBaseCellTypeCornerSingle,
+    
+    
+}XXBaseCellType;
 
 typedef void (^XXNavigationNextStepItemBlock) (void);
 typedef void (^XXCommonNavigationNextStepBlock) (NSDictionary *resultDict);

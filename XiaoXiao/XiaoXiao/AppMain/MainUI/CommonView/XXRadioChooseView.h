@@ -13,7 +13,7 @@ typedef enum {
     XXRadioChooseTypeClonumThree,
 }XXRadioChooseType;
 
-//ConfigArray   @[@{@"title":@"xxx",@"normalBack":@"xxx",@"selectBack":@"xxx",@"normalColor":@"xxxx",@"selectColor":@"xxx"}]
+//ConfigArray   @[@{@"title":@"xxx",@"value":@"",@"normalBack":@"xxx",@"selectBack":@"xxx",@"normalColor":@"xxxx",@"selectColor":@"xxx"}]
 
 @interface XXRadioChooseView : UIView
 @property (nonatomic,assign)NSInteger selectIndex;

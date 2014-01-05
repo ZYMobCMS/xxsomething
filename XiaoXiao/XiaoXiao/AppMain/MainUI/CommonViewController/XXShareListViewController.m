@@ -31,6 +31,16 @@
     self.sharePostRowHeightArray = [[NSMutableArray alloc]init];
     self.sharePostModelArray = [[NSMutableArray alloc]init];
     
+    CGFloat totalHeight = XXNavContentHeight -44;
+    _shareListTable = [[UITableView alloc]init];
+    _shareListTable.frame = CGRectMake(0,0,self.view.frame.size.width,totalHeight);
+    _shareListTable.delegate = self;
+    _shareListTable.dataSource = self;
+    [self.view addSubview:_shareListTable];
+    
+    _refreshControl = [[UIRefreshControl alloc]init];
+    [_refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+    [_shareListTable addSubview:_refreshControl];
 }
 
 - (void)didReceiveMemoryWarning
@@ -81,6 +91,13 @@
 {
     
 }
-
+- (void)refresh
+{
+    
+}
+- (void)loadMoreResult
+{
+    
+}
 
 @end

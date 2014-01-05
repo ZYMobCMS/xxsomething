@@ -27,16 +27,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+	// Do any additional setup after loading the view.    
     _gradeArray = @[@"一年级",@"二年级",@"三年级",@"四年级"];
     CGFloat totoalHeight = self.view.frame.size.height-44;
     CGFloat totalWidth = self.view.frame.size.width;
     
-    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0,0,totalWidth,totoalHeight) style:UITableViewStyleGrouped];
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0,0,totalWidth,totoalHeight) style:UITableViewStylePlain];
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:_tableView];
-    
     [XXCommonUitil setCommonNavigationNextStepItemForViewController:self withNextStepAction:^{
         if (_nextStepBlock) {
             NSString *resultString = [_gradeArray objectAtIndex:_selectIndex];

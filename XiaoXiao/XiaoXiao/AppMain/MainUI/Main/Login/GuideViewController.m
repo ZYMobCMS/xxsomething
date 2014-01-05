@@ -10,6 +10,7 @@
 #import "LoginViewController.h"
 #import "RegistViewController.h"
 #import "XXSchoolSearchViewController.h"
+#import "SettingMyProfileGuideViewController.h"
 
 @interface GuideViewController ()
 
@@ -114,8 +115,23 @@
 {
     LoginViewController *loginVC = [[LoginViewController alloc]init];
     [loginVC setLoginResultBlock:^(BOOL resultState) {
-        if (_finishBlock) {
-            _finishBlock(resultState);
+        if (resultState) {
+            
+            //检查是否完善资料了
+//            BOOL isUserInfoWellDone = [XXUserDataCenter checkLoginUserInfoIsWellDone];
+//            if (!isUserInfoWellDone) {
+//                SettingMyProfileGuideViewController *updateVC = [[SettingMyProfileGuideViewController alloc]init];
+//                [updateVC setFinishBlock:^(BOOL resultState) {
+//                    if (_finishBlock) {
+//                        _finishBlock(resultState);
+//                    }
+//                }];
+//                [self.navigationController pushViewController:updateVC animated:YES];
+//            }else{
+                if (_finishBlock) {
+                    _finishBlock(resultState);
+                }
+//            }
         }
     }];
     [self.navigationController pushViewController:loginVC animated:YES];
@@ -136,6 +152,9 @@
         [XXCommonUitil setCommonNavigationNextStepItemForViewController:registVC withNextStepAction:^{
             newUser.account = registVC.formView.accountTextField.text;
             newUser.password = registVC.formView.passwordTextField.text;
+            newUser.nickName = @"vincent";
+            newUser.constellation = @"射手座";
+            newUser.signature = @"胜利闭幕";
             [[XXMainDataCenter shareCenter]requestRegistWithNewUser:newUser withSuccessRegist:^(XXUserModel *detailUser) {
                 [SVProgressHUD showSuccessWithStatus:@"注册成功"];
                 [self.navigationController popToRootViewControllerAnimated:YES];

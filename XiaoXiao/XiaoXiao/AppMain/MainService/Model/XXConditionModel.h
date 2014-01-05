@@ -29,4 +29,8 @@
 @property (nonatomic,strong)NSString *desc;
 @property (nonatomic,strong)NSString *toUserId;
 @property (nonatomic,strong)NSString *isReaded;
+@property (nonatomic,assign)BOOL     isRefresh;
+@property (nonatomic,assign)BOOL     hideLoadMore;
+@property (nonatomic,assign)long     latitude;
+@property (nonatomic,assign)long     longtitude;
 @end

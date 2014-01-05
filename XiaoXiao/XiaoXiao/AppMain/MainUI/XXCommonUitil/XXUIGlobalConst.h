@@ -51,7 +51,6 @@
 #import "XXEditInputViewController.h"
 #import "XXGradeChooseViewController.h"
 #import "XXMessageListViewController.h"
-#import "XXMutilPhotoChooseViewController.h"
 #import "XXPhotoChooseViewController.h"
 #import "XXPhotoCropViewController.h"
 #import "XXPhotoFilterViewController.h"

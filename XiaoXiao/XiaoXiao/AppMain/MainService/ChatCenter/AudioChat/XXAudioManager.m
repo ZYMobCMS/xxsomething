@@ -56,7 +56,7 @@
                                    [NSNumber numberWithInt: 1], AVNumberOfChannelsKey,//通道的数目
                                    //                                   [NSNumber numberWithBool:NO],AVLinearPCMIsBigEndianKey,//大端还是小端 是内存的组织方式
                                    //                                   [NSNumber numberWithBool:NO],AVLinearPCMIsFloatKey,//采样信号是整数还是浮点数
-                                   //                                   [NSNumber numberWithInt: AVAudioQualityMedium],AVEncoderAudioQualityKey,//音频编码质量
+                                                                      [NSNumber numberWithInt: AVAudioQualityMedium],AVEncoderAudioQualityKey,//音频编码质量
                                    nil];
     return recordSetting;
 }
@@ -181,7 +181,7 @@
         NSString *amrFile = [NSString stringWithFormat:@"%@.amr",[self getFileNameFromUrl:self.audioRecorder.url.absoluteString]];
         [VoiceConverter wavToAmr:self.audioRecorder.url.absoluteString amrSavePath:[self buildCachePathForFileName:amrFile]];
         if (_finishBlock) {
-            _finishBlock([self buildCachePathForFileName:amrFile]);
+            _finishBlock([self buildCachePathForFileName:amrFile],self.audioRecorder.url.absoluteString);
         }
     }
 }
@@ -219,10 +219,15 @@
         [self audioManagerPlayLocalWav:[shipList objectForKey:remoteAMRUrl]];
     }
 }
+- (void)audioManagerPlayLocalWavWithPath:(NSString *)filePath
+{
+    [self audioManagerPlayLocalWav:filePath];
+}
 
 - (void)audioManagerPlayLocalWav:(NSString*)filePath
 {
     self.audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:[NSURL URLWithString:filePath] error:nil];
+    self.audioPlayer.volume = 0.8f;
     [self.audioPlayer play];
 }
 

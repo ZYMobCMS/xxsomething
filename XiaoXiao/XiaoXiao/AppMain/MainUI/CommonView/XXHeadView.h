@@ -11,10 +11,10 @@
 
 #define XXHeadViewWidth 80
 
-@interface XXHeadView : UIView
+@interface XXHeadView : UIControl
 {
-    
+    NSString *_headImageUrl;
 }
 @property (nonatomic,strong)AGMedallionView  *contentImageView;
-
+- (void)setHeadUrl:(NSString*)headUrl;
 @end

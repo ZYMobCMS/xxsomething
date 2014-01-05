@@ -27,7 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+	// Do any additional setup after loading the view.    
     _resultSchoolArray = [[NSMutableArray alloc]init];
     _currentResultPageIndex = 0;
     _pageSize = 30;
@@ -35,14 +35,17 @@
     _needLoadMore = YES;
     CGFloat totoalHeight = self.view.frame.size.height-44;
     CGFloat totalWidth = self.view.frame.size.width;
+    DDLogVerbose(@"totalHeight -->%f",totoalHeight);
     
     _searchBar = [[XXSearchBar alloc]initWithFrame:CGRectMake(3,3,totalWidth-6,40)];
     [self.view addSubview:_searchBar];
+    DDLogVerbose(@"_searchBar frame:%@",NSStringFromCGRect(_searchBar.frame));
     
     _resultTableView = [[UITableView alloc]init];
     _resultTableView.frame = CGRectMake(0,_searchBar.frame.size.height+6,totalWidth,totoalHeight-_searchBar.frame.size.height-_searchBar.frame.origin.y);
     _resultTableView.delegate = self;
     _resultTableView.dataSource = self;
+    _resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:_resultTableView];
     
     //config search bar

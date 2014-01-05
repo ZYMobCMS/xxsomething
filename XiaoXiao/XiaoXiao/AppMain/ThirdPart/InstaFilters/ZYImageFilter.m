@@ -26,7 +26,7 @@
 @property (nonatomic, strong) IFRotationFilter *rotationFilter;
 @property (nonatomic, assign) IFFilterType currentFilterType;
 
-@property (nonatomic, unsafe_unretained) dispatch_queue_t prepareFilterQueue;
+@property (nonatomic, strong) dispatch_queue_t prepareFilterQueue;
 
 @property (nonatomic, strong) GPUImagePicture *stillImageSource;
 

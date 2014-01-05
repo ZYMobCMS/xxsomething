@@ -9,5 +9,15 @@
 #import <UIKit/UIKit.h>
 
 @interface XXBaseCell : UITableViewCell
+{
+    UIImageView *_backgroundImageView;
+    UIImageView *_cellLineImageView;
+}
+@property (nonatomic,strong)UIImage *backImage;
+@property (strong,nonatomic)UILabel *titleLabel;
+@property (nonatomic,assign)BOOL     needCustomLine;
+@property (strong,nonatomic)UIImageView *accessoryView;
+
+- (void)setCellType:(XXBaseCellType)cellType;
 
 @end
