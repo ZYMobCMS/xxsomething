@@ -123,7 +123,9 @@
     [assets enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
        
         ALAsset *item = (ALAsset*)obj;
-        UIImage *aImage = [UIImage imageWithCGImage:item.thumbnail];
+        ALAssetRepresentation *representaion = [item defaultRepresentation];
+        UIImage *aImage = [UIImage imageWithCGImage:[representaion fullResolutionImage]];
+        DDLogVerbose(@"image from assset:%@",aImage);
         [imageArray addObject:aImage];
         
     }];

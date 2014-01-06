@@ -48,6 +48,9 @@
     
     CGRect tableViewOldFrame = _shareListTable.frame;
     _shareListTable.frame = CGRectMake(tableViewOldFrame.origin.x,tableViewOldFrame.origin.y+40,tableViewOldFrame.size.width,tableViewOldFrame.size.height-40);
+    //start loading
+    [_refreshControl beginRefreshing];
+    [self refresh];
 }
 
 - (void)didReceiveMemoryWarning
@@ -71,6 +74,51 @@
     
     SharePostGuideViewController *postGuideVC = [[SharePostGuideViewController alloc]initWithSharePostType:postTye];
     [self.navigationController pushViewController:postGuideVC animated:YES];
+}
+
+- (void)requestShareListNow
+{
+    XXConditionModel *condtion = [[XXConditionModel alloc]init];
+    condtion.pageIndex = [NSString stringWithFormat:@"%d",_currentPageIndex];
+    condtion.pageSize = [NSString stringWithFormat:@"%d",_pageSize];
+    condtion.schoolId = [XXUserDataCenter currentLoginUser].schoolId;
+    
+    [[XXMainDataCenter shareCenter]requestSharePostListWithCondition:condtion withSuccess:^(NSArray *resultList) {
+        
+        if (resultList.count<_pageSize) {
+            _hiddenLoadMore = YES;
+        }
+        if (_isRefresh) {
+            [self.sharePostModelArray removeAllObjects];
+            [self.sharePostRowHeightArray removeAllObjects];
+            _isRefresh = NO;
+        }
+        [resultList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+           
+            XXSharePostModel *postModel = (XXSharePostModel*)obj;
+            CGFloat heightForModel = [XXShareBaseCell heightForAttributedText:postModel.attributedContent forWidth:_shareListTable.frame.size.width];
+            [self.sharePostRowHeightArray addObject:[NSNumber numberWithFloat:heightForModel]];
+            
+        }];
+        [self.sharePostModelArray addObjectsFromArray:resultList];
+        [_refreshControl endRefreshing];
+        [_shareListTable reloadData];
+        
+    } withFaild:^(NSString *faildMsg) {
+        [SVProgressHUD showErrorWithStatus:faildMsg];
+    }];
+}
+- (void)refresh
+{
+    _currentPageIndex = 0;
+    _isRefresh = YES;
+    _hiddenLoadMore = NO;
+    [self requestShareListNow];
+}
+- (void)loadMoreResult
+{
+    _currentPageIndex ++;
+    [self requestShareListNow];
 }
 
 @end

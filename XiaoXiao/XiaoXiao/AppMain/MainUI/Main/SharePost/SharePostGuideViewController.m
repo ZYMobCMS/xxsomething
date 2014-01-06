@@ -8,6 +8,7 @@
 
 #import "SharePostGuideViewController.h"
 #import "XXPhotoChooseViewController.h"
+#import "XXPhotoReviewViewController.h"
 
 @interface SharePostGuideViewController ()
 
@@ -37,10 +38,13 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.title = @"发说说";
+    [XXCommonUitil setCommonNavigationReturnItemForViewController:self];
     
     CGFloat totalHeight = XXNavContentHeight-44;
     _postImagesArray = [[NSMutableArray alloc]init];
     _currentPostModel = [[XXSharePostModel alloc]init];
+    _currentPostType = SharePostTypeText;
     
     //
     _photoBox = [[SharePostPhotoBox alloc]initWithFrame:CGRectMake(10,30,300,60)];
@@ -53,7 +57,7 @@
     _useRecordButton.layer.cornerRadius = 6.0f;
     _useRecordButton.customTitleLabel.text  = @"用录音描述";
     [self.view addSubview:_useRecordButton];
-    _useRecordButton.hidden = YES;
+    _useRecordButton.hidden = NO;
     
     //
     _useTextButton = [[XXCustomButton alloc]initWithFrame:CGRectMake(15,totalHeight-50-49,290,50)];
@@ -113,6 +117,12 @@
     
     //
     [self configPhotoBoxAction];
+    
+    //
+    [XXCommonUitil setCommonNavigationNextStepItemForViewController:self withNextStepAction:^{
+        [self sharePostNow];
+    } withTitle:@"发表"];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -146,8 +156,15 @@
     [_photoBox setSharePhotoboxDidChangeFrameBlock:^(CGRect newFrame) {
         changeBlock(newFrame);
     }];
+    SharePhotoBoxDidTapToReviewPhotoBlock reviewBlock = ^(NSInteger currentPhotoIndex){
+        XXPhotoReviewViewController *reviewController = [[XXPhotoReviewViewController alloc]initWithImagesArray:_postImagesArray withStartIndex:currentPhotoIndex];
+        [reviewController setFinishReview:^(NSArray *resultImages) {
+            [_photoBox setImagesArray:resultImages];
+        }];
+        [self.navigationController pushViewController:reviewController animated:YES];
+    };
     [_photoBox setSharePhotoBoxReviewPhotoBlock:^(NSInteger currentPhotoIndex) {
-        
+        reviewBlock(currentPhotoIndex);
     }];
 }
 
@@ -171,5 +188,58 @@
     _playRecordButton.selected = YES;
     [[XXAudioManager shareManager]audioManagerPlayLocalWavWithPath:_recordWavPath];
 }
+
+// share post now
+- (void)sharePostNow
+{
+    //upload image or audio
+    __block NSMutableArray *resultImageLinks = [NSMutableArray array];
+    [_postImagesArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+       
+        NSData *imageData = UIImageJPEGRepresentation(obj,kCGInterpolationHigh);
+        [[XXMainDataCenter shareCenter]uploadFileWithData:imageData withFileName:@"content.jpg" withUploadProgressBlock:^(CGFloat progressValue) {
+            
+        } withSuccessBlock:^(XXAttachmentModel *resultModel) {
+            
+            [resultImageLinks addObject:resultModel.link];
+            
+            //all image upload finish
+            if (resultImageLinks.count == _postImagesArray.count) {
+                
+                //start upload audio if need or start post
+                if (_currentPostType == SharePostTypeAudio) {
+                    
+                }else{
+                    
+                    NSMutableString *postAllImages = [NSMutableString string];
+                    [resultImageLinks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                        if (idx!=resultImageLinks.count-1) {
+                            [postAllImages appendFormat:@"%@|",obj];
+                        }else{
+                            [postAllImages appendFormat:@"%@",obj];
+                        }
+                    }];
+                    _currentPostModel.postImages = postAllImages;
+                    _currentPostModel.postAudio = @"";
+                    _currentPostModel.postContent = _textInputView.text;
+                    _currentPostModel.postAudioTime = @"0";
+                    _currentPostModel.postType = [XXSharePostTypeConfig postTypeWithImageCount:resultImageLinks.count withIsAudioContent:NO];
+                    [[XXMainDataCenter shareCenter]requestPostShareWithConditionSharePost:_currentPostModel withSuccess:^(NSString *successMsg) {
+                        [SVProgressHUD showSuccessWithStatus:successMsg];
+                    } withFaild:^(NSString *faildMsg) {
+                        [SVProgressHUD showErrorWithStatus:faildMsg];
+                    }];
+                }
+            }
+            
+        } withFaildBlock:^(NSString *faildMsg) {
+            [SVProgressHUD showErrorWithStatus:faildMsg];
+        }];
+        
+    }];
+    
+    
+}
+
 
 @end

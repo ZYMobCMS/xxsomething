@@ -45,9 +45,14 @@ BOOL const XXLockCommonCSSTemplateState = NO;
     //替换CSS
     htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$css$!" withString:cssTemplate];
     
-    //替换content
-    aSharePost.postContent = [XXBaseTextView switchEmojiTextWithSourceText:aSharePost.postContent];
-    htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$content$!" withString:aSharePost.postContent];
+    //替换content,如果没有，就移除内容标签
+    if ([aSharePost.postContent isEqualToString:@""]) {
+        htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"<p class=\"content\">!$content$!</p>" withString:@""];
+    }else{
+        aSharePost.postContent = [XXBaseTextView switchEmojiTextWithSourceText:aSharePost.postContent];
+        htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$content$!" withString:aSharePost.postContent];
+    }
+    
     
     //替换音频
     htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$audio$!" withString:[XXSharePostStyle sharePostAudioSrcImageName]];

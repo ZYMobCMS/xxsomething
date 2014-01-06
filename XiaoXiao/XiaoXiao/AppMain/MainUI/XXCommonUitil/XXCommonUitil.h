@@ -43,6 +43,7 @@ typedef void (^XXCommonNavigationNextStepBlock) (NSDictionary *resultDict);
 + (void)setCommonNavigationNextStepItemForViewController:(UIViewController*)aViewController withNextStepAction:(XXNavigationNextStepItemBlock)nextAction;
 + (void)setCommonNavigationNextStepItemForViewController:(UIViewController*)aViewController withNextStepAction:(XXNavigationNextStepItemBlock)nextAction withTitle:(NSString*)title;
 + (void)setCommonNavigationTitle:(NSString*)title forViewController:(UIViewController*)aViewController;
++ (void)setCommonNavigationNextStepItemForViewController:(UIViewController*)aViewController withIconImage:(NSString*)iconName withNextStepAction:(XXNavigationNextStepItemBlock)nextAction;
 
 + (void)keywindowShowProgressHUDWithProgressValue:(CGFloat)progressValue withTitle:(NSString*)title;
 + (void)keywindowShowProgressHUDWithTitle:(NSString*)withTitle;

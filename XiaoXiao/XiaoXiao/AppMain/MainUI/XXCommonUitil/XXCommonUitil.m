@@ -138,4 +138,23 @@
         aViewController.automaticallyAdjustsScrollViewInsets = YES;
     }
 }
++ (void)setCommonNavigationNextStepItemForViewController:(UIViewController *)aViewController withIconImage:(NSString *)iconName withNextStepAction:(XXNavigationNextStepItemBlock)nextAction
+{
+    aViewController.view.backgroundColor = [UIColor whiteColor];
+    XXResponseButton *returnCustomButton = [[XXResponseButton alloc]initWithFrame:CGRectMake(0,0,30,30)];
+    [returnCustomButton setBackgroundImage:[UIImage imageNamed:iconName] forState:UIControlStateNormal];
+    [returnCustomButton setTitleColor:[XXCommonStyle xxThemeButtonTitleColor] forState:UIControlStateNormal];
+    [returnCustomButton setResponseButtonTapped:^{
+        if (nextAction) {
+            nextAction();
+        }
+    }];
+    UIBarButtonItem *returnNavItem = [[UIBarButtonItem alloc]initWithCustomView:returnCustomButton];
+    aViewController.navigationItem.rightBarButtonItem = returnNavItem;
+    if (IS_IOS_7) {
+        aViewController.edgesForExtendedLayout = UIRectEdgeNone;
+        aViewController.automaticallyAdjustsScrollViewInsets = YES;
+    }
+
+}
 @end

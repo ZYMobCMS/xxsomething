@@ -8,8 +8,6 @@
 
 #import "XXPhotoFilterViewController.h"
 #import "ImageUtil.h"
-#import "ColorMatrix.h"
-#import "GBPathImageView.h"
 
 @class XXImageEffectItem;
 typedef void (^XXImageEffectItemSelectBlock) (XXImageEffectItem *selectItem);
