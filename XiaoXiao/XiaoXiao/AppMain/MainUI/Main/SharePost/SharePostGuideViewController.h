@@ -20,24 +20,25 @@ typedef enum {
 @interface SharePostGuideViewController : UIViewController
 {
     SharePostPhotoBox *_photoBox;
-    SharePostType _currentPostType;
+    SharePostType      _currentPostType;
 
-    UIButton *_recordButton;
-    
-    UIImageView *_recordBackImageView;
-    UIButton *_playRecordButton;
-    UIButton *_reRecordButton;
-    UILabel  *_recordTimeLabel;
+    UIButton          *_recordButton;
+    UIImageView       *_recordBackImageView;
+    UIButton          *_playRecordButton;
+    UIButton          *_reRecordButton;
+    UILabel           *_recordTimeLabel;
 
-    XXCustomButton *_useRecordButton;
-    XXCustomButton *_useTextButton;
+    XXCustomButton    *_useRecordButton;
+    XXCustomButton    *_useTextButton;
+    UITextView        *_textInputView;
     
-    UITextView *_textInputView;
-    NSInteger   _currentSelectPhotoCount;
-    NSMutableArray *_postImagesArray;
-    XXSharePostModel *_currentPostModel;
-    NSString    *_recordWavPath;
-    NSString    *_recordAmrPath;
+    NSInteger          _currentSelectPhotoCount;
+    NSMutableArray    *_postImagesArray;
+    XXSharePostModel  *_currentPostModel;
+    NSString          *_recordWavPath;
+    NSString          *_recordAmrPath;
+    BOOL               _hasRecordNow;
+    
 }
 
 - (id)initWithSharePostType:(SharePostType)aType;

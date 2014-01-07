@@ -45,6 +45,7 @@
     _postImagesArray = [[NSMutableArray alloc]init];
     _currentPostModel = [[XXSharePostModel alloc]init];
     _currentPostType = SharePostTypeText;
+    _hasRecordNow = NO;
     
     //
     _photoBox = [[SharePostPhotoBox alloc]initWithFrame:CGRectMake(10,30,300,60)];
@@ -55,13 +56,17 @@
     _useRecordButton.layer.borderColor = [XXCommonStyle xxThemeButtonBoardColor].CGColor;
     _useRecordButton.layer.borderWidth = 1.0f;
     _useRecordButton.layer.cornerRadius = 6.0f;
+    _useRecordButton.customTitleLabel.frame = CGRectMake(0,0,_useRecordButton.frame.size.width,_useRecordButton.frame.size.height);
     _useRecordButton.customTitleLabel.text  = @"用录音描述";
+    [_useRecordButton addTarget:self action:@selector(changeSharePostType:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_useRecordButton];
     _useRecordButton.hidden = NO;
     
     //
     _useTextButton = [[XXCustomButton alloc]initWithFrame:CGRectMake(15,totalHeight-50-49,290,50)];
     _useTextButton.customTitleLabel.text = @"用文字描述";
+    _useTextButton.customTitleLabel.frame = CGRectMake(0,0,_useTextButton.frame.size.width,_useTextButton.frame.size.height);
+    [_useTextButton addTarget:self action:@selector(changeSharePostType:) forControlEvents:UIControlEventTouchUpInside];
     _useTextButton.layer.borderColor = [XXCommonStyle xxThemeButtonBoardColor].CGColor;
     _useTextButton.layer.borderWidth = 1.0f;
     _useTextButton.layer.cornerRadius = 6.0f;
@@ -75,7 +80,7 @@
     _textInputView.layer.cornerRadius = 5.0f;
     _textInputView.frame = CGRectMake(10,105,300,60);
     [self.view addSubview:_textInputView];
-    _textInputView.hidden = _useRecordButton.hidden;
+    _textInputView.hidden = !_useRecordButton.hidden;
     
     //record button
     _recordButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -92,7 +97,11 @@
     _recordBackImageView.image = [UIImage imageNamed:@"audio_finish_back.png"];
     _recordBackImageView.userInteractionEnabled = YES;
     [self.view addSubview:_recordBackImageView];
-    _recordBackImageView.hidden = !_recordButton.hidden;
+    if (_hasRecordNow&&_currentPostType==SharePostTypeAudio) {
+        _recordBackImageView.hidden = NO;
+    }else{
+        _recordBackImageView.hidden = YES;
+    }
     
     //play button
     _playRecordButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -105,7 +114,9 @@
     //re record
     _reRecordButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_reRecordButton setTitle:@"重录" forState:UIControlStateNormal];
-    _reRecordButton.frame = CGRectMake(120,35,35,35);
+    [_reRecordButton addTarget:self action:@selector(restartRecord) forControlEvents:UIControlEventTouchUpInside];
+    [_reRecordButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    _reRecordButton.frame = CGRectMake(100,35,35,35);
     _reRecordButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     [_recordBackImageView addSubview:_reRecordButton];
     
@@ -168,11 +179,21 @@
     }];
 }
 
+- (void)restartRecord
+{
+    _recordButton.hidden = NO;
+    _recordBackImageView.hidden = YES;
+}
+
 - (void)startRecord
 {
-    [[XXAudioManager shareManager]audioManagerStartRecordWithFinishRecordAction:^(NSString *audioSavePath, NSString *wavSavePath) {
+    _hasRecordNow = NO;
+    [[XXAudioManager shareManager]audioManagerStartRecordWithFinishRecordAction:^(NSString *audioSavePath, NSString *wavSavePath,NSString *timeLength) {
+        _hasRecordNow = YES;
+        _recordTimeLabel.text = timeLength;
         _recordAmrPath = audioSavePath;
         _recordWavPath = wavSavePath;
+        _currentPostModel.postAudioTime = timeLength;
         _recordButton.hidden = YES;
         _recordBackImageView.hidden = !_recordButton;
     }];
@@ -189,6 +210,37 @@
     [[XXAudioManager shareManager]audioManagerPlayLocalWavWithPath:_recordWavPath];
 }
 
+- (void)changeSharePostType:(UIButton*)sender
+{
+    if (sender == _useTextButton) {
+        
+        _useTextButton.hidden = YES;
+        _useRecordButton.hidden = NO;
+        
+        _currentPostType = SharePostTypeText;
+        _textInputView.hidden = NO;
+        _recordButton.hidden = !_textInputView.hidden;
+        _recordBackImageView.hidden = !_textInputView.hidden;
+    }
+    
+    if (sender == _useRecordButton) {
+        
+        _useRecordButton.hidden = YES;
+        _useTextButton.hidden  = NO;
+        
+        _currentPostType = SharePostTypeAudio;
+        if (_hasRecordNow) {
+            _recordBackImageView.hidden = NO;
+            _textInputView.hidden = !_recordBackImageView.hidden;
+        }else{
+            _recordButton.hidden = NO;
+            _textInputView.hidden = !_recordBackImageView.hidden;
+        }
+        
+    }
+    
+}
+
 // share post now
 - (void)sharePostNow
 {
@@ -203,23 +255,43 @@
             
             [resultImageLinks addObject:resultModel.link];
             
+            NSMutableString *postAllImages = [NSMutableString string];
+            [resultImageLinks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                if (idx!=resultImageLinks.count-1) {
+                    [postAllImages appendFormat:@"%@|",obj];
+                }else{
+                    [postAllImages appendFormat:@"%@",obj];
+                }
+            }];
+            _currentPostModel.postImages = postAllImages;
+
             //all image upload finish
             if (resultImageLinks.count == _postImagesArray.count) {
                 
                 //start upload audio if need or start post
                 if (_currentPostType == SharePostTypeAudio) {
                     
-                }else{
-                    
-                    NSMutableString *postAllImages = [NSMutableString string];
-                    [resultImageLinks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                        if (idx!=resultImageLinks.count-1) {
-                            [postAllImages appendFormat:@"%@|",obj];
-                        }else{
-                            [postAllImages appendFormat:@"%@",obj];
-                        }
+                    _currentPostModel.postType = [XXSharePostTypeConfig postTypeWithImageCount:resultImageLinks.count withIsAudioContent:YES];
+                    //
+                    DDLogVerbose(@"record amr path:%@",_recordAmrPath);
+                    NSData *audioData = [NSData dataWithContentsOfFile:_recordAmrPath];
+                    [[XXMainDataCenter shareCenter]uploadFileWithData:audioData withFileName:@"audio.amr" withUploadProgressBlock:^(CGFloat progressValue) {
+                        
+                    } withSuccessBlock:^(XXAttachmentModel *resultModel) {
+                       
+                        //upload audio success,begin share
+                        _currentPostModel.postAudio = resultModel.link;
+                        [[XXMainDataCenter shareCenter]requestPostShareWithConditionSharePost:_currentPostModel withSuccess:^(NSString *successMsg) {
+                            [SVProgressHUD showSuccessWithStatus:successMsg];
+                        } withFaild:^(NSString *faildMsg) {
+                            [SVProgressHUD showErrorWithStatus:faildMsg];
+                        }];
+                        
+                    } withFaildBlock:^(NSString *faildMsg) {
+                        [SVProgressHUD showErrorWithStatus:faildMsg];
                     }];
-                    _currentPostModel.postImages = postAllImages;
+                    
+                }else{
                     _currentPostModel.postAudio = @"";
                     _currentPostModel.postContent = _textInputView.text;
                     _currentPostModel.postAudioTime = @"0";

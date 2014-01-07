@@ -165,6 +165,7 @@
         [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayAndRecord error:nil];
         [[AVAudioSession sharedInstance] setActive:YES error:nil];
         [self.audioRecorder recordForDuration:XXMaxAudioRecordTime];
+        _currentTimeInterval = self.audioRecorder.currentTime;
     }
 }
 
@@ -177,11 +178,14 @@
 {
     if (flag) {
         NSLog(@"record success!");
+        NSTimeInterval recordTimeLength = recorder.currentTime-_currentTimeInterval;
+        NSString *timeLengthString = [NSString stringWithFormat:@"%d'",(int)recordTimeLength];
+        
         //转换成AMR
         NSString *amrFile = [NSString stringWithFormat:@"%@.amr",[self getFileNameFromUrl:self.audioRecorder.url.absoluteString]];
         [VoiceConverter wavToAmr:self.audioRecorder.url.absoluteString amrSavePath:[self buildCachePathForFileName:amrFile]];
         if (_finishBlock) {
-            _finishBlock([self buildCachePathForFileName:amrFile],self.audioRecorder.url.absoluteString);
+            _finishBlock([self buildCachePathForFileName:amrFile],self.audioRecorder.url.absoluteString,timeLengthString);
         }
     }
 }
@@ -228,6 +232,8 @@
 {
     self.audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:[NSURL URLWithString:filePath] error:nil];
     self.audioPlayer.volume = 0.8f;
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    [audioSession setCategory:AVAudioSessionCategoryPlayback error:nil];
     [self.audioPlayer play];
 }
 

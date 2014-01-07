@@ -10,11 +10,12 @@
 #import <AVFoundation/AVFoundation.h>
 #import "XXMainDataCenter.h"
 
-typedef void (^XXAudioManagerFinishRecordBlock) (NSString *audioSavePath,NSString *wavSavePath);
+typedef void (^XXAudioManagerFinishRecordBlock) (NSString *audioSavePath,NSString *wavSavePath,NSString *timeLength);
 
 @interface XXAudioManager : NSObject <AVAudioRecorderDelegate, AVAudioPlayerDelegate>
 {
     XXAudioManagerFinishRecordBlock _finishBlock;
+    NSTimeInterval  _currentTimeInterval;
 }
 @property (nonatomic,strong)AVAudioRecorder *audioRecorder;
 @property (nonatomic,strong)AVAudioPlayer *audioPlayer;
