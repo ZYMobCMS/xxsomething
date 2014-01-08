@@ -63,7 +63,7 @@
     self.appHUD = [[MBProgressHUD alloc]initWithWindow:self.window];
     [self.window addSubview:self.appHUD];
     [self.appHUD hide:YES];
-        
+    
     [self.window makeKeyAndVisible];
     
     //后台更新学校数据库

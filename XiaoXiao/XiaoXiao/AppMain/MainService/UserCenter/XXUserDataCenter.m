@@ -98,5 +98,30 @@
 {
    return  (NSMutableArray*)[NSKeyedUnarchiver unarchiveObjectWithData:arrayData];
 }
-
++ (BOOL)checkLoginUserInfoIsWellDone
+{
+    XXUserModel *currentUser = [XXUserDataCenter currentLoginUser];
+    if ([currentUser.nickName isEqualToString:@""]) {
+        return NO;
+    }
+    if ([currentUser.signature isEqualToString:@""]) {
+        return NO;
+    }
+    if ([currentUser.constellation isEqualToString:@""]) {
+        return NO;
+    }
+    if ([currentUser.sex isEqualToString:@""]) {
+        return NO;
+    }
+    if ([currentUser.grade isEqualToString:@""]) {
+        return NO;
+    }
+    if ([currentUser.birthDay isEqualToString:@""]) {
+        return NO;
+    }
+    if ([currentUser.schoolName isEqualToString:@""]) {
+        return NO;
+    }
+    return YES;
+}
 @end

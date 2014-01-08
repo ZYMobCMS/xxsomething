@@ -161,7 +161,7 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
             
             ZYXMPPMessage *existMsg = [[ZYXMPPMessage alloc]init];
             existMsg.messageId = [resultSet stringForColumn:@"message_id"];
-            existMsg.messageAttributedContent = [resultSet stringForColumn:@"body_content"];
+            existMsg.messageAttributedContent = [[NSAttributedString alloc]initWithString:[resultSet stringForColumn:@"body_content"]];
             existMsg.conversationId = [resultSet stringForColumn:@"conversation_id"];
             existMsg.userId = [resultSet stringForColumn:@"send_user_id"];
             existMsg.user = [resultSet stringForColumn:@"send_user"];

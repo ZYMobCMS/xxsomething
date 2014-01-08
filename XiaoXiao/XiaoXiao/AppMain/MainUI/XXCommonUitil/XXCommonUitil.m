@@ -43,9 +43,14 @@
     customTitleLabel.textAlignment = NSTextAlignmentCenter;
     customTitleLabel.textColor = [UIColor blackColor];
     aViewController.navigationItem.titleView = customTitleLabel;
+    if (IS_IOS_7) {
+        aViewController.edgesForExtendedLayout = UIRectEdgeNone;
+        aViewController.automaticallyAdjustsScrollViewInsets = YES;
+    }
 }
 + (void)setCommonNavigationReturnItemForViewController:(UIViewController *)aViewController
 {
+    aViewController.view.backgroundColor = [UIColor whiteColor];
     XXResponseButton *returnCustomButton = [[XXResponseButton alloc]initWithFrame:CGRectMake(0,0,26.5,26.5)];    
     [returnCustomButton setBackgroundImage:[UIImage imageNamed:@"nav_return_button.png"] forState:UIControlStateNormal];
     [returnCustomButton setResponseButtonTapped:^{
@@ -60,9 +65,14 @@
     customTitleLabel.textAlignment = NSTextAlignmentCenter;
     customTitleLabel.textColor = [UIColor blackColor];
     aViewController.navigationItem.titleView = customTitleLabel;
+    if (IS_IOS_7) {
+        aViewController.edgesForExtendedLayout = UIRectEdgeNone;
+        aViewController.automaticallyAdjustsScrollViewInsets = YES;
+    }
 }
 + (void)setCommonNavigationReturnItemForViewController:(UIViewController *)aViewController withBackStepAction:(XXNavigationNextStepItemBlock)stepAction
 {
+    aViewController.view.backgroundColor = [UIColor whiteColor];
     XXResponseButton *returnCustomButton = [[XXResponseButton alloc]initWithFrame:CGRectMake(0,0,26.5,26.5)];
     [returnCustomButton setBackgroundImage:[UIImage imageNamed:@"nav_return_button.png"] forState:UIControlStateNormal];
     [returnCustomButton setResponseButtonTapped:^{
@@ -79,9 +89,14 @@
     customTitleLabel.textAlignment = NSTextAlignmentCenter;
     customTitleLabel.textColor = [UIColor blackColor];
     aViewController.navigationItem.titleView = customTitleLabel;
+    if (IS_IOS_7) {
+        aViewController.edgesForExtendedLayout = UIRectEdgeNone;
+        aViewController.automaticallyAdjustsScrollViewInsets = YES;
+    }
 }
 + (void)setCommonNavigationNextStepItemForViewController:(UIViewController *)aViewController withNextStepAction:(XXNavigationNextStepItemBlock)nextAction
 {
+    aViewController.view.backgroundColor = [UIColor whiteColor];
     XXResponseButton *returnCustomButton = [[XXResponseButton alloc]initWithFrame:CGRectMake(0,0,60,30)];
     returnCustomButton.layer.borderColor = [XXCommonStyle xxThemeButtonBoardColor].CGColor;
     returnCustomButton.layer.borderWidth = 1.0f;
@@ -96,9 +111,14 @@
     }];
     UIBarButtonItem *returnNavItem = [[UIBarButtonItem alloc]initWithCustomView:returnCustomButton];
     aViewController.navigationItem.rightBarButtonItem = returnNavItem;
+    if (IS_IOS_7) {
+        aViewController.edgesForExtendedLayout = UIRectEdgeNone;
+        aViewController.automaticallyAdjustsScrollViewInsets = YES;
+    }
 }
 + (void)setCommonNavigationNextStepItemForViewController:(UIViewController *)aViewController withNextStepAction:(XXNavigationNextStepItemBlock)nextAction withTitle:(NSString *)title
 {
+    aViewController.view.backgroundColor = [UIColor whiteColor];
     XXResponseButton *returnCustomButton = [[XXResponseButton alloc]initWithFrame:CGRectMake(0,0,60,30)];
     returnCustomButton.layer.borderColor = [XXCommonStyle xxThemeButtonBoardColor].CGColor;
     returnCustomButton.layer.borderWidth = 1.0f;
@@ -113,5 +133,28 @@
     }];
     UIBarButtonItem *returnNavItem = [[UIBarButtonItem alloc]initWithCustomView:returnCustomButton];
     aViewController.navigationItem.rightBarButtonItem = returnNavItem;
+    if (IS_IOS_7) {
+        aViewController.edgesForExtendedLayout = UIRectEdgeNone;
+        aViewController.automaticallyAdjustsScrollViewInsets = YES;
+    }
+}
++ (void)setCommonNavigationNextStepItemForViewController:(UIViewController *)aViewController withIconImage:(NSString *)iconName withNextStepAction:(XXNavigationNextStepItemBlock)nextAction
+{
+    aViewController.view.backgroundColor = [UIColor whiteColor];
+    XXResponseButton *returnCustomButton = [[XXResponseButton alloc]initWithFrame:CGRectMake(0,0,30,30)];
+    [returnCustomButton setBackgroundImage:[UIImage imageNamed:iconName] forState:UIControlStateNormal];
+    [returnCustomButton setTitleColor:[XXCommonStyle xxThemeButtonTitleColor] forState:UIControlStateNormal];
+    [returnCustomButton setResponseButtonTapped:^{
+        if (nextAction) {
+            nextAction();
+        }
+    }];
+    UIBarButtonItem *returnNavItem = [[UIBarButtonItem alloc]initWithCustomView:returnCustomButton];
+    aViewController.navigationItem.rightBarButtonItem = returnNavItem;
+    if (IS_IOS_7) {
+        aViewController.edgesForExtendedLayout = UIRectEdgeNone;
+        aViewController.automaticallyAdjustsScrollViewInsets = YES;
+    }
+
 }
 @end

@@ -30,7 +30,20 @@
 	// Do any additional setup after loading the view.
     self.sharePostRowHeightArray = [[NSMutableArray alloc]init];
     self.sharePostModelArray = [[NSMutableArray alloc]init];
+    _currentPageIndex = 0;
+    _pageSize = 15;
+    _hiddenLoadMore = NO;
     
+    CGFloat totalHeight = XXNavContentHeight -44-49;
+    _shareListTable = [[UITableView alloc]init];
+    _shareListTable.frame = CGRectMake(0,0,self.view.frame.size.width,totalHeight);
+    _shareListTable.delegate = self;
+    _shareListTable.dataSource = self;
+    [self.view addSubview:_shareListTable];
+    
+    _refreshControl = [[UIRefreshControl alloc]init];
+    [_refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+    [_shareListTable addSubview:_refreshControl];
 }
 
 - (void)didReceiveMemoryWarning
@@ -71,6 +84,16 @@
     
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row == self.sharePostModelArray.count-1 && _hiddenLoadMore == NO) {
+        XXLoadMoreView *loadMoreView = [[XXLoadMoreView alloc]initWithFrame:CGRectMake(0,0,cell.frame.size.width,cell.frame.size.height)];
+        tableView.tableFooterView = loadMoreView;
+        [loadMoreView startLoading];
+        [self loadMoreResult];
+    }
+}
+
 #pragma mark - override api
 - (void)detailModelArrayAndRowHeightNow
 {
@@ -81,6 +104,13 @@
 {
     
 }
-
+- (void)refresh
+{
+    
+}
+- (void)loadMoreResult
+{
+    
+}
 
 @end

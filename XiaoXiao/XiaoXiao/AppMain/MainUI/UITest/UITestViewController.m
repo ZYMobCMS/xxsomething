@@ -366,7 +366,7 @@
 }
 - (void)startRecord
 {
-    [[XXAudioManager shareManager]audioManagerStartRecordWithFinishRecordAction:^(NSString *audioSavePath) {
+    [[XXAudioManager shareManager]audioManagerStartRecordWithFinishRecordAction:^(NSString *audioSavePath,NSString *wavSavePath,NSString *timeLength) {
         
         //发送到服务器
         DDLogVerbose(@"audio tempUrl:%@",audioSavePath);

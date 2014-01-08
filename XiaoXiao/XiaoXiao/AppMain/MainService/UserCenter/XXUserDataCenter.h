@@ -14,4 +14,5 @@
 + (void)loginThisUser:(XXUserModel*)aUser;
 + (void)currentUserLoginOut;
 + (NSString*)currentLoginUserToken;
++ (BOOL)checkLoginUserInfoIsWellDone;
 @end

@@ -8,8 +8,6 @@
 
 #import "XXPhotoFilterViewController.h"
 #import "ImageUtil.h"
-#import "ColorMatrix.h"
-#import "GBPathImageView.h"
 
 @class XXImageEffectItem;
 typedef void (^XXImageEffectItemSelectBlock) (XXImageEffectItem *selectItem);
@@ -42,7 +40,7 @@ typedef void (^XXImageEffectItemSelectBlock) (XXImageEffectItem *selectItem);
         self.titleLabel.font = [UIFont systemFontOfSize:XXImageEffectItemTitleFontSize];
         self.titleLabel.adjustsFontSizeToFitWidth = YES;
         self.titleLabel.textColor  = [UIColor whiteColor];
-        self.titleLabel.textAlignment = UITextAlignmentCenter;
+        self.titleLabel.textAlignment = NSTextAlignmentCenter;
         [self addSubview:self.titleLabel];
         
         _selectBlock = [selectBlock copy];
@@ -234,6 +232,7 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (IFFilterType filterType);
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+
     self.title = @"滤镜效果";
     [XXCommonUitil setCommonNavigationNextStepItemForViewController:self withNextStepAction:^{
         if (_nextStepBlock) {
@@ -246,23 +245,25 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (IFFilterType filterType);
             }
         }
     }];
-    
+
     //default
     if (self.effectImgViewHeight==0) {
         self.effectImgViewHeight = 250;
     }
+    CGFloat totalHeight = XXNavContentHeight-44;
+    CGFloat totalWidth = self.view.frame.size.width;
     
     //image filter
     CGFloat scaleCount = 0.f;
-    if (self.effectImgViewHeight > self.view.frame.size.height-115-40) {
-        scaleCount = (self.view.frame.size.height-115-20)/self.effectImgViewHeight;
+    if (self.effectImgViewHeight > totalHeight-75-40) {
+        scaleCount = (totalHeight-115-20)/self.effectImgViewHeight;
     }
-    CGFloat scaleWidth = self.view.frame.size.width*scaleCount;
-    scaleWidth = scaleWidth>0? scaleWidth:self.view.frame.size.width;
+    CGFloat scaleWidth = totalWidth*scaleCount;
+    scaleWidth = scaleWidth>0? scaleWidth:totalWidth;
     
     if (self.isSettingHeadImage) {
-        CGFloat orignx = (self.view.frame.size.width-77)/2;
-        CGFloat origny = (self.view.frame.size.height-44-75-77)/2;
+        CGFloat orignx = (totalWidth-77)/2;
+        CGFloat origny = (totalHeight-75-77)/2;
         _imageFilter = [[ZYImageFilter alloc]initWithSaveQuality:YES withShowEffectImageViewFrame:CGRectMake(orignx,origny,77,77)];
     }else{
         _imageFilter = [[ZYImageFilter alloc]initWithSaveQuality:YES withShowEffectImageViewFrame:CGRectMake(0,0,scaleWidth,self.effectImgViewHeight)];
@@ -271,8 +272,9 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (IFFilterType filterType);
     [self.view addSubview:_imageFilter.gpuImageView];
     [_imageFilter switchFilter:IF_NORMAL_FILTER];
     _imageFilter.gpuImageView.hidden = YES;
+    DDLogVerbose(@"effectViewFrame:%@",NSStringFromCGRect(_imageFilter.gpuImageView.frame));
 
-    XXImageFilterChooseView *chooseView = [[XXImageFilterChooseView alloc]initWithFrame:CGRectMake(0,self.view.frame.size.height-115,self.view.frame.size.width,75) withOriginImage:self.currentImage withFinishBlock:^(IFFilterType filterType) {
+    XXImageFilterChooseView *chooseView = [[XXImageFilterChooseView alloc]initWithFrame:CGRectMake(0,totalHeight-75,totalWidth,75) withOriginImage:self.currentImage withFinishBlock:^(IFFilterType filterType) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [_imageFilter switchFilter:filterType];
             UIImage *currentEffectImage = [_imageFilter currentEffectImage];

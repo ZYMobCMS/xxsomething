@@ -10,8 +10,9 @@
 #import "XXBaseTextView.h"
 #import "XXUserModel.h"
 #import "XXHeadView.h"
+#import "XXBaseCell.h"
 
-@interface XXUserInfoBaseCell : UITableViewCell
+@interface XXUserInfoBaseCell : XXBaseCell
 {
     XXBaseTextView *contentTextView;
     XXHeadView     *headView;

@@ -14,11 +14,19 @@
 
 @interface XXShareListViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
 {
-    UITableView *shareListTable;
+    UITableView *_shareListTable;
+    UIRefreshControl *_refreshControl;
+    NSInteger   _currentPageIndex;
+    NSInteger   _pageSize;
+    BOOL        _hiddenLoadMore;
+    BOOL        _isRefresh;
+
 }
 @property (nonatomic,strong)NSMutableArray *sharePostModelArray;
 @property (nonatomic,strong)NSMutableArray *sharePostRowHeightArray;
 
 - (void)requestShareListNow;
+- (void)refresh;
+- (void)loadMoreResult;
 
 @end

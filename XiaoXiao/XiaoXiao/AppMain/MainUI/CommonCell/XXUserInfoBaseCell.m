@@ -16,8 +16,7 @@
     if (self) {
         // Initialization code
         
-        headView = [[XXHeadView alloc]init];
-        headView.frame = CGRectMake(10,15,80,80);
+        headView = [[XXHeadView alloc]initWithFrame:CGRectMake(10,10,80,80)];
         headView.contentImageView.image = [UIImage imageNamed:@"xxx.jpg"];
         [self.contentView addSubview:headView];
         
@@ -52,6 +51,9 @@
     [contentTextView setAttributedString:userModel.attributedContent];
     CGFloat contentHeight = [XXUserInfoBaseCell heightWithContentModel:userModel];
     [contentTextView setFrame:CGRectMake(contentTextView.frame.origin.x,contentTextView.frame.origin.y,contentTextView.frame.size.width,contentHeight-30)];
+    [headView setHeadUrl:userModel.headUrl];
+    
+    _cellLineImageView.frame = CGRectMake(0,contentHeight-1,self.frame.size.width,1);//重设分割线
 }
 
 + (CGFloat)heightWithContentModel:(XXUserModel *)userModel

@@ -7,10 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XXRadioChooseView.h"
 
 /*
  *通用多选择Radio视图
  */
+typedef void (^XXRadioChooseViewControllerFinishBlock) (NSString *resultString);
+
 @interface XXRadioChooseViewController : UIViewController
+{
+    XXRadioChooseView *_chooseView;
+    NSMutableArray    *_titleArray;
+    XXRadioChooseViewControllerFinishBlock _finishBlock;
+    XXRadioChooseType _chooseType;
+}
+- (id)initWithConfigArray:(NSArray*)configArray withRadioChooseType:(XXRadioChooseType)chooseType withFinishBlock:(XXRadioChooseViewControllerFinishBlock)finishBlock;
+- (NSString*)finialChooseString;
 
 @end

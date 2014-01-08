@@ -14,15 +14,6 @@
 {
     if (self = [super init]) {
         
-        _backgroundImageView = [[UIImageView alloc]init];
-        _backgroundImageView.frame = CGRectMake(0,0,self.frame.size.width-20,self.frame.size.height-bottomMargin);
-        [self.contentView addSubview:_backgroundImageView];
-        if (bottomMargin!=0) {
-            _backgroundImageView.image = [UIImage imageNamed:@"cell_round_back.png"];
-        }else{
-            
-        }
-        
         _iconImageView = [[UIImageView alloc]init];
         _iconImageView.frame = CGRectMake(8,7,30,30);
         [_backgroundImageView addSubview:_iconImageView];
@@ -31,7 +22,7 @@
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.frame = CGRectMake(45,0,_backgroundImageView.frame.size.width-45*2,_backgroundImageView.frame.size.height);
         [_backgroundImageView addSubview:_titleLabel];
-        
+                
     }
     return self;
 }
@@ -58,4 +49,5 @@
     _iconImageView.image = iconImage;
     _titleLabel.text = title;
 }
+
 @end

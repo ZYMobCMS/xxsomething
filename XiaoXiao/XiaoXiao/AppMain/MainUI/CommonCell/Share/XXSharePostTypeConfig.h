@@ -32,5 +32,5 @@ typedef enum {
 @interface XXSharePostTypeConfig : NSObject
 
 + (NSString *)sharePostHTMLTemplateForType:(XXSharePostType)sharePostType;
-
++ (XXSharePostType)postTypeWithImageCount:(NSInteger)imagesCount withIsAudioContent:(BOOL)isAudio;
 @end

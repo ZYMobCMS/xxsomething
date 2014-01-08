@@ -48,7 +48,21 @@
         }
         self.postContent = [customContentDict objectForKey:XXSharePostJSONContentKey];
         self.postAudio = [customContentDict objectForKey:XXSharePostJSONAudioKey];
-        self.postImages = [customContentDict objectForKey:XXSharePostJSONImageKey];
+        
+        //补全图片链接地址
+        NSString *images = [customContentDict objectForKey:XXSharePostJSONImageKey];
+        NSArray *imageArray = [images componentsSeparatedByString:@"|"];
+        NSMutableString *imageNewString = [NSMutableString string];
+        [imageArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            NSString *url = [NSString stringWithFormat:@"%@%@",XXBase_Host_Url,obj];
+            if (idx!=imageArray.count-1) {
+                [imageNewString appendFormat:@"%@|",url];
+            }else{
+                [imageNewString appendString:url];
+            }
+        }];
+        self.postImages = imageNewString;
+        
         self.postType = [[customContentDict objectForKey:XXSharePostJSONTypeKey]intValue];
         self.postAudioTime = [customContentDict objectForKey:XXSharePostJSONAudioTime];
         //确保每个属性都有，即使为空字符串

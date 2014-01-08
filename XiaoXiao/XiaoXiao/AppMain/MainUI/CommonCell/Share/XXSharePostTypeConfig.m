@@ -62,6 +62,18 @@
     
     return [XXFileUitil loadStringFromBundleForName:templateFileName];
 }
-
++ (XXSharePostType)postTypeWithImageCount:(NSInteger)imagesCount withIsAudioContent:(BOOL)isAudio
+{
+    if (isAudio) {
+        
+        NSInteger baseTypeTag = 8877990;
+        return baseTypeTag+imagesCount;
+        
+    }else{
+        
+        NSInteger baseTypeTag = 8877997;
+        return baseTypeTag+imagesCount;
+    }
+}
 
 @end
