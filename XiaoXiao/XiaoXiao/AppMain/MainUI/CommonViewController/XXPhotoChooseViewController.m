@@ -33,6 +33,7 @@
         self.imagePicker = [[UIImagePickerController alloc]init];
         self.imagePicker.delegate = self;
         self.chooseType = XXPhotoChooseTypeSingle;
+        _maxChooseNumber = 1;
     }
     return self;
 }
@@ -103,55 +104,40 @@
         }
     }
     if (type==1) {
-        if (self.chooseType==XXPhotoChooseTypeMutil) {
-            CTAssetsPickerController *pickController=[[CTAssetsPickerController alloc]init];
-            pickController.assetsFilter = [ALAssetsFilter allAssets];
-            pickController.maximumNumberOfSelection = _maxChooseNumber;
-            pickController.delegate = self;
-            [self presentViewController:pickController animated:YES completion:Nil];
-        }else{
-            self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            [self presentViewController:self.imagePicker animated:YES completion:Nil];
-        }
+        
+        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+        self.assetsLibrary = library;
+        WSAssetPickerController *pickController=[[WSAssetPickerController alloc]initWithAssetsLibrary:self.assetsLibrary];
+        pickController.selectionLimit = _maxChooseNumber;
+        pickController.delegate = self;
+        [self presentViewController:pickController animated:YES completion:Nil];
     }
 }
 //CTAssetsPickerController delegate
-- (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
+- (void)assetPickerController:(WSAssetPickerController *)sender didFinishPickingMediaWithAssets:(NSArray *)assets
 {
     DDLogVerbose(@"mutil image select :%@",assets);
+    if (assets.count==0) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
     NSMutableArray *imageArray = [NSMutableArray array];
     [assets enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
        
         ALAsset *item = (ALAsset*)obj;
-        ALAssetRepresentation *representaion = [item defaultRepresentation];
-        UIImage *aImage = [UIImage imageWithCGImage:[representaion fullResolutionImage]];
-        DDLogVerbose(@"image from assset:%@",aImage);
-        [imageArray addObject:aImage];
+        UIImage *image = [UIImage imageWithCGImage:item.thumbnail];
+        [imageArray addObject:image];
         
     }];
-    if (_chooseBlock) {
-        _chooseBlock(imageArray);
-    }
-    [self.navigationController popViewControllerAnimated:YES];
-}
-- (void)assetsPickerControllerDidCancel:(CTAssetsPickerController *)picker
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)imagePickerController:(UIImagePickerController *)aPicker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    DDLogVerbose(@"need crop:%d",self.needCrop);
-    [self dismissViewControllerAnimated:YES completion:nil];
-    UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
     if (self.needCrop) {
+        ALAssetRepresentation *imageRepresentaion = [[assets objectAtIndex:0]defaultRepresentation];
+        UIImage *image = [UIImage imageWithCGImage:[imageRepresentaion fullResolutionImage]];
         XXPhotoCropViewController *cropVC = [[XXPhotoCropViewController alloc]initWithOriginImage:image withFinishCropBlock:^(UIImage *resultImage) {
             if (self.needFilter) {
                 XXPhotoFilterViewController *filterVC = [[XXPhotoFilterViewController alloc]initWithCurrentImage:resultImage withChooseBlock:^(UIImage *resultImage) {
                     if (_chooseBlock) {
                         NSArray *chooseImages = @[resultImage];
                         if (_chooseBlock) {
-                            _chooseBlock(chooseImages);
+                            _chooseBlock(chooseImages,assets);
                         }
                     }
                 }];
@@ -169,7 +155,7 @@
             }else{
                 if (_chooseBlock) {
                     NSArray *resultImages = @[resultImage];
-                    _chooseBlock(resultImages);
+                    _chooseBlock(resultImages,assets);
                 }
             }
         }];
@@ -177,11 +163,13 @@
         [self.navigationController pushViewController:cropVC animated:YES];
     }else{
         if (self.needFilter) {
+            ALAssetRepresentation *imageRepresentaion = [[assets objectAtIndex:0]defaultRepresentation];
+            UIImage *image = [UIImage imageWithCGImage:[imageRepresentaion fullResolutionImage]];
             XXPhotoFilterViewController *filterVC = [[XXPhotoFilterViewController alloc]initWithCurrentImage:image withChooseBlock:^(UIImage *resultImage) {
                 if (_chooseBlock) {
                     NSArray *chooseImages = @[resultImage];
                     if (_chooseBlock) {
-                        _chooseBlock(chooseImages);
+                        _chooseBlock(chooseImages,assets);
                     }
                 }
             }];
@@ -200,11 +188,21 @@
             [self.navigationController pushViewController:filterVC animated:YES];
         }else{
             if (_chooseBlock) {
-                NSArray *resultImages = @[image];
-                _chooseBlock(resultImages);
+                _chooseBlock(imageArray,assets);
             }
         }
     }
+}
+- (void)assetPickerControllerDidCancel:(WSAssetPickerController *)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)aPicker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    DDLogVerbose(@"need crop:%d",self.needCrop);
+    [self dismissViewControllerAnimated:YES completion:nil];
+    UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
     
 }
 

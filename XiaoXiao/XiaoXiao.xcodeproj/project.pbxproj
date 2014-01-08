@@ -400,6 +400,13 @@
 		E4C9B6D518759198003D6AC9 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C9B6D418759198003D6AC9 /* CoreMedia.framework */; };
 		E4C9B6D71875919F003D6AC9 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C9B6D61875919F003D6AC9 /* CoreVideo.framework */; };
 		E4C9B6D9187591A9003D6AC9 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C9B6D8187591A9003D6AC9 /* OpenGLES.framework */; };
+		E4CA2B64187DB09800E14F1D /* WSAlbumTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4CA2B55187DB09800E14F1D /* WSAlbumTableViewController.m */; };
+		E4CA2B65187DB09800E14F1D /* WSAssetPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4CA2B59187DB09800E14F1D /* WSAssetPickerController.m */; };
+		E4CA2B66187DB09800E14F1D /* WSAssetPickerState.m in Sources */ = {isa = PBXBuildFile; fileRef = E4CA2B5B187DB09800E14F1D /* WSAssetPickerState.m */; };
+		E4CA2B67187DB09800E14F1D /* WSAssetsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E4CA2B5D187DB09800E14F1D /* WSAssetsTableViewCell.m */; };
+		E4CA2B68187DB09800E14F1D /* WSAssetTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4CA2B5F187DB09800E14F1D /* WSAssetTableViewController.m */; };
+		E4CA2B69187DB09800E14F1D /* WSAssetViewColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = E4CA2B61187DB09800E14F1D /* WSAssetViewColumn.m */; };
+		E4CA2B6A187DB09800E14F1D /* WSAssetWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E4CA2B63187DB09800E14F1D /* WSAssetWrapper.m */; };
 		E4E3F5D21860966A00970698 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E3F5D11860966A00970698 /* UIKit.framework */; };
 		E4E3F5D41860966A00970698 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E3F5D31860966A00970698 /* Foundation.framework */; };
 		E4E3F5D61860966A00970698 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E3F5D51860966A00970698 /* CoreGraphics.framework */; };
@@ -1378,6 +1385,21 @@
 		E4C9B6D418759198003D6AC9 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		E4C9B6D61875919F003D6AC9 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		E4C9B6D8187591A9003D6AC9 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		E4CA2B54187DB09800E14F1D /* WSAlbumTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAlbumTableViewController.h; sourceTree = "<group>"; };
+		E4CA2B55187DB09800E14F1D /* WSAlbumTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAlbumTableViewController.m; sourceTree = "<group>"; };
+		E4CA2B57187DB09800E14F1D /* WSAssetPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAssetPicker.h; sourceTree = "<group>"; };
+		E4CA2B58187DB09800E14F1D /* WSAssetPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAssetPickerController.h; sourceTree = "<group>"; };
+		E4CA2B59187DB09800E14F1D /* WSAssetPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAssetPickerController.m; sourceTree = "<group>"; };
+		E4CA2B5A187DB09800E14F1D /* WSAssetPickerState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAssetPickerState.h; sourceTree = "<group>"; };
+		E4CA2B5B187DB09800E14F1D /* WSAssetPickerState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAssetPickerState.m; sourceTree = "<group>"; };
+		E4CA2B5C187DB09800E14F1D /* WSAssetsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAssetsTableViewCell.h; sourceTree = "<group>"; };
+		E4CA2B5D187DB09800E14F1D /* WSAssetsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAssetsTableViewCell.m; sourceTree = "<group>"; };
+		E4CA2B5E187DB09800E14F1D /* WSAssetTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAssetTableViewController.h; sourceTree = "<group>"; };
+		E4CA2B5F187DB09800E14F1D /* WSAssetTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAssetTableViewController.m; sourceTree = "<group>"; };
+		E4CA2B60187DB09800E14F1D /* WSAssetViewColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAssetViewColumn.h; sourceTree = "<group>"; };
+		E4CA2B61187DB09800E14F1D /* WSAssetViewColumn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAssetViewColumn.m; sourceTree = "<group>"; };
+		E4CA2B62187DB09800E14F1D /* WSAssetWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAssetWrapper.h; sourceTree = "<group>"; };
+		E4CA2B63187DB09800E14F1D /* WSAssetWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAssetWrapper.m; sourceTree = "<group>"; };
 		E4E3F5CE1860966A00970698 /* XiaoXiao.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XiaoXiao.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4E3F5D11860966A00970698 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E4E3F5D31860966A00970698 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -3236,6 +3258,28 @@
 			path = UIImage_Category;
 			sourceTree = "<group>";
 		};
+		E4CA2B53187DB09800E14F1D /* WSAssetPicker */ = {
+			isa = PBXGroup;
+			children = (
+				E4CA2B54187DB09800E14F1D /* WSAlbumTableViewController.h */,
+				E4CA2B55187DB09800E14F1D /* WSAlbumTableViewController.m */,
+				E4CA2B57187DB09800E14F1D /* WSAssetPicker.h */,
+				E4CA2B58187DB09800E14F1D /* WSAssetPickerController.h */,
+				E4CA2B59187DB09800E14F1D /* WSAssetPickerController.m */,
+				E4CA2B5A187DB09800E14F1D /* WSAssetPickerState.h */,
+				E4CA2B5B187DB09800E14F1D /* WSAssetPickerState.m */,
+				E4CA2B5C187DB09800E14F1D /* WSAssetsTableViewCell.h */,
+				E4CA2B5D187DB09800E14F1D /* WSAssetsTableViewCell.m */,
+				E4CA2B5E187DB09800E14F1D /* WSAssetTableViewController.h */,
+				E4CA2B5F187DB09800E14F1D /* WSAssetTableViewController.m */,
+				E4CA2B60187DB09800E14F1D /* WSAssetViewColumn.h */,
+				E4CA2B61187DB09800E14F1D /* WSAssetViewColumn.m */,
+				E4CA2B62187DB09800E14F1D /* WSAssetWrapper.h */,
+				E4CA2B63187DB09800E14F1D /* WSAssetWrapper.m */,
+			);
+			path = WSAssetPicker;
+			sourceTree = "<group>";
+		};
 		E4E3F5C51860966A00970698 = {
 			isa = PBXGroup;
 			children = (
@@ -3943,6 +3987,7 @@
 		E4E3F7501860969200970698 /* ThirdPart */ = {
 			isa = PBXGroup;
 			children = (
+				E4CA2B53187DB09800E14F1D /* WSAssetPicker */,
 				E455B53D187997710037B1D7 /* CTAssetsPickerController */,
 				E455B536187834440037B1D7 /* BFLocationManager */,
 				E4C9B6091875912E003D6AC9 /* AGMedallionView */,
@@ -4742,12 +4787,14 @@
 				E4E3F8A81860969400970698 /* XXServiceUitil.m in Sources */,
 				E4E3F8B81860969400970698 /* XXShareBaseCell.m in Sources */,
 				E4E3F8B91860969400970698 /* XXShareTemplateBuilder.m in Sources */,
+				E4CA2B68187DB09800E14F1D /* WSAssetTableViewController.m in Sources */,
 				E4E3F8BB1860969400970698 /* XXBaseCell.m in Sources */,
 				E4E3F8BC1860969400970698 /* XXBaseIconLabelCell.m in Sources */,
 				E4E3F8BD1860969400970698 /* XXBaseIconLabelCountCell.m in Sources */,
 				E4E3F8BE1860969400970698 /* XXBaseLabelCell.m in Sources */,
 				E4E3F8BF1860969400970698 /* XXBaseTagLabelCell.m in Sources */,
 				E4E3F8C01860969400970698 /* XXCommentCell.m in Sources */,
+				E4CA2B66187DB09800E14F1D /* WSAssetPickerState.m in Sources */,
 				E4E3F8C11860969400970698 /* XXMessageBaseCell.m in Sources */,
 				E4E3F8C21860969400970698 /* XXSchoolChooseCell.m in Sources */,
 				E4E3F8C31860969400970698 /* XXUserInfoBaseCell.m in Sources */,
@@ -4788,6 +4835,7 @@
 				E4E3F8EC1860969400970698 /* MyCareUserListViewController.m in Sources */,
 				E4E3F8ED1860969400970698 /* MyFansUserListViewController.m in Sources */,
 				E4E3F8EE1860969400970698 /* MyHomeGuideViewController.m in Sources */,
+				E4CA2B67187DB09800E14F1D /* WSAssetsTableViewCell.m in Sources */,
 				E4E3F8EF1860969400970698 /* MyPeepUserListViewController.m in Sources */,
 				E4E3F8F01860969400970698 /* MyProfileEditViewController.m in Sources */,
 				E4E3F8F11860969400970698 /* MyShareListViewController.m in Sources */,
@@ -4867,6 +4915,7 @@
 				E4E3F99F1860969400970698 /* DTIframeTextAttachment.m in Sources */,
 				E4E3F9A01860969400970698 /* DTImage+HTML.m in Sources */,
 				E4E3F9A11860969400970698 /* DTImageTextAttachment.m in Sources */,
+				E4CA2B64187DB09800E14F1D /* WSAlbumTableViewController.m in Sources */,
 				E4E3F9A21860969400970698 /* DTLazyImageView.m in Sources */,
 				E4E3F9A31860969400970698 /* DTLinkButton.m in Sources */,
 				E4E3F9A41860969400970698 /* DTListItemHTMLElement.m in Sources */,
@@ -5031,6 +5080,7 @@
 				3B5DF35B186AC452000B50D2 /* XMPPRoom.xcdatamodeld in Sources */,
 				3B5DF35C186AC452000B50D2 /* XMPPRoomCoreDataStorage.m in Sources */,
 				3B5DF35D186AC452000B50D2 /* XMPPRoomMessageCoreDataStorageObject.m in Sources */,
+				E4CA2B65187DB09800E14F1D /* WSAssetPickerController.m in Sources */,
 				3B5DF35E186AC452000B50D2 /* XMPPRoomOccupantCoreDataStorageObject.m in Sources */,
 				3B5DF35F186AC452000B50D2 /* XMPPRoomHybrid.xcdatamodeld in Sources */,
 				3B5DF360186AC452000B50D2 /* XMPPRoomHybridStorage.m in Sources */,
@@ -5093,6 +5143,7 @@
 				3B5DF399186AC452000B50D2 /* NSXMLElement+XEP_0297.m in Sources */,
 				3B5DF39A186AC452000B50D2 /* XMPPMessage+XEP_0308.m in Sources */,
 				3B5DF39B186AC452000B50D2 /* DDList.m in Sources */,
+				E4CA2B69187DB09800E14F1D /* WSAssetViewColumn.m in Sources */,
 				3B5DF39C186AC452000B50D2 /* GCDMulticastDelegate.m in Sources */,
 				3B5DF39D186AC452000B50D2 /* RFImageToDataTransformer.m in Sources */,
 				3B5DF39E186AC452000B50D2 /* XMPPIDTracker.m in Sources */,
@@ -5104,6 +5155,7 @@
 				3B5DF3A4186AC452000B50D2 /* DDFileLogger.m in Sources */,
 				3B5DF3A5186AC452000B50D2 /* DDLog.m in Sources */,
 				3B5DF3A6186AC452000B50D2 /* DDTTYLogger.m in Sources */,
+				E4CA2B6A187DB09800E14F1D /* WSAssetWrapper.m in Sources */,
 				3B5DF3A7186AC452000B50D2 /* ContextFilterLogFormatter.m in Sources */,
 				3B5DF3A8186AC452000B50D2 /* DispatchQueueLogFormatter.m in Sources */,
 				3B5DF3AA186AC452000B50D2 /* NSString+DDXML.m in Sources */,

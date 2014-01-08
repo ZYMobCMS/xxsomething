@@ -145,15 +145,15 @@
 - (void)configPhotoBoxAction
 {
     __block NSInteger needPhotoCount = 6-_currentSelectPhotoCount;
-    XXPhotoChooseViewControllerFinishChooseBlock finishBlock = ^ (NSArray *resultImages){
+    XXPhotoChooseViewControllerFinishChooseBlock finishBlock = ^ (NSArray *resultImages,NSArray *imageSets){
         _currentSelectPhotoCount = _currentSelectPhotoCount+resultImages.count;
         needPhotoCount = 6-_currentSelectPhotoCount;
         [_postImagesArray addObjectsFromArray:resultImages];
         [_photoBox setImagesArray:_postImagesArray];
     };
     SharePhotoBoxDidTapOnAddBlock addBlock = ^{
-        XXPhotoChooseViewController *chooseVC = [[XXPhotoChooseViewController alloc]initWithMutilPhotoChooseWithMaxChooseNumber:needPhotoCount  withFinishBlock:^(NSArray *resultImages) {
-            finishBlock(resultImages);
+        XXPhotoChooseViewController *chooseVC = [[XXPhotoChooseViewController alloc]initWithMutilPhotoChooseWithMaxChooseNumber:needPhotoCount  withFinishBlock:^(NSArray *resultImages,NSArray *imageSets) {
+            finishBlock(resultImages,imageSets);
         }];
         [self.navigationController pushViewController:chooseVC animated:YES];
     };

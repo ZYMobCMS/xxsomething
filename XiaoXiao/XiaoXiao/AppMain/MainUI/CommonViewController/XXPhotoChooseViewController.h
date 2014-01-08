@@ -15,11 +15,11 @@ typedef enum{
     
 }XXPhotoChooseType;
 
-typedef void (^XXPhotoChooseViewControllerFinishChooseBlock) (NSArray *resultImages);
+typedef void (^XXPhotoChooseViewControllerFinishChooseBlock) (NSArray *resultImages,NSArray *imageSets);
 /*
  *通用图库或者现场拍摄选择
  */
-@interface XXPhotoChooseViewController : UIViewController<UIImagePickerControllerDelegate, UINavigationControllerDelegate,CTAssetsPickerControllerDelegate>
+@interface XXPhotoChooseViewController : UIViewController<UIImagePickerControllerDelegate, UINavigationControllerDelegate,WSAssetPickerControllerDelegate>
 {
     XXPhotoChooseViewControllerFinishChooseBlock _chooseBlock;
     XXCommonNavigationNextStepBlock _nextStepBlock;
@@ -32,6 +32,7 @@ typedef void (^XXPhotoChooseViewControllerFinishChooseBlock) (NSArray *resultIma
 @property (nonatomic, assign) BOOL needCrop;
 @property (nonatomic, assign) BOOL needFilter;
 @property (nonatomic, assign) BOOL isSetHeadImage;
+@property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
 
 - (id)initWithSinglePhotoChooseFinishAction:(XXPhotoChooseViewControllerFinishChooseBlock)chooseBlock;
 - (id)initWithMutilPhotoChooseWithMaxChooseNumber:(NSInteger)maxNumber withFinishBlock:(XXPhotoChooseViewControllerFinishChooseBlock)chooseBlock;
