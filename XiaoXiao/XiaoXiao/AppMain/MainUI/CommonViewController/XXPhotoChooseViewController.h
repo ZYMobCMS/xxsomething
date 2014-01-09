@@ -15,7 +15,7 @@ typedef enum{
     
 }XXPhotoChooseType;
 
-typedef void (^XXPhotoChooseViewControllerFinishChooseBlock) (NSArray *resultImages,NSArray *imageSets);
+typedef void (^XXPhotoChooseViewControllerFinishChooseBlock) (NSArray *resultImages);
 /*
  *通用图库或者现场拍摄选择
  */

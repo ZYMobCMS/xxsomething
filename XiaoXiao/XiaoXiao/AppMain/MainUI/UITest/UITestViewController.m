@@ -261,7 +261,7 @@
         resultImageView.image = resultImage;
         [self.navigationController popViewControllerAnimated:YES];
     }];
-    XXPhotoChooseViewController *chooseVC = [[XXPhotoChooseViewController alloc]initWithMutilPhotoChooseWithMaxChooseNumber:6 withFinishBlock:^(NSArray *resultImages,NSArray *imageSets) {
+    XXPhotoChooseViewController *chooseVC = [[XXPhotoChooseViewController alloc]initWithMutilPhotoChooseWithMaxChooseNumber:6 withFinishBlock:^(NSArray *resultImages) {
         
     }];
     chooseVC.needCrop = YES;

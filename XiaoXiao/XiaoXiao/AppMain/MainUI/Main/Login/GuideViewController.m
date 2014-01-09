@@ -192,7 +192,7 @@
     };
     
     //photo choose
-    XXPhotoChooseViewController *chooseVC = [[XXPhotoChooseViewController alloc]initWithMutilPhotoChooseWithMaxChooseNumber:1 withFinishBlock:^(NSArray *resultImages,NSArray *imageSets) {
+    XXPhotoChooseViewController *chooseVC = [[XXPhotoChooseViewController alloc]initWithMutilPhotoChooseWithMaxChooseNumber:1 withFinishBlock:^(NSArray *resultImages) {
     }];
     chooseVC.needCrop = YES;
     chooseVC.needFilter = YES;

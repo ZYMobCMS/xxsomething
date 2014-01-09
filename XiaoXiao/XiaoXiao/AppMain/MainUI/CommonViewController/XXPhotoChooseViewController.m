@@ -124,7 +124,8 @@
     [assets enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
        
         ALAsset *item = (ALAsset*)obj;
-        UIImage *image = [UIImage imageWithCGImage:item.thumbnail];
+        ALAssetRepresentation *itemRepresention = [item defaultRepresentation];
+        UIImage *image = [UIImage imageWithCGImage:[itemRepresention fullScreenImage]];
         [imageArray addObject:image];
         
     }];
@@ -137,7 +138,7 @@
                     if (_chooseBlock) {
                         NSArray *chooseImages = @[resultImage];
                         if (_chooseBlock) {
-                            _chooseBlock(chooseImages,assets);
+                            _chooseBlock(chooseImages);
                         }
                     }
                 }];
@@ -155,7 +156,7 @@
             }else{
                 if (_chooseBlock) {
                     NSArray *resultImages = @[resultImage];
-                    _chooseBlock(resultImages,assets);
+                    _chooseBlock(resultImages);
                 }
             }
         }];
@@ -169,7 +170,7 @@
                 if (_chooseBlock) {
                     NSArray *chooseImages = @[resultImage];
                     if (_chooseBlock) {
-                        _chooseBlock(chooseImages,assets);
+                        _chooseBlock(chooseImages);
                     }
                 }
             }];
@@ -188,7 +189,7 @@
             [self.navigationController pushViewController:filterVC animated:YES];
         }else{
             if (_chooseBlock) {
-                _chooseBlock(imageArray,assets);
+                _chooseBlock(imageArray);
             }
         }
     }
