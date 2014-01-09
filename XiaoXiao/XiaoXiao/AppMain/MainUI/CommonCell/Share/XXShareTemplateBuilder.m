@@ -76,6 +76,20 @@ BOOL const XXLockCommonCSSTemplateState = NO;
     return htmlTemplate;
 }
 
++ (NSString*)buildSharePostHeadHtmlContentWithName:(NSString *)name withGrade:(NSString *)grade withCollege:(NSString *)college withSexTag:(NSString *)sexTag
+{
+    NSString *htmlTemplate = [XXFileUitil loadStringFromBundleForName:@"xxshare_post_user.html"];
+    
+    //替换content
+    NSString *sexTagImageName = [NSString stringWithFormat:@"sex_tag_%@@2x.png",sexTag];
+    htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$sextag$!" withString:sexTagImageName];
+    htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$username$!" withString:name];
+    htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$grade$!" withString:grade];
+    htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$college$!" withString:college];
+    
+    return htmlTemplate;
+}
+
 #pragma mark - 通用表情文字混排
 + (NSString*)buildCommonCSSTemplateWithBundleFormatteFile:(NSString*)fileName withShareStyle:(XXShareStyle*)aStyle
 {
@@ -158,7 +172,8 @@ BOOL const XXLockCommonCSSTemplateState = NO;
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$css$!" withString:cssTemplate];
     
     //替换content
-    htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$sextag$!" withString:@"xiaorentou@2x.png"];
+    NSString *sexTagImageName = [NSString stringWithFormat:@"sex_tag_%@.png",userModel.sex];
+    htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$sextag$!" withString:sexTagImageName];
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$username$!" withString:userModel.nickName];
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$college$!" withString:userModel.schoolName];
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$starscore$!" withString:userModel.constellation];

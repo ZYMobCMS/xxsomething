@@ -80,7 +80,7 @@
     _textInputView.layer.cornerRadius = 5.0f;
     _textInputView.frame = CGRectMake(10,105,300,60);
     [self.view addSubview:_textInputView];
-    _textInputView.hidden = !_useRecordButton.hidden;
+    _textInputView.hidden = !_useTextButton.hidden;
     
     //record button
     _recordButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -90,6 +90,7 @@
     [_recordButton addTarget:self action:@selector(startRecord) forControlEvents:UIControlEventTouchDown];
     [_recordButton addTarget:self action:@selector(endRecord) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_recordButton];
+    _recordButton.hidden = !_textInputView.hidden;
     
     //record play
     _recordBackImageView = [[UIImageView alloc]init];
@@ -231,10 +232,11 @@
         _currentPostType = SharePostTypeAudio;
         if (_hasRecordNow) {
             _recordBackImageView.hidden = NO;
-            _textInputView.hidden = !_recordBackImageView.hidden;
+            _recordButton.hidden = YES;
+            _textInputView.hidden = YES;
         }else{
             _recordButton.hidden = NO;
-            _textInputView.hidden = !_recordBackImageView.hidden;
+            _textInputView.hidden = YES;
         }
         
     }

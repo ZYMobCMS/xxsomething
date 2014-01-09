@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "XXSharePostModel.h"
+#import "AGMedallionView.h"
+#import "XXSharePostUserView.h"
+#import "XXCustomButton.h"
 
 typedef void (^XXShareTextViewDidTapOnThumbImageBlock) (NSURL *imageUrl);
 typedef void (^XXShareTextViewDidTapOnAudioImageBlock) (NSURL *audioUrl);
@@ -39,13 +42,33 @@ typedef void (^XXShareTextViewDidTapOnAudioImageBlock) (NSURL *audioUrl);
 {
     UIImageView *backgroundImageView;
     DTAttributedTextContentView *shareTextView;
+    XXSharePostUserView *_userView;
+    
+    //头像
+    AGMedallionView *_headView;
+    UILabel         *_timeLabel;
+    XXCustomButton  *_praiseButton;
+    XXCustomButton  *_commentButton;
+    UIImageView     *_headLineSep;
+    UIImageView     *_bottomLineSep;
+    UIImageView     *_bottomVerLineSep;
+    
+    //config
+    CGFloat         _headViewSize;
+    CGFloat         _contentLeftMargin;
+    CGFloat         _contentTopHeight;
+    CGFloat         _bottomViewFontSize;
+    
     
     XXShareTextViewDidTapOnAudioImageBlock _tapAudioBlock;
     XXShareTextViewDidTapOnThumbImageBlock _tapImageBlock;
 }
 
 - (void)setSharePostModel:(XXSharePostModel*)postModel;
+- (void)setSharePostModelForDetail:(XXSharePostModel*)postModel;//详情页面使用
+
 + (CGFloat)heightWithSharePostModel:(XXSharePostModel*)postModel forContentWidth:(CGFloat)contentWidth;
++ (CGFloat)heightWithSharePostModelForDetail:(XXSharePostModel*)postModel forContentWidth:(CGFloat)contentWidth;//详情页面使用
 
 //限定宽度内所需最大高度
 + (CGFloat)heightForAttributedText:(NSAttributedString*)attributedText forWidth:(CGFloat)width;

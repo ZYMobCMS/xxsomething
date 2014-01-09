@@ -11,6 +11,8 @@
 
 @interface XXSharePostModel : NSObject
 @property (nonatomic,strong)NSAttributedString *attributedContent;
+@property (nonatomic,strong)NSAttributedString *userHeadContent;
+
 @property (nonatomic,assign)XXSharePostType postType;
 @property (nonatomic,strong)NSString *postContent;
 @property (nonatomic,strong)NSString *postAudio;
@@ -27,6 +29,10 @@
 @property (nonatomic,strong)NSString *userId;
 @property (nonatomic,strong)NSString *addTime;
 @property (nonatomic,strong)NSString *content;
+@property (nonatomic,strong)NSString *nickName;
+@property (nonatomic,strong)NSString *sex;
+@property (nonatomic,strong)NSString *schoolName;
+@property (nonatomic,strong)NSString *grade;
 
 - (id)initWithContentDict:(NSDictionary*)contentDict;
 

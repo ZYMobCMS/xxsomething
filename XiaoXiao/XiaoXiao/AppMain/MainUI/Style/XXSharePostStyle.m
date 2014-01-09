@@ -40,11 +40,11 @@
 }
 + (NSInteger)sharePostAudioImageWidth
 {
-    return 90;
+    return 120;
 }
 + (NSInteger)sharePostAudioImageHeight
 {
-    return 44;
+    return 35;
 }
 + (NSInteger)sharePostSingleThumbLeftMargin
 {
@@ -56,7 +56,7 @@
 }
 + (NSString*)sharePostAudioSrcImageName
 {
-    return @"share_record@2x.png";
+    return @"share_record_btton@2x.png";
 }
 + (NSString*)sharePostImagesSeprator
 {

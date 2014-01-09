@@ -19,7 +19,7 @@ typedef void (^XXPhotoChooseViewControllerFinishChooseBlock) (NSArray *resultIma
 /*
  *通用图库或者现场拍摄选择
  */
-@interface XXPhotoChooseViewController : UIViewController<UIImagePickerControllerDelegate, UINavigationControllerDelegate,WSAssetPickerControllerDelegate>
+@interface XXPhotoChooseViewController : UIViewController<UIImagePickerControllerDelegate, UINavigationControllerDelegate,CTAssetsPickerControllerDelegate>
 {
     XXPhotoChooseViewControllerFinishChooseBlock _chooseBlock;
     XXCommonNavigationNextStepBlock _nextStepBlock;
@@ -32,7 +32,6 @@ typedef void (^XXPhotoChooseViewControllerFinishChooseBlock) (NSArray *resultIma
 @property (nonatomic, assign) BOOL needCrop;
 @property (nonatomic, assign) BOOL needFilter;
 @property (nonatomic, assign) BOOL isSetHeadImage;
-@property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
 
 - (id)initWithSinglePhotoChooseFinishAction:(XXPhotoChooseViewControllerFinishChooseBlock)chooseBlock;
 - (id)initWithMutilPhotoChooseWithMaxChooseNumber:(NSInteger)maxNumber withFinishBlock:(XXPhotoChooseViewControllerFinishChooseBlock)chooseBlock;
