@@ -51,7 +51,7 @@
     [contentTextView setAttributedString:userModel.attributedContent];
     CGFloat contentHeight = [XXUserInfoBaseCell heightWithContentModel:userModel];
     [contentTextView setFrame:CGRectMake(contentTextView.frame.origin.x,contentTextView.frame.origin.y,contentTextView.frame.size.width,contentHeight-30)];
-    [headView setHeadUrl:userModel.headUrl];
+    [headView setHeadWithUserId:userModel.userId];
     
     _cellLineImageView.frame = CGRectMake(0,contentHeight-1,self.frame.size.width,1);//重设分割线
 }

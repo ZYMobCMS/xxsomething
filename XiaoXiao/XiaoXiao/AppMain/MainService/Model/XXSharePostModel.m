@@ -26,6 +26,11 @@
         self.addTime = @"";
         self.schoolId = @"";
         self.content = @"";
+        
+        self.nickName = @"vincent";
+        self.grade = @"二年级";
+        self.schoolName = @"清华大学";
+        self.sex = @"1";
 
         self.postId = [contentDict objectForKey:@"id"];
         self.type = [contentDict objectForKey:@"type"];
@@ -76,7 +81,10 @@
             self.postImages=@"";
         }
         self.attributedContent = [XXShareBaseCell buildAttributedStringWithSharePost:self forContentWidth:[XXSharePostStyle sharePostContentWidth]];
-        
+        self.content = nil;
+        self.postContent = nil;
+        self.userHeadContent = [XXSharePostUserView useHeadAttributedStringWithModel:self];
+                
     }
     return self;
 }
@@ -90,7 +98,13 @@
         self.postImages = [aDecoder decodeObjectForKey:@"postImages"];
         self.postContent = [aDecoder decodeObjectForKey:@"postContent"];
         self.attributedContent = [aDecoder decodeObjectForKey:@"attributedContent"];
-                
+        self.userHeadContent = [aDecoder decodeObjectForKey:@"userHeadContent"];
+        
+        self.nickName = [aDecoder decodeObjectForKey:@"nickName"];
+        self.grade = [aDecoder decodeObjectForKey:@"grade"];
+        self.schoolName = [aDecoder decodeObjectForKey:@"schoolName"];
+        self.sex = [aDecoder decodeObjectForKey:@"sex"];
+
     }
     return self;
 }
@@ -101,6 +115,14 @@
     [aCoder encodeObject:self.postContent forKey:@"postContent"];
     [aCoder encodeObject:self.postImages forKey:@"postImages"];
     [aCoder encodeObject:self.attributedContent forKey:@"attributedContent"];
+    [aCoder encodeObject:self.userHeadContent forKey:@"userHeadContent"];
+    
+    [aCoder encodeObject:self.nickName forKey:@"nickName"];
+    [aCoder encodeObject:self.grade forKey:@"grade"];
+    [aCoder encodeObject:self.schoolName forKey:@"schoolName"];
+    [aCoder encodeObject:self.sex forKey:@"sex"];
+
+
 }
 
 @end

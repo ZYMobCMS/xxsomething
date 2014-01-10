@@ -15,18 +15,68 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        
         backgroundImageView = [[UIImageView alloc]init];
-        backgroundImageView.frame = CGRectMake(0,0,self.frame.size.width-20,self.frame.size.height-20);
-        backgroundImageView.image = [UIImage imageNamed:@"cell_background.png"];
-//        [self.contentView addSubview:backgroundImageView];
+        backgroundImageView.frame = CGRectMake(10,0,self.frame.size.width-20,self.frame.size.height-20);
+        backgroundImageView.layer.borderColor = [XXCommonStyle xxThemeButtonBoardColor].CGColor;
+        backgroundImageView.layer.borderWidth = 1.0f;
+        [self.contentView addSubview:backgroundImageView];
         
+        //head view
+        CGFloat originX = _contentLeftMargin+10;
+        CGFloat originY = _contentTopHeight+10;
+        
+        _headView = [[AGMedallionView alloc]initWithFrame:CGRectMake(originX,originY,70,70)];
+        _headView.borderWidth = 1.0f;
+        [backgroundImageView addSubview:_headView];
+        
+        //user View
+        originX = _headView.frame.origin.x+_headView.frame.size.width + 10;
+        _userView = [[XXSharePostUserView alloc]initWithFrame:CGRectMake(originX,originY+10,200,40)];
+        [backgroundImageView addSubview:_userView];
+        
+        //time label
+        CGFloat timrOriginX = _contentLeftMargin;
+        _timeLabel = [[UILabel alloc]init];
+        _timeLabel.textAlignment = NSTextAlignmentRight;
+        _timeLabel.backgroundColor = [UIColor clearColor];
+        _timeLabel.font = [UIFont systemFontOfSize:9];
+        _timeLabel.frame = CGRectMake(self.frame.size.width-timrOriginX*2-5-80,originY,50,20);
+        [backgroundImageView addSubview:_timeLabel];
+        
+        //head sep line
+        _headLineSep = [[UIImageView alloc]init];
+        _headLineSep.frame = CGRectMake(_contentLeftMargin+10,_headView.frame.origin.y+_headView.frame.size.height+5,backgroundImageView.frame.size.width-20,1);
+        _headLineSep.backgroundColor = [UIColor lightGrayColor];
+        [backgroundImageView addSubview:_headLineSep];
+        
+        //post content
         shareTextView = [[DTAttributedTextContentView alloc]init];
-        CGFloat margin = (self.frame.size.width-[XXSharePostStyle sharePostContentWidth])/2;
-        shareTextView.frame = CGRectMake(margin,0,[XXSharePostStyle sharePostContentWidth],self.frame.size.height);
+        shareTextView.frame = CGRectMake(_contentLeftMargin+10,_headLineSep.frame.origin.y+1+_contentTopHeight+10,[XXSharePostStyle sharePostContentWidth],self.frame.size.height);
         shareTextView.delegate = self;
-        [self.contentView addSubview:shareTextView];
+        [backgroundImageView addSubview:shareTextView];
         
+        //bottom line
+        _bottomLineSep = [[UIImageView alloc]init];
+        _bottomLineSep.frame = CGRectMake(originX,10,backgroundImageView.frame.size.width,1);
+        _bottomLineSep.backgroundColor = [UIColor lightGrayColor];
+        [backgroundImageView addSubview:_bottomLineSep];
+        
+        //comment button
+        _commentButton = [[XXCustomButton alloc]initWithFrame:CGRectMake(_contentLeftMargin,10,(backgroundImageView.frame.size.width-40)/2,45)];
+        _commentButton.customTitleLabel.text = @"评论";
+        [backgroundImageView addSubview:_commentButton];
+     
+        //verline
+        _bottomVerLineSep = [[UIImageView alloc]init];
+        CGFloat bVerLineOriginx = _commentButton.frame.origin.x+_commentButton.frame.size.width+ 5;
+        _bottomVerLineSep.frame = CGRectMake(bVerLineOriginx,_commentButton.frame.origin.y+5,1,_commentButton.frame.size.height);
+        _bottomVerLineSep.backgroundColor = [UIColor lightGrayColor];
+        [backgroundImageView addSubview:_bottomVerLineSep];
+        
+        //praise button
+        _praiseButton = [[XXCustomButton alloc]initWithFrame:CGRectMake(_commentButton.frame.origin.x+_commentButton.frame.size.width+10,10,(backgroundImageView.frame.size.width-40)/2,45)];
+        _praiseButton.customTitleLabel.text = @"追捧";
+        [backgroundImageView addSubview:_praiseButton];
     }
     return self;
 }
@@ -40,14 +90,34 @@
 
 - (void)setSharePostModel:(XXSharePostModel *)postModel
 {
+    //set head view
+    [_userView setContentModel:postModel];
+    _timeLabel.text = postModel.addTime;
+    
     [shareTextView setAttributedString:postModel.attributedContent];
-    CGSize contentSize = [shareTextView suggestedFrameSizeToFitEntireStringConstraintedToWidth:self.frame.size.width];
+    CGSize contentSize = [shareTextView suggestedFrameSizeToFitEntireStringConstraintedToWidth:[XXSharePostStyle sharePostContentWidth]];
+    DDLogVerbose(@"content Size:%f",contentSize.height);
+    
+    CGFloat backHeight = _contentTopHeight*2 + _headView.frame.size.height + _contentTopHeight + contentSize.height + 5 + _commentButton.frame.size.height + 50;
+    
+    backgroundImageView.frame = CGRectMake(backgroundImageView.frame.origin.x,backgroundImageView.frame.origin.y,backgroundImageView.frame.size.width,backHeight);
+    
     shareTextView.frame = CGRectMake(shareTextView.frame.origin.x,shareTextView.frame.origin.y,shareTextView.frame.size.width,contentSize.height);
+    
+    //bottom line
+    _bottomLineSep.frame = CGRectMake(0,shareTextView.frame.origin.y+shareTextView.frame.size.height+5,_bottomLineSep.frame.size.width,1);
+    
+    _commentButton.frame = CGRectMake(_commentButton.frame.origin.x,_bottomLineSep.frame.origin.y+_bottomLineSep.frame.size.height+10,_commentButton.frame.size.width,_commentButton.frame.size.height);
+    CGFloat bVerLineOriginx = _commentButton.frame.origin.x+_commentButton.frame.size.width+ 5;
+    _bottomVerLineSep.frame = CGRectMake(bVerLineOriginx,_commentButton.frame.origin.y+5,1,_commentButton.frame.size.height);
+    _praiseButton.frame = CGRectMake(_praiseButton.frame.origin.x,_bottomLineSep.frame.origin.y+_bottomLineSep.frame.size.height+10,_praiseButton.frame.size.width,_praiseButton.frame.size.height);
+    
+
 }
 
 + (CGFloat)heightWithSharePostModel:(XXSharePostModel *)postModel forContentWidth:(CGFloat)contentWidth
 {
-    CGFloat height = [XXShareBaseCell heightForAttributedText:postModel.attributedContent forWidth:contentWidth];
+    CGFloat height = [XXShareBaseCell heightForAttributedText:postModel.attributedContent forWidth:[XXSharePostStyle sharePostContentWidth]] + 10+10+10*2 + 5 + 5 + 50 + 70 + 25;
     
     return height;
 }

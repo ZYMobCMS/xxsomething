@@ -13,8 +13,8 @@
 
 @interface XXHeadView : UIControl
 {
-    NSString *_headImageUrl;
+    NSString *_userId;
 }
 @property (nonatomic,strong)AGMedallionView  *contentImageView;
-- (void)setHeadUrl:(NSString*)headUrl;
+- (void)setHeadWithUserId:(NSString*)userId;
 @end

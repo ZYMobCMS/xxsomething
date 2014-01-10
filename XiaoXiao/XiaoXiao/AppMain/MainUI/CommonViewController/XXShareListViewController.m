@@ -39,6 +39,7 @@
     _shareListTable.frame = CGRectMake(0,0,self.view.frame.size.width,totalHeight);
     _shareListTable.delegate = self;
     _shareListTable.dataSource = self;
+    _shareListTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:_shareListTable];
     
     _refreshControl = [[UIRefreshControl alloc]init];

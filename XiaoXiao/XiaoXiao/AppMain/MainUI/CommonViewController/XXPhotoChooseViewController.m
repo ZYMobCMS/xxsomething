@@ -41,9 +41,7 @@
 {
     if (self = [super init]) {
         
-        _chooseBlock = [chooseBlock copy];
-        self.imagePicker = [[UIImagePickerController alloc]init];
-        self.imagePicker.delegate = self;        
+        _chooseBlock = [chooseBlock copy];     
         _maxChooseNumber = maxNumber;
         if (maxNumber>1) {
             self.chooseType = XXPhotoChooseTypeMutil;
@@ -105,16 +103,14 @@
     }
     if (type==1) {
         
-        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-        self.assetsLibrary = library;
-        WSAssetPickerController *pickController=[[WSAssetPickerController alloc]initWithAssetsLibrary:self.assetsLibrary];
-        pickController.selectionLimit = _maxChooseNumber;
+        CTAssetsPickerController *pickController=[[CTAssetsPickerController alloc]init];
+        pickController.maximumNumberOfSelection = _maxChooseNumber;
         pickController.delegate = self;
         [self presentViewController:pickController animated:YES completion:Nil];
     }
 }
 //CTAssetsPickerController delegate
-- (void)assetPickerController:(WSAssetPickerController *)sender didFinishPickingMediaWithAssets:(NSArray *)assets
+- (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
 {
     DDLogVerbose(@"mutil image select :%@",assets);
     if (assets.count==0) {
@@ -191,10 +187,11 @@
             if (_chooseBlock) {
                 _chooseBlock(imageArray);
             }
+            [self.navigationController popViewControllerAnimated:YES];
         }
     }
 }
-- (void)assetPickerControllerDidCancel:(WSAssetPickerController *)sender
+- (void)assetsPickerControllerDidCancel:(CTAssetsPickerController *)picker
 {
     [self.navigationController popViewControllerAnimated:YES];
 }

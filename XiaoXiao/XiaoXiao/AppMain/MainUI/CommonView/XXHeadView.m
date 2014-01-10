@@ -33,13 +33,16 @@
     // Drawing code
 }
 */
-- (void)setHeadUrl:(NSString *)headUrl
+- (void)setHeadWithUserId:(NSString*)userId;
 {
-    _headImageUrl = headUrl;
-    if (!_headImageUrl) {
+    if (!userId) {
         return;
     }
-    NSURL *combineUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",XXBase_Host_Url,_headImageUrl]];
+    _userId = userId;
+
+    NSString *imageSizeNeedUrl = [NSString stringWithFormat:@"%@%d/%d/%@",XX_Head_Url_Base_Url,(int)self.frame.size.width,(int)self.frame.size.height,userId];
+    NSURL *combineUrl = [NSURL URLWithString:imageSizeNeedUrl];
+    
     [[SDWebImageDownloader sharedDownloader]downloadImageWithURL:combineUrl options:SDWebImageDownloaderAllowInvalidSSLCertificates progress:^(NSUInteger receivedSize, long long expectedSize) {
         
     } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {

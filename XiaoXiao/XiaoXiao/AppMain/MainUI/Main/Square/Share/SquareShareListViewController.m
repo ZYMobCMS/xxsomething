@@ -96,7 +96,7 @@
         [resultList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
            
             XXSharePostModel *postModel = (XXSharePostModel*)obj;
-            CGFloat heightForModel = [XXShareBaseCell heightForAttributedText:postModel.attributedContent forWidth:_shareListTable.frame.size.width];
+            CGFloat heightForModel = [XXShareBaseCell heightWithSharePostModel:postModel forContentWidth:[XXSharePostStyle sharePostContentWidth]];
             [self.sharePostRowHeightArray addObject:[NSNumber numberWithFloat:heightForModel]];
             
         }];
