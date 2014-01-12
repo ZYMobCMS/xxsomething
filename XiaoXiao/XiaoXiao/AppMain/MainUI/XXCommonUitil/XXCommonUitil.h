@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "XiaoXiaoAppDelegate.h"
 
 #define rgb(r,g,b,a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
 #define XXThemeColor [UIColor colorWithRed:10/255.0 green:216/255.0 blue:204/255.0 alpha:1]
@@ -48,5 +49,19 @@ typedef void (^XXCommonNavigationNextStepBlock) (NSDictionary *resultDict);
 + (void)keywindowShowProgressHUDWithProgressValue:(CGFloat)progressValue withTitle:(NSString*)title;
 + (void)keywindowShowProgressHUDWithTitle:(NSString*)withTitle;
 + (void)keywindowShowProgressHUDHiddenNow;
+
++ (NSString*)getTimeStrWithDateString:(NSString*)dateString;
++ (NSString*)getTimeStr:(long) createdAt;
++ (NSString*)getFullTimeStr:(long long)time;
++ (NSString*)getMDStr:(long long)time;
++(NSDateComponents*) getComponent:(long long)time;
++(NSString*) getTimeStrStyle1:(long long)time;
++(NSString*) getTimeStrStyle2:(long long)time;
+
++ (XiaoXiaoAppDelegate*)appDelegate;
++ (MainTabViewController*)appMainTabController;
+
++ (UIImage*)imageForColor:(UIColor*)aColor withSize:(CGSize)imageSize;
+
 
 @end

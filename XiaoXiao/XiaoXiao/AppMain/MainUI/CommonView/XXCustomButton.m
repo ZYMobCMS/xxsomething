@@ -14,17 +14,10 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        
         self.iconImageView = [[UIImageView alloc]init];
         self.iconImageView.frame = CGRectMake(5,5,15,15);
         [self addSubview:self.iconImageView];
         self.iconImageView.userInteractionEnabled = NO;
-        
-        self.customTitleLabel = [[UILabel alloc]init];
-        self.customTitleLabel.frame = CGRectMake(5,5,40,15);
-        self.customTitleLabel.backgroundColor = [UIColor clearColor];
-        [self addSubview:self.customTitleLabel];
-        self.customTitleLabel.userInteractionEnabled = NO;
     }
     return self;
 }
@@ -37,5 +30,20 @@
     // Drawing code
 }
 */
-
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    [self.iconImageView setHighlighted:highlighted];
+}
+- (void)setNormalIconImage:(NSString*)nImage withSelectedImage:(NSString*)sImage withFrame:(CGRect)iconFrame
+{
+    self.iconImageView.image = [UIImage imageNamed:nImage];
+    self.iconImageView.highlightedImage = [UIImage imageNamed:sImage];
+    self.iconImageView.frame = iconFrame;
+}
+- (void)setTitle:(NSString *)title withFrame:(CGRect)titleFrame
+{
+    [self setTitle:title forState:UIControlStateNormal];
+    self.titleLabel.frame = titleFrame;
+}
 @end

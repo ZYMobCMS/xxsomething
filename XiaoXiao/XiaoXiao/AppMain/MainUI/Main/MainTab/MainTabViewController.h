@@ -16,4 +16,7 @@
 {
     XXCustomTabBar *customTabBar;
 }
+
+- (void)setTabBarHidden:(BOOL)state;
+
 @end

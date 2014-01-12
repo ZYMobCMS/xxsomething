@@ -11,6 +11,7 @@
 #import "AGMedallionView.h"
 #import "XXSharePostUserView.h"
 #import "XXCustomButton.h"
+#import "XXHeadView.h"
 
 typedef void (^XXShareTextViewDidTapOnThumbImageBlock) (NSURL *imageUrl);
 typedef void (^XXShareTextViewDidTapOnAudioImageBlock) (NSURL *audioUrl);
@@ -45,7 +46,7 @@ typedef void (^XXShareTextViewDidTapOnAudioImageBlock) (NSURL *audioUrl);
     XXSharePostUserView *_userView;
     
     //头像
-    AGMedallionView *_headView;
+    XXHeadView *_headView;
     UILabel         *_timeLabel;
     XXCustomButton  *_praiseButton;
     XXCustomButton  *_commentButton;
@@ -58,6 +59,7 @@ typedef void (^XXShareTextViewDidTapOnAudioImageBlock) (NSURL *audioUrl);
     CGFloat         _contentLeftMargin;
     CGFloat         _contentTopHeight;
     CGFloat         _bottomViewFontSize;
+    BOOL            _isDetailState;
     
     
     XXShareTextViewDidTapOnAudioImageBlock _tapAudioBlock;

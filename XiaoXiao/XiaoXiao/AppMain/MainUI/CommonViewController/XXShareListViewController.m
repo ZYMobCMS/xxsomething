@@ -7,6 +7,7 @@
 //
 
 #import "XXShareListViewController.h"
+#import "XXShareDetailViewController.h"
 
 @interface XXShareListViewController ()
 
@@ -39,6 +40,7 @@
     _shareListTable.frame = CGRectMake(0,0,self.view.frame.size.width,totalHeight);
     _shareListTable.delegate = self;
     _shareListTable.dataSource = self;
+    _shareListTable.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
     _shareListTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:_shareListTable];
     
@@ -82,13 +84,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    XXShareDetailViewController *shareDetail = [[XXShareDetailViewController alloc]initWithSharePost:[self.sharePostModelArray objectAtIndex:indexPath.row]];
+    [self.navigationController pushViewController:shareDetail animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == self.sharePostModelArray.count-1 && _hiddenLoadMore == NO) {
-        XXLoadMoreView *loadMoreView = [[XXLoadMoreView alloc]initWithFrame:CGRectMake(0,0,cell.frame.size.width,cell.frame.size.height)];
+        XXLoadMoreView *loadMoreView = [[XXLoadMoreView alloc]initWithFrame:CGRectMake(0,0,cell.frame.size.width,44)];
         tableView.tableFooterView = loadMoreView;
         [loadMoreView startLoading];
         [self loadMoreResult];

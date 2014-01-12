@@ -20,15 +20,17 @@
     if (self) {
         // Initialization code
         
-        _backgroundImageView = [[UIImageView alloc]init];
+        _backgroundImageView = [UIButton buttonWithType:UIButtonTypeCustom];
         _backgroundImageView.frame = CGRectMake(0,0,frame.size.width,frame.size.height);
+        [_backgroundImageView defaultStyle];
         _backgroundImageView.layer.borderColor = [XXCommonStyle xxThemeButtonBoardColor].CGColor;
-        _backgroundImageView.layer.cornerRadius = 7.0f;
-        _backgroundImageView.layer.borderWidth = 2.0f;
+        _backgroundImageView.layer.borderWidth = 1.0f;
+        [_backgroundImageView addTarget:self action:@selector(showBoxImages) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_backgroundImageView];
         
         _addNewButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _addNewButton.frame = CGRectMake(XXSharePhotoBoxMargin,XXSharePhotoBoxMargin,XXSharePhotoBoxImageWidth,XXSharePhotoBoxImageWidth);
+        [_addNewButton defaultStyle];
         _addNewButton.layer.borderColor = [XXCommonStyle xxThemeButtonBoardColor].CGColor;
         _addNewButton.layer.cornerRadius = 5.0f;
         _addNewButton.layer.borderWidth = 1.0f;

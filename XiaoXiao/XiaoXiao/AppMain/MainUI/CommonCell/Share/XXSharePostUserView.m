@@ -34,7 +34,7 @@
 }
 + (NSAttributedString*)useHeadAttributedStringWithModel:(XXSharePostModel *)contentModel
 {
-    NSString *htmlContent = [XXShareTemplateBuilder buildSharePostHeadHtmlContentWithName:contentModel.nickName withGrade:contentModel.grade withCollege:contentModel.schoolName withSexTag:contentModel.sex];
+    NSString *htmlContent = [XXShareTemplateBuilder buildSharePostHeadHtmlContentWithName:contentModel.nickName withGrade:contentModel.grade withCollege:contentModel.schoolName withSexTag:contentModel.sex withTimeString:contentModel.friendAddTime];
     NSData *htmlData = [htmlContent dataUsingEncoding:NSUTF8StringEncoding];
     
     return [[NSAttributedString alloc]initWithHTMLData:htmlData documentAttributes:nil];

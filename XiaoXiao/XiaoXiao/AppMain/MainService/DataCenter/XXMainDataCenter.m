@@ -572,7 +572,34 @@
 - (void)requestCommentListWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
 {
     //接口有问题，传递参数太多
-    
+    if (!condition.pageIndex || !condition.pageSize || !condition.postId) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    NSDictionary *params = @{@"res_id":condition.postId};
+    NSDictionary *getParams = @{@"page":condition.pageIndex,@"size":condition.pageSize};
+    [self requestXXRequest:XXRequestTypeCommentList withPostParams:params withGetParams:getParams withSuccess:^(NSDictionary *resultDict) {
+        
+        if (success) {
+            
+            NSDictionary *dataDict = [resultDict objectForKey:@"data"];
+            NSArray *tableData = [dataDict objectForKey:@"table"];
+            NSMutableArray *modelArray = [NSMutableArray array];
+            [tableData enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                XXCommentModel *commentModel = [[XXCommentModel alloc]initWithContentDict:obj];
+                [modelArray addObject:commentModel];
+            }];
+            success(modelArray);
+            
+        }
+        
+    } withFaild:^(NSString *faildMsg) {
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
 }
 
 //追捧
@@ -1031,6 +1058,7 @@
     [self checkNetWorkWithFaildBlck:faild];
     
     NSString *downloadUrl = [NSString stringWithFormat:@"%@%@",XXBase_Host_Url,linkPath];
+    DDLogVerbose(@"download arm:%@",downloadUrl);
     NSURLRequest *downloadRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:downloadUrl]];
     
     AFHTTPRequestOperation *downloadOperation = [[AFHTTPRequestOperation alloc]initWithRequest:downloadRequest];
@@ -1038,6 +1066,7 @@
     [downloadOperation setCompletionBlock:^{
         
         NSData *downloadFileData = selfDownloadOperation.responseData;
+        DDLogVerbose(@"downloadFileData length :%d",downloadFileData.length);
         BOOL saveZipFileResult =  [downloadFileData writeToFile:savePath atomically:YES];
         DDLogVerbose(@"save zip file result:%d",saveZipFileResult);
         if (sucess) {

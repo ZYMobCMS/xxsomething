@@ -14,6 +14,9 @@ typedef void (^XXResponseButtonDidTapBlock) (void);
 {
     XXResponseButtonDidTapBlock _tapBlock;
 }
+@property (nonatomic,strong)UIImageView *iconImageView;
+- (void)setNormalIconImage:(NSString*)nImage;
+- (void)setButtonSelfTapInside;
 - (void)setResponseButtonTapped:(XXResponseButtonDidTapBlock)tapBlock;
 
 @end

@@ -40,7 +40,7 @@
     }
     _userId = userId;
 
-    NSString *imageSizeNeedUrl = [NSString stringWithFormat:@"%@%d/%d/%@",XX_Head_Url_Base_Url,(int)self.frame.size.width,(int)self.frame.size.height,userId];
+    NSString *imageSizeNeedUrl = [NSString stringWithFormat:@"%@%@/%d/%d/%@",XXBase_Host_Url,XX_Head_Url_Base_Url,(int)self.frame.size.width,(int)self.frame.size.height,userId];
     NSURL *combineUrl = [NSURL URLWithString:imageSizeNeedUrl];
     
     [[SDWebImageDownloader sharedDownloader]downloadImageWithURL:combineUrl options:SDWebImageDownloaderAllowInvalidSSLCertificates progress:^(NSUInteger receivedSize, long long expectedSize) {

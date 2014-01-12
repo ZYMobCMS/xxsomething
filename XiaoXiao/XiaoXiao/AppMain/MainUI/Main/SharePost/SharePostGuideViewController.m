@@ -53,23 +53,17 @@
     
     //
     _useRecordButton = [[XXCustomButton alloc]initWithFrame:CGRectMake(15,totalHeight-50-49,290,50)];
-    _useRecordButton.layer.borderColor = [XXCommonStyle xxThemeButtonBoardColor].CGColor;
-    _useRecordButton.layer.borderWidth = 1.0f;
-    _useRecordButton.layer.cornerRadius = 6.0f;
-    _useRecordButton.customTitleLabel.frame = CGRectMake(0,0,_useRecordButton.frame.size.width,_useRecordButton.frame.size.height);
-    _useRecordButton.customTitleLabel.text  = @"用录音描述";
+    [_useRecordButton defaultStyle];
+    [_useRecordButton setTitle:@"用录音描述" forState:UIControlStateNormal];
     [_useRecordButton addTarget:self action:@selector(changeSharePostType:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_useRecordButton];
     _useRecordButton.hidden = NO;
     
     //
     _useTextButton = [[XXCustomButton alloc]initWithFrame:CGRectMake(15,totalHeight-50-49,290,50)];
-    _useTextButton.customTitleLabel.text = @"用文字描述";
-    _useTextButton.customTitleLabel.frame = CGRectMake(0,0,_useTextButton.frame.size.width,_useTextButton.frame.size.height);
+    [_useTextButton defaultStyle];
+    [_useTextButton setTitle:@"用文字描述" forState:UIControlStateNormal];
     [_useTextButton addTarget:self action:@selector(changeSharePostType:) forControlEvents:UIControlEventTouchUpInside];
-    _useTextButton.layer.borderColor = [XXCommonStyle xxThemeButtonBoardColor].CGColor;
-    _useTextButton.layer.borderWidth = 1.0f;
-    _useTextButton.layer.cornerRadius = 6.0f;
     [self.view addSubview:_useTextButton];
     _useTextButton.hidden = !_useRecordButton.hidden;
     
@@ -277,8 +271,9 @@
                     //
                     DDLogVerbose(@"record amr path:%@",_recordAmrPath);
                     NSData *audioData = [NSData dataWithContentsOfFile:_recordAmrPath];
+                    DDLogVerbose(@"arm upload size :%d",audioData.length);
                     [[XXMainDataCenter shareCenter]uploadFileWithData:audioData withFileName:@"audio.amr" withUploadProgressBlock:^(CGFloat progressValue) {
-                        
+                        [SVProgressHUD showProgress:progressValue status:@"上传语音"];
                     } withSuccessBlock:^(XXAttachmentModel *resultModel) {
                        
                         //upload audio success,begin share

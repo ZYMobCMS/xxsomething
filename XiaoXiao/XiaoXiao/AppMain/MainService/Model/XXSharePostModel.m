@@ -40,7 +40,16 @@
         self.praiseCount = [contentDict objectForKey:@"praise_count"];
         self.userId = [contentDict objectForKey:@"user_id"];
         self.addTime = [contentDict objectForKey:@"add_time"];
+        self.friendAddTime = [XXCommonUitil getTimeStrWithDateString:self.addTime];
         self.schoolId = [contentDict objectForKey:@"xuexiao_id"];
+        
+        //user
+        NSDictionary *userDict = [contentDict objectForKey:@"user"];
+        self.nickName = [userDict objectForKey:@"nickname"];
+        self.sex = [userDict objectForKey:@"sex"];
+        self.schoolName = [userDict objectForKey:@"school_name"];
+        self.grade = [userDict objectForKey:@"grade"];
+        self.userId = [userDict objectForKey:@"id"];
         
         //如果内容完全不符合自定义结构体，考虑平台数据失误出错的可能
         
@@ -104,6 +113,7 @@
         self.grade = [aDecoder decodeObjectForKey:@"grade"];
         self.schoolName = [aDecoder decodeObjectForKey:@"schoolName"];
         self.sex = [aDecoder decodeObjectForKey:@"sex"];
+        self.friendAddTime = [aDecoder decodeObjectForKey:@"friendAddTime"];
 
     }
     return self;
@@ -121,7 +131,7 @@
     [aCoder encodeObject:self.grade forKey:@"grade"];
     [aCoder encodeObject:self.schoolName forKey:@"schoolName"];
     [aCoder encodeObject:self.sex forKey:@"sex"];
-
+    [aCoder encodeObject:self.friendAddTime forKey:@"friendAddTime"];
 
 }
 

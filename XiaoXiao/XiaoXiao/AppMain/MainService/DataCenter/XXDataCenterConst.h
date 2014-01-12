@@ -270,7 +270,7 @@ typedef enum {
 #define XX_School_Update_Interface @"/api/update/xuexiao"
 
 //取用户头像地址
-#define XX_Head_Url_Base_Url @"/api/picture/"
+#define XX_Head_Url_Base_Url @"/api/picture"
 
 
 

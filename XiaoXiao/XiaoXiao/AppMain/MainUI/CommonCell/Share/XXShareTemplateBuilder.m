@@ -56,27 +56,26 @@ BOOL const XXLockCommonCSSTemplateState = NO;
     
     //替换音频
     htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$audio$!" withString:[XXSharePostStyle sharePostAudioSrcImageName]];
-    htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$audioUrl$!" withString:aSharePost.postAudio];
+    NSString *audioTagUrl = [NSString stringWithFormat:@"%@%@",XXMIMETypeAudioFormatte,aSharePost.postAudio];
+    htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$audioUrl$!" withString:audioTagUrl];
 
     //替换图片
     NSArray *images = [aSharePost.postImages componentsSeparatedByString:[XXSharePostStyle sharePostImagesSeprator]];
     for (int i=0; i<images.count; i++) {
         
         NSString *imageWillReplace = [NSString stringWithFormat:@"!$image%d$!",i];
-        DDLogVerbose(@"image replace %@",imageWillReplace);
         htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:imageWillReplace withString:[images objectAtIndex:i]];
         
         //增加大图获取链接拼接
         NSString *imageLinkWillReplace = [NSString stringWithFormat:@"!$image%dLink$!",i];
-        DDLogWarn(@"please set big image link url here!");
-        htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:imageLinkWillReplace withString:[images objectAtIndex:i]];
-
+        NSString *imageLinkUrl = [NSString stringWithFormat:@"%@%@",XXMIMETypeImageFormatte,[images objectAtIndex:i]];
+        htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:imageLinkWillReplace withString:imageLinkUrl];
     }
     
     return htmlTemplate;
 }
 
-+ (NSString*)buildSharePostHeadHtmlContentWithName:(NSString *)name withGrade:(NSString *)grade withCollege:(NSString *)college withSexTag:(NSString *)sexTag
++ (NSString*)buildSharePostHeadHtmlContentWithName:(NSString *)name withGrade:(NSString *)grade withCollege:(NSString *)college withSexTag:(NSString *)sexTag withTimeString:(NSString*)time
 {
     NSString *htmlTemplate = [XXFileUitil loadStringFromBundleForName:@"xxshare_post_user.html"];
     
@@ -86,7 +85,7 @@ BOOL const XXLockCommonCSSTemplateState = NO;
     htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$username$!" withString:name];
     htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$grade$!" withString:grade];
     htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$college$!" withString:college];
-    
+
     return htmlTemplate;
 }
 

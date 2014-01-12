@@ -38,10 +38,8 @@
     
     UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     loginButton.frame = CGRectMake(40,155,totalWidth-40*2,45);
-    loginButton.layer.cornerRadius = 8.0f;
-    loginButton.backgroundColor = [XXCommonStyle xxThemeBlueColor];
     [loginButton setTitle:@"马上登陆" forState:UIControlStateNormal];
-    [loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [loginButton blueStyle];
     [loginButton addTarget:self action:@selector(loginNowAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:loginButton];
 }

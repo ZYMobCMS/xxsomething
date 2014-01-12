@@ -9,5 +9,33 @@
 #import <UIKit/UIKit.h>
 
 @interface XXCommentCell : UITableViewCell
+{
+    UIImageView *_backgroundImageView;
+    UIImageView *_cellLineImageView;
+    
+    XXHeadView *_headView;
+    XXBaseTextView *_contentTextView;
+    UILabel *_nameLabel;
+    UIButton    *_audioButton;
+    UIImageView *_playStateImageView;
+    UIActivityIndicatorView *_audioActiveView;
+    UILabel     *_audioTimeLabel;
+    UILabel     *_timeLabel;
+    
+    //
+    CGFloat     _leftMargin;
+    CGFloat     _topMargin;
+    CGFloat     _innerMargin;
+    CGFloat     _timeFontSize;
+    
+    XXShareStyle *_contentStyle;
+    
+    //data
+    NSString    *_audioUrl;
+    
+}
+
+- (void)setCommentModel:(XXCommentModel*)contentModel;
++ (CGFloat)heightForCommentModel:(XXCommentModel*)contentModel forWidth:(CGFloat)width;
 
 @end

@@ -15,23 +15,28 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        self.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
         backgroundImageView = [[UIImageView alloc]init];
-        backgroundImageView.frame = CGRectMake(10,0,self.frame.size.width-20,self.frame.size.height-20);
+        backgroundImageView.frame = CGRectMake(10,20,self.frame.size.width-20,self.frame.size.height-20);
         backgroundImageView.layer.borderColor = [XXCommonStyle xxThemeButtonBoardColor].CGColor;
         backgroundImageView.layer.borderWidth = 1.0f;
+        backgroundImageView.layer.cornerRadius = 6.0f;
+        backgroundImageView.userInteractionEnabled = YES;
         [self.contentView addSubview:backgroundImageView];
         
         //head view
         CGFloat originX = _contentLeftMargin+10;
         CGFloat originY = _contentTopHeight+10;
         
-        _headView = [[AGMedallionView alloc]initWithFrame:CGRectMake(originX,originY,70,70)];
-        _headView.borderWidth = 1.0f;
+        _headView = [[XXHeadView alloc]initWithFrame:CGRectMake(originX,originY,70,70)];
         [backgroundImageView addSubview:_headView];
         
         //user View
         originX = _headView.frame.origin.x+_headView.frame.size.width + 10;
         _userView = [[XXSharePostUserView alloc]initWithFrame:CGRectMake(originX,originY+10,200,40)];
+        _userView.backgroundColor = [UIColor clearColor];
         [backgroundImageView addSubview:_userView];
         
         //time label
@@ -46,36 +51,43 @@
         //head sep line
         _headLineSep = [[UIImageView alloc]init];
         _headLineSep.frame = CGRectMake(_contentLeftMargin+10,_headView.frame.origin.y+_headView.frame.size.height+5,backgroundImageView.frame.size.width-20,1);
-        _headLineSep.backgroundColor = [UIColor lightGrayColor];
+        _headLineSep.backgroundColor = [XXCommonStyle xxThemeButtonBoardColor];
         [backgroundImageView addSubview:_headLineSep];
         
         //post content
         shareTextView = [[DTAttributedTextContentView alloc]init];
         shareTextView.frame = CGRectMake(_contentLeftMargin+10,_headLineSep.frame.origin.y+1+_contentTopHeight+10,[XXSharePostStyle sharePostContentWidth],self.frame.size.height);
         shareTextView.delegate = self;
+        shareTextView.backgroundColor = [UIColor clearColor];
         [backgroundImageView addSubview:shareTextView];
         
         //bottom line
         _bottomLineSep = [[UIImageView alloc]init];
         _bottomLineSep.frame = CGRectMake(originX,10,backgroundImageView.frame.size.width,1);
-        _bottomLineSep.backgroundColor = [UIColor lightGrayColor];
+        _bottomLineSep.backgroundColor = [XXCommonStyle xxThemeButtonBoardColor];
         [backgroundImageView addSubview:_bottomLineSep];
         
         //comment button
-        _commentButton = [[XXCustomButton alloc]initWithFrame:CGRectMake(_contentLeftMargin,10,(backgroundImageView.frame.size.width-40)/2,45)];
-        _commentButton.customTitleLabel.text = @"评论";
+        _commentButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
+        _commentButton.frame = CGRectMake(_contentLeftMargin,10,(backgroundImageView.frame.size.width-40)/2,45);
+        [_commentButton setNormalIconImage:@"share_post_comment.png" withSelectedImage:@"share_post_comment.png" withFrame:CGRectMake(30,16,12,12)];
+        [_commentButton setTitle:@"评论" withFrame:CGRectMake(60,3,50,34)];
+        [_commentButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         [backgroundImageView addSubview:_commentButton];
      
         //verline
         _bottomVerLineSep = [[UIImageView alloc]init];
         CGFloat bVerLineOriginx = _commentButton.frame.origin.x+_commentButton.frame.size.width+ 5;
         _bottomVerLineSep.frame = CGRectMake(bVerLineOriginx,_commentButton.frame.origin.y+5,1,_commentButton.frame.size.height);
-        _bottomVerLineSep.backgroundColor = [UIColor lightGrayColor];
+        _bottomVerLineSep.backgroundColor = [XXCommonStyle xxThemeButtonBoardColor];
         [backgroundImageView addSubview:_bottomVerLineSep];
         
         //praise button
-        _praiseButton = [[XXCustomButton alloc]initWithFrame:CGRectMake(_commentButton.frame.origin.x+_commentButton.frame.size.width+10,10,(backgroundImageView.frame.size.width-40)/2,45)];
-        _praiseButton.customTitleLabel.text = @"追捧";
+        _praiseButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
+        _praiseButton.frame = CGRectMake(_commentButton.frame.origin.x+_commentButton.frame.size.width+10,10,(backgroundImageView.frame.size.width-40)/2,45);
+        [_praiseButton setNormalIconImage:@"share_post_praise_normal.png" withSelectedImage:@"share_post_praise_normal.png" withFrame:CGRectMake(30,16,12,12)];
+        [_praiseButton setTitle:@"追捧" withFrame:CGRectMake(60,3,50,34)];
+        [_praiseButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         [backgroundImageView addSubview:_praiseButton];
     }
     return self;
@@ -84,15 +96,29 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-
     // Configure the view for the selected state
+}
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+{
+    [super setHighlighted:highlighted animated:animated];
+    if (!_isDetailState) {
+        if (highlighted) {
+            backgroundImageView.backgroundColor = [XXCommonStyle xxThemeDefaultSelectedColor];
+        }else{
+            backgroundImageView.backgroundColor = [UIColor whiteColor];
+        }
+    }else{
+        backgroundImageView.backgroundColor = [UIColor whiteColor];
+    }
 }
 
 - (void)setSharePostModel:(XXSharePostModel *)postModel
 {
     //set head view
+    [_headView setHeadWithUserId:postModel.userId];
     [_userView setContentModel:postModel];
-    _timeLabel.text = postModel.addTime;
+    _timeLabel.text = postModel.friendAddTime;
+    _isDetailState = NO;
     
     [shareTextView setAttributedString:postModel.attributedContent];
     CGSize contentSize = [shareTextView suggestedFrameSizeToFitEntireStringConstraintedToWidth:[XXSharePostStyle sharePostContentWidth]];
@@ -152,10 +178,6 @@
 			
 			// use normal push action for opening URL
 			[button addTarget:self action:@selector(linkPushed:) forControlEvents:UIControlEventTouchUpInside];
-			
-			// demonstrate combination with long press  暂时没用上长按事件
-//            UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(linkLongPressed:)];
-//            [button addGestureRecognizer:longPress];
 			
 			[imageView addSubview:button];
 		}
@@ -268,6 +290,41 @@
     NSData *htmlData = [htmlContent dataUsingEncoding:NSUTF8StringEncoding];
     
     return [[NSAttributedString alloc]initWithHTMLData:htmlData documentAttributes:nil];
+}
+
+#pragma mark - 详情
+- (void)setSharePostModelForDetail:(XXSharePostModel *)postModel
+{
+    //no comment no praise
+    _commentButton.hidden  = YES;
+    _praiseButton.hidden = YES;
+    _bottomVerLineSep.hidden = YES;
+    _isDetailState = YES;
+    
+    //set head view
+    [_headView setHeadWithUserId:postModel.userId];
+    [_userView setContentModel:postModel];
+    _timeLabel.text = postModel.friendAddTime;
+    
+    [shareTextView setAttributedString:postModel.attributedContent];
+    CGSize contentSize = [shareTextView suggestedFrameSizeToFitEntireStringConstraintedToWidth:[XXSharePostStyle sharePostContentWidth]];
+    DDLogVerbose(@"content Size:%f",contentSize.height);
+    
+    CGFloat backHeight = _contentTopHeight*2 + _headView.frame.size.height + _contentTopHeight + contentSize.height + 5 + 27 ;
+    
+    backgroundImageView.frame = CGRectMake(backgroundImageView.frame.origin.x,backgroundImageView.frame.origin.y,backgroundImageView.frame.size.width,backHeight);
+    
+    shareTextView.frame = CGRectMake(shareTextView.frame.origin.x,shareTextView.frame.origin.y,shareTextView.frame.size.width,contentSize.height);
+    
+    //bottom line
+    _bottomLineSep.frame = CGRectMake(0,shareTextView.frame.origin.y+shareTextView.frame.size.height+5,_bottomLineSep.frame.size.width,1);
+    
+}
++ (CGFloat)heightWithSharePostModelForDetail:(XXSharePostModel *)postModel forContentWidth:(CGFloat)contentWidth
+{
+    CGFloat height = [XXShareBaseCell heightForAttributedText:postModel.attributedContent forWidth:[XXSharePostStyle sharePostContentWidth]] + 10+10+10*2 + 5 + 70 + 25;
+    
+    return height;
 }
 
 @end

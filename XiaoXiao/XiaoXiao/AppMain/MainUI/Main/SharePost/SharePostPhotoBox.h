@@ -14,7 +14,7 @@ typedef void (^SharePhotoBoxDidChangeFrameBlock) (CGRect newFrame);
 
 @interface SharePostPhotoBox : UIControl
 {
-    UIImageView *_backgroundImageView;
+    UIButton *_backgroundImageView;
     UIButton    *_addNewButton;
     SharePhotoBoxDidTapOnAddBlock _addNewBlock;
     SharePhotoBoxDidTapToReviewPhotoBlock _reviewBlock;

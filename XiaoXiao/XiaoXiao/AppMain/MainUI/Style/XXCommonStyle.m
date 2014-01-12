@@ -56,6 +56,10 @@
 {
     return rgb(255,87,65,1);
 }
++ (UIColor*)xxThemeDefaultSelectedColor
+{
+    return rgb(235,235,235,1);
+}
 + (UIColor*)xxThemeTeaseBackColor
 {
     return rgb(249,79,115,1);
@@ -87,6 +91,10 @@
 + (CGFloat)xxThemeLoginGuideButtonRadius
 {
     return 6.0f;
+}
++ (UIColor*)xxThemeBackgroundColor
+{
+    return rgb(242,246,247, 1);
 }
 
 //school choose cell

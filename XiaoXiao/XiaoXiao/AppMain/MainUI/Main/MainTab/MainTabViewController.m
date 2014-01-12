@@ -58,7 +58,11 @@
     self.viewControllers = subVCArray;
     
 }
-
+- (void)setTabBarHidden:(BOOL)state
+{
+    customTabBar.hidden = state;
+    [self.tabBar setHidden:state];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
