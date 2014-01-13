@@ -515,7 +515,7 @@
 //发表评论
 - (void)requestPublishCommentWithConditionComment:(XXCommentModel*)conditionComment withSuccess:(XXDataCenterCommentDetailBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
 {
-    if (!conditionComment.resourceId||!conditionComment.resourceType||!conditionComment.rootCommentId) {
+    if (!conditionComment.resourceId) {
         if (faild) {
             faild(XXLoginErrorInvalidateParam);
             return;
@@ -538,18 +538,22 @@
     }
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:conditionComment.resourceId forKey:@"res_id"];
-    [params setObject:conditionComment.resourceType forKey:@"res_type"];
+    if (conditionComment.resourceType) {
+        [params setObject:conditionComment.resourceType forKey:@"res_type"];
+    }
     if (conditionComment.pCommentId) {
         [params setObject:conditionComment.pCommentId forKey:@"p_id"];
     }
-    [params setObject:conditionComment.rootCommentId forKey:@"root_id"];
+    if (conditionComment.rootCommentId) {
+        [params setObject:conditionComment.rootCommentId forKey:@"root_id"];
+    }
     
     //自定义结构体
     NSMutableDictionary *customContent = [NSMutableDictionary dictionary];
     if ([conditionComment.postAudioTime isEqualToString:@"0"]) {
-        [customContent setObject:conditionComment.postAudioTime forKey:XXSharePostJSONAudioTime];
-    }else{
         [customContent setObject:conditionComment.postContent forKey:XXSharePostJSONContentKey];
+    }else{
+        [customContent setObject:conditionComment.postAudioTime forKey:XXSharePostJSONAudioTime];
     }
     [customContent setObject:conditionComment.postAudioTime forKey:XXSharePostJSONAudioTime];
     NSData *customContentData = [NSJSONSerialization dataWithJSONObject:customContent options:NSJSONWritingPrettyPrinted error:nil];

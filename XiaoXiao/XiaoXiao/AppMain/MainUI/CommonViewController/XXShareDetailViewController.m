@@ -44,6 +44,7 @@
 	// Do any additional setup after loading the view.
     self.title = @"说说详情";
     [XXCommonUitil setCommonNavigationReturnItemForViewController:self];
+    self.hidesBottomBarWhenPushed = YES;
     
     _currentPageIndex = 0;
     _pageSize = 15;
@@ -58,18 +59,28 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:_tableView];
     
+    DDLogVerbose(@"self view frame :%@",NSStringFromCGRect(self.view.frame));
     //tool bar
-    _toolBar = [[XXChatToolBar alloc]initWithFrame:CGRectMake(0,totalHeight-35,self.view.frame.size.width,35) forUse:XXChatToolBarComment];
-    [self.view addSubview:_toolBar];
+    _chatToolBar = [[XXChatToolBar alloc]initWithFrame:CGRectMake(0,totalHeight-35,self.view.frame.size.width,35) forUse:XXChatToolBarComment];
+    [self.view addSubview:_chatToolBar];
     
-    self.view.keyboardTriggerOffset = _toolBar.bounds.size.height;
+    DDLogVerbose(@"toobar frame:%@",NSStringFromCGRect(_chatToolBar.frame));
+    self.view.keyboardTriggerOffset = _chatToolBar.bounds.size.height;
+    
+    WeakObj(_chatToolBar) weakToolBar = _chatToolBar;
     [self.view addKeyboardNonpanningWithActionHandler:^(CGRect keyboardFrameInView) {
     
-        CGRect toolBarFrame = _toolBar.frame;
+        DDLogVerbose(@"keyborad :%@",NSStringFromCGRect(keyboardFrameInView));
+        CGRect toolBarFrame = weakToolBar.frame;
         toolBarFrame.origin.y = keyboardFrameInView.origin.y - toolBarFrame.size.height;
-        _toolBar.frame = toolBarFrame;
+        weakToolBar.frame = toolBarFrame;
         
     }];
+    [self configChatToolBar];
+    
+    //observe keyobard
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardDidShow) name:UIKeyboardDidShowNotification object:Nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardDidHidden) name:UIKeyboardDidHideNotification object:nil];
     
     [self requestCommentListNow];
     
@@ -78,11 +89,51 @@
 {
     [super viewWillAppear:animated];
     [[XXCommonUitil appMainTabController] setTabBarHidden:YES];
+    CGRect naviRect = self.navigationController.view.frame;
+    self.navigationController.view.frame = CGRectMake(naviRect.origin.x,naviRect.origin.y,naviRect.size.width,naviRect.size.height+49);
+
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [[XXCommonUitil appMainTabController] setTabBarHidden:NO];
+    CGRect naviRect = self.navigationController.view.frame;
+    self.navigationController.view.frame = CGRectMake(naviRect.origin.x,naviRect.origin.y,naviRect.size.width,naviRect.size.height-49);
+}
+
+#pragma mark - white board
+- (void)keyboardDidShow
+{
+    if (!_whiteBoard) {
+        _whiteBoard = [[UIControl alloc]initWithFrame:self.view.bounds];
+        _whiteBoard.alpha = 0;
+        _whiteBoard.backgroundColor = [UIColor whiteColor];
+        [_whiteBoard addTarget:self action:@selector(touchDownWhiteBoard) forControlEvents:UIControlEventTouchDown];
+        [self.view insertSubview:_whiteBoard belowSubview:_chatToolBar];
+        [UIView animateWithDuration:0.3 animations:^{
+            _whiteBoard.alpha = 0.05;
+        }];
+    }else{
+        [UIView animateWithDuration:0.3 animations:^{
+            _whiteBoard.alpha = 0.05;
+        }];
+        
+    }
+}
+- (void)keyboardDidHidden
+{
+    if (_whiteBoard.alpha!=0.f) {
+        [UIView animateWithDuration:0.3 animations:^{
+            _whiteBoard.alpha = 0;
+        }];
+    }
+}
+- (void)touchDownWhiteBoard
+{
+    [_chatToolBar reginFirstResponse];
+    [UIView animateWithDuration:0.3 animations:^{
+        _whiteBoard.alpha = 0;
+    }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -144,16 +195,52 @@
 {
     if (indexPath.row == self.commentModelArray.count-1 && _hiddenLoadMore == NO) {
         XXLoadMoreView *loadMoreView = [[XXLoadMoreView alloc]initWithFrame:CGRectMake(0,0,cell.frame.size.width,44)];
+        loadMoreView.backgroundColor = [UIColor whiteColor];
         tableView.tableFooterView = loadMoreView;
         [loadMoreView startLoading];
         [self loadMoreResult];
     }else{
         XXLoadMoreView *loadMoreView = [[XXLoadMoreView alloc]initWithFrame:CGRectMake(0,0,cell.frame.size.width,44)];
+        loadMoreView.backgroundColor = [UIColor whiteColor];
         [loadMoreView setTitle:@"没有评论"];
         tableView.tableFooterView = loadMoreView;
     }
 }
 
+#pragma mark - config comment bar
+- (void)configChatToolBar
+{
+    
+    XXSharePostModel *basePostModel = [self.commentModelArray objectAtIndex:0];
+    [_chatToolBar setChatToolBarDidRecord:^(NSString *recordUrl, NSString *amrUrl, NSString *timeLength) {
+        
+        DDLogVerbose(@"record time length:%@",timeLength);
+        [SVProgressHUD showWithStatus:@"正在发表..."];
+        NSData *amrFileData = [NSData dataWithContentsOfFile:amrUrl];
+        [[XXMainDataCenter shareCenter]uploadFileWithData:amrFileData withFileName:@"comment.amr" withUploadProgressBlock:^(CGFloat progressValue) {
+            
+            
+        } withSuccessBlock:^(XXAttachmentModel *resultModel) {
+            
+            XXCommentModel *newComment = [[XXCommentModel alloc]init];
+            newComment.postAudioTime = timeLength;
+            newComment.postAudio = resultModel.link;
+            newComment.rootCommentId = basePostModel.postId;
+            newComment.resourceId = basePostModel.postId;
+            
+            
+            [[XXMainDataCenter shareCenter]requestPublishCommentWithConditionComment:newComment withSuccess:^(XXCommentModel *resultModel) {
+                [SVProgressHUD showSuccessWithStatus:@"发表成功"];
+            } withFaild:^(NSString *faildMsg) {
+                [SVProgressHUD showErrorWithStatus:faildMsg];
+            }];
+            
+        } withFaildBlock:^(NSString *faildMsg) {
+            [SVProgressHUD showErrorWithStatus:faildMsg];
+        }];
+        
+    }];
+}
 
 #pragma mark - override api
 - (void)detailModelArrayAndRowHeightNow
@@ -192,6 +279,8 @@
 {
     
 }
+
+
 
 
 @end

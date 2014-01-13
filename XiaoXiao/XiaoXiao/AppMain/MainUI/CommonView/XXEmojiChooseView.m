@@ -15,6 +15,16 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        
+        NSDictionary *emojiDict = [XXFileUitil loadDictionaryFromBundleForName:XXEmojiTextPlist];
+        
+        
+        [emojiDict.allKeys enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+           
+            
+            
+        }];
+        
     }
     return self;
 }

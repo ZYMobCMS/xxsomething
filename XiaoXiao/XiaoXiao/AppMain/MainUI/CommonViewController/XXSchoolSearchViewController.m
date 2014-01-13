@@ -69,13 +69,13 @@
     //search bar input change
     CGRect resultTableRect = _resultTableView.frame;
     _resultTableView.keyboardTriggerOffset = 0.f;
-    void (^keyboardActionHandel) (CGRect keyboardFrameInView) = ^ (CGRect keyboardFrameInView){
-        CGRect makeNewRect = CGRectMake(resultTableRect.origin.x,resultTableRect.origin.y,resultTableRect.size.width,keyboardFrameInView.origin.y-_searchBar.frame.size.height-_searchBar.frame.origin.y);
-        _resultTableView.frame = makeNewRect;
-    };
+    
+    WeakObj(_searchBar) weakSearchBar = _searchBar;
+    WeakObj(_resultTableView) weakResultTable = _resultTableView;
     [self.view addKeyboardNonpanningWithActionHandler:^(CGRect keyboardFrameInView) {
         DDLogVerbose(@"kebyordFrameInView:%@",NSStringFromCGRect(keyboardFrameInView));
-        keyboardActionHandel(keyboardFrameInView);
+        CGRect makeNewRect = CGRectMake(resultTableRect.origin.x,resultTableRect.origin.y,resultTableRect.size.width,keyboardFrameInView.origin.y-weakSearchBar.frame.size.height-weakSearchBar.frame.origin.y);
+        weakResultTable.frame = makeNewRect;
     }];
 }
 

@@ -17,7 +17,8 @@
     NSInteger   _pageSize;
     BOOL        _hiddenLoadMore;
     
-    XXChatToolBar *_toolBar;
+    XXChatToolBar *_chatToolBar;
+    UIControl        *_whiteBoard;
 }
 @property (nonatomic,strong)NSMutableArray *commentModelArray;
 @property (nonatomic,strong)NSMutableArray *commentRowHeightArray;

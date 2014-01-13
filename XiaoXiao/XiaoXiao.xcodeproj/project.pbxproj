@@ -192,6 +192,7 @@
 		E46CCF771869C47300DB9BD0 /* XXConditionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E46CCF761869C47300DB9BD0 /* XXConditionModel.m */; };
 		E46CCF7A1869EFEF00DB9BD0 /* XXTeaseBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E46CCF791869EFEF00DB9BD0 /* XXTeaseBaseCell.m */; };
 		E46CCF7D1869F2C100DB9BD0 /* XXTeaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E46CCF7C1869F2C100DB9BD0 /* XXTeaseModel.m */; };
+		E48095571884121700B36AA8 /* chat_bar_audio@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E48095561884121700B36AA8 /* chat_bar_audio@2x.png */; };
 		E488DF16186B429300B01224 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E488DF0D186B429300B01224 /* FMDatabase.m */; };
 		E488DF17186B429300B01224 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E488DF0F186B429300B01224 /* FMDatabaseAdditions.m */; };
 		E488DF18186B429300B01224 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = E488DF11186B429300B01224 /* FMDatabasePool.m */; };
@@ -1138,6 +1139,7 @@
 		E46CCF791869EFEF00DB9BD0 /* XXTeaseBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXTeaseBaseCell.m; sourceTree = "<group>"; };
 		E46CCF7B1869F2C100DB9BD0 /* XXTeaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXTeaseModel.h; sourceTree = "<group>"; };
 		E46CCF7C1869F2C100DB9BD0 /* XXTeaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXTeaseModel.m; sourceTree = "<group>"; };
+		E48095561884121700B36AA8 /* chat_bar_audio@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_bar_audio@2x.png"; sourceTree = "<group>"; };
 		E488DF0C186B429300B01224 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		E488DF0D186B429300B01224 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
 		E488DF0E186B429300B01224 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
@@ -3010,6 +3012,7 @@
 		E4C3EE05186C912C00DE3B83 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				E48095561884121700B36AA8 /* chat_bar_audio@2x.png */,
 				E496C8511882F4B50014A645 /* chat_bar_text@2x.png */,
 				E496C8521882F4B50014A645 /* chat_bar_image@2x.png */,
 				E496C8531882F4B50014A645 /* chat_bar_emoji@2x.png */,
@@ -4572,6 +4575,7 @@
 				E4E3F9121860969400970698 /* 1.png in Resources */,
 				E4E3F9131860969400970698 /* 10.png in Resources */,
 				E4E3F9141860969400970698 /* 11.png in Resources */,
+				E48095571884121700B36AA8 /* chat_bar_audio@2x.png in Resources */,
 				E4E3F9151860969400970698 /* 12.png in Resources */,
 				E4E3F9161860969400970698 /* 13.png in Resources */,
 				E4E3F9171860969400970698 /* 14.png in Resources */,
