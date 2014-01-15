@@ -1,20 +1,28 @@
 //
 //  XXBaseIconLabelCell.h
-//  XiaoXiao
+//  NavigationTest
 //
-//  Created by ZYVincent on 13-12-16.
-//  Copyright (c) 2013年 ZYProSoft. All rights reserved.
+//  Created by ZYVincent on 14-1-15.
+//  Copyright (c) 2014年 ZYProSoft. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import "XXBaseCell.h"
 
 @interface XXBaseIconLabelCell : XXBaseCell
 {
-    UIImageView  *_iconImageView;
-    UILabel      *_titleLabel;
-    CGFloat     _bottomMargin;
+    UIImageView *_iconImageView;
+    UILabel     *_tagLabel;
+    UILabel     *_detailTagLabel;
+    UIImageView *_indicatorView;
+    
+    //
+    CGFloat _leftMargin;
+    CGFloat _rightMargin;
+    CGFloat _innerMargin;
+    CGFloat _topMargin;
 }
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withBottomMargin:(CGFloat)bottomMargin;
-- (void)setIconImage:(UIImage *)iconImage withTitle:(NSString*)title;
-- (void)setCellType:(XXBaseCellType)cellType;
+
+- (void)setContentDict:(NSDictionary*)contentDict;
+
 @end

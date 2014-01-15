@@ -32,11 +32,11 @@
     guideVCArray = [[NSMutableArray alloc]init];
     
     //my share
-    NSDictionary *myShare = @{@"title":@"相册",@"vcClass":@"MyShareListViewController"};
+    NSDictionary *myShare = @{@"icon":@"my_home_photo.png",@"count":@"333",@"title":@"相册",@"vcClass":@"MyShareListViewController"};
     NSArray *shareArray = [NSArray arrayWithObject:myShare];
-    NSDictionary *myCare = @{@"title":@"关心",@"vcClass":@"MyCareUserListViewController"};
-    NSDictionary *myFans = @{@"title":@"校粉",@"vcClass":@"MyFansUserListViewController"};
-    NSDictionary *myPee = @{@"title":@"窥客",@"vcClass":@"MyPeepUserListViewController"};
+    NSDictionary *myCare = @{@"icon":@"my_home_care.png",@"count":@"333",@"title":@"关心",@"vcClass":@"MyCareUserListViewController"};
+    NSDictionary *myFans = @{@"icon":@"my_home_fans.png",@"count":@"333",@"title":@"校粉",@"vcClass":@"MyFansUserListViewController"};
+    NSDictionary *myPee = @{@"icon":@"my_home_peer.png",@"count":@"333",@"title":@"窥客",@"vcClass":@"MyPeepUserListViewController"};
     NSArray *userArray = @[myCare,myFans,myPee];
 
     [guideVCArray addObject:shareArray];
@@ -50,9 +50,11 @@
     _userHeadView = [[MyHomeUserHeadView alloc]initWithFrame:CGRectMake(0,-34,totalWidth,200)];
     [self.view addSubview:_userHeadView];
     
-    guideTable = [[UITableView alloc]initWithFrame:CGRectMake(0,200,totalWidth,totalHeight-200) style:UITableViewStylePlain];
+    guideTable = [[UITableView alloc]initWithFrame:CGRectMake(0,200,totalWidth,totalHeight-200) style:UITableViewStyleGrouped];
     guideTable.dataSource = self;
     guideTable.delegate = self;
+    guideTable.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
+    guideTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:guideTable];
     
 }
@@ -88,13 +90,22 @@
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"CellIdentifier";
-    XXBaseIconLabelCountCell *cell = (XXBaseIconLabelCountCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    XXBaseIconLabelCell *cell = (XXBaseIconLabelCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (!cell) {
-        cell = [[XXBaseIconLabelCountCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[XXBaseIconLabelCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    if (indexPath.section==0) {
+        [cell setCellType:XXBaseCellTypeRoundSingle withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.f];
+    }else if(indexPath.section==1&&indexPath.row==0){
+        [cell setCellType:XXBaseCellTypeTop withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.0f];
+    }else if(indexPath.section==1&&indexPath.row==[[guideVCArray objectAtIndex:indexPath.section]count]-1){
+        [cell setCellType:XXBaseCellTypeBottom withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.0f];
+    }else{
+        [cell setCellType:XXBaseCellTypeMiddel withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.0f];
     }
     NSDictionary *item = [[guideVCArray objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
-    [cell.textLabel setText:[item objectForKey:@"title"]];
+    [cell setContentDict:item];
     
     return cell;
 }

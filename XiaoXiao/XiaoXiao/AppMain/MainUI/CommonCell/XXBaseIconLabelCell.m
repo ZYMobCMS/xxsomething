@@ -1,53 +1,66 @@
 //
 //  XXBaseIconLabelCell.m
-//  XiaoXiao
+//  NavigationTest
 //
-//  Created by ZYVincent on 13-12-16.
-//  Copyright (c) 2013年 ZYProSoft. All rights reserved.
+//  Created by ZYVincent on 14-1-15.
+//  Copyright (c) 2014年 ZYProSoft. All rights reserved.
 //
 
 #import "XXBaseIconLabelCell.h"
 
 @implementation XXBaseIconLabelCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withBottomMargin:(CGFloat)bottomMargin
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    if (self = [super init]) {
-        
-        _iconImageView = [[UIImageView alloc]init];
-        _iconImageView.frame = CGRectMake(8,7,30,30);
-        [_backgroundImageView addSubview:_iconImageView];
-        
-        _titleLabel = [[UILabel alloc]init];
-        _titleLabel.backgroundColor = [UIColor clearColor];
-        _titleLabel.frame = CGRectMake(45,0,_backgroundImageView.frame.size.width-45*2,_backgroundImageView.frame.size.height);
-        [_backgroundImageView addSubview:_titleLabel];
-                
-    }
-    return self;
-}
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-       
+        _leftMargin = 10.f;
+        _innerMargin = 4.f;
+        _rightMargin = 10.f;
+        _topMargin = 5.f;
+        
+        //
+        _iconImageView = [[UIImageView alloc]init];
+        _iconImageView.frame = CGRectMake(2*_leftMargin,_topMargin*2+3,19,17);
+        [self.contentView addSubview:_iconImageView];
+        
+        //
+        _tagLabel = [[UILabel alloc]init];
+        _tagLabel.backgroundColor = [UIColor clearColor];
+        _tagLabel.font = [UIFont systemFontOfSize:13];
+        _tagLabel.frame= CGRectMake(2*_leftMargin+19+_innerMargin,_topMargin,80,35);
+        [self.contentView addSubview:_tagLabel];
+        
+        //indcator
+        _indicatorView = [[UIImageView alloc]init];
+        _indicatorView.frame = CGRectMake(self.contentView.frame.size.width-_rightMargin-19,_topMargin,19,19);
+        [self.contentView addSubview:_indicatorView];
+        
+        //
+        _detailTagLabel = [[UILabel alloc]init];
+        _detailTagLabel.textAlignment = NSTextAlignmentRight;
+        _detailTagLabel.font = [UIFont systemFontOfSize:11];
+        _detailTagLabel.textColor = [UIColor lightGrayColor];
+        _detailTagLabel.frame = CGRectMake(_indicatorView.frame.origin.x-_innerMargin-90,_topMargin,90,35);
+        _detailTagLabel.backgroundColor = [UIColor clearColor];
+        [self.contentView addSubview:_detailTagLabel];
+        
     }
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-    // Drawing code
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
 }
-*/
-- (void)setIconImage:(UIImage *)iconImage withTitle:(NSString *)title
+- (void)setContentDict:(NSDictionary *)contentDict
 {
-    _iconImageView.image = iconImage;
-    _titleLabel.text = title;
+    _iconImageView.image = [UIImage imageNamed:[contentDict objectForKey:@"icon"]];
+    _tagLabel.text = [contentDict objectForKey:@"title"];
+    _detailTagLabel.text = [contentDict objectForKey:@"count"];
 }
 
 @end
