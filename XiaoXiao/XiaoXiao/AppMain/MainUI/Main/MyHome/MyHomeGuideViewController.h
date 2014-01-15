@@ -12,6 +12,7 @@
 #import "MyPeepUserListViewController.h"
 #import "MyProfileEditViewController.h"
 #import "MyShareListViewController.h"
+#import "MyHomeUserHeadView.h"
 
 @interface MyHomeGuideViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 {
@@ -19,6 +20,7 @@
     
     NSMutableArray *guideVCArray;
     
+    MyHomeUserHeadView *_userHeadView;
 }
 
 @end

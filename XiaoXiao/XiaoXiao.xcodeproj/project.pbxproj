@@ -213,6 +213,8 @@
 		E496C8541882F4B50014A645 /* chat_bar_text@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E496C8511882F4B50014A645 /* chat_bar_text@2x.png */; };
 		E496C8551882F4B50014A645 /* chat_bar_image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E496C8521882F4B50014A645 /* chat_bar_image@2x.png */; };
 		E496C8561882F4B50014A645 /* chat_bar_emoji@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E496C8531882F4B50014A645 /* chat_bar_emoji@2x.png */; };
+		E49EFBBF18857CA80061794B /* MyHomeUserHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = E49EFBBE18857CA80061794B /* MyHomeUserHeadView.m */; };
+		E49EFBC2188584870061794B /* XXOpacityView.m in Sources */ = {isa = PBXBuildFile; fileRef = E49EFBC1188584870061794B /* XXOpacityView.m */; };
 		E4A051BA1866FDD0002E0EBA /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E4A051B71866FDD0002E0EBA /* SVProgressHUD.bundle */; };
 		E4A051BB1866FDD0002E0EBA /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A051B91866FDD0002E0EBA /* SVProgressHUD.m */; };
 		E4A051DA18671135002E0EBA /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A051D918671135002E0EBA /* MBProgressHUD.m */; };
@@ -1167,6 +1169,10 @@
 		E496C8511882F4B50014A645 /* chat_bar_text@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_bar_text@2x.png"; sourceTree = "<group>"; };
 		E496C8521882F4B50014A645 /* chat_bar_image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_bar_image@2x.png"; sourceTree = "<group>"; };
 		E496C8531882F4B50014A645 /* chat_bar_emoji@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_bar_emoji@2x.png"; sourceTree = "<group>"; };
+		E49EFBBD18857CA80061794B /* MyHomeUserHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyHomeUserHeadView.h; sourceTree = "<group>"; };
+		E49EFBBE18857CA80061794B /* MyHomeUserHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyHomeUserHeadView.m; sourceTree = "<group>"; };
+		E49EFBC0188584870061794B /* XXOpacityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXOpacityView.h; sourceTree = "<group>"; };
+		E49EFBC1188584870061794B /* XXOpacityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXOpacityView.m; sourceTree = "<group>"; };
 		E4A051B71866FDD0002E0EBA /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
 		E4A051B81866FDD0002E0EBA /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
 		E4A051B91866FDD0002E0EBA /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
@@ -3780,6 +3786,10 @@
 				E4E3F6971860969100970698 /* MyProfileEditViewController.m */,
 				E4E3F6981860969100970698 /* MyShareListViewController.h */,
 				E4E3F6991860969100970698 /* MyShareListViewController.m */,
+				E49EFBBD18857CA80061794B /* MyHomeUserHeadView.h */,
+				E49EFBBE18857CA80061794B /* MyHomeUserHeadView.m */,
+				E49EFBC0188584870061794B /* XXOpacityView.h */,
+				E49EFBC1188584870061794B /* XXOpacityView.m */,
 			);
 			path = MyHome;
 			sourceTree = "<group>";
@@ -5009,6 +5019,7 @@
 				E4E3F9B01860969400970698 /* NSAttributedString+SmallCaps.m in Sources */,
 				E4E3F9B11860969400970698 /* NSAttributedStringRunDelegates.m in Sources */,
 				E4E3F9B21860969400970698 /* NSCharacterSet+HTML.m in Sources */,
+				E49EFBC2188584870061794B /* XXOpacityView.m in Sources */,
 				E4E3F9B31860969400970698 /* NSDictionary+DTCoreText.m in Sources */,
 				E4E3F9B41860969400970698 /* NSMutableAttributedString+HTML.m in Sources */,
 				E4E3F9B51860969400970698 /* NSMutableString+HTML.m in Sources */,
@@ -5268,6 +5279,7 @@
 				E4E7E508188194D10073D1AB /* UIButton+XXStyle.m in Sources */,
 				E4C9B68B1875912E003D6AC9 /* GPUImageOpenGLESContext.m in Sources */,
 				E4C9B68C1875912E003D6AC9 /* GPUImageOutput.m in Sources */,
+				E49EFBBF18857CA80061794B /* MyHomeUserHeadView.m in Sources */,
 				E4C9B68D1875912E003D6AC9 /* GPUImagePicture.m in Sources */,
 				E4C9B68E1875912E003D6AC9 /* GPUImageRawData.m in Sources */,
 				E4C9B68F1875912E003D6AC9 /* GPUImageRotationFilter.m in Sources */,

@@ -27,7 +27,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    
+
     //
     guideVCArray = [[NSMutableArray alloc]init];
     
@@ -42,7 +42,15 @@
     [guideVCArray addObject:shareArray];
     [guideVCArray addObject:userArray];
     
-    guideTable = [[UITableView alloc]initWithFrame:CGRectMake(0,80,self.view.frame.size.width,self.view.frame.size.height-80) style:UITableViewStyleGrouped];
+    
+    CGFloat totalHeight = XXNavContentHeight-49;
+    CGFloat totalWidth = self.view.frame.size.width;
+    
+    //user head view
+    _userHeadView = [[MyHomeUserHeadView alloc]initWithFrame:CGRectMake(0,-34,totalWidth,200)];
+    [self.view addSubview:_userHeadView];
+    
+    guideTable = [[UITableView alloc]initWithFrame:CGRectMake(0,200,totalWidth,totalHeight-200) style:UITableViewStylePlain];
     guideTable.dataSource = self;
     guideTable.delegate = self;
     [self.view addSubview:guideTable];
@@ -51,14 +59,15 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES];
+    self.navigationController.view.frame = CGRectMake(0,0,self.navigationController.view.frame.size.width,self.navigationController.view.frame.size.height);
+    [super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
     [self.navigationController setNavigationBarHidden:NO];
+    [super viewWillDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning
