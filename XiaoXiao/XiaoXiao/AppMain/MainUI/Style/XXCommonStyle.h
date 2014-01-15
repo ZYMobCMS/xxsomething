@@ -19,7 +19,10 @@
 + (NSInteger)commonPostEmojiSize;
 
 + (UIColor*)xxThemeBlueColor;
++ (UIColor*)xxThemeBlueSelectedColor;
 + (UIColor*)xxThemeRedColor;
++ (UIColor*)xxThemeRedSelectedColor;
++ (UIColor*)xxThemeDefaultSelectedColor;
 + (UIColor*)xxThemeTeaseBackColor;
 + (UIColor*)xxThemeTeaseBackSelectedColor;
 + (UIColor*)xxThemeButtonBoardColor;
@@ -29,6 +32,7 @@
 + (CGFloat)xxThemeNavigationBarCornerRadius;
 + (CGFloat)xxThemeLoginGuideButtonRadius;
 + (UIView*)xxThemeNormalCellBackground;
++ (UIColor*)xxThemeBackgroundColor;
 
 //school choose cell
 + (UIColor*)schoolChooseCellTitleColor;

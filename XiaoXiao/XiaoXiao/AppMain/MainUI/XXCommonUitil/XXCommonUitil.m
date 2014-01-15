@@ -50,9 +50,11 @@
 }
 + (void)setCommonNavigationReturnItemForViewController:(UIViewController *)aViewController
 {
-    aViewController.view.backgroundColor = [UIColor whiteColor];
-    XXResponseButton *returnCustomButton = [[XXResponseButton alloc]initWithFrame:CGRectMake(0,0,26.5,26.5)];    
+    aViewController.view.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
+    XXResponseButton *returnCustomButton = [XXResponseButton buttonWithType:UIButtonTypeCustom];
+    returnCustomButton.frame = CGRectMake(0,0,26.5,26.5);
     [returnCustomButton setBackgroundImage:[UIImage imageNamed:@"nav_return_button.png"] forState:UIControlStateNormal];
+    [returnCustomButton setButtonSelfTapInside];
     [returnCustomButton setResponseButtonTapped:^{
         [aViewController.navigationController popViewControllerAnimated:YES];
     }];
@@ -72,9 +74,11 @@
 }
 + (void)setCommonNavigationReturnItemForViewController:(UIViewController *)aViewController withBackStepAction:(XXNavigationNextStepItemBlock)stepAction
 {
-    aViewController.view.backgroundColor = [UIColor whiteColor];
-    XXResponseButton *returnCustomButton = [[XXResponseButton alloc]initWithFrame:CGRectMake(0,0,26.5,26.5)];
+    aViewController.view.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
+    XXResponseButton *returnCustomButton = [XXResponseButton buttonWithType:UIButtonTypeCustom];
+    returnCustomButton.frame = CGRectMake(0,0,26.5,26.5);
     [returnCustomButton setBackgroundImage:[UIImage imageNamed:@"nav_return_button.png"] forState:UIControlStateNormal];
+    [returnCustomButton setButtonSelfTapInside];
     [returnCustomButton setResponseButtonTapped:^{
         if (stepAction) {
             stepAction();
@@ -96,14 +100,13 @@
 }
 + (void)setCommonNavigationNextStepItemForViewController:(UIViewController *)aViewController withNextStepAction:(XXNavigationNextStepItemBlock)nextAction
 {
-    aViewController.view.backgroundColor = [UIColor whiteColor];
-    XXResponseButton *returnCustomButton = [[XXResponseButton alloc]initWithFrame:CGRectMake(0,0,60,30)];
-    returnCustomButton.layer.borderColor = [XXCommonStyle xxThemeButtonBoardColor].CGColor;
-    returnCustomButton.layer.borderWidth = 1.0f;
-    returnCustomButton.layer.cornerRadius = 6.0f;
+    aViewController.view.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
+    XXResponseButton *returnCustomButton = [XXResponseButton buttonWithType:UIButtonTypeCustom];
+    returnCustomButton.frame = CGRectMake(0,0,60,30);
+    [returnCustomButton defaultStyle];
+    [returnCustomButton setButtonSelfTapInside];
     [returnCustomButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
     [returnCustomButton setTitle:@"下一步" forState:UIControlStateNormal];
-    [returnCustomButton setTitleColor:[XXCommonStyle xxThemeButtonTitleColor] forState:UIControlStateNormal];
     [returnCustomButton setResponseButtonTapped:^{
         if (nextAction) {
             nextAction();
@@ -118,14 +121,14 @@
 }
 + (void)setCommonNavigationNextStepItemForViewController:(UIViewController *)aViewController withNextStepAction:(XXNavigationNextStepItemBlock)nextAction withTitle:(NSString *)title
 {
-    aViewController.view.backgroundColor = [UIColor whiteColor];
-    XXResponseButton *returnCustomButton = [[XXResponseButton alloc]initWithFrame:CGRectMake(0,0,60,30)];
-    returnCustomButton.layer.borderColor = [XXCommonStyle xxThemeButtonBoardColor].CGColor;
-    returnCustomButton.layer.borderWidth = 1.0f;
-    returnCustomButton.layer.cornerRadius = 6.0f;
+    aViewController.view.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
+    XXResponseButton *returnCustomButton = [XXResponseButton buttonWithType:UIButtonTypeCustom];
+    returnCustomButton.frame = CGRectMake(0,0,60,30);
+    [returnCustomButton defaultStyle];
     [returnCustomButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
     [returnCustomButton setTitle:title forState:UIControlStateNormal];
     [returnCustomButton setTitleColor:[XXCommonStyle xxThemeButtonTitleColor] forState:UIControlStateNormal];
+    [returnCustomButton setButtonSelfTapInside];
     [returnCustomButton setResponseButtonTapped:^{
         if (nextAction) {
             nextAction();
@@ -140,10 +143,11 @@
 }
 + (void)setCommonNavigationNextStepItemForViewController:(UIViewController *)aViewController withIconImage:(NSString *)iconName withNextStepAction:(XXNavigationNextStepItemBlock)nextAction
 {
-    aViewController.view.backgroundColor = [UIColor whiteColor];
-    XXResponseButton *returnCustomButton = [[XXResponseButton alloc]initWithFrame:CGRectMake(0,0,30,30)];
+    aViewController.view.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
+    XXResponseButton *returnCustomButton = [XXResponseButton buttonWithType:UIButtonTypeCustom];
+    returnCustomButton.frame = CGRectMake(0,0,30,30);
     [returnCustomButton setBackgroundImage:[UIImage imageNamed:iconName] forState:UIControlStateNormal];
-    [returnCustomButton setTitleColor:[XXCommonStyle xxThemeButtonTitleColor] forState:UIControlStateNormal];
+    [returnCustomButton setButtonSelfTapInside];
     [returnCustomButton setResponseButtonTapped:^{
         if (nextAction) {
             nextAction();
@@ -155,6 +159,260 @@
         aViewController.edgesForExtendedLayout = UIRectEdgeNone;
         aViewController.automaticallyAdjustsScrollViewInsets = YES;
     }
-
 }
+
+
++ (NSString*)getTimeStrWithDateString:(NSString *)dateString
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+    dateFormatter.dateFormat = @"yyyy-M-d HH:mm:ss";
+    NSDate *date = [dateFormatter dateFromString:dateString];
+    
+    return [XXCommonUitil getTimeStrStyle3:date];
+}
+
++ (NSString*)getTimeStr:(long) createdAt
+{
+    // Calculate distance time string
+    //
+    NSString *timestamp;
+    time_t now;
+    time(&now);
+    
+    int distance = (int)difftime(now, createdAt);
+    if (distance < 0) distance = 0;
+    
+    if (distance < 60) {
+        timestamp = [NSString stringWithFormat:@"%d %s", distance, (distance == 1) ? "second ago" : "seconds ago"];
+    }
+    else if (distance < 60 * 60) {
+        distance = distance / 60;
+        timestamp = [NSString stringWithFormat:@"%d %s", distance, (distance == 1) ? "minute ago" : "minutes ago"];
+    }
+    else if (distance < 60 * 60 * 24) {
+        distance = distance / 60 / 60;
+        timestamp = [NSString stringWithFormat:@"%d %s", distance, (distance == 1) ? "hour ago" : "hours ago"];
+    }
+    else if (distance < 60 * 60 * 24 * 7) {
+        distance = distance / 60 / 60 / 24;
+        timestamp = [NSString stringWithFormat:@"%d %s", distance, (distance == 1) ? "day ago" : "days ago"];
+    }
+    else if (distance < 60 * 60 * 24 * 7 * 4) {
+        distance = distance / 60 / 60 / 24 / 7;
+        timestamp = [NSString stringWithFormat:@"%d %s", distance, (distance == 1) ? "week ago" : "weeks ago"];
+    }
+    else {
+        static NSDateFormatter *dateFormatter = nil;
+        if (dateFormatter == nil) {
+            dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        }
+        
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:createdAt];
+        timestamp = [dateFormatter stringFromDate:date];
+    }
+    return timestamp;
+}
+
++ (NSString*)getFullTimeStr:(long long)time
+{
+    NSDate * date=[NSDate dateWithTimeIntervalSince1970:time];
+    NSCalendar * calendar=[[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
+    NSInteger unitFlags = NSMonthCalendarUnit | NSDayCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit;
+    NSDateComponents * component=[calendar components:unitFlags fromDate:date];
+    NSString * string=[NSString stringWithFormat:@"%04d-%02d-%02d %02d:%02d",[component year],[component month],[component day],[component hour],[component minute]];
+    return string;
+}
+
++ (NSString*)getMDStr:(long long)time
+{
+    
+    NSDate * date=[NSDate dateWithTimeIntervalSince1970:time];
+    NSCalendar * calendar=[[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
+    NSInteger unitFlags = NSMonthCalendarUnit | NSDayCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit;
+    NSDateComponents * component=[calendar components:unitFlags fromDate:date];
+    NSString * string=[NSString stringWithFormat:@"%d月%d日",[component month],[component day]];
+    return string;
+}
+
++(NSDateComponents*) getComponent:(long long)time
+{
+    NSDate * date=[NSDate dateWithTimeIntervalSince1970:time];
+    NSCalendar * calendar=[[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
+    NSInteger unitFlags = NSMonthCalendarUnit | NSDayCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit;
+    NSDateComponents * component=[calendar components:unitFlags fromDate:date];
+    return component;
+}
+
+
++ (NSString*)getTimeStrStyle3:(NSDate*)date
+{
+    long long timeNow = [date timeIntervalSince1970];
+    NSCalendar * calendar=[[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
+    NSInteger unitFlags = NSMonthCalendarUnit | NSDayCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit|NSWeekCalendarUnit|NSWeekdayCalendarUnit;
+    NSDateComponents * component=[calendar components:unitFlags fromDate:date];
+    
+    int year=[component year];
+    int month=[component month];
+    int day=[component day];
+    
+    NSDate * today=[NSDate date];
+    component=[calendar components:unitFlags fromDate:today];
+    
+    int t_year=[component year];
+    
+    NSString*string=nil;
+    
+    long long now = [today timeIntervalSince1970];
+    
+    long distance= now - timeNow;
+    if(distance<60)
+        string=@"刚刚";
+    else if(distance<60*60)
+        string=[NSString stringWithFormat:@"%ld 分钟前",distance/60];
+    else if(distance<60*60*24)
+        string=[NSString stringWithFormat:@"%ld 小时前",distance/60/60];
+    else if(distance<60*60*24*7)
+        string=[NSString stringWithFormat:@"%ld 天前",distance/60/60/24];
+    else if(year==t_year)
+        string=[NSString stringWithFormat:@"%d月%d日",month,day];
+    else
+        string=[NSString stringWithFormat:@"%d年%d月%d日",year,month,day];
+    
+    return string;
+}
+
++(NSString*) getTimeStrStyle1:(long long)time
+{
+    NSDate * date=[NSDate dateWithTimeIntervalSince1970:time];
+    NSCalendar * calendar=[[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
+    NSInteger unitFlags = NSMonthCalendarUnit | NSDayCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit|NSWeekCalendarUnit|NSWeekdayCalendarUnit;
+    NSDateComponents * component=[calendar components:unitFlags fromDate:date];
+    
+    int year=[component year];
+    int month=[component month];
+    int day=[component day];
+    
+    NSDate * today=[NSDate date];
+    component=[calendar components:unitFlags fromDate:today];
+    
+    int t_year=[component year];
+    
+    NSString*string=nil;
+    
+    long long now=[today timeIntervalSince1970];
+    
+    long distance=now-time;
+    if(distance<60)
+        string=@"刚刚";
+    else if(distance<60*60)
+        string=[NSString stringWithFormat:@"%ld 分钟前",distance/60];
+    else if(distance<60*60*24)
+        string=[NSString stringWithFormat:@"%ld 小时前",distance/60/60];
+    else if(distance<60*60*24*7)
+        string=[NSString stringWithFormat:@"%ld 天前",distance/60/60/24];
+    else if(year==t_year)
+        string=[NSString stringWithFormat:@"%d月%d日",month,day];
+    else
+        string=[NSString stringWithFormat:@"%d年%d月%d日",year,month,day];
+    
+    return string;
+    
+}
++(NSString*) getTimeStrStyle2:(long long)time
+{
+    NSDate * date=[NSDate dateWithTimeIntervalSince1970:time];
+    NSCalendar * calendar=[[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
+    NSInteger unitFlags = NSMonthCalendarUnit | NSDayCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit|NSWeekCalendarUnit|NSWeekdayCalendarUnit;
+    NSDateComponents * component=[calendar components:unitFlags fromDate:date];
+    
+    int year=[component year];
+    int month=[component month];
+    int day=[component day];
+    int hour=[component hour];
+    int minute=[component minute];
+    int week=[component week];
+    int weekday=[component weekday];
+    
+    NSDate * today=[NSDate date];
+    component=[calendar components:unitFlags fromDate:today];
+    
+    int t_year=[component year];
+    int t_month=[component month];
+    int t_day=[component day];
+    int t_week=[component week];
+    
+    NSString*string=nil;
+    if(year==t_year&&month==t_month&&day==t_day)
+    {
+        if(hour<6&&hour>=0)
+            string=[NSString stringWithFormat:@"凌晨 %d:%02d",hour,minute];
+        else if(hour>=6&&hour<12)
+            string=[NSString stringWithFormat:@"上午 %d:%02d",hour,minute];
+        else if(hour>=12&&hour<18)
+            string=[NSString stringWithFormat:@"下午 %d:%02d",hour-12,minute];
+        else
+            string=[NSString stringWithFormat:@"晚上 %d:%02d",hour-12,minute];
+    }
+    else if(year==t_year&&week==t_week)
+    {
+        NSString * daystr=nil;
+        switch (weekday) {
+            case 1:
+                daystr=@"日";
+                break;
+            case 2:
+                daystr=@"一";
+                break;
+            case 3:
+                daystr=@"二";
+                break;
+            case 4:
+                daystr=@"三";
+                break;
+            case 5:
+                daystr=@"四";
+                break;
+            case 6:
+                daystr=@"五";
+                break;
+            case 7:
+                daystr=@"六";
+                break;
+            default:
+                break;
+        }
+        string=[NSString stringWithFormat:@"周%@ %d:%02d",daystr,hour,minute];
+    }
+    else if(year==t_year)
+        string=[NSString stringWithFormat:@"%d月%d日",month,day];
+    else
+        string=[NSString stringWithFormat:@"%d年%d月%d日",year,month,day];
+    
+    return string;
+}
+
++ (XiaoXiaoAppDelegate*)appDelegate
+{
+    XiaoXiaoAppDelegate *appDelegate = (XiaoXiaoAppDelegate *)[[UIApplication sharedApplication]delegate];
+    return appDelegate;
+}
++ (MainTabViewController*)appMainTabController
+{
+    return [[XXCommonUitil appDelegate]mainTabController];
+}
+
++ (UIImage*)imageForColor:(UIColor *)aColor withSize:(CGSize)imageSize
+{
+    CGRect rect = CGRectMake(0, 0, imageSize.width, imageSize.height);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [aColor CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return img;
+}
+
 @end

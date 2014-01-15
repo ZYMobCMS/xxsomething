@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void (^XXEmojiChooseViewDidChooseEmojiBlock) (NSString *emoji);
 @interface XXEmojiChooseView : UIView
-
-
-+ (NSString *)emojiTextToHtmlImageTag:(NSString*)emojiText;
-
+{
+    XXEmojiChooseViewDidChooseEmojiBlock _chooseBlock;
+}
+- (void)setEmojiChooseBlock:(XXEmojiChooseViewDidChooseEmojiBlock)chooseBlock;
 @end

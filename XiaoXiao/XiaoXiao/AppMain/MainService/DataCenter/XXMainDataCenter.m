@@ -515,7 +515,7 @@
 //发表评论
 - (void)requestPublishCommentWithConditionComment:(XXCommentModel*)conditionComment withSuccess:(XXDataCenterCommentDetailBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
 {
-    if (!conditionComment.resourceId||!conditionComment.resourceType||!conditionComment.rootCommentId) {
+    if (!conditionComment.resourceId) {
         if (faild) {
             faild(XXLoginErrorInvalidateParam);
             return;
@@ -538,18 +538,22 @@
     }
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:conditionComment.resourceId forKey:@"res_id"];
-    [params setObject:conditionComment.resourceType forKey:@"res_type"];
+    if (conditionComment.resourceType) {
+        [params setObject:conditionComment.resourceType forKey:@"res_type"];
+    }
     if (conditionComment.pCommentId) {
         [params setObject:conditionComment.pCommentId forKey:@"p_id"];
     }
-    [params setObject:conditionComment.rootCommentId forKey:@"root_id"];
+    if (conditionComment.rootCommentId) {
+        [params setObject:conditionComment.rootCommentId forKey:@"root_id"];
+    }
     
     //自定义结构体
     NSMutableDictionary *customContent = [NSMutableDictionary dictionary];
     if ([conditionComment.postAudioTime isEqualToString:@"0"]) {
-        [customContent setObject:conditionComment.postAudioTime forKey:XXSharePostJSONAudioTime];
-    }else{
         [customContent setObject:conditionComment.postContent forKey:XXSharePostJSONContentKey];
+    }else{
+        [customContent setObject:conditionComment.postAudioTime forKey:XXSharePostJSONAudioTime];
     }
     [customContent setObject:conditionComment.postAudioTime forKey:XXSharePostJSONAudioTime];
     NSData *customContentData = [NSJSONSerialization dataWithJSONObject:customContent options:NSJSONWritingPrettyPrinted error:nil];
@@ -572,7 +576,34 @@
 - (void)requestCommentListWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
 {
     //接口有问题，传递参数太多
-    
+    if (!condition.pageIndex || !condition.pageSize || !condition.postId) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    NSDictionary *params = @{@"res_id":condition.postId};
+    NSDictionary *getParams = @{@"page":condition.pageIndex,@"size":condition.pageSize};
+    [self requestXXRequest:XXRequestTypeCommentList withPostParams:params withGetParams:getParams withSuccess:^(NSDictionary *resultDict) {
+        
+        if (success) {
+            
+            NSDictionary *dataDict = [resultDict objectForKey:@"data"];
+            NSArray *tableData = [dataDict objectForKey:@"table"];
+            NSMutableArray *modelArray = [NSMutableArray array];
+            [tableData enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                XXCommentModel *commentModel = [[XXCommentModel alloc]initWithContentDict:obj];
+                [modelArray addObject:commentModel];
+            }];
+            success(modelArray);
+            
+        }
+        
+    } withFaild:^(NSString *faildMsg) {
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
 }
 
 //追捧
@@ -1031,6 +1062,7 @@
     [self checkNetWorkWithFaildBlck:faild];
     
     NSString *downloadUrl = [NSString stringWithFormat:@"%@%@",XXBase_Host_Url,linkPath];
+    DDLogVerbose(@"download arm:%@",downloadUrl);
     NSURLRequest *downloadRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:downloadUrl]];
     
     AFHTTPRequestOperation *downloadOperation = [[AFHTTPRequestOperation alloc]initWithRequest:downloadRequest];
@@ -1038,6 +1070,7 @@
     [downloadOperation setCompletionBlock:^{
         
         NSData *downloadFileData = selfDownloadOperation.responseData;
+        DDLogVerbose(@"downloadFileData length :%d",downloadFileData.length);
         BOOL saveZipFileResult =  [downloadFileData writeToFile:savePath atomically:YES];
         DDLogVerbose(@"save zip file result:%d",saveZipFileResult);
         if (sucess) {

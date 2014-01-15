@@ -15,6 +15,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        self.backgroundColor = [UIColor clearColor];
         _indicatorView = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         _indicatorView.frame = CGRectMake(5,5,34,34);
         [self addSubview:_indicatorView];
@@ -23,7 +24,7 @@
         _titleLabel.frame = CGRectMake(59,0,frame.size.width-69,frame.size.height);
         [self addSubview:_titleLabel];
         _titleLabel.text = @"加载更多...";
-        _titleLabel.textAlignment = UITextAlignmentCenter;
+        _titleLabel.textAlignment = NSTextAlignmentCenter;
         _titleLabel.backgroundColor = [UIColor clearColor];
     }
     return self;
@@ -44,5 +45,9 @@
 - (void)endLoading
 {
     [_indicatorView stopAnimating];
+}
+- (void)setTitle:(NSString *)title
+{
+    _titleLabel.text = title;
 }
 @end

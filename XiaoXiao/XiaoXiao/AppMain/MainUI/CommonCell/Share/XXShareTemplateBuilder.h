@@ -29,7 +29,7 @@ extern BOOL const XXLockShareCSSTemplateState;
 
 + (NSString*)buildSharePostContentWithCSSTemplate:(NSString*)cssTemplate withSharePostModel:(XXSharePostModel*)aSharePost;
 
-+ (NSString*)buildSharePostHeadHtmlContentWithName:(NSString*)name withGrade:(NSString*)grade withCollege:(NSString*)college withSexTag:(NSString*)sexTag;
++ (NSString*)buildSharePostHeadHtmlContentWithName:(NSString*)name withGrade:(NSString*)grade withCollege:(NSString*)college withSexTag:(NSString*)sexTag withTimeString:(NSString*)time;
 
 + (NSString*)buildCommonCSSTemplateWithBundleFormatteFile:(NSString*)fileName withShareStyle:(XXShareStyle*)aStyle;
 

@@ -12,5 +12,8 @@
 {
 }
 @property (nonatomic,strong)UIImageView *iconImageView;
-@property (nonatomic,strong)UILabel *customTitleLabel;
+- (void)setNormalIconImage:(NSString*)nImage withSelectedImage:(NSString*)sImage withFrame:(CGRect)iconFrame;
+
+- (void)setTitle:(NSString*)title withFrame:(CGRect)titleFrame;
+
 @end

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class MainTabViewController;
+#import "MainTabViewController.h"
 
 @interface XiaoXiaoAppDelegate : UIResponder <UIApplicationDelegate>
 

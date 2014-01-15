@@ -15,7 +15,9 @@ typedef void (^XXAudioManagerFinishRecordBlock) (NSString *audioSavePath,NSStrin
 @interface XXAudioManager : NSObject <AVAudioRecorderDelegate, AVAudioPlayerDelegate>
 {
     XXAudioManagerFinishRecordBlock _finishBlock;
-    NSTimeInterval  _currentTimeInterval;
+    BOOL  _recordStop;
+    NSInteger _recordTime;
+    NSTimer    *_recordTimer;
 }
 @property (nonatomic,strong)AVAudioRecorder *audioRecorder;
 @property (nonatomic,strong)AVAudioPlayer *audioPlayer;

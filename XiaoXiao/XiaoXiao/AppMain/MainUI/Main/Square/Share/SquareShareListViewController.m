@@ -31,18 +31,39 @@
     self.title = @"校说吧";
     [XXCommonUitil setCommonNavigationReturnItemForViewController:self];
     
-    _textShareButton = [[XXCustomButton alloc]initWithFrame:CGRectMake(0,0,106.6,40)];
-    _textShareButton.customTitleLabel.text = @"文字说说";
+    UIImageView *backImageView = [[UIImageView alloc]init];
+    backImageView.backgroundColor = [UIColor whiteColor];
+    backImageView.layer.shadowOffset = CGSizeMake(0,0.3);
+    backImageView.layer.shadowColor = [UIColor blackColor].CGColor;
+    backImageView.layer.shadowOpacity = 0.2f;
+    backImageView.frame = CGRectMake(0,0,self.view.frame.size.width,40);
+    [self.view addSubview:backImageView];
+    
+    _textShareButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
+    _textShareButton.frame = CGRectMake(0,0,106.6,40);
+    _textShareButton.backgroundColor = [UIColor whiteColor];
+    [_textShareButton setNormalIconImage:@"share_post_text_normal.png" withSelectedImage:@"share_post_text_selected.png" withFrame:CGRectMake(10,11,18,18)];
+    [_textShareButton setTitle:@"文字" withFrame:CGRectMake(33,3,50,34)];
+    [_textShareButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    [_textShareButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
     [_textShareButton addTarget:self action:@selector(tapOnPostButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_textShareButton];
     
-    _aduioShareBtton = [[XXCustomButton alloc]initWithFrame:CGRectMake(107,0,106.6,40)];
-    _aduioShareBtton.customTitleLabel.text = @"语音说说";
-    [_aduioShareBtton addTarget:self action:@selector(tapOnPostButton:) forControlEvents:UIControlEventTouchUpInside];
+    _aduioShareBtton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
+    _aduioShareBtton.frame = CGRectMake(107,0,106.6,40);
+    [_aduioShareBtton setNormalIconImage:@"share_post_audio_normal.png" withSelectedImage:@"share_post_audio_selected.png" withFrame:CGRectMake(10,11,18,18)];
+    [_aduioShareBtton setTitle:@"语音" withFrame:CGRectMake(33,3,50,34)];
+    [_aduioShareBtton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    [_aduioShareBtton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];    [_aduioShareBtton addTarget:self action:@selector(tapOnPostButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_aduioShareBtton];
     
-    _imageShareButton = [[XXCustomButton alloc]initWithFrame:CGRectMake(214,0,106.6,40)];
-    _imageShareButton.customTitleLabel.text = @"相册说说";
+    _imageShareButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
+    _imageShareButton.frame = CGRectMake(214,0,106.6,40);
+    _imageShareButton.backgroundColor = [UIColor whiteColor];
+    [_imageShareButton setNormalIconImage:@"share_post_image_normal.png" withSelectedImage:@"share_post_image_selected.png" withFrame:CGRectMake(10,11,18,18)];
+    [_imageShareButton setTitle:@"图片" withFrame:CGRectMake(33,3,50,34)];
+    [_imageShareButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    [_imageShareButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
     [_imageShareButton addTarget:self action:@selector(tapOnPostButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_imageShareButton];
     

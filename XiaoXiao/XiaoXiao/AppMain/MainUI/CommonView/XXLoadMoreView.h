@@ -15,4 +15,5 @@
 }
 - (void)startLoading;
 - (void)endLoading;
+- (void)setTitle:(NSString*)title;
 @end

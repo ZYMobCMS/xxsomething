@@ -59,25 +59,25 @@
     [XXCommonUitil setCommonNavigationReturnItemForViewController:self];
     DDLogVerbose(@"self.view :%@",NSStringFromCGRect(self.view.frame));
     
-    XXCustomButton *chooseCamerou = [[XXCustomButton alloc]initWithFrame:CGRectMake(50,50,220,40)];
+    XXCustomButton *chooseCamerou = [XXCustomButton buttonWithType:UIButtonTypeCustom];
+    chooseCamerou.frame = CGRectMake(20,50,280,40);
     chooseCamerou.tag = 238790;
-    chooseCamerou.backgroundColor = [XXCommonStyle xxThemeBlueColor];
-    chooseCamerou.layer.cornerRadius = 4.0f;
+    [chooseCamerou blueStyle];
     chooseCamerou.iconImageView.image = [UIImage imageNamed:@"photo_choose_camerou.png"];
-    chooseCamerou.iconImageView.frame = CGRectMake(76,3,34,34);
-    chooseCamerou.customTitleLabel.text = @"现场拍照";
-    chooseCamerou.customTitleLabel.frame = CGRectMake(115,3,80,34);
+    chooseCamerou.iconImageView.frame = CGRectMake(76,10,20,20);
+    [chooseCamerou setTitle:@"现场拍照" forState:UIControlStateNormal];
+    chooseCamerou.titleLabel.frame = CGRectMake(115,3,80,34);
     [self.view addSubview:chooseCamerou];
     [chooseCamerou addTarget:self action:@selector(chooseTypeAction:) forControlEvents:UIControlEventTouchUpInside];
     
-    XXCustomButton *chooseLibrary = [[XXCustomButton alloc]initWithFrame:CGRectMake(10,130,220,40)];
+    XXCustomButton *chooseLibrary = [XXCustomButton buttonWithType:UIButtonTypeCustom];
+    chooseLibrary.frame = CGRectMake(20,130,280,40);
     chooseLibrary.tag = 238791;
-    chooseLibrary.backgroundColor = [XXCommonStyle xxThemeBlueColor];
-    chooseLibrary.layer.cornerRadius = 4.0f;
+    [chooseLibrary blueStyle];
     chooseLibrary.iconImageView.image = [UIImage imageNamed:@"photo_choose_lib.png"];
-    chooseLibrary.customTitleLabel.text = @"照片库选择";
-    chooseLibrary.iconImageView.frame = CGRectMake(76,3,34,34);
-    chooseLibrary.customTitleLabel.frame = CGRectMake(115,3,80,34);
+    [chooseLibrary setTitle:@"相册筛选" forState:UIControlStateNormal];
+    chooseLibrary.titleLabel.frame = CGRectMake(115,3,80,34);
+    chooseLibrary.iconImageView.frame = CGRectMake(76,10,20,20);
     [self.view addSubview:chooseLibrary];
     [chooseLibrary addTarget:self action:@selector(chooseTypeAction:) forControlEvents:UIControlEventTouchUpInside];
 

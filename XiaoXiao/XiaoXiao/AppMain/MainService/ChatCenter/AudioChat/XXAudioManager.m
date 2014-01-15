@@ -11,13 +11,20 @@
 
 #define XXAudioManagerTempFileDirectory @"XXAudioTemplateDirectory"
 
-#define XXMaxAudioRecordTime 60  //一分钟
+#define XXMaxAudioRecordTime 60*60  //一分钟
 
 #define XXCacheAudioForRemoteAudioRelationShipListUDFKey @"XXCacheAudioForRemoteAudioRelationShipUDFKey"
 
 @implementation XXAudioManager
 
 #pragma mark - api
+- (id)init
+{
+    if (self = [super init]) {
+        [self createCacheDirectory];
+    }
+    return self;
+}
 + (XXAudioManager*)shareManager
 {
     static XXAudioManager *audioManager = nil;
@@ -25,7 +32,6 @@
     dispatch_once(&onceToken, ^{
         if (!audioManager) {
             audioManager = [[XXAudioManager alloc]init];
-            [audioManager createCacheDirectory];
             
         }
     });
@@ -82,6 +88,7 @@
         
         NSMutableDictionary *shipList = [NSMutableDictionary dictionary];
         [[NSUserDefaults standardUserDefaults]setObject:shipList forKey:XXCacheAudioForRemoteAudioRelationShipListUDFKey];
+        [[NSUserDefaults standardUserDefaults]synchronize];
     }
     
 }
@@ -165,7 +172,9 @@
         [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayAndRecord error:nil];
         [[AVAudioSession sharedInstance] setActive:YES error:nil];
         [self.audioRecorder recordForDuration:XXMaxAudioRecordTime];
-        _currentTimeInterval = self.audioRecorder.currentTime;
+        _recordStop = NO;
+        _recordTime = 0;
+        [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(audioTimeTimer:) userInfo:nil repeats:YES];
     }
 }
 
@@ -176,15 +185,20 @@
 }
 - (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
 {
+    
+    _recordStop = YES;
     if (flag) {
         NSLog(@"record success!");
-        NSTimeInterval recordTimeLength = recorder.currentTime-_currentTimeInterval;
-        NSString *timeLengthString = [NSString stringWithFormat:@"%d'",(int)recordTimeLength];
         
         //转换成AMR
         NSString *amrFile = [NSString stringWithFormat:@"%@.amr",[self getFileNameFromUrl:self.audioRecorder.url.absoluteString]];
         [VoiceConverter wavToAmr:self.audioRecorder.url.absoluteString amrSavePath:[self buildCachePathForFileName:amrFile]];
+        NSData *originData = [NSData dataWithContentsOfURL:self.audioRecorder.url];
+        DDLogVerbose(@"origin data :%d",originData.length);
+        NSData *dateLength = [NSData dataWithContentsOfFile:[self buildCachePathForFileName:amrFile]];
+        DDLogVerbose(@"amr file:%d",dateLength.length);
         if (_finishBlock) {
+            NSString *timeLengthString = [NSString stringWithFormat:@"%d",_recordTime-1];
             _finishBlock([self buildCachePathForFileName:amrFile],self.audioRecorder.url.absoluteString,timeLengthString);
         }
     }
@@ -214,13 +228,37 @@
         [self.audioRecorder stop];
     }
 }
+- (void)audioTimeTimer:(NSTimer*)aTimer
+{
+    if (!_recordStop) {
+        _recordTime++;
+    }else{
+        [aTimer invalidate];
+    }
+}
 
 - (void)audioManagerPlayAudioForRemoteAMRUrl:(NSString *)remoteAMRUrl
 {
-    //一定是存储了的
+    //is cached
     NSMutableDictionary *shipList = [[NSUserDefaults standardUserDefaults]objectForKey:XXCacheAudioForRemoteAudioRelationShipListUDFKey];
-    if ([shipList objectForKey:remoteAMRUrl]) {
-        [self audioManagerPlayLocalWav:[shipList objectForKey:remoteAMRUrl]];
+    DDLogVerbose(@"shipList :%@",shipList);
+    DDLogVerbose(@"cache url %@",[shipList objectForKey:remoteAMRUrl]);
+    if (![shipList objectForKey:remoteAMRUrl]) {
+        
+        DDLogVerbose(@"no amr cache!");
+        //
+        NSString *fileName = [self urlToFileName:remoteAMRUrl];
+        NSString *cachePath = [self buildCachePathForFileName:fileName];
+        [[XXMainDataCenter shareCenter]downloadFileWithLinkPath:remoteAMRUrl WithDestSavePath:cachePath withSuccess:^(NSString *successMsg) {
+            [self saveRemoteAMRToWav:cachePath withRemoteUrl:remoteAMRUrl whileFinishShouldPlay:YES];
+        } withFaild:^(NSString *faildMsg) {
+            [SVProgressHUD showErrorWithStatus:faildMsg];
+        }];
+        
+    }else{
+        NSString *localFilePath = [shipList objectForKey:remoteAMRUrl];
+        [self audioManagerPlayLocalWavWithPath:localFilePath];
+        
     }
 }
 - (void)audioManagerPlayLocalWavWithPath:(NSString *)filePath
@@ -231,7 +269,6 @@
 - (void)audioManagerPlayLocalWav:(NSString*)filePath
 {
     self.audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:[NSURL URLWithString:filePath] error:nil];
-    self.audioPlayer.volume = 0.8f;
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     [audioSession setCategory:AVAudioSessionCategoryPlayback error:nil];
     [self.audioPlayer play];
@@ -249,25 +286,33 @@
 }
 
 - (void)saveRemoteAMRToWav:(NSString *)downloadAMRFilePath withRemoteUrl:(NSString *)remoteAMRUrl whileFinishShouldPlay:(BOOL)shouldPlay
-{    
+{
     NSMutableDictionary *shipList = [[NSUserDefaults standardUserDefaults]objectForKey:XXCacheAudioForRemoteAudioRelationShipListUDFKey];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+    if (!shipList) {
+        shipList = [NSMutableDictionary dictionary];
+    }
+    
+    NSString *amrFileName = [self urlToFileName:remoteAMRUrl];
+    amrFileName = [amrFileName stringByReplacingOccurrencesOfString:@".amr" withString:@".wav"];
+    NSString *cachePath = [self buildCachePathForFileName:amrFileName];
+    
+    [VoiceConverter amrToWav:downloadAMRFilePath wavSavePath:cachePath];
+    
+    //建立关系
+    NSData *downloadAmrData = [NSData dataWithContentsOfFile:downloadAMRFilePath];
+    DDLogVerbose(@"download amr data length:%d",downloadAmrData.length);
+    DDLogVerbose(@"save remoteAMRUrl :%@ forLocal:%@",remoteAMRUrl,cachePath);
+    
+    [shipList setObject:cachePath forKey:remoteAMRUrl];
+    [[NSUserDefaults standardUserDefaults]setObject:shipList forKey:XXCacheAudioForRemoteAudioRelationShipListUDFKey];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+    
+    //立即播放
+    if (shouldPlay) {
         
-        NSString *amrFileName = [self urlToFileName:remoteAMRUrl];
-        NSString *cachePath = [self buildCachePathForFileName:amrFileName];
-        
-        [VoiceConverter amrToWav:downloadAMRFilePath wavSavePath:cachePath];
-        
-        //建立关系
-        [shipList setObject:remoteAMRUrl forKey:cachePath];
-        
-        //立即播放
-        if (shouldPlay) {
-            
-            [self audioManagerPlayLocalWav:cachePath];
-        }
-        
-    });
+        [self audioManagerPlayLocalWav:cachePath];
+    }
+
 }
 
 //录音结束立马发送

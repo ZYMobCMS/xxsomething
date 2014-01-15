@@ -28,6 +28,7 @@
 @property (nonatomic,strong)NSString *schoolId;
 @property (nonatomic,strong)NSString *userId;
 @property (nonatomic,strong)NSString *addTime;
+@property (nonatomic,strong)NSString *friendAddTime;
 @property (nonatomic,strong)NSString *content;
 @property (nonatomic,strong)NSString *nickName;
 @property (nonatomic,strong)NSString *sex;

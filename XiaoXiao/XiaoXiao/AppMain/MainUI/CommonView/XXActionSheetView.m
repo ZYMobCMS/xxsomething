@@ -67,19 +67,19 @@
         
         UIButton *checkButton = [UIButton buttonWithType:UIButtonTypeCustom];
         checkButton.frame = CGRectMake(40,30,frame.size.width-80,40);
+        [checkButton blueStyle];
         [self addSubview:checkButton];
         checkButton.layer.cornerRadius = 6.0f;
         checkButton.tag = 77660;
-        checkButton.backgroundColor = [XXCommonStyle xxThemeBlueColor];
         [checkButton setTitle:@"确定" forState:UIControlStateNormal];
         [checkButton addTarget:self action:@selector(chooseAction:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:checkButton];
         
         UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
         cancelButton.frame = CGRectMake(40,95,frame.size.width-80,40);
+        [cancelButton redStyle];
         cancelButton.layer.cornerRadius = 6.0f;
         cancelButton.tag = 77661;
-        cancelButton.backgroundColor = [XXCommonStyle xxThemeRedColor];
         [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
         [cancelButton addTarget:self action:@selector(chooseAction:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:cancelButton];

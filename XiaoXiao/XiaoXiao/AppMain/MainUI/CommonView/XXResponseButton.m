@@ -15,7 +15,10 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        [self addTarget:self action:@selector(didTapOnSelf) forControlEvents:UIControlEventTouchUpInside];
+        self.iconImageView = [[UIImageView alloc]init];
+        self.iconImageView.frame = CGRectMake(0,0,frame.size.width,frame.size.height);
+        [self addSubview:self.iconImageView];
+        self.iconImageView.userInteractionEnabled = NO;
     }
     return self;
 }
@@ -34,8 +37,18 @@
         _tapBlock();
     }
 }
+- (void)setNormalIconImage:(NSString *)nImage
+{
+    self.iconImageView.image = [UIImage imageNamed:nImage];
+    self.iconImageView.frame = CGRectMake(0,0,self.frame.size.width,self.frame.size.height);
+}
+- (void)setButtonSelfTapInside
+{
+    [self addTarget:self action:@selector(didTapOnSelf) forControlEvents:UIControlEventTouchUpInside];
+}
 - (void)setResponseButtonTapped:(XXResponseButtonDidTapBlock)tapBlock
 {
     _tapBlock = [tapBlock copy];
 }
+
 @end

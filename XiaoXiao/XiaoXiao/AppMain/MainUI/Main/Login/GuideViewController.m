@@ -40,6 +40,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.view.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
     
     UIImageView *logoImgView = [[UIImageView alloc]init];
     logoImgView.frame = CGRectMake(50,50,50,50);
@@ -60,41 +61,31 @@
     UIButton *loginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     loginBtn.frame = CGRectMake(5,220,100,40);
     [loginBtn setTitle:@"登陆校校" forState:UIControlStateNormal];
-    [loginBtn setTitleColor:[XXCommonStyle xxThemeButtonTitleColor] forState:UIControlStateNormal];
-    loginBtn.layer.cornerRadius = [XXCommonStyle xxThemeLoginGuideButtonRadius];
-    loginBtn.layer.borderColor = [XXCommonStyle xxThemeButtonBoardColor].CGColor;
-    loginBtn.layer.borderWidth = [XXCommonStyle xxThemeButtonBoardWidth];
+    [loginBtn defaultStyle];
     [loginBtn addTarget:self action:@selector(loginAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:loginBtn];
     
     UIButton *registBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     registBtn.frame = CGRectMake(110,220,100,40);
-    [registBtn setTitleColor:[XXCommonStyle xxThemeButtonTitleColor] forState:UIControlStateNormal];
-    registBtn.layer.cornerRadius = [XXCommonStyle xxThemeLoginGuideButtonRadius];
-    registBtn.layer.borderColor = [XXCommonStyle xxThemeButtonBoardColor].CGColor;
-    registBtn.layer.borderWidth = [XXCommonStyle xxThemeButtonBoardWidth];
     [registBtn setTitle:@"注册校校" forState:UIControlStateNormal];
+    [registBtn defaultStyle];
     [registBtn addTarget:self action:@selector(registAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:registBtn];
     
     //qq login
     XXCustomButton *qqloginBtn = [[XXCustomButton alloc]initWithFrame:CGRectMake(50,270,100,40)];
     qqloginBtn.frame = CGRectMake(50,270,100,40);
-    qqloginBtn.layer.cornerRadius = [XXCommonStyle xxThemeLoginGuideButtonRadius];
-    qqloginBtn.layer.borderColor = [XXCommonStyle xxThemeButtonBoardColor].CGColor;
-    qqloginBtn.layer.borderWidth = [XXCommonStyle xxThemeButtonBoardWidth];
+    [qqloginBtn defaultStyle];
     qqloginBtn.iconImageView.image = [UIImage imageNamed:@"login_QQ.png"];
-    qqloginBtn.customTitleLabel.text = @"QQ登陆";
+    [qqloginBtn setTitle:@"QQ登陆" forState:UIControlStateNormal];
     [qqloginBtn addTarget:self action:@selector(qqLoginAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:qqloginBtn];
     
     //weibo login
     XXCustomButton *weibologinBtn = [[XXCustomButton alloc]initWithFrame:CGRectMake(155,270,100,40)];
-    weibologinBtn.layer.cornerRadius = [XXCommonStyle xxThemeLoginGuideButtonRadius];
-    weibologinBtn.layer.borderColor = [XXCommonStyle xxThemeButtonBoardColor].CGColor;
-    weibologinBtn.layer.borderWidth = [XXCommonStyle xxThemeButtonBoardWidth];
+    [weibologinBtn defaultStyle];
     weibologinBtn.iconImageView.image = [UIImage imageNamed:@"login_WeiBo.png"];
-    weibologinBtn.customTitleLabel.text = @"微博登陆";
+    [weibologinBtn setTitle:@"微博登陆" forState:UIControlStateNormal];
     [weibologinBtn addTarget:self action:@selector(weiboLoginAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:weibologinBtn];
 }
