@@ -160,6 +160,9 @@
 		3BE83DAC188651E800778849 /* my_home_fans@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BE83DA8188651E800778849 /* my_home_fans@2x.png */; };
 		3BE83DAD188651E800778849 /* my_home_peer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BE83DA9188651E800778849 /* my_home_peer@2x.png */; };
 		3BE83DAE188651E800778849 /* my_home_photo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BE83DAA188651E800778849 /* my_home_photo@2x.png */; };
+		3BE83DB41886747F00778849 /* UIImage+animatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BE83DB21886747F00778849 /* UIImage+animatedGIF.m */; };
+		3BE83DB81886756300778849 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BE83DB71886756300778849 /* Base64.m */; };
+		3BE83DBC188684E200778849 /* UIBezierPath+ShadowPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BE83DBB188684E200778849 /* UIBezierPath+ShadowPath.m */; };
 		E422C604187EDF69008E89DA /* share_record_btton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E422C603187EDF69008E89DA /* share_record_btton@2x.png */; };
 		E422C607187EE281008E89DA /* XXShareDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E422C606187EE281008E89DA /* XXShareDetailViewController.m */; };
 		E422C60A187EE748008E89DA /* XXSharePostUserView.m in Sources */ = {isa = PBXBuildFile; fileRef = E422C609187EE748008E89DA /* XXSharePostUserView.m */; };
@@ -461,7 +464,6 @@
 		E4E3F8B91860969400970698 /* XXShareTemplateBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6231860969100970698 /* XXShareTemplateBuilder.m */; };
 		E4E3F8BB1860969400970698 /* XXBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6271860969100970698 /* XXBaseCell.m */; };
 		E4E3F8BC1860969400970698 /* XXBaseIconLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6291860969100970698 /* XXBaseIconLabelCell.m */; };
-		E4E3F8BD1860969400970698 /* XXBaseIconLabelCountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F62B1860969100970698 /* XXBaseIconLabelCountCell.m */; };
 		E4E3F8BE1860969400970698 /* XXBaseLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F62D1860969100970698 /* XXBaseLabelCell.m */; };
 		E4E3F8BF1860969400970698 /* XXBaseTagLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F62F1860969100970698 /* XXBaseTagLabelCell.m */; };
 		E4E3F8C01860969400970698 /* XXCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6311860969100970698 /* XXCommentCell.m */; };
@@ -1089,6 +1091,12 @@
 		3BE83DA8188651E800778849 /* my_home_fans@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "my_home_fans@2x.png"; sourceTree = "<group>"; };
 		3BE83DA9188651E800778849 /* my_home_peer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "my_home_peer@2x.png"; sourceTree = "<group>"; };
 		3BE83DAA188651E800778849 /* my_home_photo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "my_home_photo@2x.png"; sourceTree = "<group>"; };
+		3BE83DB21886747F00778849 /* UIImage+animatedGIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+animatedGIF.m"; sourceTree = "<group>"; };
+		3BE83DB31886747F00778849 /* UIImage+animatedGIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+animatedGIF.h"; sourceTree = "<group>"; };
+		3BE83DB61886756300778849 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
+		3BE83DB71886756300778849 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
+		3BE83DBA188684E200778849 /* UIBezierPath+ShadowPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+ShadowPath.h"; sourceTree = "<group>"; };
+		3BE83DBB188684E200778849 /* UIBezierPath+ShadowPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+ShadowPath.m"; sourceTree = "<group>"; };
 		E422C603187EDF69008E89DA /* share_record_btton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "share_record_btton@2x.png"; sourceTree = "<group>"; };
 		E422C605187EE281008E89DA /* XXShareDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXShareDetailViewController.h; sourceTree = "<group>"; };
 		E422C606187EE281008E89DA /* XXShareDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXShareDetailViewController.m; sourceTree = "<group>"; };
@@ -1501,8 +1509,6 @@
 		E4E3F6271860969100970698 /* XXBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXBaseCell.m; sourceTree = "<group>"; };
 		E4E3F6281860969100970698 /* XXBaseIconLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXBaseIconLabelCell.h; sourceTree = "<group>"; };
 		E4E3F6291860969100970698 /* XXBaseIconLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXBaseIconLabelCell.m; sourceTree = "<group>"; };
-		E4E3F62A1860969100970698 /* XXBaseIconLabelCountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXBaseIconLabelCountCell.h; sourceTree = "<group>"; };
-		E4E3F62B1860969100970698 /* XXBaseIconLabelCountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXBaseIconLabelCountCell.m; sourceTree = "<group>"; };
 		E4E3F62C1860969100970698 /* XXBaseLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXBaseLabelCell.h; sourceTree = "<group>"; };
 		E4E3F62D1860969100970698 /* XXBaseLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXBaseLabelCell.m; sourceTree = "<group>"; };
 		E4E3F62E1860969100970698 /* XXBaseTagLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXBaseTagLabelCell.h; sourceTree = "<group>"; };
@@ -2868,6 +2874,24 @@
 			path = TKRoundView;
 			sourceTree = "<group>";
 		};
+		3BE83DB51886756300778849 /* Base64 */ = {
+			isa = PBXGroup;
+			children = (
+				3BE83DB61886756300778849 /* Base64.h */,
+				3BE83DB71886756300778849 /* Base64.m */,
+			);
+			path = Base64;
+			sourceTree = "<group>";
+		};
+		3BE83DB9188684E200778849 /* BizerPath */ = {
+			isa = PBXGroup;
+			children = (
+				3BE83DBA188684E200778849 /* UIBezierPath+ShadowPath.h */,
+				3BE83DBB188684E200778849 /* UIBezierPath+ShadowPath.m */,
+			);
+			path = BizerPath;
+			sourceTree = "<group>";
+		};
 		E452EF7E1863177800340FB5 /* AudioChat */ = {
 			isa = PBXGroup;
 			children = (
@@ -3589,8 +3613,6 @@
 				E4E3F6271860969100970698 /* XXBaseCell.m */,
 				E4E3F6281860969100970698 /* XXBaseIconLabelCell.h */,
 				E4E3F6291860969100970698 /* XXBaseIconLabelCell.m */,
-				E4E3F62A1860969100970698 /* XXBaseIconLabelCountCell.h */,
-				E4E3F62B1860969100970698 /* XXBaseIconLabelCountCell.m */,
 				E4E3F62C1860969100970698 /* XXBaseLabelCell.h */,
 				E4E3F62D1860969100970698 /* XXBaseLabelCell.m */,
 				E4E3F62E1860969100970698 /* XXBaseTagLabelCell.h */,
@@ -4081,6 +4103,8 @@
 		E4E3F7501860969200970698 /* ThirdPart */ = {
 			isa = PBXGroup;
 			children = (
+				3BE83DB9188684E200778849 /* BizerPath */,
+				3BE83DB51886756300778849 /* Base64 */,
 				3BE83DA318864CB000778849 /* TKRoundView */,
 				E4CA2B53187DB09800E14F1D /* WSAssetPicker */,
 				E455B53D187997710037B1D7 /* CTAssetsPickerController */,
@@ -4473,6 +4497,8 @@
 		E4E3F87D1860969400970698 /* SCGIFImageView */ = {
 			isa = PBXGroup;
 			children = (
+				3BE83DB21886747F00778849 /* UIImage+animatedGIF.m */,
+				3BE83DB31886747F00778849 /* UIImage+animatedGIF.h */,
 				E4E3F87E1860969400970698 /* AnimatedGif.h */,
 				E4E3F87F1860969400970698 /* AnimatedGif.m */,
 			);
@@ -4904,7 +4930,6 @@
 				E4CA2B68187DB09800E14F1D /* WSAssetTableViewController.m in Sources */,
 				E4E3F8BB1860969400970698 /* XXBaseCell.m in Sources */,
 				E4E3F8BC1860969400970698 /* XXBaseIconLabelCell.m in Sources */,
-				E4E3F8BD1860969400970698 /* XXBaseIconLabelCountCell.m in Sources */,
 				E4E3F8BE1860969400970698 /* XXBaseLabelCell.m in Sources */,
 				E4E3F8BF1860969400970698 /* XXBaseTagLabelCell.m in Sources */,
 				E4E3F8C01860969400970698 /* XXCommentCell.m in Sources */,
@@ -5200,6 +5225,7 @@
 				E4CA2B65187DB09800E14F1D /* WSAssetPickerController.m in Sources */,
 				3B5DF35E186AC452000B50D2 /* XMPPRoomOccupantCoreDataStorageObject.m in Sources */,
 				3B5DF35F186AC452000B50D2 /* XMPPRoomHybrid.xcdatamodeld in Sources */,
+				3BE83DB81886756300778849 /* Base64.m in Sources */,
 				3B5DF360186AC452000B50D2 /* XMPPRoomHybridStorage.m in Sources */,
 				3B5DF361186AC452000B50D2 /* XMPPRoomMessageHybridCoreDataStorageObject.m in Sources */,
 				3B5DF362186AC452000B50D2 /* XMPPRoomOccupantHybridMemoryStorageObject.m in Sources */,
@@ -5249,6 +5275,7 @@
 				3B5DF38E186AC452000B50D2 /* XMPPPresence+XEP_0172.m in Sources */,
 				3B5DF38F186AC452000B50D2 /* XMPPMessage+XEP_0184.m in Sources */,
 				3B5DF390186AC452000B50D2 /* XMPPMessageDeliveryReceipts.m in Sources */,
+				3BE83DBC188684E200778849 /* UIBezierPath+ShadowPath.m in Sources */,
 				3B5DF391186AC452000B50D2 /* XMPPAutoPing.m in Sources */,
 				3B5DF392186AC452000B50D2 /* XMPPPing.m in Sources */,
 				3B5DF393186AC452000B50D2 /* XMPPAutoTime.m in Sources */,
@@ -5315,6 +5342,7 @@
 				E4C9B68F1875912E003D6AC9 /* GPUImageRotationFilter.m in Sources */,
 				E4C9B6901875912E003D6AC9 /* GPUImageVideoCamera.m in Sources */,
 				E4C9B6911875912E003D6AC9 /* GPUImageView.m in Sources */,
+				3BE83DB41886747F00778849 /* UIImage+animatedGIF.m in Sources */,
 				E4C9B6921875912E003D6AC9 /* IF1977Filter.m in Sources */,
 				E4C9B6931875912E003D6AC9 /* IFAmaroFilter.m in Sources */,
 				E4C9B6941875912E003D6AC9 /* IFBrannanFilter.m in Sources */,

@@ -8,6 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
-@interface XXChatCell : UITableViewCell
 
+@interface XXChatCell : UITableViewCell
+{
+    XXHeadView *_headView;
+    UIImageView *_bubbleBackView;
+    XXBaseTextView *_contentTextView;
+    
+    XXCustomButton *_recordButton;
+    UIImageView *_recordGif;
+    UIActivityIndicatorView *_activeView;
+    
+    UIImageView *_contentImageView;
+    UILabel     *_timeLabel;
+
+}
 @end

@@ -22,7 +22,6 @@
 #import "XXTeaseBaseCell.h"
 #import "XXBaseCell.h"
 #import "XXBaseIconLabelCell.h"
-#import "XXBaseIconLabelCountCell.h"
 #import "XXBaseLabelCell.h"
 #import "XXBaseTagLabelCell.h"
 #import "XXMessageBaseCell.h"

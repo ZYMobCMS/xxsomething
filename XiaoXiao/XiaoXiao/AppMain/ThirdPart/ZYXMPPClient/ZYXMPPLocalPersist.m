@@ -32,6 +32,7 @@ static dispatch_queue_t ZYXMPPLocalPersistQueue = nil;
     }
     return self;
 }
+
 + (ZYXMPPLocalPersist*)sharePersist
 {
     static ZYXMPPLocalPersist *_localPersist = nil;
@@ -86,6 +87,7 @@ static dispatch_queue_t ZYXMPPLocalPersistQueue = nil;
         
         NSString *insertSql = [NSString stringWithFormat:ZYXMPPLocalPersistInsertRow,newRoomConfig.roomID,newRoomConfig.name,newRoomConfig.description,newRoomConfig.maxUserCount,newRoomConfig.needPasswordProtect,newRoomConfig.maxHistoryMessageReturnCount,newRoomConfig.enableLogging,newRoomConfig.subject,newRoomConfig.allowInivite,newRoomConfig.allowPrivateMsg,newRoomConfig.whoCanBroadCastMsg,newRoomConfig.owner,newRoomConfig.needPersistThisRoom,newRoomConfig.isThisPublicRoom,newRoomConfig.whoCanGetRoomMemberList,newRoomConfig.isRoomForAdminOnly,newRoomConfig.isRoomForMemberOnly,newRoomConfig.whoCanDiscoveryOthersJID,adminsArrayToString,newRoomConfig.secret,newRoomConfig.reconfigState,newRoomConfig.myNickName];
         
+        DDLogVerbose(@"will save new room sql:%@",insertSql);
         NSError *saveRoomSqlError = nil;
         BOOL saveNewRoomConfigResult = [_innerDataBase update:insertSql withErrorAndBindings:&saveRoomSqlError];
         if (saveNewRoomConfigResult) {
@@ -111,6 +113,8 @@ static dispatch_queue_t ZYXMPPLocalPersistQueue = nil;
 - (ZYXMPPRoomConfig*)checkIfNeedReFecthRoomConfigForRoomID:(NSString *)roomID
 {
     NSString *querySql = [NSString stringWithFormat:ZYXMPPQueryRow,roomID];
+    
+    DDLogVerbose(@"find Config sql++++++:%@",querySql);
     
     FMResultSet *resultSet = [_innerDataBase executeQuery:querySql];
     

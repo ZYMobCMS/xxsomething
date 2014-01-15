@@ -30,8 +30,9 @@
 {
     return [NSString stringWithFormat:@"%@_%@",oId,myId];
 }
-+ (NSAttributedString*)attributedContentStringWithMessage:(ZYXMPPMessage *)aMessage
++ (NSAttributedString*)attributedContentStringWithMessage:(ZYXMPPMessage*)aMessage
 {
-    return [XXBaseTextView formatteCommonTextToAttributedText:aMessage.content];
+    return [[NSAttributedString alloc]initWithString:aMessage.content];
 }
+
 @end

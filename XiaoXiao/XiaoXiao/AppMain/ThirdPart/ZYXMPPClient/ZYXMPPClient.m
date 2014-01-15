@@ -23,6 +23,8 @@
 #define kZYXMPPRoomMembers @"kZYXMPPRoomMembers"
 #define ZYXMPPRoomCreateOneRoomFinishedNoti @"ZYXMPPRoomCreateOneRoomFinishedNoti"
 
+static dispatch_queue_t ZYXMPPClientQueue = nil;
+
 @implementation ZYXMPPClient
 @synthesize xmppStream;
 @synthesize xmppReconnect;
@@ -39,7 +41,7 @@
 - (id)init
 {
     if (self = [super init]) {
-        
+        ZYXMPPClientQueue = dispatch_queue_create("com.zyprosoft.clientQueue", NULL);
         _actions = [[NSMutableDictionary alloc]init];
         xmppRooms = [[NSMutableDictionary alloc]init];
         _innerConfigDict = [[NSMutableDictionary alloc]init];
@@ -68,6 +70,31 @@
 {
 	[self teardownStream];
 }
+
+//默认配置
+- (void)clientDefaultConfig
+{
+    [self setNeedAutoJIDWithCustomHostName:YES];
+    [self setNeedBackgroundRecieve:YES];
+    [self setNeedUseCustomHostAddress:YES];
+    
+}
+- (NSString*)myChatID
+{
+    return originJId;
+}
+- (NSString*)myChatJID
+{
+    return _jId;
+}
+- (void)setMyDefaultNickName:(NSString *)nickName
+{
+    myRoomConfig.myNickName = nickName;
+}
+- (NSString*)myNickName
+{
+    return myRoomConfig.myNickName;
+}
 //是否需要补全JID
 - (void)setNeedAutoJIDWithCustomHostName:(BOOL)state
 {
@@ -77,6 +104,11 @@
 #pragma mark - start client
 - (void)startClientWithJID:(NSString *)jidString withPassword:(NSString *)password
 {
+    if (!_serverHost || !_serverPort) {
+        ZYXMPPClientStartFaildAction faildAction = [_actions objectForKey:@"clientStartFaild"];
+        faildAction(@"host or port is null !");
+        return;
+    }
     if (!jidString || !password) {
         ZYXMPPClientStartFaildAction faildAction = [_actions objectForKey:@"clientStartFaild"];
         faildAction(@"jid or password is null !");
@@ -103,23 +135,18 @@
     myRoomConfig.description = [NSString stringWithFormat:@"用户%@创建的聊天室",originJId];
     myRoomConfig.subject = [NSString stringWithFormat:@"用户%@创建的聊天室",originJId];
     myRoomConfig.owner = _jId;
-    [self readAllRoomConfig];
     
     if (![self connect])
 	{
-		if ([_actions objectForKey:@"clientStartFaild"]) {
-            
-            ZYXMPPClientStartFaildAction faildAction = [_actions objectForKey:@"clientStartFaild"];
-            faildAction(@"client start faild");
-        }
-	}else{
-        if ([_actions objectForKey:@"clientStartSuccess"]) {
-            
-            ZYXMPPClientStartSuccessAction successAction = [_actions objectForKey:@"clientStartSuccess"];
-            successAction(@"client start success");
-            [self goOnline];
-        }
-    }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([_actions objectForKey:@"clientStartFaild"]) {
+                
+                ZYXMPPClientStartFaildAction faildAction = [_actions objectForKey:@"clientStartFaild"];
+                faildAction(@"client start faild connect server");
+            }
+        });
+		
+	}
 }
 - (void)clientTearDown
 {
@@ -129,6 +156,10 @@
 - (void)setJabbredServerAddress:(NSString *)address
 {
     _serverHost = address;
+}
+- (void)setJabbredServerPort:(NSString *)port
+{
+    _serverPort = port;
 }
 - (void)setNeedBackgroundRecieve:(BOOL)needBackground
 {
@@ -180,7 +211,7 @@
 - (NSString*)returnCurrentDateTime
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
-    [dateFormatter setDateFormat:@"yyyy-M-d HH:i:s"];
+    [dateFormatter setDateFormat:@"yyyy-M-d HH:mm:ss"];
     
     NSString *currentDateTime = [dateFormatter stringFromDate:[NSDate date]];
     return currentDateTime;
@@ -230,10 +261,11 @@
         //将这条信息的Id返回，以判断是否发送成功
         if ([message attributeStringValueForName:@"id"]) {
             DDLogVerbose(@"send message id :%@",[message attributeStringValueForName:@"id"]);
-            if (sendResult) {
-                sendResult ([message attributeStringValueForName:@"id"],currentTime);
-            }
-            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (sendResult) {
+                    sendResult ([message attributeStringValueForName:@"id"],currentTime);
+                }
+            });
         }
 	}
     
@@ -322,26 +354,33 @@
 {
 	DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
 	
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([_actions objectForKey:@"clientStartSuccess"]) {
+            ZYXMPPClientStartSuccessAction successAction = [_actions objectForKey:@"clientStartSuccess"];
+            successAction(@"login success");
+        }
+    });
+
 	[self goOnline];
-    
+  
 }
 
 - (void)xmppStream:(XMPPStream *)sender didNotAuthenticate:(NSXMLElement *)error
 {
 	DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([_actions objectForKey:@"clientStartFaild"]) {
+            ZYXMPPClientStartFaildAction faildAction = [_actions objectForKey:@"clientStartFaild"];
+            faildAction(@"login faild");
+        }
+    });
 }
 
 - (BOOL)xmppStream:(XMPPStream *)sender didReceiveIQ:(XMPPIQ *)iq
 {
 	DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
 	DDLogVerbose(@"recv iq:%@",[iq description]);
-//    NSError *autoriedError = nil;
-//    if ([[[iq elementForName:@"error"]attributeStringValueForName:@"code"]intValue]==401) {
-//        [[self xmppStream] authenticateWithPassword:@"admin" error:&autoriedError];
-//    }
-//    if (autoriedError) {
-//        DDLogVerbose(@"author error:%@",[autoriedError description]);
-//    }
+
 	return NO;
 }
 
@@ -372,11 +411,13 @@
         {
             if ([received.xmlns isEqualToString:@"urn:xmpp:receipts"])//消息回执
             {
-                //发送成功
-                if ([_actions objectForKey:@"didSendMessageSuccess"]) {
-                    ZYXMPPClientDidSendMessageSuccessAction didSendSuccess = [_actions objectForKey:@"didSendMessageSuccess"];
-                    didSendSuccess([message attributeStringValueForName:@"id"]);
-                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    //发送成功
+                    if ([_actions objectForKey:@"didSendMessageSuccess"]) {
+                        ZYXMPPClientDidSendMessageSuccessAction didSendSuccess = [_actions objectForKey:@"didSendMessageSuccess"];
+                        didSendSuccess([message attributeStringValueForName:@"id"]);
+                    }
+                });
             }
         }
     }
@@ -391,22 +432,26 @@
         NSString *sendUserId = [[message elementForName:@"send_user_id"]stringValue];
         NSString *messageId = [message attributeStringValueForName:@"id"];
         
-        if ([_actions objectForKey:@"recieveMessageSuccess"]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
             
-            ZYXMPPClientDidRecievedMessageAction recieveAction = [_actions objectForKey:@"recieveMessageSuccess"];
-            ZYXMPPMessage *newMessage = [[ZYXMPPMessage alloc]init];
-            newMessage.user = displayName;
-            newMessage.content = body;
-            newMessage.addTime = addTime;
-            newMessage.audioTime = audioTime;
-            newMessage.messageType = messageType;
-            newMessage.userId = sendUserId;
-            newMessage.sendStatus = @"1";
-            newMessage.messageId = messageId;
-            newMessage.conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:newMessage.userId withMyUserId:originJId];
-            newMessage.messageAttributedContent = [ZYXMPPMessage attributedContentStringWithMessage:newMessage];
-            recieveAction (newMessage);
-        }
+            if ([_actions objectForKey:@"recieveMessageSuccess"]) {
+                
+                ZYXMPPClientDidRecievedMessageAction recieveAction = [_actions objectForKey:@"recieveMessageSuccess"];
+                ZYXMPPMessage *newMessage = [[ZYXMPPMessage alloc]init];
+                newMessage.user = displayName;
+                newMessage.content = body;
+                newMessage.addTime = addTime;
+                newMessage.audioTime = audioTime;
+                newMessage.messageType = messageType;
+                newMessage.userId = sendUserId;
+                newMessage.sendStatus = @"1";
+                newMessage.messageId = messageId;
+                newMessage.conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:newMessage.userId withMyUserId:originJId];
+                newMessage.messageAttributedContent = [ZYXMPPMessage attributedContentStringWithMessage:newMessage];
+                recieveAction (newMessage);
+            }
+        });
+        
     }
 }
 
@@ -440,11 +485,19 @@
     if (error) {
         DDLogVerbose(@" DisConnect error :%@",error.description);
     }
-
+    
 	if (!isXmppConnected)
 	{
 		DDLogError(@"Unable to connect to server. Check xmppStream.hostName");
 	}
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([_actions objectForKey:@"clientStartFaild"]) {
+            
+            ZYXMPPClientStartFaildAction faildAction = [_actions objectForKey:@"clientStartFaild"];
+            faildAction(@"error account or password make disconnect error");
+        }
+    });
 }
 //================资源冲突=================
 //- (NSString *)xmppStream:(XMPPStream *)sender alternativeResourceForConflictingResource:(NSString *)conflictingResource
@@ -512,8 +565,8 @@
 
     //聊天室
     xmppRoomStorage = [[XMPPRoomCoreDataStorage alloc]init];
-    XMPPMUC *xmppMuc = [[XMPPMUC alloc]initWithDispatchQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
-    [xmppMuc addDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
+    XMPPMUC *xmppMuc = [[XMPPMUC alloc]initWithDispatchQueue:ZYXMPPClientQueue];
+    [xmppMuc addDelegate:self delegateQueue:ZYXMPPClientQueue];
     
 	// Activate xmpp modules    
 	[xmppReconnect         activate:xmppStream];
@@ -521,13 +574,17 @@
     [xmppMuc activate:xmppStream];
 
 	// Add ourself as a delegate to anything we may be interested in
-	[xmppStream addDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0)];
+	[xmppStream addDelegate:self delegateQueue:ZYXMPPClientQueue];
 
 	
     if (shouldUseCustomHost) {
         [xmppStream setHostName:_serverHost];
     }
-//    [xmppStream setHostPort:5222];
+    if (_serverPort) {
+        [xmppStream setHostPort:[_serverPort intValue]];
+    }else{
+        [xmppStream setHostPort:5222];
+    }
 	
 	// You may need to alter these settings depending on the server you're connecting to
 	allowSelfSignedCertificates = NO;
@@ -715,11 +772,18 @@
 {
    return [_actions objectForKey:@"DestroyRoomSuccessAction"];
 }
-
+- (void)setDidRecieveInviteActioon:(ZYXMPPClientDidRecieveInviteAction)successAction
+{
+    [_actions setObject:successAction forKey:@"DidFinishInvite"];
+}
+- (ZYXMPPClientDidRecieveInviteAction)didRecieveInviteAction
+{
+    return [_actions objectForKey:@"DidFinishInvite"];
+}
 #pragma mark - room chat
 - (NSString *)genrateRoomID
 {
-    NSString *trueJID = [NSString stringWithFormat:@"%@_grouproom",originJId];
+    NSString *trueJID = [NSString stringWithFormat:@"%@_grouproom@conference.%@",[xmppStream generateUUID],_serverHost];
     return trueJID;
 }
 - (void)readAllRoomConfig
@@ -805,7 +869,6 @@
         [xmppRoom addDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
         //
         [xmppRoom joinRoomUsingNickname:originJId history:nil];
-
     }
 }
 
@@ -818,7 +881,7 @@
     xmppRoom  = [[XMPPRoom alloc]initWithRoomStorage:self jid:[XMPPJID jidWithString:myRoomConfig.roomID]];
     BOOL activeNewRoomResult = [xmppRoom activate:xmppStream];
     if (activeNewRoomResult) {
-        [xmppRoom addDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
+        [xmppRoom addDelegate:self delegateQueue:ZYXMPPClientQueue];
         
         //
         [xmppRoom joinRoomUsingNickname:originJId history:nil];
@@ -831,28 +894,19 @@
 }
 - (void)createGroupChatRoomWithRoomConfig:(ZYXMPPRoomConfig *)roomConfig
 {
-    NSMutableDictionary *newRoomDict = [NSMutableDictionary dictionary];
-    XMPPRoomCoreDataStorage *newRoomStorge = [[XMPPRoomCoreDataStorage alloc]init];
-    NSString *roomJID = [ZYXMPPRoomConfig realRoomJIDWithID:roomConfig.roomID withHostName:_serverHost];
-    roomConfig.roomID = roomJID;
-    XMPPRoom *newRoom = [[XMPPRoom alloc]initWithRoomStorage:newRoomStorge jid:[XMPPJID jidWithString:roomJID]];
-    [newRoom configureRoomUsingOptions:nil];//默认没有配置，随后服务器会发送填写配置的表单过来
-    BOOL activeNewRoomResult = [newRoom activate:self.xmppStream];
+    XMPPJID *roomJID = [XMPPJID jidWithString:roomConfig.roomID];
+    roomConfig.reconfigState = YES;
+    xmppRoom= [[XMPPRoom alloc]initWithRoomStorage:self jid:roomJID];
+    roomConfig.roomID = [roomJID full];
+    BOOL activeNewRoomResult = [xmppRoom activate:self.xmppStream];
     if (activeNewRoomResult) {
-        DDLogVerbose(@"active room success:%@ ",newRoom.description);
-        [newRoom addDelegate:self delegateQueue:dispatch_get_main_queue()];
-        
+        DDLogVerbose(@"active room success:%@ ",xmppRoom.description);
+        [xmppRoom addDelegate:self delegateQueue:ZYXMPPClientQueue];
         //自己加入
-        [newRoom joinRoomUsingNickname:roomConfig.myNickName history:nil];
-        
-        //保存聊天室信息
-        [newRoomDict setObject:newRoom forKey:kZYXMPPRoom];
-        [newRoomDict setObject:newRoomStorge forKey:kZYXMPPRoomStorge];
-        [xmppRooms setObject:newRoomDict forKey:roomJID];
-        
+        [xmppRoom joinRoomUsingNickname:roomConfig.myNickName history:nil];
         //持久化
         [[ZYXMPPLocalPersist sharePersist]saveNewLocalRoomWithConfigure:roomConfig];
-    }    
+    }
 }
 - (void)createDefaultConfigGroupChatRoomSpecialWithRoomName:(NSString *)roomName
 {
@@ -863,28 +917,27 @@
     [self createGroupChatRoomWithRoomConfig:newConfig];
     
 }
+
+//邀请别人
+- (void)inviteUser:(NSString *)userJID toRoom:(NSString *)roomID
+{
+    NSString *realJID = [NSString stringWithFormat:@"%@@%@",userJID,_serverHost];
+    [xmppRoom inviteUser:[XMPPJID jidWithString:realJID] withMessage:@"join me!"];
+}
+
 //加入目标聊天室
 - (void)joinGroupChatRoomWithRoomId:(NSString *)roomID withNickName:(NSString *)nickName
 {
-    [self enterRoom:roomID];
-//    NSMutableDictionary *newRoomDict = [NSMutableDictionary dictionary];
-//    NSString *roomJID = [ZYXMPPRoomConfig realRoomJIDWithID:roomID withHostName:_serverHost];
-//    xmppRoom = [[XMPPRoom alloc]initWithRoomStorage:xmppRoomStorage jid:[XMPPJID jidWithString:roomJID]];
-//    
-//    BOOL activeNewRoomResult = [xmppRoom activate:self.xmppStream];
-//    if (activeNewRoomResult) {
-//        DDLogVerbose(@"active room success:%@ ",xmppRoom.description);
-//        [xmppRoom addDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0)];
-//        
-//        //自己加入
-//        [xmppRoom joinRoomUsingNickname:nickName history:nil];
-//        
-//        //保存聊天室信息
-//        [xmppRooms setObject:newRoomDict forKey:roomJID];
-//        
-//        //持久化
-//        [[ZYXMPPLocalPersist sharePersist]saveOthersRoomWithRoomID:roomID];
-//    }
+    xmppRoom = [[XMPPRoom alloc]initWithRoomStorage:xmppRoomStorage jid:[XMPPJID jidWithString:roomID]];
+    BOOL activeNewRoomResult = [xmppRoom activate:self.xmppStream];
+    if (activeNewRoomResult) {
+        DDLogVerbose(@"active room success:%@ ",xmppRoom.description);
+        [xmppRoom addDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0)];
+        //自己加入
+        [xmppRoom joinRoomUsingNickname:myRoomConfig.myNickName history:nil];
+        //持久化
+        [[ZYXMPPLocalPersist sharePersist]saveOthersRoomWithRoomID:roomID];
+    }
     
 }
 
@@ -903,78 +956,6 @@
     [presence addAttributeWithName:@"type" stringValue:@"get"];
     [[self xmppStream] sendElement:presence];
 
-}
-- (void)enterRoom:(NSString*)roomID
-{
-    //query nick
-    [self queryRoomNickName:roomID];
-    
-    //here we enter a room, or if the room does not yet exist, this method creates it
-    //per XMPP documentation: "If the room does not yet exist, the service SHOULD create the room"
-    //this method accepts an argument which is what you would baptize the room you wish created
-    NSString *roomJID = [ZYXMPPRoomConfig realRoomJIDWithID:roomID withHostName:_serverHost];
-    NSXMLElement *presence = [NSXMLElement elementWithName:@"presence"];
-    NSString *qId = [xmppStream generateUUID];
-    [presence addAttributeWithName:@"to" stringValue:roomJID];
-    [presence addAttributeWithName:@"id" stringValue:qId];
-    NSString *fromNick = [NSString stringWithFormat:@"%@/vincent",roomJID];
-    [presence addAttributeWithName:@"from" stringValue:fromNick];
-    NSXMLElement *x = [NSXMLElement elementWithName:@"x" xmlns:@"http://jabber.org/protocol/muc"];
-    [presence addChild:x];
-    [[self xmppStream] sendElement:presence];
-    
-}
-
-//退出目标聊天室
-- (void)quitFromRoom:(NSString *)roomID
-{
-    //看看当前有没有登陆这个群
-    [xmppRooms enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        NSDictionary *roomDict = (NSDictionary*)obj;
-        XMPPRoom *existRoom = [roomDict objectForKey:kZYXMPPRoom];
-        NSString *roomJID = [existRoom.roomJID full];
-        if ([roomJID isEqualToString:roomJID]) {            
-            //退群
-            [existRoom leaveRoom];
-            [[ZYXMPPLocalPersist sharePersist]deleteRoomInfoWithRoomID:roomJID];
-            //再向远程发送一个群删除信息
-            *stop = YES;
-        }
-    }];
-}
-- (void)destoryRoomWithRoomID:(NSString *)roomID
-{
-    //看看当前有没有登陆这个群
-    [xmppRooms enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        NSDictionary *roomDict = (NSDictionary*)obj;
-        XMPPRoom *existRoom = [roomDict objectForKey:kZYXMPPRoom];
-        NSString *roomJID = [existRoom.roomJID full];
-        if ([roomJID isEqualToString:roomJID]) {
-            //退群
-            [existRoom destroyRoom];
-            [[ZYXMPPLocalPersist sharePersist]deleteRoomInfoWithRoomID:roomJID];
-            //再向远程发送一个群删除信息
-            *stop = YES;
-        }
-    }];
-}
-
-- (void)getMemberListFomRoom:(NSString *)roomID withSuccessAction:(ZYXMPPClientGetRoomMemberListResultAction)successAction
-{
-    //一定要登陆了的群聊天室才能看到，因为只有登陆的才会返回群成员
-    [xmppRooms enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        NSDictionary *roomDict = (NSDictionary*)obj;
-        XMPPRoom *existRoom = [roomDict objectForKey:kZYXMPPRoom];
-        NSString *roomJID = [existRoom.roomJID full];
-        if ([roomJID isEqualToString:roomJID]) {
-            
-            NSArray *memebList = [[ZYXMPPLocalPersist sharePersist]getRoomAllUsersWithRoomID:roomID];
-            if (successAction) {
-                successAction(memebList);
-            }
-            *stop = YES;
-        }
-    }];
 }
 
 - (void)sendRoomChatMessage:(ZYXMPPMessage *)newMessage toRoomJID:(NSString *)roomJID
@@ -1001,6 +982,11 @@
         
         NSString *siID = [XMPPStream generateUUID];
         XMPPMessage *message = [XMPPMessage messageWithType:@"groupchat" elementID:siID];
+        NSXMLElement *from = [NSXMLElement attributeWithName:@"from" stringValue:[NSString stringWithFormat:@"%@/%@",_jId,myRoomConfig.myNickName]];
+        NSXMLElement *to = [NSXMLElement attributeWithName:@"to" stringValue:roomJID];
+        [message addAttribute:from];
+        [message addAttribute:to];
+        
 		[message addChild:body];
         [message addChild:messageType];
         [message addChild:sendUser];
@@ -1014,6 +1000,15 @@
         
 	}
 
+}
+
+- (void)saveGroupChatViewController:(UIViewController *)groupVC forRoomID:(NSString *)roomID
+{
+    [xmppRooms setObject:groupVC forKey:roomID];
+}
+- (void)removeGroupChatViewForRoomID:(NSString *)roomID
+{
+    [xmppRooms removeObjectForKey:roomID];
 }
 
 #pragma mark xmpproom delegate
@@ -1038,6 +1033,7 @@
     NSString *roomJID = [[sender roomJID]full];
     
     ZYXMPPRoomConfig *checkConfig = [[ZYXMPPLocalPersist sharePersist]checkIfNeedReFecthRoomConfigForRoomID:roomJID];
+    DDLogVerbose(@"Fetch Config to Find Config:%@",checkConfig);
     if (checkConfig) {
         
         DDLogVerbose(@"check config:%@",checkConfig);
@@ -1141,18 +1137,23 @@
         
         if ([_actions objectForKey:@"didRecieveGroupMessageSuccess"]) {
             
-            ZYXMPPClientDidRecievedMessageAction recieveAction = [_actions objectForKey:@"didRecieveGroupMessageSuccess"];
-            ZYXMPPMessage *newMessage = [[ZYXMPPMessage alloc]init];
-            newMessage.user = displayName;
-            newMessage.content = body;
-            newMessage.addTime = addTime;
-            newMessage.audioTime = audioTime;
-            newMessage.messageType = messageType;
-            newMessage.userId = sendUserId;
-            newMessage.sendStatus = @"1";
-            
-            DDLogVerbose(@"new group messsage:%@",newMessage);
-            recieveAction (newMessage);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                
+                ZYXMPPClientDidRecievedMessageAction recieveAction = [_actions objectForKey:@"didRecieveGroupMessageSuccess"];
+                ZYXMPPMessage *newMessage = [[ZYXMPPMessage alloc]init];
+                newMessage.user = displayName;
+                newMessage.content = body;
+                newMessage.addTime = addTime;
+                newMessage.audioTime = audioTime;
+                newMessage.messageType = messageType;
+                newMessage.userId = sendUserId;
+                newMessage.sendStatus = @"1";
+                
+                DDLogVerbose(@"new group messsage:%@",newMessage);
+                recieveAction (newMessage);
+                
+            });
         }
     }
 }
@@ -1245,13 +1246,19 @@
 }
 
 //================ MUC Delegate ================
+#pragma mark - MUC Delegate
 - (void)xmppMUC:(XMPPMUC *)sender roomJID:(XMPPJID *)roomJID didReceiveInvitation:(XMPPMessage *)message
 {
-        XMPPRoom *newRoom = [[XMPPRoom alloc]initWithRoomStorage:nil jid:roomJID];
-        [newRoom activate:xmppStream];
-        [newRoom addDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
-        [newRoom joinRoomUsingNickname:myRoomConfig.myNickName history:nil];
-
+    if ([self didRecieveInviteAction]) {
+        
+        ZYXMPPClientDidRecieveInviteAction inviteAction = [self didRecieveInviteAction];
+        dispatch_async(dispatch_get_main_queue(), ^{
+           
+            inviteAction (YES,[roomJID full]);
+            
+        });
+        
+    }
 }
 - (void)xmppMUC:(XMPPMUC *)sender roomJID:(XMPPJID *)roomJID didReceiveInvitationDecline:(XMPPMessage *)message
 {

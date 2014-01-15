@@ -197,8 +197,6 @@ NSString *const ZYXMPPRoomRoleAnyone = @"anyone";
         [roomSettings addChild:roomSecretField];
     }
    
-    DDLogVerbose(@"room settings :%@",roomSettings);
-
     return roomSettings;
 }
 
