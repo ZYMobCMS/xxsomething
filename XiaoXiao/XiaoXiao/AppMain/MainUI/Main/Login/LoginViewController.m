@@ -56,12 +56,17 @@
     newUser.account = _FormView.accountTextField.text;
     newUser.password = _FormView.passwordTextField.text;
     
+    
+    _hud.labelText = @"正在登陆";
+    [_hud show:YES];
     [[XXMainDataCenter shareCenter]requestLoginWithNewUser:newUser withSuccessLogin:^(XXUserModel *detailUser) {
+        [_hud hide:YES];
         [SVProgressHUD showSuccessWithStatus:@"登陆成功"];
         if (_resultBlock) {
             _resultBlock(YES);
         }
     } withFaildLogin:^(NSString *faildMsg) {
+        [_hud hide:YES];
         [SVProgressHUD showErrorWithStatus:faildMsg];
         if (_resultBlock) {
             _resultBlock(NO);

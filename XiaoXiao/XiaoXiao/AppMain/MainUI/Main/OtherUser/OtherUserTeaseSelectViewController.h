@@ -13,6 +13,6 @@
     NSMutableArray *_teaseImagesArray;
     UITableView *_tableView;
 }
-
+@property (nonatomic,strong)NSString *selectUser;
 
 @end

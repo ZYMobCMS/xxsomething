@@ -9,13 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "XXSchoolModel.h"
 #import "XXSearchBar.h"
+#import "XXBaseViewController.h"
 
 /*
  *通用学校搜索列表
  */
 typedef void (^XXSchoolSearchViewControllerFinishChooseBlock) (XXSchoolModel *chooseSchool);
 
-@interface XXSchoolSearchViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+@interface XXSchoolSearchViewController : XXBaseViewController<UITableViewDelegate,UITableViewDataSource>
 {
     XXSchoolSearchViewControllerFinishChooseBlock _chooseBlock;
     XXCommonNavigationNextStepBlock _nextStepBlock;

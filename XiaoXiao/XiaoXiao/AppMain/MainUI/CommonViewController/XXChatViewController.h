@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XXBaseViewController.h"
 
 /*
  *基础聊天视图列表
  */
 
-@interface XXChatViewController : UIViewController
+@interface XXChatViewController : XXBaseViewController
 
 @end

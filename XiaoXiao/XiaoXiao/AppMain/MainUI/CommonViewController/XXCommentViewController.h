@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XXBaseViewController.h"
 
 /*
  *基础评论列表
  */
 
-@interface XXCommentViewController : UIViewController
+@interface XXCommentViewController : XXBaseViewController
 
 @end

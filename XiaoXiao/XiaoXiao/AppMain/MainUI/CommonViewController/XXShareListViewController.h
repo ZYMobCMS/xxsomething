@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XXBaseViewController.h"
 
 /*
  *通用分享列表
  */
 
-@interface XXShareListViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+@interface XXShareListViewController : XXBaseViewController<UITableViewDelegate,UITableViewDataSource>
 {
     UITableView *_shareListTable;
     UIRefreshControl *_refreshControl;

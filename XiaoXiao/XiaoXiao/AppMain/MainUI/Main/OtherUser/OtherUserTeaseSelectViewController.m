@@ -8,6 +8,7 @@
 
 #import "OtherUserTeaseSelectViewController.h"
 #import "OtherTeaseCell.h"
+#import "OtherUserSendTeaseViewController.h"
 
 @interface OtherUserTeaseSelectViewController ()
 
@@ -28,6 +29,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    CGFloat totoalHeight = XXNavContentHeight -44-49;
     
     _teaseImagesArray = [[NSMutableArray alloc]init];
     NSMutableArray *itemArray = [NSMutableArray array];
@@ -42,7 +44,7 @@
         }
     }
     
-    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0,0,self.view.frame.size.width,self.view.frame.size.height-44) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0,0,self.view.frame.size.width,totoalHeight) style:UITableViewStylePlain];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.backgroundColor = [UIColor clearColor];
@@ -91,7 +93,11 @@
 //config select tease
 - (void)teaseSelectDidSelectTease:(NSInteger)rowIndex withSelectIndex:(NSInteger)selectIndex
 {
-    
+    OtherUserSendTeaseViewController *sendVC = [[OtherUserSendTeaseViewController alloc]init];
+    sendVC.title = @"发送挑逗";
+    sendVC.teaseEmoji = [[_teaseImagesArray objectAtIndex:rowIndex]objectAtIndex:selectIndex];
+    [self.navigationController pushViewController:sendVC animated:YES];
+    [sendVC setSelecteTeaseEmoji:[[_teaseImagesArray objectAtIndex:rowIndex]objectAtIndex:selectIndex]  toUser:self.selectUser];
 }
 
 @end

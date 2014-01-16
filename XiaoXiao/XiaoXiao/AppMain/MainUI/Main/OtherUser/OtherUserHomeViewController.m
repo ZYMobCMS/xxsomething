@@ -11,6 +11,8 @@
 #import "OtherHomeButtonCell.h"
 #import "OtherHomeMutilTextCell.h"
 #import "OtherUserTeaseSelectViewController.h"
+#import "OtherUserShareListViewController.h"
+#import "OtherUserFansListViewController.h"
 
 @interface OtherUserHomeViewController ()
 
@@ -31,6 +33,8 @@
     if (self = [super init]) {
         
         _currentUser = aUser;
+        self.title = aUser.nickName;
+        
     }
     return self;
 }
@@ -38,6 +42,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [XXCommonUitil setCommonNavigationReturnItemForViewController:self];
     
     //
     guideVCArray = [[NSMutableArray alloc]init];
@@ -62,7 +67,7 @@
     [guideVCArray addObject:userArray];
 
     
-    CGFloat totalHeight = XXNavContentHeight-44;
+    CGFloat totalHeight = XXNavContentHeight-44-49;
     CGFloat totalWidth = self.view.frame.size.width;
     
     guideTable = [[UITableView alloc]initWithFrame:CGRectMake(0,0,totalWidth,totalHeight) style:UITableViewStylePlain];
@@ -97,7 +102,7 @@
         
         if (!cell) {
             cell = [[OtherHomeHeadCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            [cell setTeaseBlock:^{
+            [cell setTeaseActionBlock:^{
                 [self teaseAction];
             }];
         }
@@ -170,12 +175,25 @@
     headView.backgroundColor = [UIColor clearColor];
     return headView;
 }
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section==1) {
+        OtherUserShareListViewController *shareVC = [[OtherUserShareListViewController alloc]init];
+        shareVC.otherUserId = _currentUser.userId;
+        [self.navigationController pushViewController:shareVC animated:YES];
+    }
+    if (indexPath.section==2&&indexPath.row==[[guideVCArray objectAtIndex:indexPath.section]count]-1) {
+        OtherUserFansListViewController *fansVC = [[OtherUserFansListViewController alloc]init];
+        [self.navigationController pushViewController:fansVC animated:YES];
+    }
+}
 
 #pragma mark config select tease
 - (void)teaseAction
 {
     OtherUserTeaseSelectViewController *teaseVC = [[OtherUserTeaseSelectViewController alloc]init];
     teaseVC.title = @"表情选择";
+    teaseVC.selectUser = _currentUser.userId;
     [self.navigationController pushViewController:teaseVC animated:YES];
     [XXCommonUitil setCommonNavigationReturnItemForViewController:teaseVC];
 

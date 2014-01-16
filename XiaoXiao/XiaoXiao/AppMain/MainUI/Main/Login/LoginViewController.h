@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "XXFormView.h"
+#import "XXBaseViewController.h"
 
 typedef void (^LoginViewControllerResultBlock) (BOOL resultState);
 
-@interface LoginViewController : UIViewController
+@interface LoginViewController : XXBaseViewController
 {
     XXFormView *_FormView;
     LoginViewControllerResultBlock _resultBlock;

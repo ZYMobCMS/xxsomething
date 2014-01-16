@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XXBaseViewController.h"
 
 /*
  *通用用户列表
  */
 
-@interface XXBaseUserListViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+@interface XXBaseUserListViewController : XXBaseViewController<UITableViewDelegate,UITableViewDataSource>
 {
     UITableView *_userListTable;
     UIRefreshControl *_refreshControl;

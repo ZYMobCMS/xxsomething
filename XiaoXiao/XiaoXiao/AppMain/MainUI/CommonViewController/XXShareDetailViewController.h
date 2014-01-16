@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "XXCommentCell.h"
 #import "XXChatToolBar.h"
+#import "XXBaseViewController.h"
 
-@interface XXShareDetailViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+@interface XXShareDetailViewController : XXBaseViewController<UITableViewDelegate,UITableViewDataSource>
 {
     UITableView *_tableView;
     NSInteger   _currentPageIndex;

@@ -7,25 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OtherUserHomeHeadView.h"
 
-typedef void (^OtherUserHomeHeadViewTeaseBlock) (void);
 
+typedef void (^OtherHomeHeadCellTeaseBlock) (void);
 @interface OtherHomeHeadCell : UITableViewCell
 {
-    UIImageView *_themeBackgroundView;
-    UIImageView *_infoBackgroundView;
-    XXHeadView  *_headView;
-    UILabel     *_nameLabel;
-    UIImageView *_sexImageView;
-    UILabel     *_starLabel;
-    
-    XXOpacityView *_wellknowView;
-    
-    XXCustomButton *_teaseButton;
-    
-    OtherUserHomeHeadViewTeaseBlock _teaseBlock;
+    OtherUserHomeHeadView  *_headView;
+    OtherHomeHeadCellTeaseBlock _teaseBlock;
 }
+
 - (void)setContentUser:(XXUserModel*)aUser;
-- (void)setTeaseBlock:(OtherUserHomeHeadViewTeaseBlock)teaseBlock;
+- (void)setTeaseActionBlock:(OtherHomeHeadCellTeaseBlock)teaseBlock;
 
 @end

@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XXBaseViewController.h"
 
 typedef void (^LoginGuideFinishLoginBlock) (BOOL loginResult);
 
-@interface GuideViewController : UIViewController
+@interface GuideViewController : XXBaseViewController
 {
     LoginGuideFinishLoginBlock _finishBlock;
 }

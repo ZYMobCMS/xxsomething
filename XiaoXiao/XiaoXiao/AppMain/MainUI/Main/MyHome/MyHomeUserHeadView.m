@@ -36,13 +36,13 @@
         //
         _nameLabel = [[UILabel alloc]init];
         _nameLabel.frame = CGRectMake(135,0,180,35);
-        _nameLabel.backgroundColor = [UIColor greenColor];
+        _nameLabel.backgroundColor = [UIColor clearColor];
         _nameLabel.textColor = [UIColor blackColor];
         [_infoBackgroundView addSubview:_nameLabel];
         
         //
         _signuareView = [[UILabel alloc]initWithFrame:CGRectMake(135,frame.size.height*3/4+25,180,35)];
-        _signuareView.backgroundColor = [UIColor redColor];
+        _signuareView.backgroundColor = [UIColor clearColor];
         [self addSubview:_signuareView];
         
         //

@@ -42,50 +42,55 @@
 	// Do any additional setup after loading the view.
     self.view.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
     
+    CGFloat totalHeight = XXNavContentHeight;
+    
     UIImageView *logoImgView = [[UIImageView alloc]init];
-    logoImgView.frame = CGRectMake(50,50,50,50);
+    logoImgView.frame = CGRectMake(130,100,55,55);
     logoImgView.image = [UIImage imageNamed:@"login_logo.png"];
     [self.view addSubview:logoImgView];
     
     UIImageView *logoNameImageView = [[UIImageView alloc]init];
-    logoNameImageView.frame = CGRectMake(50,105,50,40);
-    logoNameImageView.image = [UIImage imageNamed:@"logoin_logo_name.png"];
+    logoNameImageView.frame = CGRectMake(130,170,55,55);
+    logoNameImageView.image = [UIImage imageNamed:@"login_logo_name.png"];
     [self.view addSubview:logoNameImageView];
     
     UIImageView *loginIntroduceImageView = [[UIImageView alloc]init];
-    loginIntroduceImageView.frame = CGRectMake(50,180,100,20);
+    loginIntroduceImageView.frame = CGRectMake(70,235,150,20);
     loginIntroduceImageView.image = [UIImage imageNamed:@"login_introduce.png"];
     [self.view addSubview:loginIntroduceImageView];
     
     //
     UIButton *loginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    loginBtn.frame = CGRectMake(5,220,100,40);
+    loginBtn.frame = CGRectMake(6,totalHeight-80-20,148,40);
     [loginBtn setTitle:@"登陆校校" forState:UIControlStateNormal];
     [loginBtn defaultStyle];
     [loginBtn addTarget:self action:@selector(loginAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:loginBtn];
     
     UIButton *registBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    registBtn.frame = CGRectMake(110,220,100,40);
+    registBtn.frame = CGRectMake(164,totalHeight-80-20,148,40);
     [registBtn setTitle:@"注册校校" forState:UIControlStateNormal];
     [registBtn defaultStyle];
     [registBtn addTarget:self action:@selector(registAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:registBtn];
     
     //qq login
-    XXCustomButton *qqloginBtn = [[XXCustomButton alloc]initWithFrame:CGRectMake(50,270,100,40)];
-    qqloginBtn.frame = CGRectMake(50,270,100,40);
+    XXCustomButton *qqloginBtn = [XXCustomButton buttonWithType:UIButtonTypeCustom];
+    qqloginBtn.frame = CGRectMake(6,totalHeight-40-10,148,40);
     [qqloginBtn defaultStyle];
-    qqloginBtn.iconImageView.image = [UIImage imageNamed:@"login_QQ.png"];
-    [qqloginBtn setTitle:@"QQ登陆" forState:UIControlStateNormal];
+    [qqloginBtn setNormalIconImage:@"login_QQ.png" withSelectedImage:@"login_QQ.png" withFrame:CGRectMake(30,10,20,20)];
+    [qqloginBtn setTitle:@"QQ登陆" withFrame:CGRectMake(65,5,80,30)];
+    qqloginBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [qqloginBtn addTarget:self action:@selector(qqLoginAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:qqloginBtn];
     
     //weibo login
-    XXCustomButton *weibologinBtn = [[XXCustomButton alloc]initWithFrame:CGRectMake(155,270,100,40)];
+    XXCustomButton *weibologinBtn = [XXCustomButton buttonWithType:UIButtonTypeCustom];
+    weibologinBtn.frame = CGRectMake(164,totalHeight-40-10,148,40);
     [weibologinBtn defaultStyle];
-    weibologinBtn.iconImageView.image = [UIImage imageNamed:@"login_WeiBo.png"];
-    [weibologinBtn setTitle:@"微博登陆" forState:UIControlStateNormal];
+    [weibologinBtn setNormalIconImage:@"login_WeiBo.png" withSelectedImage:@"login_WeiBo.png" withFrame:CGRectMake(30,10,20,20)];
+    [weibologinBtn setTitle:@"微博登陆" withFrame:CGRectMake(65,5,80,30)];
+    weibologinBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [weibologinBtn addTarget:self action:@selector(weiboLoginAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:weibologinBtn];
 }

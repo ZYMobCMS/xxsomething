@@ -36,8 +36,8 @@
         
         //
         _nameLabel = [[UILabel alloc]init];
-        _nameLabel.frame = CGRectMake(50,0,180,35);
-        _nameLabel.backgroundColor = [UIColor greenColor];
+        _nameLabel.frame = CGRectMake(50,30,180,35);
+        _nameLabel.backgroundColor = [UIColor clearColor];
         _nameLabel.textColor = [UIColor blackColor];
         _nameLabel.textAlignment = NSTextAlignmentCenter;
         [_infoBackgroundView addSubview:_nameLabel];
@@ -62,7 +62,6 @@
         _teaseButton.frame = CGRectMake(110,_starLabel.frame.origin.y+_starLabel.frame.size.height,130, 35);
         [_teaseButton teaseStyle];
         [_teaseButton setNormalIconImage:@"other_tease.png" withSelectedImage:@"other_tease.png" withFrame:CGRectMake(20,5,27,18)];
-        [_teaseButton addTarget:self action:@selector(teaseAction) forControlEvents:UIControlEventTouchUpInside];
         [_teaseButton setTitle:@"挑逗" withFrame:CGRectMake(55,5,100,30)];
         _teaseButton.layer.cornerRadius = 17.f;
         [_infoBackgroundView addSubview:_teaseButton];
@@ -80,12 +79,6 @@
 }
 */
 
-- (void)teaseAction
-{
-    if (_teaseBlock) {
-        _teaseBlock();
-    }
-}
 
 - (void)setContentUser:(XXUserModel *)aUser
 {
@@ -95,8 +88,9 @@
     NSString *sexTag = [aUser.sex boolValue]? @"sex_tag_1.png":@"sex_tag_0.png";
     _sexImageView.image = [UIImage imageNamed:sexTag];
 }
-- (void)setTeaseBlock:(OtherUserHomeHeadViewTeaseBlock)teaseBlock
+
+- (void)addTagert:(id)target forTeaseAction:(SEL)teaseAction
 {
-    _teaseBlock = [teaseBlock copy];
+    [_teaseButton addTarget:target action:teaseAction forControlEvents:UIControlEventTouchUpInside];
 }
 @end

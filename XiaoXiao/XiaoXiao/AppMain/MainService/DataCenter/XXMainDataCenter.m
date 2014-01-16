@@ -489,6 +489,13 @@
 //关心我的列表搜索
 - (void)requestCareMeFriendWithConditionFriend:(XXUserModel*)conditionFriend withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
 {
+    if (!conditionFriend.userId) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     if(conditionFriend.keyword){
         [params setObject:conditionFriend.keyword forKey:@"keyword"];

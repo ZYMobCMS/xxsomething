@@ -22,21 +22,27 @@
         CGFloat margin = 15.f;
         CGFloat eachItemWidth = (self.frame.size.width- 4*margin)/3;
         
-        UITapGestureRecognizer *tapR = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapTease:)];
+        UITapGestureRecognizer *tapRLeft = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapTease:)];
         _teaseLeftImgView = [[UIImageView alloc]init];
         _teaseLeftImgView.frame = CGRectMake(margin,5,eachItemWidth,eachItemWidth);
-        [_teaseLeftImgView addGestureRecognizer:tapR];
+        [_teaseLeftImgView addGestureRecognizer:tapRLeft];
         [self.contentView addSubview:_teaseLeftImgView];
         
+        UITapGestureRecognizer *tapRMid = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapTease:)];
         _teaseMiddelImgView = [[UIImageView alloc]init];
         _teaseMiddelImgView.frame = CGRectMake(2*margin+eachItemWidth,5,eachItemWidth,eachItemWidth);
-        [_teaseMiddelImgView addGestureRecognizer:tapR];
+        [_teaseMiddelImgView addGestureRecognizer:tapRMid];
         [self.contentView addSubview:_teaseMiddelImgView];
         
+        UITapGestureRecognizer *tapRRight = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapTease:)];
         _teaseRightImgView = [[UIImageView alloc]init];
         _teaseRightImgView.frame = CGRectMake(3*margin+2*eachItemWidth,5,eachItemWidth,eachItemWidth);
-        [_teaseRightImgView addGestureRecognizer:tapR];
+        [_teaseRightImgView addGestureRecognizer:tapRRight];
         [self.contentView addSubview:_teaseRightImgView];
+        
+        _teaseLeftImgView.userInteractionEnabled = YES;
+        _teaseMiddelImgView.userInteractionEnabled = YES;
+        _teaseRightImgView.userInteractionEnabled = YES;
         
     }
     return self;

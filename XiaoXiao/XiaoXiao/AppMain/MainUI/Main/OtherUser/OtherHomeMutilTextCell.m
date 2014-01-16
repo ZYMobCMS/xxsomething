@@ -59,6 +59,8 @@
         CGRect oldContentFrame = _contentLabel.frame;
         _contentLabel.frame = CGRectMake(oldContentFrame.origin.x,oldContentFrame.origin.y,oldContentFrame.size.width,contentSize.height);
         _contentLabel.text=content;
+        CGRect backOldRect = _backgroundImageView.frame;
+        _backgroundImageView.frame = CGRectMake(backOldRect.origin.x,backOldRect.origin.y,backOldRect.size.width,contentSize.height+45);
     }else{
         _contentLabel.hidden = YES;
         _countLabel.text = content;
