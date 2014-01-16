@@ -15,12 +15,6 @@
     UILabel     *_tagLabel;
     UILabel     *_detailTagLabel;
     UIImageView *_indicatorView;
-    
-    //
-    CGFloat _leftMargin;
-    CGFloat _rightMargin;
-    CGFloat _innerMargin;
-    CGFloat _topMargin;
 }
 
 - (void)setContentDict:(NSDictionary*)contentDict;

@@ -16,6 +16,10 @@
     if (self) {
         // Initialization code
         self.backgroundColor = [UIColor clearColor];
+        _leftMargin = 10.f;
+        _innerMargin = 4.f;
+        _rightMargin = 10.f;
+        _topMargin = 5.f;
         
         self.titleLabel = [[UILabel alloc]init];
         self.titleLabel.backgroundColor = [UIColor clearColor];

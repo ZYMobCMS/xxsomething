@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void (^OtherUserHomeHeadViewTeaseBlock) (void);
+
 @interface OtherUserHomeHeadView : UIView
 {
     UIImageView *_themeBackgroundView;
@@ -20,6 +22,10 @@
     XXOpacityView *_wellknowView;
     
     XXCustomButton *_teaseButton;
+    
+    OtherUserHomeHeadViewTeaseBlock _teaseBlock;
 }
 - (void)setContentUser:(XXUserModel*)aUser;
+- (void)setTeaseBlock:(OtherUserHomeHeadViewTeaseBlock)teaseBlock;
+
 @end

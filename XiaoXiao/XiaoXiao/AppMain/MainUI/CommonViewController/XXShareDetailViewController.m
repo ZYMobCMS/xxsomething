@@ -7,6 +7,7 @@
 //
 
 #import "XXShareDetailViewController.h"
+#import "OtherUserHomeViewController.h"
 
 @interface XXShareDetailViewController ()
 
@@ -194,6 +195,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

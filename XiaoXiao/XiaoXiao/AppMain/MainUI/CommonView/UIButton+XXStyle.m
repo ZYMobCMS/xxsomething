@@ -49,7 +49,12 @@
 
 - (void)teaseStyle
 {
-    
+    [self bootstrapStyle];
+    [self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    self.backgroundColor = [XXCommonStyle xxThemeTeaseBackColor];
+    self.layer.borderColor = [XXCommonStyle xxThemeTeaseBackColor].CGColor;
+    [self setBackgroundImage:[self buttonImageFromColor:[XXCommonStyle xxThemeTeaseBackSelectedColor]] forState:UIControlStateHighlighted];
 }
 
 - (UIImage *) buttonImageFromColor:(UIColor *)color {

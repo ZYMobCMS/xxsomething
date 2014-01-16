@@ -7,6 +7,7 @@
 //
 
 #import "InSchoolSearchUserListViewController.h"
+#import "InSchoolUserFilterViewController.h"
 
 @interface InSchoolSearchUserListViewController ()
 
@@ -29,7 +30,13 @@
 	// Do any additional setup after loading the view.
     self.title = @"校内人";
     [XXCommonUitil setCommonNavigationReturnItemForViewController:self];
-
+    [XXCommonUitil setCommonNavigationNextStepItemForViewController:self withIconImage:@"nav_share_post_setting.png" withNextStepAction:^{
+        InSchoolUserFilterViewController *filterVC = [[InSchoolUserFilterViewController alloc]init];
+        filterVC.title = @"按条件筛选";
+        [XXCommonUitil setCommonNavigationReturnItemForViewController:filterVC];
+        [self.navigationController pushViewController:filterVC animated:YES];
+    }];
+    
     [_refreshControl beginRefreshing];
     [self refresh];
 }

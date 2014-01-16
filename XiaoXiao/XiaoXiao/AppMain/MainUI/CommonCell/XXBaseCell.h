@@ -13,6 +13,12 @@
 {
     TKRoundedView *_backgroundImageView;
     UIImageView *_cellLineImageView;
+    
+    //
+    CGFloat _leftMargin;
+    CGFloat _rightMargin;
+    CGFloat _innerMargin;
+    CGFloat _topMargin;
 }
 @property (nonatomic,strong)UIImage *backImage;
 @property (strong,nonatomic)UILabel *titleLabel;

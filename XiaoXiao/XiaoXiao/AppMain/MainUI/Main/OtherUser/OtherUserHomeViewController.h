@@ -14,7 +14,9 @@
     
     NSMutableArray *guideVCArray;
 
+    XXUserModel *_currentUser;
 }
 
+- (id)initWithContentUser:(XXUserModel*)aUser;
 
 @end

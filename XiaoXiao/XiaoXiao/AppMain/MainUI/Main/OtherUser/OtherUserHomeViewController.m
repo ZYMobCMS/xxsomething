@@ -8,6 +8,9 @@
 
 #import "OtherUserHomeViewController.h"
 #import "OtherHomeHeadCell.h"
+#import "OtherHomeButtonCell.h"
+#import "OtherHomeMutilTextCell.h"
+#import "OtherUserTeaseSelectViewController.h"
 
 @interface OtherUserHomeViewController ()
 
@@ -23,7 +26,14 @@
     }
     return self;
 }
-
+- (id)initWithContentUser:(XXUserModel *)aUser
+{
+    if (self = [super init]) {
+        
+        _currentUser = aUser;
+    }
+    return self;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -33,12 +43,20 @@
     guideVCArray = [[NSMutableArray alloc]init];
     
     //my share
-    NSDictionary *myShare = @{@"icon":@"my_home_photo.png",@"count":@"333",@"title":@"相册",@"vcClass":@"MyShareListViewController"};
+    NSArray *headArray = @[_currentUser];
+    [guideVCArray addObject:headArray];
+    
+    NSDictionary *myShare = @{@"icon":@"my_home_photo.png",@"count":@"333",@"title":@"相册",@"vcClass":@"OtherUserShareListViewController"};
     NSArray *shareArray = [NSArray arrayWithObject:myShare];
-    NSDictionary *myCare = @{@"icon":@"my_home_care.png",@"count":@"333",@"title":@"关心",@"vcClass":@"MyCareUserListViewController"};
-    NSDictionary *myFans = @{@"icon":@"my_home_fans.png",@"count":@"333",@"title":@"校粉",@"vcClass":@"MyFansUserListViewController"};
-    NSDictionary *myPee = @{@"icon":@"my_home_peer.png",@"count":@"333",@"title":@"窥客",@"vcClass":@"MyPeepUserListViewController"};
-    NSArray *userArray = @[myCare,myFans,myPee];
+    
+    NSDictionary *IDSource = @{@"tag":@"校校号",@"content":@"333",@"isMutil":@"0",@"vcClass":@""};
+    NSDictionary *signSource = @{@"tag":@"个性签名",@"content":@"333",@"isMutil":@"1",@"vcClass":@""};
+    NSDictionary *collegeSource = @{@"tag":@"学校",@"content":@"333",@"isMutil":@"0",@"vcClass":@""};
+    NSDictionary *grageSource = @{@"tag":@"年级",@"content":@"333",@"isMutil":@"0",@"vcClass":@""};
+    NSDictionary *moneySource = @{@"tag":@"财富",@"content":@"333",@"isMutil":@"0",@"vcClass":@""};
+    NSDictionary *fansSource = @{@"tag":@"他的粉丝",@"content":@"333",@"isMutil":@"0",@"vcClass":@"OtherUserFansListViewController"};
+
+    NSArray *userArray = @[IDSource,signSource,collegeSource,grageSource,moneySource,fansSource];
     
     [guideVCArray addObject:shareArray];
     [guideVCArray addObject:userArray];
@@ -73,25 +91,70 @@
 }
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"CellIdentifier";
-    XXBaseIconLabelCell *cell = (XXBaseIconLabelCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (!cell) {
-        cell = [[XXBaseIconLabelCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    if (indexPath.section==0) {
+    if (indexPath.section == 0) {
+        static NSString *CellIdentifier = @"CellIdentifier";
+        OtherHomeHeadCell *cell = (OtherHomeHeadCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (!cell) {
+            cell = [[OtherHomeHeadCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            [cell setTeaseBlock:^{
+                [self teaseAction];
+            }];
+        }
+        [cell setContentUser:_currentUser];
+        
+        return cell;
+        
+    }else if(indexPath.section == 1){
+        
+        static NSString *CellIdentifier = @"IconTagCellIdentifier";
+        XXBaseIconLabelCell *cell = (XXBaseIconLabelCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (!cell) {
+            cell = [[XXBaseIconLabelCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            
+        }
         [cell setCellType:XXBaseCellTypeRoundSingle withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.f];
-    }else if(indexPath.section==1&&indexPath.row==0){
-        [cell setCellType:XXBaseCellTypeTop withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.0f];
-    }else if(indexPath.section==1&&indexPath.row==[[guideVCArray objectAtIndex:indexPath.section]count]-1){
-        [cell setCellType:XXBaseCellTypeBottom withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.0f];
+        NSDictionary *item = [[guideVCArray objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
+        [cell setContentDict:item];
+        return cell;
+
     }else{
-        [cell setCellType:XXBaseCellTypeMiddel withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.0f];
+       
+        static NSString *CellIdentifier = @"IconTagCellIdentifier";
+        OtherHomeMutilTextCell *cell = (OtherHomeMutilTextCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (!cell) {
+            cell = [[OtherHomeMutilTextCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+        if(indexPath.section==2&&indexPath.row==0){
+            [cell setCellType:XXBaseCellTypeTop withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.0f];
+        }else if(indexPath.section==2&&indexPath.row==[[guideVCArray objectAtIndex:indexPath.section]count]-1){
+            [cell setCellType:XXBaseCellTypeBottom withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.0f];
+        }else{
+            [cell setCellType:XXBaseCellTypeMiddel withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.0f];
+        }
+        [cell setContentDict:[[guideVCArray objectAtIndex:indexPath.section]objectAtIndex:indexPath.row]];
+        
+        return cell;
+        
     }
-    NSDictionary *item = [[guideVCArray objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
-    [cell setContentDict:item];
-    
-    return cell;
+
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section==0) {
+        return 280;
+    }
+    if (indexPath.section==1) {
+        return 44;
+    }
+    if (indexPath.section==2) {
+        
+        NSDictionary *item = [[guideVCArray objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
+        
+        return [OtherHomeMutilTextCell heightForContentDict:item forWidth:tableView.frame.size.width];
+    }
+    return 44.f;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -108,5 +171,14 @@
     return headView;
 }
 
+#pragma mark config select tease
+- (void)teaseAction
+{
+    OtherUserTeaseSelectViewController *teaseVC = [[OtherUserTeaseSelectViewController alloc]init];
+    teaseVC.title = @"表情选择";
+    [self.navigationController pushViewController:teaseVC animated:YES];
+    [XXCommonUitil setCommonNavigationReturnItemForViewController:teaseVC];
+
+}
 
 @end

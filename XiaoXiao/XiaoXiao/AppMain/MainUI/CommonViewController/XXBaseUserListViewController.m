@@ -8,6 +8,7 @@
 
 #import "XXBaseUserListViewController.h"
 #import "XXUserInfoBaseCell.h"
+#import "OtherUserHomeViewController.h"
 
 @interface XXBaseUserListViewController ()
 
@@ -82,6 +83,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    OtherUserHomeViewController *otherHomeVC = [[OtherUserHomeViewController alloc]initWithContentUser:[_userListArray objectAtIndex:indexPath.row]];
+    [self.navigationController pushViewController:otherHomeVC animated:YES];
+
 }
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {

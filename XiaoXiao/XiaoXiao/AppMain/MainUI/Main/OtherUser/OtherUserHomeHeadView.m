@@ -24,6 +24,7 @@
         //
         _infoBackgroundView = [[UIImageView alloc]init];
         _infoBackgroundView.frame = CGRectMake(0,frame.size.height*1/2,frame.size.width,frame.size.height * 1/2);
+        _infoBackgroundView.userInteractionEnabled = YES;
         _infoBackgroundView.backgroundColor = [UIColor whiteColor];
         [self addSubview:_infoBackgroundView];
         
@@ -35,9 +36,10 @@
         
         //
         _nameLabel = [[UILabel alloc]init];
-        _nameLabel.frame = CGRectMake(135,0,180,35);
+        _nameLabel.frame = CGRectMake(50,0,180,35);
         _nameLabel.backgroundColor = [UIColor greenColor];
         _nameLabel.textColor = [UIColor blackColor];
+        _nameLabel.textAlignment = NSTextAlignmentCenter;
         [_infoBackgroundView addSubview:_nameLabel];
         
         //
@@ -57,7 +59,12 @@
         
         //tease button
         _teaseButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
-        _teaseButton.frame = CGRectMake(110,_starLabel.frame.origin.y+_starLabel.frame.size.height+8,70, 30);
+        _teaseButton.frame = CGRectMake(110,_starLabel.frame.origin.y+_starLabel.frame.size.height,130, 35);
+        [_teaseButton teaseStyle];
+        [_teaseButton setNormalIconImage:@"other_tease.png" withSelectedImage:@"other_tease.png" withFrame:CGRectMake(20,5,27,18)];
+        [_teaseButton addTarget:self action:@selector(teaseAction) forControlEvents:UIControlEventTouchUpInside];
+        [_teaseButton setTitle:@"挑逗" withFrame:CGRectMake(55,5,100,30)];
+        _teaseButton.layer.cornerRadius = 17.f;
         [_infoBackgroundView addSubview:_teaseButton];
         
     }
@@ -73,9 +80,23 @@
 }
 */
 
-- (void)setContentUser:(XXUserModel *)aUser
+- (void)teaseAction
 {
-    
+    if (_teaseBlock) {
+        _teaseBlock();
+    }
 }
 
+- (void)setContentUser:(XXUserModel *)aUser
+{
+    [_headView setHeadWithUserId:aUser.userId];
+    _nameLabel.text = aUser.nickName;
+    _starLabel.text = aUser.signature;
+    NSString *sexTag = [aUser.sex boolValue]? @"sex_tag_1.png":@"sex_tag_0.png";
+    _sexImageView.image = [UIImage imageNamed:sexTag];
+}
+- (void)setTeaseBlock:(OtherUserHomeHeadViewTeaseBlock)teaseBlock
+{
+    _teaseBlock = [teaseBlock copy];
+}
 @end

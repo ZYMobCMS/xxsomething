@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface OtherUserSendTeaseViewController : UIViewController
-
+{
+    UIImageView *_teaseImageView;
+    XXCustomButton *_sendButton;
+}
 @end

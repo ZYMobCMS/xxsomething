@@ -163,6 +163,11 @@
 		3BE83DB41886747F00778849 /* UIImage+animatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BE83DB21886747F00778849 /* UIImage+animatedGIF.m */; };
 		3BE83DB81886756300778849 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BE83DB71886756300778849 /* Base64.m */; };
 		3BE83DBC188684E200778849 /* UIBezierPath+ShadowPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BE83DBB188684E200778849 /* UIBezierPath+ShadowPath.m */; };
+		3BE83E4118879A9000778849 /* OtherTeaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BE83E4018879A9000778849 /* OtherTeaseCell.m */; };
+		3BE83E4418879E6000778849 /* OtherHomeButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BE83E4318879E6000778849 /* OtherHomeButtonCell.m */; };
+		3BE83E4718879ECF00778849 /* OtherHomeMutilTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BE83E4618879ECF00778849 /* OtherHomeMutilTextCell.m */; };
+		3BE83E4C1887A4C900778849 /* OtherUserHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BE83E4B1887A4C900778849 /* OtherUserHomeViewController.m */; };
+		3BE83E4E1887DC5500778849 /* other_tease@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BE83E4D1887DC5500778849 /* other_tease@2x.png */; };
 		E422C604187EDF69008E89DA /* share_record_btton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E422C603187EDF69008E89DA /* share_record_btton@2x.png */; };
 		E422C607187EE281008E89DA /* XXShareDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E422C606187EE281008E89DA /* XXShareDetailViewController.m */; };
 		E422C60A187EE748008E89DA /* XXSharePostUserView.m in Sources */ = {isa = PBXBuildFile; fileRef = E422C609187EE748008E89DA /* XXSharePostUserView.m */; };
@@ -516,7 +521,6 @@
 		E4E3F8F01860969400970698 /* MyProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6971860969100970698 /* MyProfileEditViewController.m */; };
 		E4E3F8F11860969400970698 /* MyShareListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6991860969100970698 /* MyShareListViewController.m */; };
 		E4E3F8F21860969400970698 /* OtherUserFansListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F69C1860969100970698 /* OtherUserFansListViewController.m */; };
-		E4E3F8F31860969400970698 /* OtherUserHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F69E1860969100970698 /* OtherUserHomeViewController.m */; };
 		E4E3F8F41860969400970698 /* OtherUserSendTeaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6A01860969100970698 /* OtherUserSendTeaseViewController.m */; };
 		E4E3F8F51860969400970698 /* OtherUserShareListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6A21860969100970698 /* OtherUserShareListViewController.m */; };
 		E4E3F8F61860969400970698 /* OtherUserTeaseSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E3F6A41860969100970698 /* OtherUserTeaseSelectViewController.m */; };
@@ -1102,6 +1106,14 @@
 		3BE83DB71886756300778849 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
 		3BE83DBA188684E200778849 /* UIBezierPath+ShadowPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+ShadowPath.h"; sourceTree = "<group>"; };
 		3BE83DBB188684E200778849 /* UIBezierPath+ShadowPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+ShadowPath.m"; sourceTree = "<group>"; };
+		3BE83E3F18879A9000778849 /* OtherTeaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherTeaseCell.h; sourceTree = "<group>"; };
+		3BE83E4018879A9000778849 /* OtherTeaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherTeaseCell.m; sourceTree = "<group>"; };
+		3BE83E4218879E6000778849 /* OtherHomeButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherHomeButtonCell.h; sourceTree = "<group>"; };
+		3BE83E4318879E6000778849 /* OtherHomeButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherHomeButtonCell.m; sourceTree = "<group>"; };
+		3BE83E4518879ECF00778849 /* OtherHomeMutilTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherHomeMutilTextCell.h; sourceTree = "<group>"; };
+		3BE83E4618879ECF00778849 /* OtherHomeMutilTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherHomeMutilTextCell.m; sourceTree = "<group>"; };
+		3BE83E4B1887A4C900778849 /* OtherUserHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherUserHomeViewController.m; sourceTree = "<group>"; };
+		3BE83E4D1887DC5500778849 /* other_tease@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "other_tease@2x.png"; sourceTree = "<group>"; };
 		E422C603187EDF69008E89DA /* share_record_btton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "share_record_btton@2x.png"; sourceTree = "<group>"; };
 		E422C605187EE281008E89DA /* XXShareDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXShareDetailViewController.h; sourceTree = "<group>"; };
 		E422C606187EE281008E89DA /* XXShareDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXShareDetailViewController.m; sourceTree = "<group>"; };
@@ -1618,7 +1630,6 @@
 		E4E3F69B1860969100970698 /* OtherUserFansListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherUserFansListViewController.h; sourceTree = "<group>"; };
 		E4E3F69C1860969100970698 /* OtherUserFansListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherUserFansListViewController.m; sourceTree = "<group>"; };
 		E4E3F69D1860969100970698 /* OtherUserHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherUserHomeViewController.h; sourceTree = "<group>"; };
-		E4E3F69E1860969100970698 /* OtherUserHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherUserHomeViewController.m; sourceTree = "<group>"; };
 		E4E3F69F1860969100970698 /* OtherUserSendTeaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherUserSendTeaseViewController.h; sourceTree = "<group>"; };
 		E4E3F6A01860969100970698 /* OtherUserSendTeaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherUserSendTeaseViewController.m; sourceTree = "<group>"; };
 		E4E3F6A11860969100970698 /* OtherUserShareListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherUserShareListViewController.h; sourceTree = "<group>"; };
@@ -3075,6 +3086,7 @@
 		E4C3EE05186C912C00DE3B83 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				3BE83E4D1887DC5500778849 /* other_tease@2x.png */,
 				E47EA9AB1886D0920061ED1B /* delete_share@2x.png */,
 				3BE83DA7188651E800778849 /* my_home_care@2x.png */,
 				3BE83DA8188651E800778849 /* my_home_fans@2x.png */,
@@ -3860,10 +3872,12 @@
 		E4E3F69A1860969100970698 /* OtherUser */ = {
 			isa = PBXGroup;
 			children = (
+				3BE83E3F18879A9000778849 /* OtherTeaseCell.h */,
+				3BE83E4018879A9000778849 /* OtherTeaseCell.m */,
 				E4E3F69B1860969100970698 /* OtherUserFansListViewController.h */,
 				E4E3F69C1860969100970698 /* OtherUserFansListViewController.m */,
 				E4E3F69D1860969100970698 /* OtherUserHomeViewController.h */,
-				E4E3F69E1860969100970698 /* OtherUserHomeViewController.m */,
+				3BE83E4B1887A4C900778849 /* OtherUserHomeViewController.m */,
 				E4E3F69F1860969100970698 /* OtherUserSendTeaseViewController.h */,
 				E4E3F6A01860969100970698 /* OtherUserSendTeaseViewController.m */,
 				E4E3F6A11860969100970698 /* OtherUserShareListViewController.h */,
@@ -3874,6 +3888,10 @@
 				E47EA9B31886E2B50061ED1B /* OtherUserHomeHeadView.m */,
 				E47EA9B51886F7F20061ED1B /* OtherHomeHeadCell.h */,
 				E47EA9B61886F7F20061ED1B /* OtherHomeHeadCell.m */,
+				3BE83E4218879E6000778849 /* OtherHomeButtonCell.h */,
+				3BE83E4318879E6000778849 /* OtherHomeButtonCell.m */,
+				3BE83E4518879ECF00778849 /* OtherHomeMutilTextCell.h */,
+				3BE83E4618879ECF00778849 /* OtherHomeMutilTextCell.m */,
 			);
 			path = OtherUser;
 			sourceTree = "<group>";
@@ -4645,6 +4663,7 @@
 				E4E3F8AC1860969400970698 /* xxshare_image_audio_3.html in Resources */,
 				E4E3F8AD1860969400970698 /* xxshare_image_audio_4.html in Resources */,
 				E4E3F8AE1860969400970698 /* xxshare_image_audio_5.html in Resources */,
+				3BE83E4E1887DC5500778849 /* other_tease@2x.png in Resources */,
 				E4E3F8AF1860969400970698 /* xxshare_image_audio_6.html in Resources */,
 				E4E3F8B01860969400970698 /* xxshare_image_text_0.html in Resources */,
 				E4E3F8B11860969400970698 /* xxshare_image_text_1.html in Resources */,
@@ -4951,6 +4970,7 @@
 				E4E3F8B81860969400970698 /* XXShareBaseCell.m in Sources */,
 				E4E3F8B91860969400970698 /* XXShareTemplateBuilder.m in Sources */,
 				E4CA2B68187DB09800E14F1D /* WSAssetTableViewController.m in Sources */,
+				3BE83E4C1887A4C900778849 /* OtherUserHomeViewController.m in Sources */,
 				E4E3F8BB1860969400970698 /* XXBaseCell.m in Sources */,
 				E4E3F8BC1860969400970698 /* XXBaseIconLabelCell.m in Sources */,
 				E4E3F8BE1860969400970698 /* XXBaseLabelCell.m in Sources */,
@@ -4968,6 +4988,7 @@
 				E4E3F8CA1860969400970698 /* XXLoadingActiveView.m in Sources */,
 				E4E3F8CB1860969400970698 /* XXLoadMoreView.m in Sources */,
 				E4E3F8CD1860969400970698 /* XXSearchBar.m in Sources */,
+				3BE83E4718879ECF00778849 /* OtherHomeMutilTextCell.m in Sources */,
 				E4E3F8D01860969400970698 /* XXSharePostBar.m in Sources */,
 				E4E3F8D11860969400970698 /* XXStatusHUD.m in Sources */,
 				E4E3F8D21860969400970698 /* XXBaseUserListViewController.m in Sources */,
@@ -5004,7 +5025,6 @@
 				E4E3F8F01860969400970698 /* MyProfileEditViewController.m in Sources */,
 				E4E3F8F11860969400970698 /* MyShareListViewController.m in Sources */,
 				E4E3F8F21860969400970698 /* OtherUserFansListViewController.m in Sources */,
-				E4E3F8F31860969400970698 /* OtherUserHomeViewController.m in Sources */,
 				E4E3F8F41860969400970698 /* OtherUserSendTeaseViewController.m in Sources */,
 				E4E3F8F51860969400970698 /* OtherUserShareListViewController.m in Sources */,
 				E4E3F8F61860969400970698 /* OtherUserTeaseSelectViewController.m in Sources */,
@@ -5111,6 +5131,7 @@
 				E4E3F9BD1860969400970698 /* DTAsyncFileDeleter.m in Sources */,
 				E4E3F9BE1860969400970698 /* DTBase64Coding.m in Sources */,
 				E4E3F9BF1860969400970698 /* DTBlockFunctions.m in Sources */,
+				3BE83E4118879A9000778849 /* OtherTeaseCell.m in Sources */,
 				E4E3F9C01860969400970698 /* DTCoreGraphicsUtils.m in Sources */,
 				E4E3F9C11860969400970698 /* DTExtendedFileAttributes.m in Sources */,
 				E4E3F9C21860969400970698 /* DTFolderMonitor.m in Sources */,
@@ -5154,6 +5175,7 @@
 				E4E3F9F91860969400970698 /* AnimatedGif.m in Sources */,
 				E4E3F9FA1860969400970698 /* MKAnnotationView+WebCache.m in Sources */,
 				E4E3F9FB1860969400970698 /* NSData+GIF.m in Sources */,
+				3BE83E4418879E6000778849 /* OtherHomeButtonCell.m in Sources */,
 				E4E3F9FC1860969400970698 /* SDImageCache.m in Sources */,
 				E4E3F9FD1860969400970698 /* SDWebImageCompat.m in Sources */,
 				E4E3F9FE1860969400970698 /* SDWebImageDecoder.m in Sources */,

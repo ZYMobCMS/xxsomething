@@ -8,6 +8,7 @@
 
 #import "SquareShareListViewController.h"
 #import "SharePostGuideViewController.h"
+#import "ShareUserFilterViewController.h"
 
 @interface SquareShareListViewController ()
 
@@ -30,6 +31,12 @@
 	// Do any additional setup after loading the view.
     self.title = @"校说吧";
     [XXCommonUitil setCommonNavigationReturnItemForViewController:self];
+    [XXCommonUitil setCommonNavigationNextStepItemForViewController:self withIconImage:@"nav_share_post_setting.png" withNextStepAction:^{
+        ShareUserFilterViewController *filterVC = [[ShareUserFilterViewController alloc]init];
+        filterVC.title = @"按条件筛选";
+        [XXCommonUitil setCommonNavigationReturnItemForViewController:filterVC];
+        [self.navigationController pushViewController:filterVC animated:YES];
+    }];
     
     UIImageView *backImageView = [[UIImageView alloc]init];
     backImageView.backgroundColor = [UIColor whiteColor];
