@@ -165,7 +165,12 @@ BOOL const XXLockCommonCSSTemplateState = NO;
 }
 + (NSString*)buildUserCellContentWithCSSTemplate:(NSString*)cssTemplate withUserModel:(XXUserModel*)userModel
 {
-    NSString *htmlTemp= [XXFileUitil loadStringFromBundleForName:XXUserCellHtmlTemplate];
+    NSString *htmlTemp = nil;
+    if ([userModel.isInSchool boolValue]) {
+        htmlTemp= [XXFileUitil loadStringFromBundleForName:XXUserCellHtmlTemplate];
+    }else{
+        htmlTemp= [XXFileUitil loadStringFromBundleForName:XXUserCellHtmlTemplate1];
+    }
     
     //替换CSS
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$css$!" withString:cssTemplate];
@@ -177,7 +182,9 @@ BOOL const XXLockCommonCSSTemplateState = NO;
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$college$!" withString:userModel.schoolName];
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$starscore$!" withString:userModel.constellation];
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$score$!" withString:userModel.score];
-    htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$profile$!" withString:userModel.signature];
+    if (![userModel.isInSchool boolValue]) {
+        htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$profile$!" withString:userModel.signature];
+    }
 
     return htmlTemp;
     

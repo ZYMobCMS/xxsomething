@@ -54,7 +54,7 @@
     UINavigationController *myHomeNav = [[UINavigationController alloc]initWithRootViewController:myHomeGuideVC];
     [myHomeNav.navigationBar setBackgroundImage:navigationImage forBarMetrics:UIBarMetricsDefault];
     [subVCArray addObject:myHomeNav];
-    
+
     self.viewControllers = subVCArray;
     
 }

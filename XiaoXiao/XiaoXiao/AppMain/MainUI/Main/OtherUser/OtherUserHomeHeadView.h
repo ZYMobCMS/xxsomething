@@ -1,29 +1,25 @@
 //
-//  MyHomeUserHeadView.h
+//  OtherUserHomeHeadView.h
 //  XiaoXiao
 //
-//  Created by ZYVincent on 14-1-14.
+//  Created by ZYVincent on 14-1-15.
 //  Copyright (c) 2014年 ZYProSoft. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "XXOpacityView.h"
-#import "XXHeadView.h"
-#import "XXBaseTextView.h"
-#import "XXUserModel.h"
 
-@interface MyHomeUserHeadView : UIView
+@interface OtherUserHomeHeadView : UIView
 {
     UIImageView *_themeBackgroundView;
     UIImageView *_infoBackgroundView;
     XXHeadView  *_headView;
     UILabel     *_nameLabel;
-    UILabel *_signuareView;
+    UIImageView *_sexImageView;
+    UILabel     *_starLabel;
     
     XXOpacityView *_wellknowView;
-    XXOpacityView *_settingView;
     
+    XXCustomButton *_teaseButton;
 }
 - (void)setContentUser:(XXUserModel*)aUser;
-
 @end

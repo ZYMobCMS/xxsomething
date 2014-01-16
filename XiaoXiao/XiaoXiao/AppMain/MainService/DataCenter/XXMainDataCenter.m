@@ -888,6 +888,7 @@
                 //暂时取代，接口目前没有返回学校名字
                 newUser.schoolName = newUser.grade;
                 newUser.attributedContent = [XXUserInfoBaseCell buildAttributedStringWithUserModel:newUser];
+                newUser.isInSchool = @"1";
                 [modelArray addObject:newUser];
             }];
             DDLogVerbose(@"model same school:%@",modelArray);

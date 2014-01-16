@@ -28,7 +28,7 @@
         [self.contentView addSubview:_cellLineImageView];
         
         self.accessoryView = [[UIImageView alloc]init];
-        self.accessoryView.frame = CGRectMake(self.frame.size.width-36,12,20,20);
+        self.accessoryView.frame = CGRectMake(self.frame.size.width-10-10-17,5,7,12);
         self.accessoryView.image = [UIImage imageNamed:@"cell_indicator.png"];
         self.accessoryView.hidden = YES;
         [self.contentView addSubview:self.accessoryView];
@@ -58,6 +58,7 @@
 {
     _cellLineImageView.hidden = YES;
     _backgroundImageView = [[TKRoundedView alloc]initWithFrame:CGRectMake(10,0,self.frame.size.width-20,cellHeight-aMargin)];
+    self.accessoryView.frame = CGRectMake(self.accessoryView.frame.origin.x,self.accessoryView.frame.origin.y-aMargin,self.accessoryView.frame.size.width,self.accessoryView.frame.size.height);
     _backgroundImageView.fillColor = [UIColor whiteColor];
     _backgroundImageView.borderColor = [UIColor colorWithRed:227/255.f green:230/255.f blue:232/255.f alpha:1];
     switch (cellType) {

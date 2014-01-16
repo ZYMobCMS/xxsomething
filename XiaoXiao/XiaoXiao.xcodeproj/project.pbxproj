@@ -200,6 +200,11 @@
 		E46CCF771869C47300DB9BD0 /* XXConditionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E46CCF761869C47300DB9BD0 /* XXConditionModel.m */; };
 		E46CCF7A1869EFEF00DB9BD0 /* XXTeaseBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E46CCF791869EFEF00DB9BD0 /* XXTeaseBaseCell.m */; };
 		E46CCF7D1869F2C100DB9BD0 /* XXTeaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E46CCF7C1869F2C100DB9BD0 /* XXTeaseModel.m */; };
+		E47EA9AC1886D0920061ED1B /* delete_share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E47EA9AB1886D0920061ED1B /* delete_share@2x.png */; };
+		E47EA9AF1886D4EC0061ED1B /* XXMyShareBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E47EA9AE1886D4EC0061ED1B /* XXMyShareBaseCell.m */; };
+		E47EA9B11886DC440061ED1B /* xxbase_user_template1.html in Resources */ = {isa = PBXBuildFile; fileRef = E47EA9B01886DC440061ED1B /* xxbase_user_template1.html */; };
+		E47EA9B41886E2B50061ED1B /* OtherUserHomeHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = E47EA9B31886E2B50061ED1B /* OtherUserHomeHeadView.m */; };
+		E47EA9B71886F7F20061ED1B /* OtherHomeHeadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E47EA9B61886F7F20061ED1B /* OtherHomeHeadCell.m */; };
 		E48095571884121700B36AA8 /* chat_bar_audio@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E48095561884121700B36AA8 /* chat_bar_audio@2x.png */; };
 		E488DF16186B429300B01224 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E488DF0D186B429300B01224 /* FMDatabase.m */; };
 		E488DF17186B429300B01224 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E488DF0F186B429300B01224 /* FMDatabaseAdditions.m */; };
@@ -1160,6 +1165,14 @@
 		E46CCF791869EFEF00DB9BD0 /* XXTeaseBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXTeaseBaseCell.m; sourceTree = "<group>"; };
 		E46CCF7B1869F2C100DB9BD0 /* XXTeaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXTeaseModel.h; sourceTree = "<group>"; };
 		E46CCF7C1869F2C100DB9BD0 /* XXTeaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXTeaseModel.m; sourceTree = "<group>"; };
+		E47EA9AB1886D0920061ED1B /* delete_share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete_share@2x.png"; sourceTree = "<group>"; };
+		E47EA9AD1886D4EC0061ED1B /* XXMyShareBaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXMyShareBaseCell.h; sourceTree = "<group>"; };
+		E47EA9AE1886D4EC0061ED1B /* XXMyShareBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXMyShareBaseCell.m; sourceTree = "<group>"; };
+		E47EA9B01886DC440061ED1B /* xxbase_user_template1.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = xxbase_user_template1.html; sourceTree = "<group>"; };
+		E47EA9B21886E2B50061ED1B /* OtherUserHomeHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherUserHomeHeadView.h; sourceTree = "<group>"; };
+		E47EA9B31886E2B50061ED1B /* OtherUserHomeHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherUserHomeHeadView.m; sourceTree = "<group>"; };
+		E47EA9B51886F7F20061ED1B /* OtherHomeHeadCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherHomeHeadCell.h; sourceTree = "<group>"; };
+		E47EA9B61886F7F20061ED1B /* OtherHomeHeadCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherHomeHeadCell.m; sourceTree = "<group>"; };
 		E48095561884121700B36AA8 /* chat_bar_audio@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_bar_audio@2x.png"; sourceTree = "<group>"; };
 		E488DF0C186B429300B01224 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		E488DF0D186B429300B01224 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
@@ -3062,6 +3075,7 @@
 		E4C3EE05186C912C00DE3B83 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				E47EA9AB1886D0920061ED1B /* delete_share@2x.png */,
 				3BE83DA7188651E800778849 /* my_home_care@2x.png */,
 				3BE83DA8188651E800778849 /* my_home_fans@2x.png */,
 				3BE83DA9188651E800778849 /* my_home_peer@2x.png */,
@@ -3706,6 +3720,7 @@
 				E452EFA418632E9800340FB5 /* xxbase_common_template.html */,
 				E452EFA618633BA200340FB5 /* xxbase_user_cell.css */,
 				E452EFA818633BBC00340FB5 /* xxbase_user_template.html */,
+				E47EA9B01886DC440061ED1B /* xxbase_user_template1.html */,
 				E4B6DBF1187451AB007BFFE2 /* XXCustomButton.h */,
 				E4B6DBF2187451AB007BFFE2 /* XXCustomButton.m */,
 				E496B3DE187458A800E4F361 /* XXResponseButton.h */,
@@ -3836,6 +3851,8 @@
 				E49EFBBE18857CA80061794B /* MyHomeUserHeadView.m */,
 				E49EFBC0188584870061794B /* XXOpacityView.h */,
 				E49EFBC1188584870061794B /* XXOpacityView.m */,
+				E47EA9AD1886D4EC0061ED1B /* XXMyShareBaseCell.h */,
+				E47EA9AE1886D4EC0061ED1B /* XXMyShareBaseCell.m */,
 			);
 			path = MyHome;
 			sourceTree = "<group>";
@@ -3853,6 +3870,10 @@
 				E4E3F6A21860969100970698 /* OtherUserShareListViewController.m */,
 				E4E3F6A31860969100970698 /* OtherUserTeaseSelectViewController.h */,
 				E4E3F6A41860969100970698 /* OtherUserTeaseSelectViewController.m */,
+				E47EA9B21886E2B50061ED1B /* OtherUserHomeHeadView.h */,
+				E47EA9B31886E2B50061ED1B /* OtherUserHomeHeadView.m */,
+				E47EA9B51886F7F20061ED1B /* OtherHomeHeadCell.h */,
+				E47EA9B61886F7F20061ED1B /* OtherHomeHeadCell.m */,
 			);
 			path = OtherUser;
 			sourceTree = "<group>";
@@ -4821,6 +4842,7 @@
 				E4B6DBD218744CBF007BFFE2 /* record_audio_selected@2x.png in Resources */,
 				E4B6DBD318744CBF007BFFE2 /* red_button_normal@2x.png in Resources */,
 				E4B6DBD418744CBF007BFFE2 /* red_button_selected@2x.png in Resources */,
+				E47EA9B11886DC440061ED1B /* xxbase_user_template1.html in Resources */,
 				E4B6DBD518744CBF007BFFE2 /* red_error_selected@2x.png in Resources */,
 				E4B6DBD618744CBF007BFFE2 /* remind_me_tag@2x.png in Resources */,
 				E4B6DBD718744CBF007BFFE2 /* search_bar_back@2x.png in Resources */,
@@ -4867,6 +4889,7 @@
 				E422C604187EDF69008E89DA /* share_record_btton@2x.png in Resources */,
 				E4C9B6AC1875912E003D6AC9 /* brannanContrast.png in Resources */,
 				E4C9B6AD1875912E003D6AC9 /* brannanLuma.png in Resources */,
+				E47EA9AC1886D0920061ED1B /* delete_share@2x.png in Resources */,
 				E4C9B6AE1875912E003D6AC9 /* brannanProcess.png in Resources */,
 				E4C9B6AF1875912E003D6AC9 /* brannanScreen.png in Resources */,
 				E4C9B6B01875912E003D6AC9 /* earlybirdBlowout.png in Resources */,
@@ -4959,6 +4982,7 @@
 				E4E3F8DD1860969400970698 /* XXSchoolListViewController.m in Sources */,
 				E4E3F8DE1860969400970698 /* XXSchoolSearchViewController.m in Sources */,
 				E4E3F8DF1860969400970698 /* XXShareListViewController.m in Sources */,
+				E47EA9B71886F7F20061ED1B /* OtherHomeHeadCell.m in Sources */,
 				E4E3F8E01860969400970698 /* XXUserFilterViewController.m in Sources */,
 				E4E3F8E11860969400970698 /* GuideViewController.m in Sources */,
 				E4E3F8E21860969400970698 /* LoginViewController.m in Sources */,
@@ -5033,6 +5057,7 @@
 				E4E3F9891860969400970698 /* DTColorFunctions.m in Sources */,
 				E4E3F98A1860969400970698 /* DTCoreTextConstants.m in Sources */,
 				E4E3F98B1860969400970698 /* DTCoreTextFontCollection.m in Sources */,
+				E47EA9AF1886D4EC0061ED1B /* XXMyShareBaseCell.m in Sources */,
 				E4E3F98C1860969400970698 /* DTCoreTextFontDescriptor.m in Sources */,
 				E4E3F98D1860969400970698 /* DTCoreTextFunctions.m in Sources */,
 				E4E3F98E1860969400970698 /* DTCoreTextGlyphRun.m in Sources */,
@@ -5203,6 +5228,7 @@
 				3B5DF348186AC452000B50D2 /* XMPPGoogleSharedStatus.m in Sources */,
 				3B5DF349186AC452000B50D2 /* XMPPProcessOne.m in Sources */,
 				3B5DF34A186AC452000B50D2 /* XMPPReconnect.m in Sources */,
+				E47EA9B41886E2B50061ED1B /* OtherUserHomeHeadView.m in Sources */,
 				3B5DF34B186AC452000B50D2 /* XMPPGroupCoreDataStorageObject.m in Sources */,
 				3B5DF34C186AC452000B50D2 /* XMPPResourceCoreDataStorageObject.m in Sources */,
 				3B5DF34D186AC452000B50D2 /* XMPPRoster.xcdatamodel in Sources */,

@@ -32,11 +32,6 @@
         _tagLabel.frame= CGRectMake(2*_leftMargin+19+_innerMargin,_topMargin,80,35);
         [self.contentView addSubview:_tagLabel];
         
-        //indcator
-        _indicatorView = [[UIImageView alloc]init];
-        _indicatorView.frame = CGRectMake(self.contentView.frame.size.width-_rightMargin-19,_topMargin,19,19);
-        [self.contentView addSubview:_indicatorView];
-        
         //
         _detailTagLabel = [[UILabel alloc]init];
         _detailTagLabel.textAlignment = NSTextAlignmentRight;

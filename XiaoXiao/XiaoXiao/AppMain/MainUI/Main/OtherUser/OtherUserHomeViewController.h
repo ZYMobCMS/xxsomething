@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface OtherUserHomeViewController : UIViewController
+@interface OtherUserHomeViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+{
+    UITableView *guideTable;
+    
+    NSMutableArray *guideVCArray;
+
+}
+
 
 @end

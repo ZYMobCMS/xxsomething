@@ -43,33 +43,44 @@
     [guideVCArray addObject:userArray];
     
     
-    CGFloat totalHeight = XXNavContentHeight-49;
+    CGFloat totalHeight = XXNavContentHeight;
     CGFloat totalWidth = self.view.frame.size.width;
+    CGFloat originY = IS_IOS_7? 20:0;
     
-    //user head view
-    _userHeadView = [[MyHomeUserHeadView alloc]initWithFrame:CGRectMake(0,-34,totalWidth,200)];
-    [self.view addSubview:_userHeadView];
-    
-    guideTable = [[UITableView alloc]initWithFrame:CGRectMake(0,200,totalWidth,totalHeight-200) style:UITableViewStyleGrouped];
+    CGFloat headViewHeight = 250;
+    guideTable = [[UITableView alloc]initWithFrame:CGRectMake(0,headViewHeight+originY,totalWidth,totalHeight-headViewHeight) style:UITableViewStylePlain];
     guideTable.dataSource = self;
     guideTable.delegate = self;
     guideTable.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
     guideTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:guideTable];
     
+    //user head view
+
+    _userHeadView = [[MyHomeUserHeadView alloc]initWithFrame:CGRectMake(0,originY,totalWidth,headViewHeight)];
+    _userHeadView.backgroundColor = [UIColor orangeColor];
+    [self.view addSubview:_userHeadView];
+    _userHeadView.layer.shadowOffset = CGSizeMake(0,0.3);
+    _userHeadView.layer.shadowColor = [UIColor blackColor].CGColor;
+    _userHeadView.layer.shadowOpacity = 0.2f;
+    [_userHeadView setContentUser:[XXUserDataCenter currentLoginUser]];
+    
+
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [self.navigationController setNavigationBarHidden:YES];
-    self.navigationController.view.frame = CGRectMake(0,0,self.navigationController.view.frame.size.width,self.navigationController.view.frame.size.height);
     [super viewWillAppear:animated];
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [self.navigationController setNavigationBarHidden:NO];
     [super viewWillDisappear:animated];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -109,7 +120,20 @@
     
     return cell;
 }
-
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section==0) {
+        return 0.f;
+    }else{
+        return 30.f;
+    }
+}
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0,0,tableView.frame.size.width-20,44)];
+    headView.backgroundColor = [UIColor clearColor];
+    return headView;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -120,9 +144,8 @@
     
     UIViewController *pushVC = [[newVC alloc]init];
     pushVC.title = [item objectForKey:@"title"];
-    
     [self.navigationController pushViewController:pushVC animated:YES];
-    
+    [XXCommonUitil setCommonNavigationReturnItemForViewController:pushVC];
 }
 
 @end

@@ -39,6 +39,7 @@
         self.longtitude = @"";
         self.distance = @"";
         self.schoolName = @"";
+        self.isInSchool = @"0";
 
         //填充获取的值
         self.userId = [contentDict objectForKey:@"id"];
@@ -100,6 +101,7 @@
         self.longtitude = [aDecoder decodeObjectForKey:@"longtitude"];
         self.schoolName = [aDecoder decodeObjectForKey:@"schoolName"];
         self.isUserInfoWell = [aDecoder decodeObjectForKey:@"isUserInfoWell"];
+        self.isInSchool = [aDecoder decodeObjectForKey:@"isInSchool"];
     }
     return self;
 }
@@ -131,6 +133,7 @@
     [aCoder encodeObject:self.longtitude forKey:@"longtitude"];
     [aCoder encodeObject:self.schoolName forKey:@"schoolName"];
     [aCoder encodeObject:self.isUserInfoWell forKey:@"isUserInfoWell"];
+    [aCoder encodeObject:self.isInSchool forKey:@"isInSchool"];
 
 }
 

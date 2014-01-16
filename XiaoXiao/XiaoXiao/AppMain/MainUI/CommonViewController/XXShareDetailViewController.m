@@ -77,6 +77,11 @@
         
     }];
     [self configChatToolBar];
+    //is self
+    XXSharePostModel *basePost = [self.commentModelArray objectAtIndex:0];
+    if ([basePost.userId isEqualToString:[XXUserDataCenter currentLoginUser].userId]) {
+        _chatToolBar.hidden = YES;
+    }
     
     //observe keyobard
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardDidShow) name:UIKeyboardDidShowNotification object:Nil];
