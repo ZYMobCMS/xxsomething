@@ -42,13 +42,12 @@
     [guideVCArray addObject:shareArray];
     [guideVCArray addObject:userArray];
     
-    
-    CGFloat totalHeight = XXNavContentHeight;
-    CGFloat totalWidth = self.view.frame.size.width;
     CGFloat originY = IS_IOS_7? 20:0;
+    CGFloat totalHeight = XXNavContentHeight+originY;
+    CGFloat totalWidth = self.view.frame.size.width;
     
     CGFloat headViewHeight = 250;
-    guideTable = [[UITableView alloc]initWithFrame:CGRectMake(0,headViewHeight+originY,totalWidth,totalHeight-headViewHeight) style:UITableViewStylePlain];
+    guideTable = [[UITableView alloc]initWithFrame:CGRectMake(0,headViewHeight,totalWidth,totalHeight-headViewHeight) style:UITableViewStylePlain];
     guideTable.dataSource = self;
     guideTable.delegate = self;
     guideTable.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
@@ -123,7 +122,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section==0) {
-        return 0.f;
+        return 20.f;
     }else{
         return 30.f;
     }
@@ -144,6 +143,20 @@
     }else{
         return 44.f;
     }
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (section==1) {
+        return 20.f;
+    }else{
+        return 0.f;
+    }
+}
+- (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0,0,tableView.frame.size.width-20,44)];
+    footView.backgroundColor = [UIColor clearColor];
+    return footView;
 }
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
