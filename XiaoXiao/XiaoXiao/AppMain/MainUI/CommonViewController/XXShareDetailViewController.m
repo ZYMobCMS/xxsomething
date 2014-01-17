@@ -219,10 +219,12 @@
 {
     
     XXSharePostModel *basePostModel = [self.commentModelArray objectAtIndex:0];
+    WeakObj(_hud) weakHud = _hud;
     [_chatToolBar setChatToolBarDidRecord:^(NSString *recordUrl, NSString *amrUrl, NSString *timeLength) {
         
         DDLogVerbose(@"record time length:%@",timeLength);
-        [SVProgressHUD showWithStatus:@"正在发表..."];
+        weakHud.labelText = @"正在发表...";
+        [weakHud show:YES];
         NSData *amrFileData = [NSData dataWithContentsOfFile:amrUrl];
         [[XXMainDataCenter shareCenter]uploadFileWithData:amrFileData withFileName:@"comment.amr" withUploadProgressBlock:^(CGFloat progressValue) {
             
@@ -234,7 +236,7 @@
             newComment.postAudio = resultModel.link;
             newComment.rootCommentId = basePostModel.postId;
             newComment.resourceId = basePostModel.postId;
-            
+            newComment.resourceType = @"posts";
             
             [[XXMainDataCenter shareCenter]requestPublishCommentWithConditionComment:newComment withSuccess:^(XXCommentModel *resultModel) {
                 [SVProgressHUD showSuccessWithStatus:@"发表成功"];
@@ -246,6 +248,26 @@
             [SVProgressHUD showErrorWithStatus:faildMsg];
         }];
         
+    }];
+    
+    //send text comment
+    [_chatToolBar setChatToolBarTapSend:^(NSString *textContent) {
+       
+        XXCommentModel *newComment = [[XXCommentModel alloc]init];
+        newComment.postAudioTime = @"0";
+        newComment.postContent = textContent;
+        newComment.rootCommentId = basePostModel.postId;
+        newComment.resourceId = basePostModel.postId;
+        newComment.resourceType = @"posts";
+
+        weakHud.labelText = @"正在发表...";
+        [weakHud show:YES];
+        [[XXMainDataCenter shareCenter]requestPublishCommentWithConditionComment:newComment withSuccess:^(XXCommentModel *resultModel) {
+            [SVProgressHUD showSuccessWithStatus:@"发表成功"];
+        } withFaild:^(NSString *faildMsg) {
+            [SVProgressHUD showErrorWithStatus:faildMsg];
+        }];
+
     }];
 }
 
@@ -262,6 +284,8 @@
     condition.pageSize = StringInt(_pageSize);
     XXSharePostModel *basePost = [self.commentModelArray objectAtIndex:0];
     condition.postId = basePost.postId;
+    condition.resType = @"posts";
+    
     [[XXMainDataCenter shareCenter]requestCommentListWithCondition:condition withSuccess:^(NSArray *resultList) {
         if (resultList.count<_pageSize) {
             _hiddenLoadMore = YES;

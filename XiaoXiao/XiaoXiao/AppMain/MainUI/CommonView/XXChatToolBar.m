@@ -61,6 +61,8 @@
         //input text
         _inputTextView = [[UITextView alloc]init];
         _inputTextView.frame = CGRectMake(35,0,218,35);
+        _inputTextView.returnKeyType = UIReturnKeySend;
+        _inputTextView.delegate = self;
         _inputTextView.backgroundColor = [UIColor clearColor];
         [self addSubview:_inputTextView];
         
@@ -158,6 +160,10 @@
 {
     _recordBlock = [recordBlock copy];
 }
+- (void)setChatToolBarTapSend:(XXChatToolBarDidTapSend)sendBlock
+{
+    _sendBlock = [sendBlock copy];
+}
 
 - (void)reginFirstResponse
 {
@@ -168,11 +174,24 @@
 {
     
 }
-
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        if (_sendBlock) {
+            _sendBlock(_inputTextView.text);
+        }
+        return NO;
+    }
+    return YES;
+}
 - (BOOL)textViewShouldEndEditing:(UITextView *)textView
 {
-    
     return YES;
+}
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    
 }
 
 @end

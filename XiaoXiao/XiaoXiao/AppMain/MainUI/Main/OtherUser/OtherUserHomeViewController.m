@@ -119,7 +119,7 @@
             cell = [[XXBaseIconLabelCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             
         }
-        [cell setCellType:XXBaseCellTypeRoundSingle withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.f];
+        [cell setCellType:XXBaseCellTypeRoundSingle withBottomMargin:0.f withCellHeight:47.f];
         NSDictionary *item = [[guideVCArray objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
         [cell setContentDict:item];
         return cell;
@@ -132,11 +132,11 @@
             cell = [[OtherHomeMutilTextCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         }
         if(indexPath.section==2&&indexPath.row==0){
-            [cell setCellType:XXBaseCellTypeTop withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.0f];
+            [cell setCellType:XXBaseCellTypeTop withBottomMargin:0.f withCellHeight:46.f];
         }else if(indexPath.section==2&&indexPath.row==[[guideVCArray objectAtIndex:indexPath.section]count]-1){
-            [cell setCellType:XXBaseCellTypeBottom withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.0f];
+            [cell setCellType:XXBaseCellTypeBottom withBottomMargin:0.f withCellHeight:46.5f];
         }else{
-            [cell setCellType:XXBaseCellTypeMiddel withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.0f];
+            [cell setCellType:XXBaseCellTypeMiddel withBottomMargin:0.f withCellHeight:45.5f];
         }
         [cell setContentDict:[[guideVCArray objectAtIndex:indexPath.section]objectAtIndex:indexPath.row]];
         
@@ -151,10 +151,16 @@
         return 280;
     }
     if (indexPath.section==1) {
-        return 44;
+        return 47.f;
     }
     if (indexPath.section==2) {
         
+        if (indexPath.row == 0) {
+            return 46;
+        }
+        if (indexPath.row == guideVCArray.count-1) {
+            return 46.5;
+        }
         NSDictionary *item = [[guideVCArray objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
         
         return [OtherHomeMutilTextCell heightForContentDict:item forWidth:tableView.frame.size.width];
@@ -168,6 +174,20 @@
     }else{
         return 30.f;
     }
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (section==2) {
+        return 20.f;
+    }else{
+        return 0.f;
+    }
+}
+- (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0,0,tableView.frame.size.width-20,44)];
+    footView.backgroundColor = [UIColor clearColor];
+    return footView;
 }
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {

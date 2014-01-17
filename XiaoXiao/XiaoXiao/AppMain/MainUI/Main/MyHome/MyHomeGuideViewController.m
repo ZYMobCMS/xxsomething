@@ -107,13 +107,13 @@
         cell = [[XXBaseIconLabelCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     if (indexPath.section==0) {
-        [cell setCellType:XXBaseCellTypeRoundSingle withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.f];
+        [cell setCellType:XXBaseCellTypeRoundSingle withBottomMargin:0.f withCellHeight:47.f];
     }else if(indexPath.section==1&&indexPath.row==0){
-        [cell setCellType:XXBaseCellTypeTop withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.0f];
+        [cell setCellType:XXBaseCellTypeTop withBottomMargin:0.f withCellHeight:46.f];
     }else if(indexPath.section==1&&indexPath.row==[[guideVCArray objectAtIndex:indexPath.section]count]-1){
-        [cell setCellType:XXBaseCellTypeBottom withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.0f];
+        [cell setCellType:XXBaseCellTypeBottom withBottomMargin:0.f withCellHeight:46.5f];
     }else{
-        [cell setCellType:XXBaseCellTypeMiddel withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.0f];
+        [cell setCellType:XXBaseCellTypeMiddel withBottomMargin:0.f withCellHeight:45.5f];
     }
     NSDictionary *item = [[guideVCArray objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
     [cell setContentDict:item];
@@ -126,6 +126,23 @@
         return 0.f;
     }else{
         return 30.f;
+    }
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0) {
+        return 47;
+    }else if(indexPath.section==1){
+        
+        if (indexPath.row == [[guideVCArray objectAtIndex:indexPath.section]count]-1) {
+            return 46.5;
+        }else if(indexPath.row == 0){
+            return 46;
+        }else{
+            return 45.5;
+        }
+    }else{
+        return 44.f;
     }
 }
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section

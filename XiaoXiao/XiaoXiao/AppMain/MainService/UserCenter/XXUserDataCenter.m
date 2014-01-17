@@ -76,7 +76,8 @@
             existUser.tooken = aUser.tooken;
             existUser.status = @"1";
             findExistUser = YES;
-            *stop = YES;
+        }else{
+            existUser.status = @"0";
         }
     }];
     if (!findExistUser) {

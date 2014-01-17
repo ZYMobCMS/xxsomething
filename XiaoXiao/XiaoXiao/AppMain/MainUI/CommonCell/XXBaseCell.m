@@ -8,6 +8,7 @@
 
 #import "XXBaseCell.h"
 
+
 @implementation XXBaseCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -20,6 +21,9 @@
         _innerMargin = 4.f;
         _rightMargin = 10.f;
         _topMargin = 5.f;
+        
+        _backgroundImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10,0,self.contentView.frame.size.width-20,47)];
+        [self.contentView addSubview:_backgroundImageView];
         
         self.titleLabel = [[UILabel alloc]init];
         self.titleLabel.backgroundColor = [UIColor clearColor];
@@ -49,68 +53,60 @@
     [super setSelected:selected animated:animated];
     // Configure the view for the selected state
 }
-- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
-{
-    [super setHighlighted:highlighted animated:animated];
-    if (highlighted) {
-        _backgroundImageView.fillColor = [XXCommonStyle xxThemeBlueColor];
-    }else{
-        _backgroundImageView.fillColor = [UIColor whiteColor];
-    }
-}
-- (void)setCellType:(XXBaseCellType)cellType withBottomMargin:(CGFloat)aMargin withCellHeight:(CGFloat)cellHeight withCornerRadius:(CGFloat)radius
+
+- (void)setCellType:(XXBaseCellType)cellType withBottomMargin:(CGFloat)aMargin withCellHeight:(CGFloat)cellHeight
 {
     _cellLineImageView.hidden = YES;
-    _backgroundImageView = [[TKRoundedView alloc]initWithFrame:CGRectMake(10,0,self.frame.size.width-20,cellHeight-aMargin)];
     self.accessoryView.frame = CGRectMake(self.accessoryView.frame.origin.x,self.accessoryView.frame.origin.y-aMargin,self.accessoryView.frame.size.width,self.accessoryView.frame.size.height);
-    _backgroundImageView.fillColor = [UIColor whiteColor];
-    _backgroundImageView.borderColor = [UIColor colorWithRed:227/255.f green:230/255.f blue:232/255.f alpha:1];
+    
+    CGRect oldFrame = _backgroundImageView.frame;
+    UIImage *background = nil;
+    UIImage *selecteBackground = nil;
     switch (cellType) {
         case XXBaseCellTypeTop:
         {
-            TKRoundedCorner cornerOption = {TKRoundedCornerTopLeft|TKRoundedCornerTopRight};
-            TKDrawnBorderSides bordSiedes = {TKDrawnBorderSidesAll};
-            _backgroundImageView.roundedCorners = cornerOption;
-            _backgroundImageView.drawnBordersSides = bordSiedes;
-            _backgroundImageView.borderWidth = 1.0f;
-            _backgroundImageView.cornerRadius = radius;
+            background = [[UIImage imageNamed:@"cell_top_normal.png"]makeStretchForCellTop];
+            selecteBackground = [[UIImage imageNamed:@"cell_top_selected.png"]makeStretchForCellTop];
+            
+            oldFrame = CGRectMake(oldFrame.origin.x,oldFrame.origin.y,oldFrame.size.width,cellHeight);
         }
             break;
         case XXBaseCellTypeMiddel:
         {
-            TKRoundedCorner cornerOption = {TKRoundedCornerNone};
-            TKDrawnBorderSides bordSiedes = {TKDrawnBorderSidesLeft|TKDrawnBorderSidesRight|TKDrawnBorderSidesBottom};
-            _backgroundImageView.roundedCorners = cornerOption;
-            _backgroundImageView.drawnBordersSides = bordSiedes;
-            _backgroundImageView.borderWidth = 1.0f;
+            background = [[UIImage imageNamed:@"cell_middle_normal.png"]makeStretchForCellMiddle];
+            selecteBackground = [[UIImage imageNamed:@"cell_middle_selected.png"]makeStretchForCellMiddle];
+            
+            oldFrame = CGRectMake(oldFrame.origin.x,oldFrame.origin.y,oldFrame.size.width,cellHeight);
+            
         }
             break;
         case XXBaseCellTypeBottom:
         {
-            TKRoundedCorner cornerOption = {TKRoundedCornerBottomLeft|TKRoundedCornerBottomRight};
-            TKDrawnBorderSides bordSiedes = {TKDrawnBorderSidesLeft|TKDrawnBorderSidesRight|TKDrawnBorderSidesBottom};
-            _backgroundImageView.roundedCorners = cornerOption;
-            _backgroundImageView.drawnBordersSides = bordSiedes;
-            _backgroundImageView.borderWidth = 1.0f;
-            _backgroundImageView.cornerRadius = radius;
-
+            background = [[UIImage imageNamed:@"cell_bottom_normal.png"]makeStretchForCellBottom];
+            selecteBackground = [[UIImage imageNamed:@"cell_bottom_selected.png"]makeStretchForCellBottom];
+            
+            oldFrame = CGRectMake(oldFrame.origin.x,oldFrame.origin.y,oldFrame.size.width,cellHeight);
+            
         }
             break;
         case XXBaseCellTypeRoundSingle:
         {
-            TKRoundedCorner cornerOption = {TKRoundedCornerAll};
-            TKDrawnBorderSides bordSiedes = {TKDrawnBorderSidesAll};
-            _backgroundImageView.roundedCorners = cornerOption;
-            _backgroundImageView.drawnBordersSides = bordSiedes;
-            _backgroundImageView.borderWidth = 1.0f;
-            _backgroundImageView.cornerRadius = radius;
-
+            background = [[UIImage imageNamed:@"single_round_cell_normal.png"]makeStretchForSingleRoundCell];
+            selecteBackground = [[UIImage imageNamed:@"single_round_cell_selected.png"]makeStretchForSingleRoundCell];
+        }
+            break;
+        case XXBaseCellTypeCornerSingle:
+        {
+            background = [[UIImage imageNamed:@"single_corner_cell_normal.png"]makeStretchForSingleCornerCell];
+            selecteBackground = [[UIImage imageNamed:@"single_corner_cell_selected.png"]makeStretchForSingleCornerCell];
         }
             break;
         default:
             break;
     }
-    [self.contentView insertSubview:_backgroundImageView atIndex:0];
+    _backgroundImageView.highlightedImage = selecteBackground;
+    _backgroundImageView.frame = oldFrame;
+    _backgroundImageView.image = background;
 
 }
 

@@ -72,7 +72,7 @@
     BOOL isMutil = [[contentDict objectForKey:@"isMutil"]boolValue];
     NSString *content = [contentDict objectForKey:@"content"];
     
-    CGFloat totalHeight = 44.f;
+    CGFloat totalHeight = 45.5f;
     if (isMutil) {
         CGFloat leftMargin = 10.f;
         CGFloat contentWidth = width-2*leftMargin-2*leftMargin;

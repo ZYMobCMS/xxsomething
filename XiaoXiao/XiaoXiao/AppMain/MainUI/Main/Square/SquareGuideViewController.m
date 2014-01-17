@@ -90,19 +90,11 @@
             cell = [[XXBaseIconLabelCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             cell.accessoryView.hidden = NO;
         }
-        UIView *normalBackView = [[UIView alloc]initWithFrame:CGRectMake(0,0,cell.frame.size.width,cell.frame.size.height)];
-        normalBackView.backgroundColor = [UIColor clearColor];
-        cell.backgroundView = normalBackView;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     if (indexPath.section==1) {
-        [cell setCellType:XXBaseCellTypeRoundSingle withBottomMargin:10.f withCellHeight:55.f withCornerRadius:21.0f];
-    }else if(indexPath.section==0&&indexPath.row==0){
-        [cell setCellType:XXBaseCellTypeTop withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.0f];
-    }else if(indexPath.section==0&&indexPath.row==[[_guideTitleArray objectAtIndex:indexPath.section]count]-1){
-        [cell setCellType:XXBaseCellTypeBottom withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.0f];
-    }else{
-        [cell setCellType:XXBaseCellTypeMiddel withBottomMargin:0.f withCellHeight:44.f withCornerRadius:5.0f];
+        [cell setCellType:XXBaseCellTypeCornerSingle withBottomMargin:10.f withCellHeight:57.f];
+    }else if(indexPath.section==0){
+        [cell setCellType:XXBaseCellTypeRoundSingle withBottomMargin:10.f withCellHeight:57.f];
     }
     
     NSDictionary *item = [[_guideTitleArray objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
@@ -116,11 +108,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section==0) {
-        return 44.f;
-    }else{
-        return 55.f;
-    }
+    return 57.f;
 }
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
@@ -134,6 +122,7 @@
     NSString *className = [item objectForKey:@"class"];
     UIViewController *selectVC = [[NSClassFromString(className) alloc]init];
     [self.navigationController pushViewController:selectVC animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end

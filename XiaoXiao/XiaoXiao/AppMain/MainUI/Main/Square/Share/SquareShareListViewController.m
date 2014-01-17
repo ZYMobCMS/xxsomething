@@ -110,6 +110,7 @@
     condtion.pageIndex = [NSString stringWithFormat:@"%d",_currentPageIndex];
     condtion.pageSize = [NSString stringWithFormat:@"%d",_pageSize];
     condtion.schoolId = [XXUserDataCenter currentLoginUser].schoolId;
+    DDLogVerbose(@"share list school Id:%@",condtion.schoolId);
     
     [[XXMainDataCenter shareCenter]requestSharePostListWithCondition:condtion withSuccess:^(NSArray *resultList) {
         

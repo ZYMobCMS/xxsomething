@@ -11,7 +11,7 @@
 
 @interface XXBaseCell : UITableViewCell
 {
-    TKRoundedView *_backgroundImageView;
+    UIImageView *_backgroundImageView;
     UIImageView *_cellLineImageView;
     
     //
@@ -25,6 +25,6 @@
 @property (nonatomic,assign)BOOL     needCustomLine;
 @property (strong,nonatomic)UIImageView *accessoryView;
 
-- (void)setCellType:(XXBaseCellType)cellType withBottomMargin:(CGFloat)aMargin withCellHeight:(CGFloat)cellHeight withCornerRadius:(CGFloat)radius;
+- (void)setCellType:(XXBaseCellType)cellType withBottomMargin:(CGFloat)aMargin withCellHeight:(CGFloat)cellHeight;
 
 @end

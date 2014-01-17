@@ -43,6 +43,7 @@
 #import "XXEmojiChooseView.h"
 #import "XXCustomButton.h"
 #import "UIButton+XXStyle.h"
+#import "UIImage+XXStyle.h"
 #import "XXResponseButton.h"
 
 //common ViewController

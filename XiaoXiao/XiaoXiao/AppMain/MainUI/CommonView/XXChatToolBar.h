@@ -28,6 +28,7 @@ typedef void (^XXChatToolBarDidChooseInputMode) (XXChatToolBarInputModel inputMo
 typedef void (^XXChatToolBarDidChooseImage) (void);
 typedef void (^XXChatToolBarDidChooseEmoji) (void);
 typedef void (^XXChatToolBarDidRecord) (NSString *recordUrl,NSString* amrUrl,NSString *timeLength);
+typedef void (^XXChatToolBarDidTapSend) (NSString *textContent);
 
 @interface XXChatToolBar : UIView<UITextViewDelegate>
 {
@@ -42,11 +43,14 @@ typedef void (^XXChatToolBarDidRecord) (NSString *recordUrl,NSString* amrUrl,NSS
     XXChatToolBarType _barType;
     
     XXChatToolBarDidRecord _recordBlock;
+    XXChatToolBarDidTapSend _sendBlock;
 }
 
 - (id)initWithFrame:(CGRect)frame forUse:(XXChatToolBarType)barType;
 
 - (void)setChatToolBarDidRecord:(XXChatToolBarDidRecord)recordBlock;
+
+- (void)setChatToolBarTapSend:(XXChatToolBarDidTapSend)sendBlock;
 
 - (void)reginFirstResponse;
 

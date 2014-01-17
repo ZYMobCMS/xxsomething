@@ -20,10 +20,8 @@
         self.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
         backgroundImageView = [[UIImageView alloc]init];
         backgroundImageView.frame = CGRectMake(10,20,self.frame.size.width-20,self.frame.size.height-20);
-        backgroundImageView.layer.borderColor = [XXCommonStyle xxThemeButtonBoardColor].CGColor;
-        backgroundImageView.layer.borderWidth = 1.0f;
-        backgroundImageView.layer.cornerRadius = 6.0f;
-        backgroundImageView.userInteractionEnabled = YES;
+        backgroundImageView.image = [[UIImage imageNamed:@"share_post_back_normal.png"]makeStretchForSharePostList];
+        backgroundImageView.highlightedImage = [[UIImage imageNamed:@"share_post_back_selected.png"]makeStretchForSharePostList];
         [self.contentView addSubview:backgroundImageView];
         
         //head view
@@ -102,13 +100,7 @@
 {
     [super setHighlighted:highlighted animated:animated];
     if (!_isDetailState) {
-        if (highlighted) {
-            backgroundImageView.backgroundColor = [XXCommonStyle xxThemeDefaultSelectedColor];
-        }else{
-            backgroundImageView.backgroundColor = [UIColor whiteColor];
-        }
-    }else{
-        backgroundImageView.backgroundColor = [UIColor whiteColor];
+        [backgroundImageView setHighlighted:highlighted];
     }
 }
 
