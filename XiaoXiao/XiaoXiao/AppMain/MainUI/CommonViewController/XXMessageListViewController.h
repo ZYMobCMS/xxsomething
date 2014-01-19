@@ -11,6 +11,20 @@
 /*
  *通用消息列表
  */
-@interface XXMessageListViewController : UIViewController
+@interface XXMessageListViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+{
+    UITableView *_messageListTable;
+    UIRefreshControl *_refreshControl;
+    NSInteger   _currentPageIndex;
+    NSInteger   _pageSize;
+    BOOL        _hiddenLoadMore;
+    BOOL        _isRefresh;
+    
+    NSMutableArray *_messagesArray;
+}
+
+- (void)requestShareListNow;
+- (void)refresh;
+- (void)loadMoreResult;
 
 @end

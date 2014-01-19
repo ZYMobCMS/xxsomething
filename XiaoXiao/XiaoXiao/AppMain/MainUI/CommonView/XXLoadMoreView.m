@@ -16,6 +16,11 @@
     if (self) {
         // Initialization code
         self.backgroundColor = [UIColor clearColor];
+        
+        _backgroundImageView = [[UIImageView alloc]init];
+        _backgroundImageView.frame = CGRectMake(0,0,frame.size.width,frame.size.height);
+        [self addSubview:_backgroundImageView];
+        
         _indicatorView = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         _indicatorView.frame = CGRectMake(5,5,34,34);
         [self addSubview:_indicatorView];

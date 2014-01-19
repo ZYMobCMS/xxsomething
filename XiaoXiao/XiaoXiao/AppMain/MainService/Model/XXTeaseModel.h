@@ -16,6 +16,12 @@
 @property (nonatomic,strong)NSString *teaseTime;
 @property (nonatomic,strong)NSString *userId;
 @property (nonatomic,strong)NSString *toUserId;
+@property (nonatomic,strong)NSAttributedString *userHeadContent;
+@property (nonatomic,strong)NSString *nickName;
+@property (nonatomic,strong)NSString *grade;
+@property (nonatomic,strong)NSString *friendTeaseTime;
+@property (nonatomic,strong)NSString *schoolName;
+@property (nonatomic,strong)NSString *sex;
 
 - (id)initWithContentDict:(NSDictionary*)contentDict;
 

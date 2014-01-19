@@ -441,6 +441,7 @@ static dispatch_queue_t ZYXMPPClientQueue = nil;
                 newMessage.user = displayName;
                 newMessage.content = body;
                 newMessage.addTime = addTime;
+                newMessage.friendAddTime = [XXCommonUitil getTimeStrWithDateString:addTime];
                 newMessage.audioTime = audioTime;
                 newMessage.messageType = messageType;
                 newMessage.userId = sendUserId;

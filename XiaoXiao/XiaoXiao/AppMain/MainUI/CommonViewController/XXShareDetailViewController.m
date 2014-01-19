@@ -8,6 +8,7 @@
 
 #import "XXShareDetailViewController.h"
 #import "OtherUserHomeViewController.h"
+#import "XXLoadMoreCell.h"
 
 @interface XXShareDetailViewController ()
 
@@ -53,7 +54,7 @@
     
     CGFloat totalHeight = XXNavContentHeight -44;
     _tableView = [[UITableView alloc]init];
-    _tableView.frame = CGRectMake(0,0,self.view.frame.size.width,totalHeight);
+    _tableView.frame = CGRectMake(0,0,self.view.frame.size.width,totalHeight-35);
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
@@ -173,13 +174,25 @@
         [cell setSharePostModelForDetail:[self.commentModelArray objectAtIndex:indexPath.row]];
         
         return cell;
+    }else if (indexPath.row==self.commentModelArray.count-1){
+        static NSString *CommentIdentifier = @"MoreIdentifier";
+        XXLoadMoreCell *cell = (XXLoadMoreCell*)[tableView dequeueReusableCellWithIdentifier:CommentIdentifier];
+        
+        if (!cell) {
+            cell = [[XXLoadMoreCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CommentIdentifier];
+        }
+        [cell setTitle:[[self.commentModelArray objectAtIndex:indexPath.row]objectForKey:@"title"]];
+        
+        return cell;
     }else{
        static NSString *CommentIdentifier = @"CommentIdentifier";
         XXCommentCell *cell = (XXCommentCell*)[tableView dequeueReusableCellWithIdentifier:CommentIdentifier];
         
         if (!cell) {
             cell = [[XXCommentCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CommentIdentifier];
+            [cell setCellType:XXBaseCellTypeMiddel];
         }
+        
         [cell setCommentModel:[self.commentModelArray objectAtIndex:indexPath.row]];
         
         return cell;
@@ -188,29 +201,33 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSNumber *heightNumb = [self.commentRowHeightArray objectAtIndex:indexPath.row];
-    return [heightNumb floatValue];
+    if (indexPath.row==self.commentModelArray.count-1) {
+        return 46.f;
+    }else{
+        NSNumber *heightNumb = [self.commentRowHeightArray objectAtIndex:indexPath.row];
+        return [heightNumb floatValue];
+    }
+    
 }
-
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 20.f;
+}
+- (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0,0,tableView.frame.size.width-20,44)];
+    footView.backgroundColor = [UIColor clearColor];
+    return footView;
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.row == self.commentModelArray.count-1 && _hiddenLoadMore == NO) {
-        XXLoadMoreView *loadMoreView = [[XXLoadMoreView alloc]initWithFrame:CGRectMake(0,0,cell.frame.size.width,44)];
-        loadMoreView.backgroundColor = [UIColor whiteColor];
-        tableView.tableFooterView = loadMoreView;
-        [loadMoreView startLoading];
-        [self loadMoreResult];
-    }else{
-        XXLoadMoreView *loadMoreView = [[XXLoadMoreView alloc]initWithFrame:CGRectMake(0,0,cell.frame.size.width,44)];
-        loadMoreView.backgroundColor = [UIColor whiteColor];
-        [loadMoreView setTitle:@"没有评论"];
-        tableView.tableFooterView = loadMoreView;
+    if (self.commentModelArray.count>1&& indexPath.row== self.commentModelArray.count-1) {
+        NSDictionary *stateDict = [self.commentModelArray objectAtIndex:indexPath.row];
+        if ([[stateDict objectForKey:@"state"]boolValue]) {
+            [self loadMoreResult];
+        }
     }
 }
 
@@ -287,8 +304,8 @@
     condition.resType = @"posts";
     
     [[XXMainDataCenter shareCenter]requestCommentListWithCondition:condition withSuccess:^(NSArray *resultList) {
-        if (resultList.count<_pageSize) {
-            _hiddenLoadMore = YES;
+        if (self.commentModelArray.count>1) {
+            [self.commentModelArray removeLastObject];
         }
         [self.commentModelArray addObjectsFromArray:resultList];
         [resultList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -296,9 +313,27 @@
             NSNumber *commentHeightNumb = [NSNumber numberWithFloat:commentHeight];
             [self.commentRowHeightArray addObject:commentHeightNumb];
         }];
+        if (resultList.count<_pageSize) {
+            if (self.commentModelArray.count==0) {
+                NSDictionary *loadmoreDict = @{@"state":@"0",@"title":@"还没有评论"};
+                [self.commentModelArray addObject:loadmoreDict];
+            }else{
+                NSDictionary *loadmoreDict = @{@"state":@"0",@"title":@"没有更多评论"};
+                [self.commentModelArray addObject:loadmoreDict];
+            }
+            
+        }else{
+            NSDictionary *loadmoreDict = @{@"state":@"1",@"title":@"点击加载更多评论"};
+            [self.commentModelArray addObject:loadmoreDict];
+        }
         [_tableView reloadData];
         
     } withFaild:^(NSString *faildMsg) {
+        if (self.commentModelArray.count==1) {
+            NSDictionary *loadmoreDict = @{@"state":@"1",@"title":@"点击加载更多评论"};
+            [self.commentModelArray addObject:loadmoreDict];
+            [_tableView reloadData];
+        }
         [SVProgressHUD showErrorWithStatus:faildMsg];
     }];
 }

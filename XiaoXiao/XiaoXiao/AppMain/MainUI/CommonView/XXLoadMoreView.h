@@ -13,6 +13,8 @@
     UIActivityIndicatorView *_indicatorView;
     UILabel                 *_titleLabel;
 }
+@property (nonatomic,strong)UIImageView  *backgroundImageView;
+
 - (void)startLoading;
 - (void)endLoading;
 - (void)setTitle:(NSString*)title;

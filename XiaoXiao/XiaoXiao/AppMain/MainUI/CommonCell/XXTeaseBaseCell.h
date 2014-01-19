@@ -7,6 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XXBaseCell.h"
+#import "XXHeadView.h"
+#import "XXSharePostUserView.h"
+#import "XXTeaseModel.h"
 
 #define XXTeasePostJSONEmojiKey @"xxtease_post_emoji"
 #define XXTeasePostJSONTextKey  @"xxtease_post_text"
@@ -26,6 +30,17 @@
 
 
 
-@interface XXTeaseBaseCell : UITableViewCell
+@interface XXTeaseBaseCell : XXBaseCell
+{
+    XXHeadView  *_headView;
+    XXSharePostUserView *_userView;
+    UIImageView *_teaseImageView;
+    UILabel     *_timeLabel;
+    UIImageView *_iconImageView;
+    UILabel *_tagLabel;
+    UIButton    *_deleteButton;
+}
+
+- (void)setContentModel:(XXTeaseModel*)aTease;
 
 @end

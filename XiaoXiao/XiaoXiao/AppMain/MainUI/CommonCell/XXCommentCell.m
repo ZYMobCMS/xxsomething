@@ -18,29 +18,34 @@
         _leftMargin = 10.f;
         _topMargin = 10.f;
         _innerMargin = 10.f;
+        self.backgroundColor = [UIColor clearColor];
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         //back
         _backgroundImageView = [[UIImageView alloc]init];
         _backgroundImageView.frame = CGRectMake(_leftMargin,0,self.frame.size.width-2*_leftMargin,10);
+        _backgroundImageView.userInteractionEnabled = YES;
         [self.contentView addSubview:_backgroundImageView];
         
         //headView
-        _headView = [[XXHeadView alloc]initWithFrame:CGRectMake(_leftMargin,_topMargin,45,45)];
+        _headView = [[XXHeadView alloc]initWithFrame:CGRectMake(_leftMargin*2,_topMargin,45,45)];
         [self.contentView addSubview:_headView];
         
         //name label
         _nameLabel = [[UILabel alloc]init];
-        _nameLabel.frame = CGRectMake(_headView.frame.origin.x+_headView.frame.size.width+_innerMargin,_topMargin+7,280,30);
-        _nameLabel.backgroundColor = [UIColor clearColor];
+        _nameLabel.frame = CGRectMake(_headView.frame.origin.x+_headView.frame.size.width+_innerMargin/2,_topMargin+7,_backgroundImageView.frame.size.width-4*_leftMargin-_headView.frame.size.width,20);
+        _nameLabel.backgroundColor = [UIColor blueColor];
+        _nameLabel.textColor = [UIColor blackColor];
         [_backgroundImageView addSubview:_nameLabel];
         
         //content text
-        _contentTextView = [[XXBaseTextView alloc]initWithFrame:CGRectMake(_nameLabel.frame.origin.x,_nameLabel.frame.origin.y+_nameLabel.frame.size.height+_innerMargin,_backgroundImageView.frame.size.width-3*_leftMargin-_headView.frame.size.width,30)];
+        _contentTextView = [[XXBaseTextView alloc]initWithFrame:CGRectMake(_nameLabel.frame.origin.x,_nameLabel.frame.origin.y+_nameLabel.frame.size.height+_innerMargin,_backgroundImageView.frame.size.width-4*_leftMargin-_headView.frame.size.width,30)];
+        _contentTextView.backgroundColor = [UIColor redColor];
         [_backgroundImageView addSubview:_contentTextView];
         
         //audio
         _audioButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _audioButton.frame = CGRectMake(_nameLabel.frame.origin.x,_nameLabel.frame.origin.y+_nameLabel.frame.size.height+_innerMargin,55,44);
+        _audioButton.frame = CGRectMake(_nameLabel.frame.origin.x+50,_nameLabel.frame.origin.y+_nameLabel.frame.size.height+_innerMargin,80,35);
         [_audioButton defaultStyle];
         _audioButton.layer.cornerRadius = 15.0f;
         [_backgroundImageView addSubview:_audioButton];
@@ -51,28 +56,27 @@
         
         //play state icon
         _playStateImageView = [[UIImageView alloc]init];
-        _playStateImageView.frame = CGRectMake(10,5,25,25);
+        _playStateImageView.frame = CGRectMake(10,5,12,12);
+        _playStateImageView.image = [UIImage imageNamed:@"audio_play_stop.png"];
         [_audioButton addSubview:_playStateImageView];
         
         //time
         _audioTimeLabel = [[UILabel alloc]init];
         _audioTimeLabel.frame = CGRectMake(40,5,15,35);
-        _audioTimeLabel.backgroundColor = [UIColor clearColor];
+        _audioTimeLabel.backgroundColor = [UIColor greenColor];
+        _audioTimeLabel.textColor = [UIColor blackColor];
+        _audioTimeLabel.font = [UIFont systemFontOfSize:9];
         [_audioButton addSubview:_audioTimeLabel];
         
         //_time label
         _timeLabel = [[UILabel alloc]init];
-        _timeLabel.frame = CGRectMake(0,0,30,30);
-        _timeLabel.backgroundColor = [UIColor clearColor];
+        _timeLabel.frame = CGRectMake(0,0,80,20);
+        _timeLabel.backgroundColor = [UIColor orangeColor];
+        _timeLabel.textColor = [UIColor blackColor];
+        _timeLabel.textAlignment = NSTextAlignmentRight;
+        _timeLabel.font = [UIFont systemFontOfSize:9];
         [_backgroundImageView addSubview:_timeLabel];
         
-        //cell lien
-        _cellLineImageView = [[UIImageView alloc]init];
-        _cellLineImageView.frame = CGRectMake(_leftMargin,0,_backgroundImageView.frame.size.width,1);
-        _cellLineImageView.backgroundColor = [XXCommonStyle xxThemeButtonBoardColor];
-        [_backgroundImageView addSubview:_cellLineImageView];
-        
-
         
     }
     return self;
@@ -90,15 +94,18 @@
     BOOL isAudioType = [contentModel.postAudioTime isEqualToString:@"0"]? NO:YES;
     
     if (isAudioType) {
-        _audioButton.hidden = YES;
-        _contentTextView.hidden = NO;
-    }else{
         _audioButton.hidden = NO;
         _contentTextView.hidden = YES;
+    }else{
+        _audioButton.hidden = YES;
+        _contentTextView.hidden = NO;
     }
     
     //name label
     _nameLabel.text = contentModel.userName;
+    _timeLabel.text = contentModel.friendAddTime;
+    _audioTimeLabel.text = contentModel.postAudioTime;
+    DDLogVerbose(@"comemnt add time:%@",_timeLabel.text);
     
     //head
     [_headView setHeadWithUserId:contentModel.userId];
@@ -107,15 +114,10 @@
     if (isAudioType) {
         
         //time label
-        CGSize timeSize = [contentModel.friendAddTime sizeWithFont:[UIFont systemFontOfSize:_timeFontSize] constrainedToSize:CGSizeMake(100,_timeLabel.frame.size.height)];
-        CGFloat timeOriginX = _backgroundImageView.frame.size.width-_leftMargin-timeSize.width;
-        _timeLabel.frame = CGRectMake(timeOriginX,_audioButton.frame.origin.y+_audioButton.frame.size.height+_topMargin,timeSize.width,timeSize.height);
-        _timeLabel.text = contentModel.friendAddTime;
+        CGFloat timeOriginX = _backgroundImageView.frame.size.width-_leftMargin-80;
+        _timeLabel.frame = CGRectMake(timeOriginX,_audioButton.frame.origin.y+_audioButton.frame.size.height+_topMargin,80,20);
         
-        //cell line
-        _cellLineImageView.frame = CGRectMake(_cellLineImageView.frame.origin.x,_timeLabel.frame.origin.y+_timeLabel.frame.size.height+_topMargin,_cellLineImageView.frame.size.width,_cellLineImageView.frame.size.height);
-        
-        _backgroundImageView.frame = CGRectMake(_leftMargin,0,_backgroundImageView.frame.size.width,_topMargin+_headView.frame.size.height+_innerMargin+_audioButton.frame.size.height+_topMargin+_timeLabel.frame.size.height+_topMargin);
+        _backgroundImageView.frame = CGRectMake(_leftMargin,0,_backgroundImageView.frame.size.width,_topMargin+_headView.frame.size.height+_innerMargin+_audioButton.frame.size.height+_topMargin+_timeLabel.frame.size.height);
         
     }else{
         
@@ -123,18 +125,14 @@
         
         //reset
         _contentTextView.frame = CGRectMake(_contentTextView.frame.origin.x,_contentTextView.frame.origin.y,_contentTextView.frame.size.width,contentHeight);
+        [_contentTextView setAttributedString:contentModel.contentAttributedString];
         
         //time label
-        CGSize timeSize = [contentModel.friendAddTime sizeWithFont:[UIFont systemFontOfSize:_timeFontSize] constrainedToSize:CGSizeMake(100,_timeLabel.frame.size.height)];
-        CGFloat timeOriginX = _backgroundImageView.frame.size.width-_leftMargin-timeSize.width;
-        _timeLabel.frame = CGRectMake(timeOriginX,_contentTextView.frame.origin.y+_contentTextView.frame.size.height+_topMargin,timeSize.width,timeSize.height);
-        _timeLabel.text = contentModel.friendAddTime;
-        
-        //cell line
-        _cellLineImageView.frame = CGRectMake(_cellLineImageView.frame.origin.x,_timeLabel.frame.origin.y+_timeLabel.frame.size.height+_topMargin,_cellLineImageView.frame.size.width,_cellLineImageView.frame.size.height);
+        CGFloat timeOriginX = _backgroundImageView.frame.size.width-_leftMargin-80;
+        _timeLabel.frame = CGRectMake(timeOriginX,_contentTextView.frame.origin.y+_contentTextView.frame.size.height+_topMargin,80,20);
         
         //_background
-        _backgroundImageView.frame = CGRectMake(_leftMargin,0,_backgroundImageView.frame.size.width,_topMargin+_headView.frame.size.height+_innerMargin+contentHeight+_topMargin+_timeLabel.frame.size.height+_topMargin);
+        _backgroundImageView.frame = CGRectMake(_leftMargin,0,_backgroundImageView.frame.size.width,_topMargin+_headView.frame.size.height+_innerMargin+contentHeight+_topMargin+_timeLabel.frame.size.height);
     }
 }
 
@@ -146,41 +144,47 @@
     CGFloat innerMargin =10;
     CGFloat topMargin = 10;
     CGFloat headViewHeight=45;
-    CGFloat audioButtonHeight = 44;
+    CGFloat audioButtonHeight = 35;
     CGFloat backgroundViewWidth = width- 2*leftMargin;
     CGFloat timeFontSize = 13;
-    CGFloat timeHeight = 30;
-    CGFloat contentWidth = width - 3*leftMargin - headViewHeight;
+    CGFloat timeHeight = 20;
+    CGFloat contentWidth = width - 4*leftMargin - headViewHeight;
     
     CGFloat cellHeight = 0.f;
      //
     if (isAudioType) {
         
-        //time label
-        CGSize timeSize = [contentModel.friendAddTime sizeWithFont:[UIFont systemFontOfSize:timeFontSize] constrainedToSize:CGSizeMake(100,999)];
-        CGFloat timeOriginX = backgroundViewWidth-leftMargin-timeSize.width;
-        CGRect timeRect = CGRectMake(timeOriginX,topMargin+headViewHeight+innerMargin+audioButtonHeight+topMargin,timeSize.width,timeSize.height);
-        
-        cellHeight = topMargin + headViewHeight + innerMargin + audioButtonHeight + topMargin + timeRect.size.height + topMargin;
+        cellHeight = topMargin + headViewHeight + innerMargin + audioButtonHeight + topMargin + timeHeight;
         
     }else{
         
         CGFloat contentHeight = [XXBaseTextView heightForAttributedText:contentModel.contentAttributedString forWidth:contentWidth];
         
-        //reset
-        CGRect contentRect = CGRectMake(leftMargin+headViewHeight+leftMargin,topMargin+headViewHeight+innerMargin,contentWidth,contentHeight);
-        
-        //time label
-        CGSize timeSize = [contentModel.friendAddTime sizeWithFont:[UIFont systemFontOfSize:timeFontSize] constrainedToSize:CGSizeMake(100,timeHeight)];
-        CGFloat timeOriginX = backgroundViewWidth-leftMargin-timeSize.width;
-        CGRect timeRect = CGRectMake(timeOriginX,contentRect.origin.y+contentRect.size.height+topMargin,timeSize.width,timeSize.height);
-        
         //_background
-        cellHeight = topMargin + headViewHeight + innerMargin + contentHeight + topMargin + timeRect.size.height + topMargin;
+        cellHeight = topMargin + headViewHeight + innerMargin + contentHeight+topMargin+ timeHeight;
     }
     
     return cellHeight;
 
+}
+- (void)setCellType:(XXBaseCellType)cellType
+{
+    UIImage *backgroundImage = nil;
+    switch (cellType) {
+        case XXBaseCellTypeMiddel:
+        {
+            backgroundImage = [[UIImage imageNamed:@"share_post_detail_middle.png"]makeStretchForSharePostDetailMiddle];
+        }
+            break;
+        case XXBaseCellTypeBottom:
+        {
+            backgroundImage = [[UIImage imageNamed:@"share_post_detail_bottom.png"]makeStretchForSharePostDetailBottom];
+        }
+            break;
+        default:
+            break;
+    }
+    _backgroundImageView.image = backgroundImage;
 }
 
 @end

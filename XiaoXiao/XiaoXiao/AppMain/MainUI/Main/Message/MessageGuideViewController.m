@@ -27,6 +27,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    CGFloat totalHeight = XXNavContentHeight -44;
+
 }
 
 - (void)didReceiveMemoryWarning

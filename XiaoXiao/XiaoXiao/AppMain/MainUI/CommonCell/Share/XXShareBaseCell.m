@@ -22,6 +22,7 @@
         backgroundImageView.frame = CGRectMake(10,20,self.frame.size.width-20,self.frame.size.height-20);
         backgroundImageView.image = [[UIImage imageNamed:@"share_post_back_normal.png"]makeStretchForSharePostList];
         backgroundImageView.highlightedImage = [[UIImage imageNamed:@"share_post_back_selected.png"]makeStretchForSharePostList];
+        backgroundImageView.userInteractionEnabled = YES;
         [self.contentView addSubview:backgroundImageView];
         
         //head view
@@ -300,22 +301,24 @@
     
     [shareTextView setAttributedString:postModel.attributedContent];
     CGSize contentSize = [shareTextView suggestedFrameSizeToFitEntireStringConstraintedToWidth:[XXSharePostStyle sharePostContentWidth]];
-    DDLogVerbose(@"content Size:%f",contentSize.height);
+    DDLogVerbose(@"detail content Size height:%f",contentSize.height);
     
-    CGFloat backHeight = _contentTopHeight*2 + _headView.frame.size.height + _contentTopHeight + contentSize.height + 5 + 27 ;
+    CGFloat backHeight = _contentTopHeight*2 + _headView.frame.size.height + _contentTopHeight + contentSize.height + 27+10 ;
     
     backgroundImageView.frame = CGRectMake(backgroundImageView.frame.origin.x,backgroundImageView.frame.origin.y,backgroundImageView.frame.size.width,backHeight);
+    backgroundImageView.image = [[UIImage imageNamed:@"share_post_detail_top.png"]makeStretchForSharePostDetail];
     
     shareTextView.frame = CGRectMake(shareTextView.frame.origin.x,shareTextView.frame.origin.y,shareTextView.frame.size.width,contentSize.height);
     
     //bottom line
     _bottomLineSep.frame = CGRectMake(0,shareTextView.frame.origin.y+shareTextView.frame.size.height+5,_bottomLineSep.frame.size.width,1);
+    _bottomLineSep.hidden = YES;
     
 }
 + (CGFloat)heightWithSharePostModelForDetail:(XXSharePostModel *)postModel forContentWidth:(CGFloat)contentWidth
 {
-    CGFloat height = [XXShareBaseCell heightForAttributedText:postModel.attributedContent forWidth:[XXSharePostStyle sharePostContentWidth]] + 10+10+10*2 + 5 + 70 + 25;
-    
+    CGFloat height = [XXShareBaseCell heightForAttributedText:postModel.attributedContent forWidth:[XXSharePostStyle sharePostContentWidth]] + 10+10+70+10+27 ;
+    DDLogVerbose(@"detail post height:%f",height);
     return height;
 }
 

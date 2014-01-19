@@ -33,4 +33,5 @@
 @property (nonatomic,assign)BOOL     hideLoadMore;
 @property (nonatomic,assign)long     latitude;
 @property (nonatomic,assign)long     longtitude;
+
 @end

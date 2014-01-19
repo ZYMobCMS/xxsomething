@@ -11,7 +11,6 @@
 @interface XXCommentCell : UITableViewCell
 {
     UIImageView *_backgroundImageView;
-    UIImageView *_cellLineImageView;
     
     XXHeadView *_headView;
     XXBaseTextView *_contentTextView;
@@ -35,6 +34,7 @@
     
 }
 
+- (void)setCellType:(XXBaseCellType)cellType;
 - (void)setCommentModel:(XXCommentModel*)contentModel;
 + (CGFloat)heightForCommentModel:(XXCommentModel*)contentModel forWidth:(CGFloat)width;
 

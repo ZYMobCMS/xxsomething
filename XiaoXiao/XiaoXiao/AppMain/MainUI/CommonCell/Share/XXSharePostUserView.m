@@ -39,4 +39,12 @@
     
     return [[NSAttributedString alloc]initWithHTMLData:htmlData documentAttributes:nil];
 }
++ (NSAttributedString*)useHeadAttributedStringWithTeaseModel:(XXTeaseModel *)contentModel
+{
+     NSString *htmlContent = [XXShareTemplateBuilder buildSharePostHeadHtmlContentWithName:contentModel.nickName withGrade:contentModel.grade withCollege:contentModel.schoolName withSexTag:contentModel.sex withTimeString:contentModel.friendTeaseTime];
+    NSData *htmlData = [htmlContent dataUsingEncoding:NSUTF8StringEncoding];
+    
+    return [[NSAttributedString alloc]initWithHTMLData:htmlData documentAttributes:nil];
+    
+}
 @end

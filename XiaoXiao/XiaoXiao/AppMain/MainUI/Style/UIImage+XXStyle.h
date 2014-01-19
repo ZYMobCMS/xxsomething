@@ -18,5 +18,8 @@
 - (UIImage*)makeStretchForCellMiddle;
 - (UIImage*)makeStretchForCellBottom;
 - (UIImage*)makeStretchForSharePostList;
+- (UIImage*)makeStretchForSharePostDetail;
+- (UIImage*)makeStretchForSharePostDetailMiddle;
+- (UIImage*)makeStretchForSharePostDetailBottom;
 
 @end

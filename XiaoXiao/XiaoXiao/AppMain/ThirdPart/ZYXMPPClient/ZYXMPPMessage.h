@@ -40,6 +40,13 @@ typedef enum {
 @property (nonatomic,strong)NSString *isReaded;
 @property (nonatomic,strong)NSString *conversationId;
 @property (nonatomic,strong)NSString *groupRoomId;
+@property (nonatomic,strong)NSString *friendAddTime;
+
+//校校扩展
+@property (nonatomic,strong)NSString *isHomePageLiveMessage;//是不是主页留下的关心信息第一次发信息,第一次发信息需要把性别和学校名字信息发过来
+@property (nonatomic,strong)NSString *sendUserSex;
+@property (nonatomic,strong)NSString *sendUserSchoolName;
+
 
 + (NSString*)conversationIdWithOtherUserId:(NSString*)oId withMyUserId:(NSString*)myId;
 + (NSAttributedString*)attributedContentStringWithMessage:(ZYXMPPMessage*)aMessage;

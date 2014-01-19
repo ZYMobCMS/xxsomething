@@ -8,8 +8,10 @@
 
 #import "DTAttributedTextContentView.h"
 #import "XXSharePostModel.h"
+#import "XXTeaseModel.h"
 
 @interface XXSharePostUserView : DTAttributedTextContentView
 - (void)setContentModel:(XXSharePostModel*)contentModel;
 + (NSAttributedString*)useHeadAttributedStringWithModel:(XXSharePostModel*)contentModel;
++ (NSAttributedString*)useHeadAttributedStringWithTeaseModel:(XXTeaseModel*)contentModel;
 @end

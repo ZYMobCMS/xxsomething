@@ -23,6 +23,7 @@
         self.audioTime = @"";
         self.groupRoomId = @"";
         self.isReaded = @"0";
+        self.friendAddTime = @"";
     }
     return self;
 }

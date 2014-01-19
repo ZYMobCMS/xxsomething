@@ -105,7 +105,7 @@ BOOL const XXLockCommonCSSTemplateState = NO;
     }
     NSString *ccsFormatteString = [XXFileUitil loadStringFromBundleForName:fileName];
     
-    return [XXShareTemplateBuilder buildCSSTemplateWithBundleFormatteFile:ccsFormatteString withShareStyle:aStyle];
+    return [XXShareTemplateBuilder buildCommonCSSTemplateWithFormatte:ccsFormatteString withShareStyle:aStyle];
 }
 
 + (NSString*)buildCommonCSSTemplateWithFormatte:(NSString *)cssFormatte withShareStyle:(XXShareStyle *)aStyle
@@ -138,9 +138,9 @@ BOOL const XXLockCommonCSSTemplateState = NO;
     
     //替换content
     contentText = [XXBaseTextView switchEmojiTextWithSourceText:contentText];
-    htmlTemp = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$content$!" withString:contentText];
+    htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$content$!" withString:contentText];
     
-    return htmlTemplate;
+    return htmlTemp;
 }
 
 //user info cell

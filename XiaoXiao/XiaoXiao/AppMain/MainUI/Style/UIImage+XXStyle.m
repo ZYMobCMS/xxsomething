@@ -55,4 +55,20 @@
     return [self makeStretchWithEdegeInsets:shareList];
 }
 
+- (UIImage*)makeStretchForSharePostDetail
+{
+    UIEdgeInsets shareListDetail = UIEdgeInsetsMake(5.f,5.f,3.f,5.f);
+    return [self makeStretchWithEdegeInsets:shareListDetail];
+}
+- (UIImage*)makeStretchForSharePostDetailMiddle
+{
+    UIEdgeInsets shareListDetailMiddle = UIEdgeInsetsMake(3.f,3.f,3.f,3.f);
+    return [self makeStretchWithEdegeInsets:shareListDetailMiddle];
+}
+- (UIImage*)makeStretchForSharePostDetailBottom
+{
+    UIEdgeInsets shareListDetailBottom = UIEdgeInsetsMake(3.f,3.f,5.f,3.f);
+    return [self makeStretchWithEdegeInsets:shareListDetailBottom];
+}
+
 @end

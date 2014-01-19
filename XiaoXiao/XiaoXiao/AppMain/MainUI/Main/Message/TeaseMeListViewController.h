@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TeaseMeListViewController : UIViewController
+@interface TeaseMeListViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+{
+    UITableView *_teaseListTable;
+    UIRefreshControl *_refreshControl;
+    NSInteger   _currentPageIndex;
+    NSInteger   _pageSize;
+    BOOL        _hiddenLoadMore;
+    BOOL        _isRefresh;
+    
+    NSMutableArray *_teasesArray;
+}
 
 @end

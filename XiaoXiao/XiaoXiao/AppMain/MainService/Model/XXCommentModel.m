@@ -24,6 +24,9 @@
         self.rootCommentId = @"";
         self.addTime = @"";
         self.userName = @"";
+        self.postContent = @"";
+        self.postAudioTime = @"0";
+        self.postAudio = @"";
 
         self.commentId = [contentDict objectForKey:@"id"];
         self.resourceType = [contentDict objectForKey:@"res_type"];
@@ -35,14 +38,16 @@
         self.addTime = [contentDict objectForKey:@"add_time"];
         self.friendAddTime = [XXCommonUitil getTimeStrWithDateString:self.addTime];
         self.addTime = nil;
+        self.userName = [[contentDict objectForKey:@"user"]objectForKey:@"nickname"];
         
+        DDLogVerbose(@"user:%@",contentDict);
         //解析content字段
         NSData *contentData = [self.content dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary *customContentDict = [NSJSONSerialization JSONObjectWithData:contentData options:NSJSONReadingAllowFragments error:nil];
         NSString *audioTime = [customContentDict objectForKey:XXSharePostJSONAudioTime];
         self.postAudioTime = audioTime;
         if ([audioTime isEqualToString:@"0"]) {
-            self.postContent = [contentDict objectForKey:XXSharePostJSONContentKey];
+            self.postContent = [customContentDict objectForKey:XXSharePostJSONContentKey];
             
             //content style
             XXShareStyle *contentStyle = [[XXShareStyle alloc]init];
@@ -54,11 +59,12 @@
             contentStyle.contentTextColor = [XXCommonStyle commonPostContentTextColor];
             contentStyle.emojiSize = 13;
             
+            DDLogVerbose(@"comment content:%@",self.postContent);
             self.contentAttributedString = [XXBaseTextView formatteTextToAttributedText:self.postContent withHtmlTemplateFile:@"xxbase_common_template.html" withCSSTemplate:@"xxbase_comment_style.css" withShareStyle:contentStyle];
             self.postContent = nil;
             
         }else{
-            self.postAudio = [contentDict objectForKey:XXSharePostJSONAudioKey];
+            self.postAudio = [customContentDict objectForKey:XXSharePostJSONAudioKey];
         }
         
         

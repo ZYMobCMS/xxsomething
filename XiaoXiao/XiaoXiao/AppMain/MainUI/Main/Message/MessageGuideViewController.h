@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AudioMessageListViewController.h"
+#import "ReplyMessageListViewController.h"
+#import "TeaseMeListViewController.h"
+#import "XXCustomTabBar.h"
 
 @interface MessageGuideViewController : UIViewController
-
+{
+    NSMutableArray *viewControllers;
+    XXCustomTabBar *_menuBar;
+}
 @end
