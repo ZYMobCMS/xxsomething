@@ -15,6 +15,9 @@
     NSMutableArray *guideVCArray;
 
     XXUserModel *_currentUser;
+    
+    XXCustomButton *_leaveMsgButton;
+    XXCustomButton *_careButton;
 }
 
 - (id)initWithContentUser:(XXUserModel*)aUser;

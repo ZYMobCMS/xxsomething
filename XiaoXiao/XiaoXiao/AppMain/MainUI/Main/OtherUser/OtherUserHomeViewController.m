@@ -13,6 +13,7 @@
 #import "OtherUserTeaseSelectViewController.h"
 #import "OtherUserShareListViewController.h"
 #import "OtherUserFansListViewController.h"
+#import "XXChatViewController.h"
 
 @interface OtherUserHomeViewController ()
 
@@ -67,7 +68,7 @@
     [guideVCArray addObject:userArray];
 
     
-    CGFloat totalHeight = XXNavContentHeight-44-49;
+    CGFloat totalHeight = XXNavContentHeight-44;
     CGFloat totalWidth = self.view.frame.size.width;
     
     guideTable = [[UITableView alloc]initWithFrame:CGRectMake(0,0,totalWidth,totalHeight) style:UITableViewStylePlain];
@@ -77,6 +78,20 @@
     guideTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:guideTable];
     
+    _careButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
+    _careButton.frame = CGRectMake(0,totalHeight-49,160,49);
+    [_careButton redStyle];
+    [_careButton setTitle:@"关心" forState:UIControlStateNormal];
+    [_careButton addTarget:self action:@selector(careAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_careButton];
+    
+    _leaveMsgButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
+    _leaveMsgButton.frame = CGRectMake(160,totalHeight-49,160,49);
+    [_leaveMsgButton blueStyle];
+    [_leaveMsgButton setTitle:@"留声" forState:UIControlStateNormal];
+    [_leaveMsgButton addTarget:self action:@selector(leaveMessageAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_leaveMsgButton];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -84,6 +99,23 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[XXCommonUitil appMainTabController] setTabBarHidden:YES];
+    CGRect naviRect = self.navigationController.view.frame;
+    self.navigationController.view.frame = CGRectMake(naviRect.origin.x,naviRect.origin.y,naviRect.size.width,naviRect.size.height+49);
+    
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[XXCommonUitil appMainTabController] setTabBarHidden:NO];
+    CGRect naviRect = self.navigationController.view.frame;
+    self.navigationController.view.frame = CGRectMake(naviRect.origin.x,naviRect.origin.y,naviRect.size.width,naviRect.size.height-49);
+}
+
 
 #pragma mark - table source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -217,6 +249,17 @@
     [self.navigationController pushViewController:teaseVC animated:YES];
     [XXCommonUitil setCommonNavigationReturnItemForViewController:teaseVC];
 
+}
+
+- (void)careAction
+{
+    
+}
+
+- (void)leaveMessageAction
+{
+    XXChatViewController *chatViewController = [[XXChatViewController alloc]initWithChatUser:_currentUser];
+    [self.navigationController pushViewController:chatViewController animated:YES];
 }
 
 @end

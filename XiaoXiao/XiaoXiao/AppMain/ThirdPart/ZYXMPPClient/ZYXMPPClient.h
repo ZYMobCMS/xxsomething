@@ -86,6 +86,7 @@ typedef void (^ZYXMPPClientDidRecieveInviteAction) (BOOL resultState,NSString *m
     NSString *originJId;
     BOOL      shouldUseCustomHost;
     NSMutableDictionary *_actions;
+    NSMutableDictionary *_msgActions;
     ZYXMPPRoomConfig *myRoomConfig;
     NSMutableDictionary *_innerConfigDict;
     NSInteger roomsCount;
@@ -137,9 +138,13 @@ typedef void (^ZYXMPPClientDidRecieveInviteAction) (BOOL resultState,NSString *m
 - (void)setDidSendMessageSuccessAction:(ZYXMPPClientDidSendMessageSuccessAction)successAction;
 - (void)setConnectToServerErrorAction:(ZYXMPPClientConnectServerErrorAction)errorAction;
 - (void)setSendMessageSuccessAction:(ZYXMPPClientSendMessageSuccessAction)successAction;
+- (void)setSendMessageSuccessAction:(ZYXMPPClientSendMessageSuccessAction)successAction forReciever:(id)reciever;
 - (void)setSendMessageFaildAction:(ZYXMPPClientSendMessageFaildAction)faildAction;
+- (void)setSendMessageFaildAction:(ZYXMPPClientSendMessageFaildAction)faildAction forReciever:(id)reciever;
 - (void)setDidRecievedMessage:(ZYXMPPClientDidRecievedMessageAction)recievedAction;
+- (void)setDidRecievedMessage:(ZYXMPPClientDidRecievedMessageAction)recievedAction forReciever:(id)reciever;
 - (void)setDidRecieveInviteActioon:(ZYXMPPClientDidRecieveInviteAction)successAction;
+- (void)removeMsgActionForReciever:(id)reciever;
 
 - (void)startClientWithJID:(NSString *)jidString withPassword:(NSString*)password;
 - (void)sendMessageToUser:(ZYXMPPUser *)toUser withContent:(ZYXMPPMessage*)newMessage withSendResult:(void (^)(NSString *messageId,NSString *addTime))sendResult;

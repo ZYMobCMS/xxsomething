@@ -488,7 +488,7 @@
 //
 - (void)sendMessageTest:(UIButton*)sender
 {
-    /*
+    
     ZYXMPPUser *newUser = [[ZYXMPPUser alloc]init];
     newUser.jID = @"36";
     ZYXMPPMessage *message = [[ZYXMPPMessage alloc]init];
@@ -509,7 +509,7 @@
             [[XXChatCacheCenter shareCenter]saveMessageForCacheDict:message];
         }
     }];
-    [messageShowTextView setAttributedString:message.messageAttributedContent];*/
+    [messageShowTextView setAttributedString:message.messageAttributedContent];
     
     //群聊
 //    [[ZYXMPPClient shareClient]sendRoomChatMessage:nil toRoomJID:nil];

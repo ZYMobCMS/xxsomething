@@ -46,7 +46,7 @@ static dispatch_queue_t ZYXMPPClientQueue = nil;
         xmppRooms = [[NSMutableDictionary alloc]init];
         _innerConfigDict = [[NSMutableDictionary alloc]init];
         xmppRoomConfigs = [[NSMutableArray alloc]init];
-        [self initDefaultRoomConfig];
+//        [self initDefaultRoomConfig];
         needBackgroundRecieve = YES;//默认后台接收消息
         // Setup the XMPP stream
         [self setupStream];
@@ -77,7 +77,6 @@ static dispatch_queue_t ZYXMPPClientQueue = nil;
     [self setNeedAutoJIDWithCustomHostName:YES];
     [self setNeedBackgroundRecieve:YES];
     [self setNeedUseCustomHostAddress:YES];
-    
 }
 - (NSString*)myChatID
 {
@@ -203,6 +202,31 @@ static dispatch_queue_t ZYXMPPClientQueue = nil;
 - (void)setDidSendMessageSuccessAction:(ZYXMPPClientDidSendMessageSuccessAction)successAction
 {
     [_actions setObject:successAction forKey:@"didSendMessageSuccess"];
+}
+- (void)setDidRecievedMessage:(ZYXMPPClientDidRecievedMessageAction)recievedAction forReciever:(id)reciever
+{
+    NSString *key = [NSString stringWithFormat:@"recieveMsgAction_%d",[reciever hash]];
+    [_actions setObject:recievedAction forKey:key];
+}
+-(void)setSendMessageFaildAction:(ZYXMPPClientSendMessageFaildAction)faildAction forReciever:(id)reciever
+{
+    NSString *key = [NSString stringWithFormat:@"sendFaildAction_%d",[reciever hash]];
+    [_actions setObject:faildAction forKey:key];
+}
+- (void)setSendMessageSuccessAction:(ZYXMPPClientSendMessageSuccessAction)successAction forReciever:(id)reciever
+{
+    NSString *key = [NSString stringWithFormat:@"sendSuccessAction_%d",[reciever hash]];
+    [_actions setObject:successAction forKey:key];
+}
+- (void)removeMsgActionForReciever:(id)reciever
+{
+    NSString *recieveMsgSuccessKey = [NSString stringWithFormat:@"recieveMsgAction_%d",[reciever hash]];
+    NSString *sendSuccessKey = [NSString stringWithFormat:@"sendSuccessAction_%d",[reciever hash]];
+    NSString *sendFaildKey = [NSString stringWithFormat:@"sendFaildAction_%d",[reciever hash]];
+    
+    [_actions removeObjectForKey:recieveMsgSuccessKey];
+    [_actions removeObjectForKey:sendSuccessKey];
+    [_actions removeObjectForKey:sendFaildKey];
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark Send  Message  and Recieve Message
@@ -417,6 +441,18 @@ static dispatch_queue_t ZYXMPPClientQueue = nil;
                         ZYXMPPClientDidSendMessageSuccessAction didSendSuccess = [_actions objectForKey:@"didSendMessageSuccess"];
                         didSendSuccess([message attributeStringValueForName:@"id"]);
                     }
+                    //分发消息
+                    [_actions.allKeys enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                        
+                        NSString *key = (NSString*)obj;
+                        if ([key rangeOfString:@"sendSuccessAction_"].location!=NSNotFound) {
+                            
+                            ZYXMPPClientDidSendMessageSuccessAction didSendSuccess = [_actions objectForKey:@"didSendMessageSuccess"];
+                            didSendSuccess([message attributeStringValueForName:@"id"]);
+                        }
+                        
+                    }];
+
                 });
             }
         }
@@ -448,9 +484,38 @@ static dispatch_queue_t ZYXMPPClientQueue = nil;
                 newMessage.sendStatus = @"1";
                 newMessage.messageId = messageId;
                 newMessage.conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:newMessage.userId withMyUserId:originJId];
-                newMessage.messageAttributedContent = [ZYXMPPMessage attributedContentStringWithMessage:newMessage];
+                if ([newMessage.messageType intValue]==ZYXMPPMessageTypeText) {
+                    newMessage.messageAttributedContent = [ZYXMPPMessage attributedContentStringWithMessage:newMessage];
+                }
                 recieveAction (newMessage);
             }
+            
+            //分发消息
+            [_actions.allKeys enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+               
+                NSString *key = (NSString*)obj;
+                if ([key rangeOfString:@"recieveMsgAction_"].location!=NSNotFound) {
+                    
+                    ZYXMPPClientDidRecievedMessageAction recieveAction = [_actions objectForKey:key];
+                    ZYXMPPMessage *newMessage = [[ZYXMPPMessage alloc]init];
+                    newMessage.user = displayName;
+                    newMessage.content = body;
+                    newMessage.addTime = addTime;
+                    newMessage.friendAddTime = [XXCommonUitil getTimeStrWithDateString:addTime];
+                    newMessage.audioTime = audioTime;
+                    newMessage.messageType = messageType;
+                    newMessage.userId = sendUserId;
+                    newMessage.sendStatus = @"1";
+                    newMessage.messageId = messageId;
+                    newMessage.conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:newMessage.userId withMyUserId:originJId];
+                    if ([newMessage.messageType intValue]==ZYXMPPMessageTypeText) {
+                        newMessage.messageAttributedContent = [ZYXMPPMessage attributedContentStringWithMessage:newMessage];
+                    }
+                    recieveAction (newMessage);
+
+                }
+                
+            }];
         });
         
     }

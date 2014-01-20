@@ -8,11 +8,28 @@
 
 #import <UIKit/UIKit.h>
 #import "XXBaseViewController.h"
+#import "XXChatToolBar.h"
+#import "XXUserModel.h"
+#import "XXConditionModel.h"
 
 /*
  *基础聊天视图列表
  */
 
-@interface XXChatViewController : XXBaseViewController
+@interface XXChatViewController : XXBaseViewController<UITableViewDelegate,UITableViewDataSource>
+{
+    UITableView *_messageListTable;
+    NSMutableArray *_messagesArray;
+    NSMutableArray *_rowHeightArray;
+    
+    XXChatToolBar *_chatToolBar;
+    UIControl        *_whiteBoard;
+    
+    XXUserModel   *_chatUser;
+    XXConditionModel *_conversationCondition;
+    
+}
+
+- (id)initWithChatUser:(XXUserModel*)chatUser;
 
 @end

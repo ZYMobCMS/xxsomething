@@ -55,6 +55,21 @@
             [UIView animateWithDuration:0.5 animations:^{
                 self.mainTabController.view.alpha = 1;
             }];
+            
+            //build xmpp
+            [[ZYXMPPClient shareClient]clientDefaultConfig];
+            [[ZYXMPPClient shareClient]  setJabbredServerAddress:@"112.124.37.183"];
+            [[ZYXMPPClient shareClient] setJabbredServerPort:@"5222"];
+            [[ZYXMPPClient shareClient]  setConnectToServerErrorAction:^(NSString *errMsg) {
+                DDLogVerbose(@"connect xmpp server error :%@",errMsg);
+            }];
+            [[ZYXMPPClient shareClient]setStartClientFaildAction:^(NSString *faildMsg) {
+                DDLogVerbose(@"start client faild:%@",faildMsg);
+            }];
+            [[ZYXMPPClient shareClient]setStartClientSuccessAction:^(NSString *successMsg) {
+                DDLogVerbose(@"start client success:%@",successMsg);
+            }];
+            [[ZYXMPPClient shareClient]startClientWithJID:[XXUserDataCenter currentLoginUser].userId withPassword:@"123456"];
         }
     }];
     self.window.rootViewController = self.loginGuideNavController;

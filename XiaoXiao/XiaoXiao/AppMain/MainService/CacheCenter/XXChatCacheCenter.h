@@ -19,6 +19,9 @@
     NSMutableDictionary *_innerCacheDict;
 }
 + (XXChatCacheCenter*)shareCenter;
+- (NSArray*)messagesFromCacheDictForConversationCondition:(XXConditionModel*)condition;
+- (void)readCacheMsgToDictForCondition:(XXConditionModel*)condition withFinish:(void(^)(NSArray *messages))finish;//加入到内存缓存中
+
 - (void)saveMessage:(ZYXMPPMessage*)newMessage;
 - (void)saveSomeMessages:(NSArray*)messages;
 - (void)updateMessageSendStatusWithMessageId:(NSString*)messageId;

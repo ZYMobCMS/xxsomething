@@ -79,19 +79,22 @@
     CGFloat contentHeight = 0.f;
     CGFloat contentWidth = 0.f;
     
+    
+    
     switch ([aMessage.messageType intValue]) {
         case ZYXMPPMessageTypeText:
         {
             CGSize contentSize = [XXBaseTextView sizeForAttributedText:aMessage.messageAttributedContent forWidth:maxContentWidth];
-            contentHeight = contentSize.height;
+            contentHeight = contentSize.height>headWidth? contentSize.height:headWidth;
             contentWidth = contentSize.width;
-            
+            [_contentTextView setAttributedString:aMessage.messageAttributedContent];
         }
             break;
         case ZYXMPPMessageTypeImage:
         {
             contentWidth = maxContentWidth/2;
             contentHeight = contentWidth*3/4;
+            [_contentImageView setImageWithURL:[NSURL URLWithString:aMessage.content]];
         }
             break;
         case ZYXMPPMessageTypeAudio:
@@ -139,11 +142,63 @@
         default:
             break;
     }
+    if(aMessage.isFromSelf){
+        
+    }else{
+        
+    }
+        
     
 }
-+ (CGFloat)heightWithXMPPMessage:(ZYXMPPMessage *)aMessage
++ (CGFloat)heightWithXMPPMessage:(ZYXMPPMessage *)aMessage forWidth:(CGFloat)width
 {
     CGFloat totalHeight = 0.f;
+    CGFloat leftMargin = 10.f;
+    CGFloat topMargin = 10.f;
+    CGFloat headWidth = 25.f;
+    
+    CGFloat totalWidth = width;
+    CGFloat maxContentWidth = totalWidth-2*leftMargin-2*headWidth-2*leftMargin;
+    
+    //contentHeight
+    CGFloat contentHeight = 0.f;
+    CGFloat contentWidth = 0.f;
+    
+    switch ([aMessage.messageType intValue]) {
+        case ZYXMPPMessageTypeText:
+        {
+            CGSize contentSize = [XXBaseTextView sizeForAttributedText:aMessage.messageAttributedContent forWidth:maxContentWidth];
+            
+            contentHeight = contentSize.height>headWidth? contentSize.height:headWidth;
+            contentWidth = contentSize.width;
+            
+            totalHeight = 2*topMargin+contentHeight;
+        }
+            break;
+        case ZYXMPPMessageTypeImage:
+        {
+            contentWidth = maxContentWidth/2;
+            contentHeight = contentWidth*3/4;
+            
+            totalHeight = 2*topMargin+contentHeight;
+
+        }
+            break;
+        case ZYXMPPMessageTypeAudio:
+        {
+            contentWidth = maxContentWidth/2;
+            contentHeight = headWidth;
+            
+            totalHeight = 2*topMargin+contentHeight;
+
+        }
+            break;
+        default:
+            break;
+    }
+    
+    totalHeight = totalHeight+topMargin/2;
+    
     return totalHeight;
 }
 - (void)setSendingState:(BOOL)state

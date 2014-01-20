@@ -33,6 +33,7 @@
 }
 + (NSAttributedString*)attributedContentStringWithMessage:(ZYXMPPMessage*)aMessage
 {
+    
     return [[NSAttributedString alloc]initWithString:aMessage.content];
 }
 

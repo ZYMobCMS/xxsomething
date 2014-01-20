@@ -192,7 +192,7 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
         newConversation = [NSMutableArray array];
     }else{
         newConversation = [_innerCacheDict objectForKey:newMessage.conversationId];
-    }
+    }  
     [newConversation addObject:newMessage];
     [_innerCacheDict setObject:newConversation forKey:newMessage.conversationId];
     DDLogVerbose(@"cache dict save message success:%@",newMessage.messageId);
@@ -231,6 +231,29 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
     NSString *conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:condition.toUserId withMyUserId:condition.userId];
     NSMutableArray *conversationMessages = [_innerCacheDict objectForKey:conversationId];
     [self saveSomeMessages:conversationMessages];
+}
+
+- (NSArray*)messagesFromCacheDictForConversationCondition:(XXConditionModel *)condition
+{
+    NSString *conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:condition.toUserId withMyUserId:condition.userId];
+    NSMutableArray *conversationMessages = [_innerCacheDict objectForKey:conversationId];
+    return conversationMessages;
+}
+- (void)readCacheMsgToDictForCondition:(XXConditionModel *)condition withFinish:(void (^)(NSArray *messages))finish
+{
+    [self getCacheMessagesWithCondition:condition withFinish:^(NSArray *resultArray) {
+       
+        NSString *conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:condition.toUserId withMyUserId:condition.userId];
+        if ([_innerCacheDict objectForKey:conversationId]==nil) {
+            
+            NSMutableArray *conversationMsgs = [NSMutableArray arrayWithArray:resultArray];
+            [_innerCacheDict setObject:conversationMsgs forKey:conversationId];
+        }
+        
+        if (finish) {
+            finish(resultArray);
+        }
+    }];
 }
 
 @end

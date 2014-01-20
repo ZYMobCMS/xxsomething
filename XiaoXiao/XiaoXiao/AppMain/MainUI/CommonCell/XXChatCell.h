@@ -26,6 +26,6 @@
 }
 
 - (void)setXMPPMessage:(ZYXMPPMessage*)aMessage;
-+ (CGFloat)heightWithXMPPMessage:(ZYXMPPMessage*)aMessage;
++ (CGFloat)heightWithXMPPMessage:(ZYXMPPMessage*)aMessage  forWidth:(CGFloat)width;
 - (void)setSendingState:(BOOL)state;
 @end
