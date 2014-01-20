@@ -12,7 +12,7 @@
 #define XXChatMessageDataBase       @"xxchat_db"
 
 //conversation_id标示对话的id，用谈话对象的id和自己的id加下划线组成，这个是唯一的  别人的Id_自己的Id
-#define XXChatMessageTableCreate @"create table xxchat_table(send_user_id text,status text,send_user text,add_time text,audio_time text,body_content text,message_type text,is_readed text,message_id text primary key,conversation_id text)"
+#define XXChatMessageTableCreate @"create table xxchat_table(send_user_id text,status text,send_user text,add_time text,audio_time text,body_content text,message_type text,is_readed text,message_id text primary key,conversation_id text,content text)"
 
 static dispatch_queue_t XXChatCacheCenterQueue = nil;
 
@@ -67,7 +67,7 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
 
 - (void)saveMessage:(ZYXMPPMessage*)newMessage
 {
-    NSString *insertSql = [NSString stringWithFormat:@"insert into xxchat_table(send_user_id,status,send_user,add_time,audio_time,body_content,message_type,is_readed,message_id,conversation_id)values('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",newMessage.userId,newMessage.sendStatus,newMessage.user,newMessage.addTime,newMessage.audioTime,newMessage.messageAttributedContent,newMessage.messageType,newMessage.isReaded,newMessage.messageId,newMessage.conversationId];
+    NSString *insertSql = [NSString stringWithFormat:@"insert into xxchat_table(send_user_id,status,send_user,add_time,audio_time,body_content,message_type,is_readed,message_id,conversation_id,content)values('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",newMessage.userId,newMessage.sendStatus,newMessage.user,newMessage.addTime,newMessage.audioTime,newMessage.messageAttributedContent,newMessage.messageType,newMessage.isReaded,newMessage.messageId,newMessage.conversationId,newMessage.content];
     NSError *saveMessageError = nil;
     BOOL saveResult = [_innerDataBase update:insertSql withErrorAndBindings:&saveMessageError];
     DDLogVerbose(@"save message :%@ result:%d",newMessage.messageId,saveResult);
@@ -109,6 +109,7 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
         return;
     }
     
+    NSString *currenUserId = [XXUserDataCenter currentLoginUser].userId;
     dispatch_async(XXChatCacheCenterQueue, ^{
 
         NSString *conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:condition.toUserId withMyUserId:condition.userId];
@@ -122,7 +123,7 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
             
             ZYXMPPMessage *existMsg = [[ZYXMPPMessage alloc]init];
             existMsg.messageId = [resultSet stringForColumn:@"message_id"];
-            existMsg.messageAttributedContent = [resultSet stringForColumn:@"body_content"];
+            existMsg.messageAttributedContent = [[NSAttributedString alloc]initWithString:[resultSet stringForColumn:@"body_content"]];
             existMsg.conversationId = [resultSet stringForColumn:@"conversation_id"];
             existMsg.userId = [resultSet stringForColumn:@"send_user_id"];
             existMsg.user = [resultSet stringForColumn:@"send_user"];
@@ -131,6 +132,8 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
             existMsg.audioTime = [resultSet stringForColumn:@"audio_time"];
             existMsg.messageType = [resultSet stringForColumn:@"message_type"];
             existMsg.isReaded = [resultSet stringForColumn:@"is_readed"];
+            existMsg.content = [resultSet stringForColumn:@"content"];
+            existMsg.isFromSelf = [[resultSet stringForColumn:@"send_user_id"]isEqualToString:currenUserId];
             
             [modelArray addObject:existMsg];
         }
@@ -149,7 +152,7 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
         }
         return;
     }
-    
+    NSString *currenUserId = [XXUserDataCenter currentLoginUser].userId;
     dispatch_async(XXChatCacheCenterQueue, ^{
         NSString *conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:condition.toUserId withMyUserId:condition.userId];
         NSString *querySql = [NSString stringWithFormat:@"select * from xxchat_table where conversation_id='%@' and is_readed = '0'",conversationId];
@@ -170,7 +173,9 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
             existMsg.audioTime = [resultSet stringForColumn:@"audio_time"];
             existMsg.messageType = [resultSet stringForColumn:@"message_type"];
             existMsg.isReaded = [resultSet stringForColumn:@"is_readed"];
-            
+            existMsg.content = [resultSet stringForColumn:@"content"];
+            existMsg.isFromSelf = [[resultSet stringForColumn:@"send_user_id"]isEqualToString:currenUserId];
+
             [modelArray addObject:existMsg];
         }
         if (finish) {

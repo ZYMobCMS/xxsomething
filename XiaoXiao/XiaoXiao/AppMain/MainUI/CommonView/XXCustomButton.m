@@ -40,10 +40,12 @@
     self.iconImageView.image = [UIImage imageNamed:nImage];
     self.iconImageView.highlightedImage = [UIImage imageNamed:sImage];
     self.iconImageView.frame = iconFrame;
+    [self setTitleEdgeInsets:UIEdgeInsetsMake(0,iconFrame.origin.x,0,0)];
+
 }
 - (void)setTitle:(NSString *)title withFrame:(CGRect)titleFrame
 {
     [self setTitle:title forState:UIControlStateNormal];
-    self.titleLabel.frame = titleFrame;
+//    [self setTitleEdgeInsets:UIEdgeInsetsMake(titleFrame.origin.y,titleFrame.origin.x,0,0)];
 }
 @end

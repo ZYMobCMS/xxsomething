@@ -7,20 +7,25 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ZYXMPPMessage.h"
+#import "XXBaseCell.h"
 
-
-@interface XXChatCell : UITableViewCell
+@interface XXChatCell : XXBaseCell
 {
     XXHeadView *_headView;
     UIImageView *_bubbleBackView;
     XXBaseTextView *_contentTextView;
     
-    XXCustomButton *_recordButton;
+    XXRecordButton *_recordButton;
     UIImageView *_recordGif;
     UIActivityIndicatorView *_activeView;
     
     UIImageView *_contentImageView;
     UILabel     *_timeLabel;
-
+    
 }
+
+- (void)setXMPPMessage:(ZYXMPPMessage*)aMessage;
++ (CGFloat)heightWithXMPPMessage:(ZYXMPPMessage*)aMessage;
+- (void)setSendingState:(BOOL)state;
 @end

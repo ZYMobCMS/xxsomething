@@ -46,6 +46,7 @@ typedef enum {
 @property (nonatomic,strong)NSString *isHomePageLiveMessage;//是不是主页留下的关心信息第一次发信息,第一次发信息需要把性别和学校名字信息发过来
 @property (nonatomic,strong)NSString *sendUserSex;
 @property (nonatomic,strong)NSString *sendUserSchoolName;
+@property (nonatomic,assign)BOOL      isFromSelf;
 
 
 + (NSString*)conversationIdWithOtherUserId:(NSString*)oId withMyUserId:(NSString*)myId;

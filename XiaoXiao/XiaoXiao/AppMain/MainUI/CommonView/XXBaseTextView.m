@@ -79,6 +79,15 @@ NSString *const XXEmojiTagFormate = @"[]";
     
     return contentSize.height;
 }
++ (CGSize)sizeForAttributedText:(NSAttributedString *)attributedText forWidth:(CGFloat)width
+{
+    DTAttributedTextContentView *testView = [[DTAttributedTextContentView alloc]init];
+    [testView setAttributedString:attributedText];
+    
+    CGSize contentSize = [testView suggestedFrameSizeToFitEntireStringConstraintedToWidth:width];
+    
+    return contentSize;
+}
 
 #pragma mark - switch emoji text to image tag
 

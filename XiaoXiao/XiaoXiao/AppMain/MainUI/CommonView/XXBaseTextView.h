@@ -23,6 +23,7 @@
 
 //限定宽度内所需最大高度
 + (CGFloat)heightForAttributedText:(NSAttributedString*)attributedText forWidth:(CGFloat)width;
++ (CGSize)sizeForAttributedText:(NSAttributedString*)attributedText forWidth:(CGFloat)width;
 
 + (NSString*)emojiTextToImageName:(NSString*)emojiText;
 + (NSString*)switchEmojiTextWithSourceText:(NSString*)source;
