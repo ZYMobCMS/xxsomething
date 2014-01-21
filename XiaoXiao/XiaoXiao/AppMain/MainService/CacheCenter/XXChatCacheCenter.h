@@ -24,10 +24,12 @@
 - (NSArray*)messagesFromCacheDictForConversationCondition:(XXConditionModel*)condition;
 - (void)readCacheMsgToDictForCondition:(XXConditionModel*)condition withFinish:(void(^)(NSArray *messages))finish;//加入到内存缓存中
 - (void)removeCacheDictMessagesForCoversation:(XXConditionModel*)condition;
+- (XXUserModel*)getContactUserInfoWithUserId:(NSString*)userId;
+- (void)readLatestMessageListToCacheDict;//获取与所有用户的最近的消息列表
+- (NSArray*)getLatestMessageList;
 
 - (void)saveContactUser:(XXUserModel*)contactUser;
 - (BOOL)checkContactUserExist:(XXUserModel*)contactUser;
-- (void)getLatestMessageListWithFinish:(void(^)(NSArray*resultArray))finish;//获取与所有用户的最近的消息列表
 
 - (void)saveMessage:(ZYXMPPMessage*)newMessage;
 - (void)saveSomeMessages:(NSArray*)messages;

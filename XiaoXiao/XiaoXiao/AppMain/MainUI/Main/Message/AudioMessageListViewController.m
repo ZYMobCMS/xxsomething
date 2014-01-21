@@ -37,14 +37,31 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [[XXChatCacheCenter shareCenter]getLatestMessageList].count;
+}
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"CellIdentifier ";
+    XXMessageBaseCell *cell = (XXMessageBaseCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (!cell) {
+        cell = [[XXMessageBaseCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    ZYXMPPMessage *aMsg = [[[XXChatCacheCenter shareCenter]getLatestMessageList] objectAtIndex:indexPath.row];
+    [cell setXMPPMessage:aMsg];
+
+    return cell;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+
 - (void)requestMessageListNow
 {
-    [[XXChatCacheCenter shareCenter]getLatestMessageListWithFinish:^(NSArray *resultArray) {
-       
-        [_messagesArray addObjectsFromArray:resultArray];
-        [_messageListTable reloadData];
-        DDLogVerbose(@"_message array:%@",_messagesArray);
-    }];
+    [_refreshControl endRefreshing];
+    [_messageListTable reloadData];
 }
 - (void)refresh
 {

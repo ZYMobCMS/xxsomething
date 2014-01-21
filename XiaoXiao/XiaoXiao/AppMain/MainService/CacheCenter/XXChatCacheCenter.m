@@ -112,7 +112,7 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
         return NO;
     }
 }
-- (void)getLatestMessageListWithFinish:(void (^)(NSArray *))finish
+- (void)readLatestMessageListToCacheDict
 {
     //有多少位联系人
     FMResultSet *s = [_innerDataBase executeQuery:@"select * from xxchat_contact"];
@@ -120,7 +120,7 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
     while ([s next]) {
         
         NSString *contactUserId = [s stringForColumn:@"user_id"];
-        NSString *querySql = [NSString stringWithFormat:@"select xxchat_table.*,xxchat_contact.* from xxchat_table inner join xxchat_contact as xxchat_table.send_user_id = xxchat_contact.user_id where send_user_id = %@",contactUserId];
+        NSString *querySql = [NSString stringWithFormat:@"select xxchat_table.*,xxchat_contact.* from xxchat_table inner join xxchat_contact as xxchat_table.send_user_id = xxchat_contact.user_id where send_user_id = %@ order by ID DESC limit 1",contactUserId];
         
         FMResultSet *resultSet = [_innerDataBase executeQuery:querySql];
         while ([resultSet next]) {
@@ -141,10 +141,21 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
             existMsg.messageAttributedContent = [ZYXMPPMessage attributedContentStringWithMessage:existMsg];
 
             [resultList addObject:existMsg];
+            [_innerGlobalNewMessagesDict setObject:existMsg forKey:existMsg.conversationId];
         }
     }
     
     
+}
+- (NSArray*)getLatestMessageList
+{
+    NSMutableArray *resultArray = [NSMutableArray array];
+    [_innerGlobalNewMessagesDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+       
+        [resultArray addObject:obj];
+        
+    }];
+    return resultArray;
 }
 
 - (void)saveMessage:(ZYXMPPMessage*)newMessage
@@ -192,37 +203,35 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
     }
     
     NSString *currenUserId = [XXUserDataCenter currentLoginUser].userId;
-    dispatch_async(XXChatCacheCenterQueue, ^{
-
-        NSString *conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:condition.toUserId withMyUserId:condition.userId];
+    NSString *conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:condition.toUserId withMyUserId:condition.userId];
+    
+    NSString *querySql = [NSString stringWithFormat:@"select * from xxchat_table where conversation_id='%@' order by ID DESC limit %d,%d ",conversationId,[condition.pageIndex intValue],[condition.pageSize intValue]];
+    
+    DDLogVerbose(@"query cache messages sql --->%@",querySql);
+    NSMutableArray *modelArray = [NSMutableArray array];
+    FMResultSet *resultSet = [_innerDataBase executeQuery:querySql];
+    while ([resultSet next]) {
         
-        NSString *querySql = [NSString stringWithFormat:@"select * from xxchat_table where conversation_id='%@' limit %d,%d",conversationId,[condition.pageIndex intValue],[condition.pageSize intValue]];
+        ZYXMPPMessage *existMsg = [[ZYXMPPMessage alloc]init];
+        existMsg.messageId = [resultSet stringForColumn:@"message_id"];
+        existMsg.conversationId = [resultSet stringForColumn:@"conversation_id"];
+        existMsg.userId = [resultSet stringForColumn:@"send_user_id"];
+        existMsg.user = [resultSet stringForColumn:@"send_user"];
+        existMsg.sendStatus = [resultSet stringForColumn:@"status"];
+        existMsg.addTime = [resultSet stringForColumn:@"add_time"];
+        existMsg.audioTime = [resultSet stringForColumn:@"audio_time"];
+        existMsg.messageType = [resultSet stringForColumn:@"message_type"];
+        existMsg.isReaded = [resultSet stringForColumn:@"is_readed"];
+        existMsg.content = [resultSet stringForColumn:@"content"];
+        existMsg.isFromSelf = [[resultSet stringForColumn:@"send_user_id"]isEqualToString:currenUserId];
+        existMsg.messageAttributedContent = [ZYXMPPMessage attributedContentStringWithMessage:existMsg];
         
-        DDLogVerbose(@"query cache messages sql --->%@",querySql);
-        NSMutableArray *modelArray = [NSMutableArray array];
-        FMResultSet *resultSet = [_innerDataBase executeQuery:querySql];
-        while ([resultSet next]) {
-            
-            ZYXMPPMessage *existMsg = [[ZYXMPPMessage alloc]init];
-            existMsg.messageId = [resultSet stringForColumn:@"message_id"];
-            existMsg.conversationId = [resultSet stringForColumn:@"conversation_id"];
-            existMsg.userId = [resultSet stringForColumn:@"send_user_id"];
-            existMsg.user = [resultSet stringForColumn:@"send_user"];
-            existMsg.sendStatus = [resultSet stringForColumn:@"status"];
-            existMsg.addTime = [resultSet stringForColumn:@"add_time"];
-            existMsg.audioTime = [resultSet stringForColumn:@"audio_time"];
-            existMsg.messageType = [resultSet stringForColumn:@"message_type"];
-            existMsg.isReaded = [resultSet stringForColumn:@"is_readed"];
-            existMsg.content = [resultSet stringForColumn:@"content"];
-            existMsg.isFromSelf = [[resultSet stringForColumn:@"send_user_id"]isEqualToString:currenUserId];
-            existMsg.messageAttributedContent = [ZYXMPPMessage attributedContentStringWithMessage:existMsg];
+        [modelArray insertObject:existMsg atIndex:0];
+    }
+    if (finish) {
+        finish(modelArray);
+    }
 
-            [modelArray addObject:existMsg];
-        }
-        if (finish) {
-            finish(modelArray);
-        }
-    });
 }
 
 - (void)getUnReadMessagesWithCondition:(XXConditionModel *)condition withFinish:(void (^)(NSArray *))finish
@@ -235,35 +244,34 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
         return;
     }
     NSString *currenUserId = [XXUserDataCenter currentLoginUser].userId;
-    dispatch_async(XXChatCacheCenterQueue, ^{
-        NSString *conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:condition.toUserId withMyUserId:condition.userId];
-        NSString *querySql = [NSString stringWithFormat:@"select * from xxchat_table where conversation_id='%@' and is_readed = '0'",conversationId];
+    NSString *conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:condition.toUserId withMyUserId:condition.userId];
+    NSString *querySql = [NSString stringWithFormat:@"select * from xxchat_table where conversation_id='%@' and is_readed = '0' order by ID DESC",conversationId];
+    
+    DDLogVerbose(@"query unread messages sql --->%@",querySql);
+    NSMutableArray *modelArray = [NSMutableArray array];
+    FMResultSet *resultSet = [_innerDataBase executeQuery:querySql];
+    while ([resultSet next]) {
         
-        DDLogVerbose(@"query unread messages sql --->%@",querySql);
-        NSMutableArray *modelArray = [NSMutableArray array];
-        FMResultSet *resultSet = [_innerDataBase executeQuery:querySql];
-        while ([resultSet next]) {
-            
-            ZYXMPPMessage *existMsg = [[ZYXMPPMessage alloc]init];
-            existMsg.messageId = [resultSet stringForColumn:@"message_id"];
-            existMsg.messageAttributedContent = [[NSAttributedString alloc]initWithString:[resultSet stringForColumn:@"body_content"]];
-            existMsg.conversationId = [resultSet stringForColumn:@"conversation_id"];
-            existMsg.userId = [resultSet stringForColumn:@"send_user_id"];
-            existMsg.user = [resultSet stringForColumn:@"send_user"];
-            existMsg.sendStatus = [resultSet stringForColumn:@"status"];
-            existMsg.addTime = [resultSet stringForColumn:@"add_time"];
-            existMsg.audioTime = [resultSet stringForColumn:@"audio_time"];
-            existMsg.messageType = [resultSet stringForColumn:@"message_type"];
-            existMsg.isReaded = [resultSet stringForColumn:@"is_readed"];
-            existMsg.content = [resultSet stringForColumn:@"content"];
-            existMsg.isFromSelf = [[resultSet stringForColumn:@"send_user_id"]isEqualToString:currenUserId];
+        ZYXMPPMessage *existMsg = [[ZYXMPPMessage alloc]init];
+        existMsg.messageId = [resultSet stringForColumn:@"message_id"];
+        existMsg.messageAttributedContent = [[NSAttributedString alloc]initWithString:[resultSet stringForColumn:@"body_content"]];
+        existMsg.conversationId = [resultSet stringForColumn:@"conversation_id"];
+        existMsg.userId = [resultSet stringForColumn:@"send_user_id"];
+        existMsg.user = [resultSet stringForColumn:@"send_user"];
+        existMsg.sendStatus = [resultSet stringForColumn:@"status"];
+        existMsg.addTime = [resultSet stringForColumn:@"add_time"];
+        existMsg.audioTime = [resultSet stringForColumn:@"audio_time"];
+        existMsg.messageType = [resultSet stringForColumn:@"message_type"];
+        existMsg.isReaded = [resultSet stringForColumn:@"is_readed"];
+        existMsg.content = [resultSet stringForColumn:@"content"];
+        existMsg.isFromSelf = [[resultSet stringForColumn:@"send_user_id"]isEqualToString:currenUserId];
+        
+        [modelArray addObject:existMsg];
+    }
+    if (finish) {
+        finish(modelArray);
+    }
 
-            [modelArray addObject:existMsg];
-        }
-        if (finish) {
-            finish(modelArray);
-        }
-    });
 }
 
 //=============  内存的缓存  ========//
@@ -378,10 +386,34 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
         }
         [self saveMessage:newMessage];//保存消息
 
-        //保存最新的一条聊天信息
+        //保存最新的一条聊天信息，并且添加联系人信息
+        XXUserModel *contactUserInfo = [self getContactUserInfoWithUserId:newMessage.userId];
+        if (contactUserInfo) {
+            newMessage.sendUserSex = contactUserInfo.sex;
+            newMessage.sendUserSchoolName = contactUserInfo.schoolName;
+        }
         [_innerGlobalNewMessagesDict setObject:newMessage forKey:newMessage.conversationId];
         
     } forReciever:self];
+}
+
+- (XXUserModel*)getContactUserInfoWithUserId:(NSString *)userId
+{
+    NSString *querySql = [NSString stringWithFormat:@"select * from xxchat_contact where user_id = '%@'",userId];
+    FMResultSet *resultSet = [_innerDataBase executeQuery:querySql];
+    
+    if (resultSet) {
+        
+        XXUserModel *contactUser = [[XXUserModel alloc]init];
+        contactUser.userId = [resultSet stringForColumn:@"user_id"];
+        contactUser.sex = [resultSet stringForColumn:@"send_user_sex"];
+        contactUser.schoolName = [resultSet stringForColumn:@"send_user_school_name"];
+        
+        return contactUser;
+        
+    }else{
+        return nil;
+    }
 }
 
 @end

@@ -13,8 +13,9 @@
 #import "MyProfileEditViewController.h"
 #import "MyShareListViewController.h"
 #import "MyHomeUserHeadView.h"
+#import "XXBaseViewController.h"
 
-@interface MyHomeGuideViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface MyHomeGuideViewController : XXBaseViewController<UITableViewDataSource,UITableViewDelegate>
 {
     UITableView *guideTable;
     

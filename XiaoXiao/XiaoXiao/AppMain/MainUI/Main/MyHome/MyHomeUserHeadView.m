@@ -16,10 +16,13 @@
     if (self) {
         // Initialization code
         
-        _themeBackgroundView = [[UIImageView alloc]init];
+        _themeBackgroundView = [[XXImageView alloc]init];
         _themeBackgroundView.frame = CGRectMake(0,0,frame.size.width,frame.size.height * 3/4);
         _themeBackgroundView.backgroundColor = [UIColor blueColor];
+        _themeBackgroundView.userInteractionEnabled = YES;
         [self addSubview:_themeBackgroundView];
+        UITapGestureRecognizer *themeTapR = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapOnThemeBack:)];
+        [_themeBackgroundView addGestureRecognizer:themeTapR];
         
         //
         _infoBackgroundView = [[UIImageView alloc]init];
@@ -74,6 +77,22 @@
     _signuareView.text = aUser.signature;
     _wellknowView.contentLabel.text = aUser.wellknow;
     
+    [_themeBackgroundView setImageUrl:aUser.bgImage];
+}
+- (void)setDidTapThemeBackBlock:(MyHomeUserHeadViewDidTapThemeBackBlock)tapBlock
+{
+    _tapBackBlock = [tapBlock copy];
+}
+
+- (void)didTapOnThemeBack:(UITapGestureRecognizer*)tapR
+{
+    if (_tapBackBlock) {
+        _tapBackBlock();
+    }
+}
+- (void)updateThemeBack:(NSString *)newBackUrl
+{
+    [_themeBackgroundView setImageUrl:newBackUrl];
 }
 
 @end

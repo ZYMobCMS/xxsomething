@@ -40,6 +40,7 @@
 }
 - (void)setImageUrl:(NSString *)imageUrl
 {
+    imageUrl = [NSString stringWithFormat:@"%@%@",XXBase_Host_Url,imageUrl];
     __weak typeof (DAProgressOverlayView*)safeOverlay = _overlayView;
     if (needOverlay) {
         [_contentImageView setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:nil options:SDWebImageContinueInBackground progress:^(NSUInteger receivedSize, long long expectedSize) {

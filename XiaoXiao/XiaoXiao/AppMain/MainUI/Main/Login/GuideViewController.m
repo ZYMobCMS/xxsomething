@@ -114,20 +114,20 @@
         if (resultState) {
             
             //检查是否完善资料了
-//            BOOL isUserInfoWellDone = [XXUserDataCenter checkLoginUserInfoIsWellDone];
-//            if (!isUserInfoWellDone) {
-//                SettingMyProfileGuideViewController *updateVC = [[SettingMyProfileGuideViewController alloc]init];
-//                [updateVC setFinishBlock:^(BOOL resultState) {
-//                    if (_finishBlock) {
-//                        _finishBlock(resultState);
-//                    }
-//                }];
-//                [self.navigationController pushViewController:updateVC animated:YES];
-//            }else{
+            BOOL isUserInfoWellDone = [XXUserDataCenter checkLoginUserInfoIsWellDone];
+            if (!isUserInfoWellDone) {
+                SettingMyProfileGuideViewController *updateVC = [[SettingMyProfileGuideViewController alloc]init];
+                [updateVC setFinishBlock:^(BOOL resultState) {
+                    if (_finishBlock) {
+                        _finishBlock(resultState);
+                    }
+                }];
+                [self.navigationController pushViewController:updateVC animated:YES];
+            }else{
                 if (_finishBlock) {
                     _finishBlock(resultState);
                 }
-//            }
+            }
         }
     }];
     [self.navigationController pushViewController:loginVC animated:YES];
@@ -208,7 +208,7 @@
         newUser.grade = resultString;
     }];
     [chooseSchoolVC setNextStepAction:^(NSDictionary *resultDict) {
-        [self.navigationController pushViewController:gradeChooseVC animated:YES];
+        [self.navigationController pushViewController:chooseVC animated:YES];
     }];
     [chooseSchoolVC setFinishChooseSchool:^(XXSchoolModel *chooseSchool) {
         newUser.schoolId = chooseSchool.schoolId;

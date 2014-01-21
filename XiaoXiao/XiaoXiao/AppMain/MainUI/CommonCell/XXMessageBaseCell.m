@@ -15,6 +15,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        self.backgroundColor = [UIColor clearColor];
         
         _headView = [[XXHeadView alloc]initWithFrame:CGRectMake(_leftMargin,_topMargin,55,55)];
         [self.contentView addSubview:_headView];

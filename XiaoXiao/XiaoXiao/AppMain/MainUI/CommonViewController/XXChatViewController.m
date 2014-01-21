@@ -58,10 +58,13 @@
     [self.view addSubview:_chatToolBar];
     
     DDLogVerbose(@"toobar frame:%@",NSStringFromCGRect(_chatToolBar.frame));
-    self.view.keyboardTriggerOffset = _chatToolBar.bounds.size.height;
+    _messageListTable.keyboardTriggerOffset = 0.f;
+    CGRect resultTableRect = _messageListTable.frame;
     
     WeakObj(_chatToolBar) weakToolBar = _chatToolBar;
     WeakObj(_messageListTable) weakMsgTable = _messageListTable;
+    WeakObj(_rowHeightArray) weakRowHeight = _rowHeightArray;
+
     [self.view addKeyboardNonpanningWithActionHandler:^(CGRect keyboardFrameInView) {
         
         DDLogVerbose(@"keyborad :%@",NSStringFromCGRect(keyboardFrameInView));
@@ -69,10 +72,11 @@
         toolBarFrame.origin.y = keyboardFrameInView.origin.y - toolBarFrame.size.height;
         weakToolBar.frame = toolBarFrame;
         
-        CGRect tableFrame = weakMsgTable.frame;
-        weakMsgTable.frame = CGRectMake(tableFrame.origin.x,tableFrame.origin.y,tableFrame.size.width,keyboardFrameInView.origin.y);
-
-        
+        CGRect makeNewRect = CGRectMake(resultTableRect.origin.x,resultTableRect.origin.y,resultTableRect.size.width,keyboardFrameInView.origin.y-35);
+        weakMsgTable.frame = makeNewRect;
+        NSIndexPath *lastRowIndexPath = [NSIndexPath indexPathForRow:weakRowHeight.count-1 inSection:0];
+        [weakMsgTable scrollToRowAtIndexPath:lastRowIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        DDLogVerbose(@"new message table frame:%@",NSStringFromCGRect(makeNewRect));
     }];
     
     _conversationCondition.pageIndex = StringInt(0);
@@ -83,15 +87,16 @@
         [messages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
            
             ZYXMPPMessage *eachMsg = (ZYXMPPMessage *)obj;
-            
             CGFloat height = [XXChatCell heightWithXMPPMessage:eachMsg forWidth:_messageListTable.frame.size.width];
             DDLogVerbose(@"read cache Message height:%f",height);
             [_rowHeightArray addObject:[NSNumber numberWithFloat:height]];
-            
            
         }];
         [_messageListTable reloadData];
-        
+        if (_rowHeightArray.count>0) {
+            NSIndexPath *lastRowIndexPath = [NSIndexPath indexPathForRow:_rowHeightArray.count-1 inSection:0];
+            [_messageListTable scrollToRowAtIndexPath:lastRowIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        }
     }];
     
     [self configChatToolBar];
@@ -262,6 +267,8 @@
                 DDLogVerbose(@"send message hight:%f",messageHeight);
                 [weakRowHeight addObject:[NSNumber numberWithFloat:messageHeight]];
                 [weakMsgTable reloadData];
+                NSIndexPath *lastRowIndexPath = [NSIndexPath indexPathForRow:weakRowHeight.count-1 inSection:0];
+                [weakMsgTable scrollToRowAtIndexPath:lastRowIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
                 
                 weakIsFirst = @"0";//change
                 
@@ -290,6 +297,8 @@
             [_rowHeightArray addObject:[NSNumber numberWithFloat:messageHeight]];
         }
         [_messageListTable reloadData];
+        NSIndexPath *lastRowIndexPath = [NSIndexPath indexPathForRow:_rowHeightArray.count-1 inSection:0];
+        [_messageListTable scrollToRowAtIndexPath:lastRowIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         
     } forReciever:self];
 }

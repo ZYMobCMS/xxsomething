@@ -12,6 +12,7 @@
 
 @interface XXSharePostUserView : DTAttributedTextContentView
 - (void)setContentModel:(XXSharePostModel*)contentModel;
+- (void)setTeaseModel:(XXTeaseModel*)teaseModel;
 + (NSAttributedString*)useHeadAttributedStringWithModel:(XXSharePostModel*)contentModel;
 + (NSAttributedString*)useHeadAttributedStringWithTeaseModel:(XXTeaseModel*)contentModel;
 @end

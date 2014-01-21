@@ -7,6 +7,7 @@
 //
 
 #import "MyHomeGuideViewController.h"
+#import "XXPhotoChooseViewController.h"
 
 @interface MyHomeGuideViewController ()
 
@@ -64,6 +65,49 @@
     _userHeadView.layer.shadowOpacity = 0.2f;
     [_userHeadView setContentUser:[XXUserDataCenter currentLoginUser]];
     
+    //theme back change
+    _hud.labelText = @"正在更新...";
+    WeakObj(_hud) weakHud = _hud;
+    WeakObj(_userHeadView) weakUserHeadView = _userHeadView;
+    WeakObj(self) weakSelf = self;
+    
+    [_userHeadView setDidTapThemeBackBlock:^{
+       
+        XXPhotoChooseViewController *photoChooseVC = [[XXPhotoChooseViewController alloc]initWithMutilPhotoChooseWithMaxChooseNumber:1 withFinishBlock:^(NSArray *resultImages) {
+            
+            [weakHud show:YES];
+            NSData *imageData = UIImageJPEGRepresentation([resultImages objectAtIndex:0],kCGInterpolationDefault);
+            [[XXMainDataCenter shareCenter]uploadFileWithData:imageData withFileName:@"themeBack.png" withUploadProgressBlock:^(CGFloat progressValue) {
+                
+            } withSuccessBlock:^(XXAttachmentModel *resultModel) {
+                
+                //更新壁纸
+                XXUserModel *updateUser = [[XXUserModel alloc]init];
+                updateUser.userId = [XXUserDataCenter currentLoginUser].userId;
+                updateUser.bgImage = resultModel.link;
+                
+                [[XXMainDataCenter shareCenter]requestUpdateUserInfoWithConditionUser:updateUser withSuccess:^(NSString *successMsg) {
+                   
+                    [weakHud hide:YES];
+                    [weakUserHeadView updateThemeBack:updateUser.bgImage];;
+                    
+                } withFaild:^(NSString *faildMsg) {
+                    
+                    [weakHud hide:YES];
+                    [SVProgressHUD showErrorWithStatus:faildMsg];
+                }];
+                
+            } withFaildBlock:^(NSString *faildMsg) {
+                [weakHud hide:YES];
+                [SVProgressHUD showErrorWithStatus:faildMsg];
+
+            }];
+            
+        }];
+        photoChooseVC.needCrop = YES;
+        [weakSelf.navigationController pushViewController:photoChooseVC animated:YES];
+        
+    }];
 
     
 }

@@ -33,7 +33,7 @@
     _pageSize = 15;
     _hiddenLoadMore = NO;
     
-    CGFloat totalHeight = XXNavContentHeight -44-49;
+    CGFloat totalHeight = XXNavContentHeight -44-49-40;
     _teaseListTable = [[UITableView alloc]init];
     _teaseListTable.frame = CGRectMake(0,0,self.view.frame.size.width,totalHeight);
     _teaseListTable.delegate = self;
@@ -45,6 +45,8 @@
     _refreshControl = [[UIRefreshControl alloc]init];
     [_refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     [_teaseListTable addSubview:_refreshControl];
+    
+    [self refresh];
 }
 
 - (void)didReceiveMemoryWarning
@@ -75,7 +77,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 100.f;
+    return 220+20;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -93,7 +95,11 @@
     
     [[XXMainDataCenter shareCenter]requestTeaseMeListWithCondition:condition withSuccess:^(NSArray *resultList) {
        
-        
+        if (_isRefresh) {
+            [_teasesArray removeAllObjects];
+        }
+        [_teasesArray addObjectsFromArray:resultList];
+        [_teaseListTable reloadData];
         
     } withFaild:^(NSString *faildMsg) {
         
@@ -101,7 +107,10 @@
 }
 - (void)refresh
 {
-    
+    _currentPageIndex = 0;
+    _hiddenLoadMore = NO;
+    _isRefresh = YES;
+    [self requestTeaseMeListNow];
 }
 - (void)loadMoreResult
 {

@@ -11,10 +11,13 @@
 #import "XXHeadView.h"
 #import "XXBaseTextView.h"
 #import "XXUserModel.h"
+#import "XXImageView.h"
+
+typedef void (^MyHomeUserHeadViewDidTapThemeBackBlock) (void);
 
 @interface MyHomeUserHeadView : UIView
 {
-    UIImageView *_themeBackgroundView;
+    XXImageView *_themeBackgroundView;
     UIImageView *_infoBackgroundView;
     XXHeadView  *_headView;
     UILabel     *_nameLabel;
@@ -23,7 +26,10 @@
     XXOpacityView *_wellknowView;
     XXOpacityView *_settingView;
     
+    MyHomeUserHeadViewDidTapThemeBackBlock _tapBackBlock;
 }
 - (void)setContentUser:(XXUserModel*)aUser;
+- (void)setDidTapThemeBackBlock:(MyHomeUserHeadViewDidTapThemeBackBlock)tapBlock;
+- (void)updateThemeBack:(NSString*)newBackUrl;
 
 @end
