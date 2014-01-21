@@ -27,6 +27,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    [self refresh];
 }
 
 - (void)didReceiveMemoryWarning
@@ -35,4 +37,17 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)requestMessageListNow
+{
+    [[XXChatCacheCenter shareCenter]getLatestMessageListWithFinish:^(NSArray *resultArray) {
+       
+        [_messagesArray addObjectsFromArray:resultArray];
+        [_messageListTable reloadData];
+        DDLogVerbose(@"_message array:%@",_messagesArray);
+    }];
+}
+- (void)refresh
+{
+    [self requestMessageListNow];
+}
 @end

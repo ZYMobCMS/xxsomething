@@ -213,7 +213,7 @@ static dispatch_queue_t ZYXMPPClientQueue = nil;
     NSString *key = [NSString stringWithFormat:@"sendFaildAction_%d",[reciever hash]];
     [_actions setObject:faildAction forKey:key];
 }
-- (void)setSendMessageSuccessAction:(ZYXMPPClientSendMessageSuccessAction)successAction forReciever:(id)reciever
+- (void)setSendMessageSuccessAction:(ZYXMPPClientDidSendMessageSuccessAction)successAction forReciever:(id)reciever
 {
     NSString *key = [NSString stringWithFormat:@"sendSuccessAction_%d",[reciever hash]];
     [_actions setObject:successAction forKey:key];
@@ -256,6 +256,15 @@ static dispatch_queue_t ZYXMPPClientQueue = nil;
         [sendUser setStringValue:newMessage.user];
         NSXMLElement *sendUserId = [NSXMLElement elementWithName:@"send_user_id"];
         [sendUserId setStringValue:newMessage.userId];
+        NSXMLElement *sendUserSex = nil;
+        NSXMLElement *sendUserSchoolName = nil;
+        if ([newMessage.isFirstConversation boolValue]) {
+            sendUserSex = [NSXMLElement elementWithName:@"send_user_sex"];
+            [sendUserSex setStringValue:newMessage.sendUserSex];
+            sendUserSchoolName = [NSXMLElement elementWithName:@"send_user_school_name"];
+            [sendUserSchoolName setStringValue:newMessage.sendUserSchoolName];
+        }
+        
         NSXMLElement *addTime = [NSXMLElement elementWithName:@"add_time"];
         NSString *currentTime = [self returnCurrentDateTime];
 		[addTime setStringValue:currentTime];
@@ -275,6 +284,10 @@ static dispatch_queue_t ZYXMPPClientQueue = nil;
         [message addChild:messageType];
         [message addChild:sendUser];
         [message addChild:sendUserId];
+        if ([newMessage.isFirstConversation boolValue]) {
+            [message addChild:sendUserSex];
+            [message addChild:sendUserSchoolName];
+        }
         [message addChild:addTime];
         [message addChild:audioTime];
         [message addChild:receipt];
@@ -447,7 +460,7 @@ static dispatch_queue_t ZYXMPPClientQueue = nil;
                         NSString *key = (NSString*)obj;
                         if ([key rangeOfString:@"sendSuccessAction_"].location!=NSNotFound) {
                             
-                            ZYXMPPClientDidSendMessageSuccessAction didSendSuccess = [_actions objectForKey:@"didSendMessageSuccess"];
+                            ZYXMPPClientDidSendMessageSuccessAction didSendSuccess = [_actions objectForKey:key];
                             didSendSuccess([message attributeStringValueForName:@"id"]);
                         }
                         
@@ -468,6 +481,15 @@ static dispatch_queue_t ZYXMPPClientQueue = nil;
         NSString *sendUserId = [[message elementForName:@"send_user_id"]stringValue];
         NSString *messageId = [message attributeStringValueForName:@"id"];
         
+        NSString *sendUserSex = nil;
+        NSString *sendUserSchoolName = nil;
+        if ([message elementsForName:@"send_user_sex"]) {
+            sendUserSex = [[message elementForName:@"send_user_sex"]stringValue];
+        }
+        if ([message elementForName:@"send_user_school_name"]) {
+            sendUserSchoolName = [[message elementForName:@"send_user_school_name"]stringValue];
+        }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             
             if ([_actions objectForKey:@"recieveMessageSuccess"]) {
@@ -484,6 +506,8 @@ static dispatch_queue_t ZYXMPPClientQueue = nil;
                 newMessage.sendStatus = @"1";
                 newMessage.messageId = messageId;
                 newMessage.conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:newMessage.userId withMyUserId:originJId];
+                newMessage.sendUserSex = sendUserSex;
+                newMessage.sendUserSchoolName = sendUserSchoolName;
                 if ([newMessage.messageType intValue]==ZYXMPPMessageTypeText) {
                     newMessage.messageAttributedContent = [ZYXMPPMessage attributedContentStringWithMessage:newMessage];
                 }
@@ -516,6 +540,7 @@ static dispatch_queue_t ZYXMPPClientQueue = nil;
                 }
                 
             }];
+            
         });
         
     }

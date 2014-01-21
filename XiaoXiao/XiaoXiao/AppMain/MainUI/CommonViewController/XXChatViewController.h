@@ -26,6 +26,7 @@
     UIControl        *_whiteBoard;
     
     XXUserModel   *_chatUser;
+    NSString      *_isFirstChat;
     XXConditionModel *_conversationCondition;
     
 }

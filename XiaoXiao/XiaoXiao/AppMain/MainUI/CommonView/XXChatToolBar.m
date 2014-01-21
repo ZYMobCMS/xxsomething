@@ -177,7 +177,9 @@
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     if([text isEqualToString:@"\n"]) {
-        [textView resignFirstResponder];
+        if (_barType != XXChatToolBarDefault) {
+            [textView resignFirstResponder];
+        }
         if (_sendBlock) {
             _sendBlock(_inputTextView.text);
         }

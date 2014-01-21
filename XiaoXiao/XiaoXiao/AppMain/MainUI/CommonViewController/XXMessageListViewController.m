@@ -91,7 +91,7 @@
 }
 
 #pragma mark - override api
-- (void)requestShareListNow
+- (void)requestMessageListNow
 {
     
 }

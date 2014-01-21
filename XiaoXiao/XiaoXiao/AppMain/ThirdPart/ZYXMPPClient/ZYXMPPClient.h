@@ -138,7 +138,7 @@ typedef void (^ZYXMPPClientDidRecieveInviteAction) (BOOL resultState,NSString *m
 - (void)setDidSendMessageSuccessAction:(ZYXMPPClientDidSendMessageSuccessAction)successAction;
 - (void)setConnectToServerErrorAction:(ZYXMPPClientConnectServerErrorAction)errorAction;
 - (void)setSendMessageSuccessAction:(ZYXMPPClientSendMessageSuccessAction)successAction;
-- (void)setSendMessageSuccessAction:(ZYXMPPClientSendMessageSuccessAction)successAction forReciever:(id)reciever;
+- (void)setSendMessageSuccessAction:(ZYXMPPClientDidSendMessageSuccessAction)successAction forReciever:(id)reciever;
 - (void)setSendMessageFaildAction:(ZYXMPPClientSendMessageFaildAction)faildAction;
 - (void)setSendMessageFaildAction:(ZYXMPPClientSendMessageFaildAction)faildAction forReciever:(id)reciever;
 - (void)setDidRecievedMessage:(ZYXMPPClientDidRecievedMessageAction)recievedAction;

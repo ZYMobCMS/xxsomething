@@ -100,7 +100,7 @@
         NSString *iconSelected = [NSString stringWithFormat:@"home_tab_item%d_selected",i];
         NSString *title = @"";
         
-        NSDictionary *itemDict = @{XXBarItemNormalIconKey:iconNormal,XXBarItemSelectIconKey:iconSelected,XXBarItemTitleKey:title};
+        NSDictionary *itemDict = @{XXBarItemNormalIconKey:iconNormal,XXBarItemSelectIconKey:iconSelected,XXBarItemTitleKey:title,XXBarItemTitleNormalColorKey:@"",XXBarItemTitleSelectColorKey:@""};
         [tabBarConfigArray addObject:itemDict];
     }
     

@@ -34,7 +34,7 @@
 + (NSAttributedString*)attributedContentStringWithMessage:(ZYXMPPMessage*)aMessage
 {
     
-    return [[NSAttributedString alloc]initWithString:aMessage.content];
+    return [XXBaseTextView formatteCommonTextToAttributedText:aMessage.content];
 }
 
 @end

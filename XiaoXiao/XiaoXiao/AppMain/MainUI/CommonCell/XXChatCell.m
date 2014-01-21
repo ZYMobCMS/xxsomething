@@ -17,6 +17,7 @@
         // Initialization code
         
         CGRect initRect = CGRectMake(0,0,1,1);
+        _cellLineImageView.hidden = YES;
         
         _headView = [[XXHeadView alloc]initWithFrame:initRect];
         [self.contentView addSubview:_headView];
@@ -24,6 +25,7 @@
         _bubbleBackView = [[UIImageView alloc]init];
         _bubbleBackView.frame = initRect;
         _bubbleBackView.userInteractionEnabled = YES;
+        _bubbleBackView.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:_bubbleBackView];
         
         _contentTextView = [[XXBaseTextView alloc]initWithFrame:initRect];
@@ -67,7 +69,8 @@
 {
     _leftMargin = 10.f;
     _topMargin = 10.f;
-    CGFloat headWidth = 25.f;
+    CGFloat headWidth = 35.f;
+    [_headView setHeadWithUserId:aMessage.userId];
     
     CGFloat originX = 0.f;
     CGFloat originY = 0.f;
@@ -79,8 +82,6 @@
     CGFloat contentHeight = 0.f;
     CGFloat contentWidth = 0.f;
     
-    
-    
     switch ([aMessage.messageType intValue]) {
         case ZYXMPPMessageTypeText:
         {
@@ -88,6 +89,7 @@
             contentHeight = contentSize.height>headWidth? contentSize.height:headWidth;
             contentWidth = contentSize.width;
             [_contentTextView setAttributedString:aMessage.messageAttributedContent];
+            DDLogVerbose(@"set chat cell content :%@",aMessage.messageAttributedContent);
         }
             break;
         case ZYXMPPMessageTypeImage:
@@ -106,23 +108,19 @@
         default:
             break;
     }
-
-    if (aMessage.isFromSelf) {
-        
-        originX = totalWidth-_leftMargin;
-        _headView.frame = CGRectMake(originX-headWidth,originY,headWidth,headWidth);
-        
-    }else{
-        originY = _leftMargin;
-        _headView.frame = CGRectMake(originX,originY,headWidth,headWidth);
-    }
-    _bubbleBackView.frame = CGRectMake(originX,originY,contentWidth+2*_leftMargin,contentHeight+2*_topMargin);
-    if (aMessage.isFromSelf) {
-        _activeView.frame = CGRectMake(_bubbleBackView.frame.origin.x-10-5,5,10,10);
-    }else{
-        _activeView.frame = CGRectMake(_bubbleBackView.frame.origin.x+_bubbleBackView.frame.size.width+5,5,10,10);
-    }
     
+    if (aMessage.isFromSelf) {
+        
+        originX = totalWidth-_leftMargin-headWidth;
+        _headView.frame = CGRectMake(originX,originY,headWidth,headWidth);
+        originX = totalWidth-_leftMargin - contentWidth-headWidth;
+
+    }else{
+        originX = _leftMargin;
+        _headView.frame = CGRectMake(originX,originY,headWidth,headWidth);
+        originX = originX+headWidth;
+    }
+
     switch ([aMessage.messageType intValue]) {
         case ZYXMPPMessageTypeText:
         {
@@ -142,12 +140,15 @@
         default:
             break;
     }
-    if(aMessage.isFromSelf){
-        
+
+    _bubbleBackView.frame = CGRectMake(originX,originY,contentWidth+2*_leftMargin,contentHeight+2*_topMargin);
+    if (aMessage.isFromSelf) {
+        _activeView.frame = CGRectMake(_bubbleBackView.frame.origin.x-10-5,5,10,10);
+        _bubbleBackView.image = [[UIImage imageNamed:@"chat_right.png"]makeStretchForBubbleRight];
     }else{
-        
+        _activeView.frame = CGRectMake(_bubbleBackView.frame.origin.x+_bubbleBackView.frame.size.width+5,5,10,10);
+        _bubbleBackView.image = [[UIImage imageNamed:@"chat_left.png"]makeStretchForBubbleLeft];
     }
-        
     
 }
 + (CGFloat)heightWithXMPPMessage:(ZYXMPPMessage *)aMessage forWidth:(CGFloat)width
@@ -155,7 +156,7 @@
     CGFloat totalHeight = 0.f;
     CGFloat leftMargin = 10.f;
     CGFloat topMargin = 10.f;
-    CGFloat headWidth = 25.f;
+    CGFloat headWidth = 35.f;
     
     CGFloat totalWidth = width;
     CGFloat maxContentWidth = totalWidth-2*leftMargin-2*headWidth-2*leftMargin;
@@ -197,8 +198,8 @@
             break;
     }
     
-    totalHeight = totalHeight+topMargin/2;
-    
+    totalHeight = totalHeight+topMargin;
+
     return totalHeight;
 }
 - (void)setSendingState:(BOOL)state

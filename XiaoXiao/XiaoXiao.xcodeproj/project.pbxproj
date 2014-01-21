@@ -21,6 +21,9 @@
 		3B46835C186140BE002CFFA2 /* XXShareStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B46835B186140BD002CFFA2 /* XXShareStyle.m */; };
 		3B46835F18614A6C002CFFA2 /* XXSharePostModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B46835E18614A6C002CFFA2 /* XXSharePostModel.m */; };
 		3B46836518616047002CFFA2 /* XXSharePostTypeConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B46836418616043002CFFA2 /* XXSharePostTypeConfig.m */; };
+		3B56C496188E4BD900131CEF /* MessageGuideTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B56C495188E4BD900131CEF /* MessageGuideTabBar.m */; };
+		3B56C499188E503400131CEF /* chat_left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B56C497188E503400131CEF /* chat_left@2x.png */; };
+		3B56C49A188E503400131CEF /* chat_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B56C498188E503400131CEF /* chat_right@2x.png */; };
 		3B5DF1E8186996E0000B50D2 /* XXRadioChooseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B5DF1E5186996E0000B50D2 /* XXRadioChooseView.m */; };
 		3B5DF1E9186996E0000B50D2 /* XXSegmentControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B5DF1E7186996E0000B50D2 /* XXSegmentControl.m */; };
 		3B5DF1EC186A73C1000B50D2 /* NSDictionary+UrlEncodedString.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B5DF1EB186A73C0000B50D2 /* NSDictionary+UrlEncodedString.m */; };
@@ -833,6 +836,10 @@
 		3B46835E18614A6C002CFFA2 /* XXSharePostModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXSharePostModel.m; sourceTree = "<group>"; };
 		3B46836318616041002CFFA2 /* XXSharePostTypeConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXSharePostTypeConfig.h; sourceTree = "<group>"; };
 		3B46836418616043002CFFA2 /* XXSharePostTypeConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXSharePostTypeConfig.m; sourceTree = "<group>"; };
+		3B56C494188E4BD900131CEF /* MessageGuideTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageGuideTabBar.h; sourceTree = "<group>"; };
+		3B56C495188E4BD900131CEF /* MessageGuideTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageGuideTabBar.m; sourceTree = "<group>"; };
+		3B56C497188E503400131CEF /* chat_left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_left@2x.png"; sourceTree = "<group>"; };
+		3B56C498188E503400131CEF /* chat_right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_right@2x.png"; sourceTree = "<group>"; };
 		3B5DF1E4186996E0000B50D2 /* XXRadioChooseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXRadioChooseView.h; sourceTree = "<group>"; };
 		3B5DF1E5186996E0000B50D2 /* XXRadioChooseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXRadioChooseView.m; sourceTree = "<group>"; };
 		3B5DF1E6186996E0000B50D2 /* XXSegmentControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXSegmentControl.h; sourceTree = "<group>"; };
@@ -3114,6 +3121,8 @@
 		E4C3EE05186C912C00DE3B83 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				3B56C497188E503400131CEF /* chat_left@2x.png */,
+				3B56C498188E503400131CEF /* chat_right@2x.png */,
 				E4B6FEB1188963F9008DB797 /* share_post_detail_bottom@2x.png */,
 				E4B6FEB2188963F9008DB797 /* share_post_detail_middle@2x.png */,
 				E4B6FEB3188963F9008DB797 /* share_post_detail_top@2x.png */,
@@ -3882,6 +3891,8 @@
 				E4E3F68C1860969100970698 /* TeaseMeListViewController.m */,
 				E4312D7B1861CFD30075C273 /* MessageGuideViewController.h */,
 				E4312D7C1861CFD50075C273 /* MessageGuideViewController.m */,
+				3B56C494188E4BD900131CEF /* MessageGuideTabBar.h */,
+				3B56C495188E4BD900131CEF /* MessageGuideTabBar.m */,
 			);
 			path = Message;
 			sourceTree = "<group>";
@@ -4767,6 +4778,7 @@
 				E4E3F9391860969400970698 /* 9.gif in Resources */,
 				E4E3F93A1860969400970698 /* 10.gif in Resources */,
 				E4E3F93B1860969400970698 /* 11.gif in Resources */,
+				3B56C499188E503400131CEF /* chat_left@2x.png in Resources */,
 				E4E3F93C1860969400970698 /* 12.gif in Resources */,
 				E4E3F93D1860969400970698 /* 13.gif in Resources */,
 				E4E3F93E1860969400970698 /* 14.gif in Resources */,
@@ -4847,6 +4859,7 @@
 				E4B6DB9918744CBF007BFFE2 /* alert_red_button_selected@2x.png in Resources */,
 				E4B6DB9A18744CBF007BFFE2 /* audio_finish_back@2x.png in Resources */,
 				E4B6DB9B18744CBF007BFFE2 /* audio_pause@2x.png in Resources */,
+				3B56C49A188E503400131CEF /* chat_right@2x.png in Resources */,
 				E4B6DB9C18744CBF007BFFE2 /* audio_play_stop@2x.png in Resources */,
 				E4B6DB9D18744CBF007BFFE2 /* audio_playing@2x.png in Resources */,
 				E4B6DB9E18744CBF007BFFE2 /* audio_type@2x.png in Resources */,
@@ -5251,6 +5264,7 @@
 				E4312D7A1861CFB30075C273 /* SquareGuideViewController.m in Sources */,
 				E4312D7D1861CFD70075C273 /* MessageGuideViewController.m in Sources */,
 				E4312D861861E4AB0075C273 /* XXSchoolModel.m in Sources */,
+				3B56C496188E4BD900131CEF /* MessageGuideTabBar.m in Sources */,
 				E4312D891861EFB10075C273 /* XXCommentModel.m in Sources */,
 				E452EF921863177800340FB5 /* amrFileCodec.mm in Sources */,
 				E452EF931863177800340FB5 /* wav.mm in Sources */,

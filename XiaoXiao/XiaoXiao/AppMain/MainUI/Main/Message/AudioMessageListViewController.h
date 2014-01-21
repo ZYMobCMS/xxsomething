@@ -9,5 +9,7 @@
 #import "XXMessageListViewController.h"
 
 @interface AudioMessageListViewController : XXMessageListViewController
-
+{
+    
+}
 @end

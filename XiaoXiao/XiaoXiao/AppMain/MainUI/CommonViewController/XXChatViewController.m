@@ -36,6 +36,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    _rowHeightArray = [[NSMutableArray alloc]init];
     
     //read cache msg
     _conversationCondition = [[XXConditionModel alloc]init];
@@ -53,7 +54,7 @@
     
     DDLogVerbose(@"self view frame :%@",NSStringFromCGRect(self.view.frame));
     //tool bar
-    _chatToolBar = [[XXChatToolBar alloc]initWithFrame:CGRectMake(0,totalHeight-35,self.view.frame.size.width,35) forUse:XXChatToolBarComment];
+    _chatToolBar = [[XXChatToolBar alloc]initWithFrame:CGRectMake(0,totalHeight-35,self.view.frame.size.width,35) forUse:XXChatToolBarDefault];
     [self.view addSubview:_chatToolBar];
     
     DDLogVerbose(@"toobar frame:%@",NSStringFromCGRect(_chatToolBar.frame));
@@ -82,16 +83,28 @@
         [messages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
            
             ZYXMPPMessage *eachMsg = (ZYXMPPMessage *)obj;
+            
             CGFloat height = [XXChatCell heightWithXMPPMessage:eachMsg forWidth:_messageListTable.frame.size.width];
+            DDLogVerbose(@"read cache Message height:%f",height);
             [_rowHeightArray addObject:[NSNumber numberWithFloat:height]];
             
-            [_messageListTable reloadData];
+           
         }];
+        [_messageListTable reloadData];
         
     }];
     
     [self configChatToolBar];
     [self configMessageAction];
+    
+    //check if first chat
+    _isFirstChat = [[XXChatCacheCenter shareCenter]checkContactUserExist:_chatUser]? @"1":@"0";
+    if ([_isFirstChat boolValue]) {
+        [[XXChatCacheCenter shareCenter]saveContactUser:_chatUser];
+    }
+    
+    //更新正在前台聊天的对话
+    [[XXChatCacheCenter shareCenter]setHappeningConversation:_conversationCondition];
     
     //observe keyobard
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardDidShow) name:UIKeyboardDidShowNotification object:Nil];
@@ -147,6 +160,10 @@
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
+    //保存所有信息
+    [[XXChatCacheCenter shareCenter]persistMessagesWithCondition:_conversationCondition];
+    [[ZYXMPPClient shareClient]removeMsgActionForReciever:self];
+    
     [super viewWillDisappear:animated];
     [[XXCommonUitil appMainTabController] setTabBarHidden:NO];
 }
@@ -158,7 +175,6 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-
     return [[XXChatCacheCenter shareCenter]messagesFromCacheDictForConversationCondition:_conversationCondition].count;
 }
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -169,6 +185,7 @@
         cell = [[XXChatCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     ZYXMPPMessage *aMessage = [[[XXChatCacheCenter shareCenter]messagesFromCacheDictForConversationCondition:_conversationCondition]objectAtIndex:indexPath.row];
+    DDLogVerbose(@"chat cell index path row:%d",indexPath.row);
     [cell setXMPPMessage:aMessage];
     
     return cell;
@@ -176,6 +193,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSNumber *rowHeight = [_rowHeightArray objectAtIndex:indexPath.row];
+    DDLogVerbose(@"row height:%f",[rowHeight floatValue]);
     return [rowHeight floatValue];
 }
 
@@ -215,7 +233,8 @@
     WeakObj(_messageListTable) weakMsgTable = _messageListTable;
     WeakObj(_rowHeightArray) weakRowHeight = _rowHeightArray;
     WeakObj(_conversationCondition) weakCondition = _conversationCondition;
-
+    WeakObj(_isFirstChat) weakIsFirst = _isFirstChat;
+    
     [_chatToolBar setChatToolBarTapSend:^(NSString *textContent) {
         
         ZYXMPPUser *newUser = [[ZYXMPPUser alloc]init];
@@ -227,6 +246,8 @@
         message.userId = myUserId;
         message.sendStatus = @"0";
         message.isReaded = @"1";
+        message.isFromSelf = YES;
+        message.isFirstConversation = weakIsFirst;
         message.conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:newUser.jID withMyUserId:message.userId];
         message.messageType = [NSString stringWithFormat:@"%d",ZYXMPPMessageTypeText];
         message.messageAttributedContent = [ZYXMPPMessage attributedContentStringWithMessage:message];
@@ -238,8 +259,11 @@
                 //发消息肯定在前台，所以存入内存缓存中
                 [[XXChatCacheCenter shareCenter]saveMessageForCacheDict:message];
                 CGFloat messageHeight = [XXChatCell heightWithXMPPMessage:message forWidth:weakMsgTable.frame.size.width];
+                DDLogVerbose(@"send message hight:%f",messageHeight);
                 [weakRowHeight addObject:[NSNumber numberWithFloat:messageHeight]];
                 [weakMsgTable reloadData];
+                
+                weakIsFirst = @"0";//change
                 
                 NSArray *cacheDictMsgArray = [[XXChatCacheCenter shareCenter]messagesFromCacheDictForConversationCondition:weakCondition];
                 DDLogVerbose(@"messages:%@",cacheDictMsgArray);
@@ -251,14 +275,15 @@
 
 - (void)configMessageAction
 {
-    [[ZYXMPPClient shareClient]setSendMessageSuccessAction:^(ZYXMPPMessage *message, ZYXMPPUser *toUser) {
-    
+    [[ZYXMPPClient shareClient]setSendMessageSuccessAction:^(NSString *messageId) {
+        [[XXChatCacheCenter shareCenter]updateMessageSendStatusWithMessageId:messageId];
     } forReciever:self];
     
     [[ZYXMPPClient shareClient]setDidRecievedMessage:^(ZYXMPPMessage *newMessage) {
         
         newMessage.isFromSelf = NO;
         if (newMessage.messageId) {
+            
             //这里肯定在前台，所以存入内存缓存中
             [[XXChatCacheCenter shareCenter]saveMessageForCacheDict:newMessage];
             CGFloat messageHeight = [XXChatCell heightWithXMPPMessage:newMessage forWidth:_messageListTable.frame.size.width];
@@ -272,11 +297,6 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
-    
-    //保存所有信息
-    [[XXChatCacheCenter shareCenter]persistMessagesWithCondition:_conversationCondition];
-    
-    [[ZYXMPPClient shareClient]removeMsgActionForReciever:self];
 }
 
 @end

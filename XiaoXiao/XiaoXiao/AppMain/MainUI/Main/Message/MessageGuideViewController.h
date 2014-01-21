@@ -11,10 +11,11 @@
 #import "ReplyMessageListViewController.h"
 #import "TeaseMeListViewController.h"
 #import "XXCustomTabBar.h"
+#import "MessageGuideTabBar.h"
 
 @interface MessageGuideViewController : UIViewController
 {
-    NSMutableArray *viewControllers;
-    XXCustomTabBar *_menuBar;
+    NSMutableArray *_viewControllers;
+    MessageGuideTabBar *_menuBar;
 }
 @end

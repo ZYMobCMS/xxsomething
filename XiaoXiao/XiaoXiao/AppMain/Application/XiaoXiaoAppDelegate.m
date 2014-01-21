@@ -69,6 +69,7 @@
             [[ZYXMPPClient shareClient]setStartClientSuccessAction:^(NSString *successMsg) {
                 DDLogVerbose(@"start client success:%@",successMsg);
             }];
+            [XXChatCacheCenter shareCenter];//初始化存储
             [[ZYXMPPClient shareClient]startClientWithJID:[XXUserDataCenter currentLoginUser].userId withPassword:@"123456"];
         }
     }];

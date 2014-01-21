@@ -11,8 +11,10 @@
 #define XXBarItemNormalIconKey @"XXBarItemNormalIconKey"
 #define XXBarItemSelectIconKey @"XXBarItemSelectIconKey"
 #define XXBarItemTitleKey @"XXBarItemTitleKey"
+#define XXBarItemTitleNormalColorKey @"XXBarItemTitleNormalColorKey"
+#define XXBarItemTitleSelectColorKey @"XXBarItemTitleSelectColorKey"
 
-//configArray  @{XXBarItemNormalIconKey:xxx.png,XXBarItemSelectIconKey:xxx.png,XXBarItemTitleKey:xxx}
+//configArray  @{XXBarItemNormalIconKey:xxx.png,XXBarItemSelectIconKey:xxx.png,XXBarItemTitleKey:xxx,XXBarItemTitleNormalColorKey:@"",XXBarItemTitleSelectColorKey:@""}
 
 typedef void (^XXCustomTabBarDidSelectIndexBlock) (NSInteger index);
 

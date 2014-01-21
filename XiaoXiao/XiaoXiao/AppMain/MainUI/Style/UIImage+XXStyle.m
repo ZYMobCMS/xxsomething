@@ -16,12 +16,12 @@
 }
 - (UIImage*)makeStretchForBubbleLeft
 {
-    UIEdgeInsets bLeft = UIEdgeInsetsMake(5.f,15.f,5.f,15.f);
+    UIEdgeInsets bLeft = UIEdgeInsetsMake(35.f,15.f,5.f,5.f);
     return [self makeStretchWithEdegeInsets:bLeft];
 }
 - (UIImage*)makeStretchForBubbleRight
 {
-    UIEdgeInsets bRight = UIEdgeInsetsMake(5.f,15.f,5.f,15.f);
+    UIEdgeInsets bRight = UIEdgeInsetsMake(35.f,5.f,5.f,15.f);
     return [self makeStretchWithEdegeInsets:bRight];
 }
 - (UIImage*)makeStretchForSingleRoundCell

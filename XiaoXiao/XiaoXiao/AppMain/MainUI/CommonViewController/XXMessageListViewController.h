@@ -23,7 +23,7 @@
     NSMutableArray *_messagesArray;
 }
 
-- (void)requestShareListNow;
+- (void)requestMessageListNow;
 - (void)refresh;
 - (void)loadMoreResult;
 
