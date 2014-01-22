@@ -34,7 +34,6 @@ typedef enum {
     XXBaseCellTypeRoundSingle,
     XXBaseCellTypeCornerSingle,
     
-    
 }XXBaseCellType;
 
 typedef void (^XXNavigationNextStepItemBlock) (void);

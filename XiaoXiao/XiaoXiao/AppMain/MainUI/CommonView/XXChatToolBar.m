@@ -8,6 +8,11 @@
 
 #import "XXChatToolBar.h"
 
+static inline UIViewAnimationOptions AnimationOptionsForCurve(UIViewAnimationCurve curve)
+{
+	return (curve << 16 | UIViewAnimationOptionBeginFromCurrentState);
+}
+
 @implementation XXChatToolBar
 
 - (id)initWithFrame:(CGRect)frame
@@ -27,6 +32,7 @@
         self.backgroundColor = [UIColor whiteColor];
         
         _barType = barType;
+        _controlHeight = 35;
         
         _textButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
         _textButton.frame = CGRectMake(0,0,35,35);
@@ -71,6 +77,7 @@
         _emojiButton.frame = CGRectMake(250,0,35,35);
         [_emojiButton defaultStyle];
         [_emojiButton setNormalIconImage:@"chat_bar_emoji.png" withSelectedImage:@"chat_bar_emoji.png" withFrame:CGRectMake(5,9,25,14)];
+        [_emojiButton addTarget:self action:@selector(tapOnEmoji) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_emojiButton];
         
         //image
@@ -80,7 +87,19 @@
         [_imageButton setNormalIconImage:@"chat_bar_image.png" withSelectedImage:@"chat_bar_image.png" withFrame:CGRectMake(5,9,25,14)];
         [self addSubview:_imageButton];
         
+        //emoji choose view
+        _emojiChooseView = [[XXEmojiChooseView alloc]initWithFrame:CGRectMake(0,_controlHeight,frame.size.width,216)];
+        [self addSubview:_emojiChooseView];
+        
         [self adjustFrameForCurrentType];
+        
+        //self observe keyborad
+//        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+//        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardDidShow) name:UIKeyboardDidShowNotification object:nil];
+//        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillHidden:) name:UIKeyboardWillHideNotification object:nil];
+//        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardDidHidden) name:UIKeyboardDidHideNotification object:nil];
+//        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
+//        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardDidChange:) name:UIKeyboardDidChangeFrameNotification object:nil];
     }
     return self;
 }
@@ -93,7 +112,38 @@
     // Drawing code
 }
 */
-
+- (XXChatToolBarState)barState
+{
+    return _state;
+}
+- (void)setBarState:(XXChatToolBarState)state
+{
+    _state = state;
+}
+- (void)setMoveState:(BOOL)state
+{
+    _isMoved = state;
+}
+- (BOOL)movedState
+{
+    return _isMoved;
+}
+- (void)tapOnEmoji
+{
+    _state = XXChatToolBarStateEmoji;
+    
+    [_inputTextView resignFirstResponder];
+    
+    [self animationShowEmojiPanel];
+    
+    if (_emojiBlock) {
+        _emojiBlock(_isMoved);
+    }
+}
+- (void)setChatToolBarEmoji:(XXChatToolBarDidChooseEmoji)emojiBlock
+{
+    _emojiBlock = [emojiBlock copy];
+}
 
 - (void)switchInputMode:(UIButton*)sender
 {
@@ -103,6 +153,9 @@
         _recordButton.hidden = YES;
         _textButton.hidden = YES;
         _audioButton.hidden = NO;
+        _state = XXChatToolBarStateText;
+        _isMoved = YES;
+
     }
     if (sender == _audioButton) {
         _inputBackImageView.hidden = YES;
@@ -111,6 +164,9 @@
         _recordButton.hidden = NO;
         _textButton.hidden = NO;
         _audioButton.hidden = YES;
+        _state = XXChatToolBarStateAudio;
+        _isMoved = NO;
+
     }
 }
 
@@ -170,6 +226,11 @@
     [_inputTextView resignFirstResponder];
 }
 #pragma mark - textView delegate
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    _state = XXChatToolBarStateText;
+    return YES;
+}
 - (void)textViewDidChange:(UITextView *)textView
 {
     
@@ -192,6 +253,99 @@
     return YES;
 }
 - (void)textViewDidEndEditing:(UITextView *)textView
+{
+}
+
+#pragma mark - keyboard noti
+- (void)animationShowEmojiPanel
+{
+    if (!_isMoved) {
+        [UIView animateWithDuration:0.3
+                              delay:0.0f
+                            options:UIViewAnimationOptionAllowAnimatedContent
+                         animations:^{
+                             CGRect selfFrame = self.frame;
+                             selfFrame.origin.y = selfFrame.origin.y-216;
+                             self.frame = selfFrame;
+                             _isMoved = YES;
+                         }
+                         completion:nil];
+    }
+    
+}
+
+- (void)keyboardWillShow:(NSNotification*)notification
+{
+    CGRect keyboardEndFrameWindow = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    double keyboardTransitionDuration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve keyboardTransitionAnimationCurve = [notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    
+    CGRect keyboardEndFrameView = [self convertRect:keyboardEndFrameWindow fromView:nil];
+    
+    [UIView animateWithDuration:keyboardTransitionDuration
+                          delay:0.0f
+                        options:AnimationOptionsForCurve(keyboardTransitionAnimationCurve)
+                     animations:^{
+                         
+                         if (!_isMoved) {
+                             CGRect toolBarFrame = self.frame;
+                             toolBarFrame.origin.y = keyboardEndFrameView.origin.y - 35;
+                             self.frame = toolBarFrame;
+                         }
+                     }
+                     completion:nil];
+}
+- (void)keyboardDidShow
+{
+
+}
+- (void)keyboardWillHidden:(NSNotification*)notification
+{
+    CGRect keyboardEndFrameWindow = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    double keyboardTransitionDuration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve keyboardTransitionAnimationCurve = [notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    
+    CGRect keyboardEndFrameView = [self convertRect:keyboardEndFrameWindow fromView:nil];
+    
+    [UIView animateWithDuration:keyboardTransitionDuration
+                          delay:0.0f
+                        options:AnimationOptionsForCurve(keyboardTransitionAnimationCurve)
+                     animations:^{
+                         
+                         if (_state!=XXChatToolBarStateEmoji) {
+                             
+                             CGRect toolBarFrame = self.frame;
+                             toolBarFrame.origin.y = keyboardEndFrameView.origin.y - 35;
+                             self.frame = toolBarFrame;
+                             
+                         }
+                         
+                     }
+                     completion:nil];
+}
+- (void)keyboardDidHidden
+{
+    
+}
+- (void)keyboardWillChangeFrame:(NSNotification*)notification
+{
+    CGRect keyboardEndFrameWindow = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    double keyboardTransitionDuration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve keyboardTransitionAnimationCurve = [notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    
+    CGRect keyboardEndFrameView = [self convertRect:keyboardEndFrameWindow fromView:nil];
+    
+    [UIView animateWithDuration:keyboardTransitionDuration
+                          delay:0.0f
+                        options:AnimationOptionsForCurve(keyboardTransitionAnimationCurve)
+                     animations:^{
+                         CGRect toolBarFrame = self.frame;
+                         toolBarFrame.origin.y = keyboardEndFrameView.origin.y - 35;
+                         self.frame = toolBarFrame;
+                     }
+                     completion:nil];
+}
+- (void)keyboardDidChange:(NSNotification*)noti
 {
     
 }

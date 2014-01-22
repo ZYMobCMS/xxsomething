@@ -8,6 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum{
+    
+    XXUserMiddleSchool = 0,
+    XXUserHighSchool,
+    XXUserCollege,
+    
+}XXUserType;
+
 @interface XXUserModel : NSObject
 @property (nonatomic,strong)NSString *userId;
 @property (nonatomic,strong)NSString *account;
@@ -35,6 +43,9 @@
 @property (nonatomic,strong)NSString *latitude;
 @property (nonatomic,strong)NSString *longtitude;
 @property (nonatomic,strong)NSString *distance; //附近的用户时可以用上
+@property (nonatomic,strong)NSString *college;//学院
+@property (nonatomic,strong)NSString *schoolRoll;//学级
+@property (nonatomic,strong)NSString *type;//用户类型
 
 @property (nonatomic,strong)NSString *keyword;//搜索关心列表时用来传值用,可以不编码保存
 @property (nonatomic,strong)NSString *allowBackgroundChatMessageRecieve;//是否支持后台接收xmpp消息

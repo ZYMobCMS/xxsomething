@@ -272,6 +272,9 @@ typedef enum {
 //取用户头像地址
 #define XX_Head_Url_Base_Url @"/api/picture"
 
+//图片大小图获取接口
+#define XX_Image_Resize_Url @"/api/preview"
+
 
 
 @interface XXDataCenterConst : NSObject

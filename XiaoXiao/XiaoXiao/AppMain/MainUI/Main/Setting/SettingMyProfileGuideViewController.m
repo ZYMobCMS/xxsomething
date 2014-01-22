@@ -34,7 +34,13 @@
     NSDictionary *item0 = @{@"title":@"名字"};
     NSDictionary *item1 = @{@"title":@"性别"};
     NSDictionary *item2 = @{@"title":@"星座"};
-    NSDictionary *item3 = @{@"title":@"院系"};
+    NSDictionary *item3 = nil;
+    XXUserModel *currentUser = [XXUserDataCenter currentLoginUser];
+    if ([currentUser.type intValue]==XXUserHighSchool||[currentUser.type intValue]==XXUserMiddleSchool) {
+        item3 =  @{@"title":@"学级"};
+    }else{
+        item3 = @{@"title":@"院系"};
+    }
     NSDictionary *item4 = @{@"title":@"年级"};
 
     [_titleArray addObject:item0];
@@ -61,7 +67,7 @@
         XXUserModel *currentUser = [XXUserDataCenter currentLoginUser];
         currentUser.nickName = _updateModel.nickName;
         currentUser.grade = _updateModel.grade;
-        currentUser.schoolName = _updateModel.schoolName;
+        currentUser.college = _updateModel.college;
         currentUser.constellation = _updateModel.constellation;
         currentUser.sex = _updateModel.sex;
     
@@ -184,17 +190,43 @@
             break;
         case 3:
         {
-            XXEditInputViewController *CollegeEditVC = [[XXEditInputViewController alloc]initWithFinishAction:^(NSString *resultText) {
-                _updateModel.schoolName = resultText;
-                [selectCell setContentText:resultText];
-                [self.navigationController popViewControllerAnimated:YES];
-            }];
-            [XXCommonUitil setCommonNavigationReturnItemForViewController:CollegeEditVC withBackStepAction:^{
-                _updateModel.schoolName = [CollegeEditVC resultText];
-                [selectCell setContentText:_updateModel.schoolName];
-                [self.navigationController popViewControllerAnimated:YES];
-            }];
-            [self.navigationController pushViewController:CollegeEditVC animated:YES];
+            XXUserModel *currentUser = [XXUserDataCenter currentLoginUser];
+            if ([currentUser.type intValue]==XXUserHighSchool||[currentUser.type intValue]==XXUserMiddleSchool) {
+                
+                NSArray *gradesArray = @[@"高中",@"初中"];
+                NSMutableArray *configArray = [NSMutableArray array];
+                [gradesArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    NSMutableDictionary *item = [NSMutableDictionary dictionaryWithDictionary:baseRadioConfigDict];
+                    [item setObject:obj forKey:@"title"];
+                    [item setObject:obj forKey:@"value"];
+                    [configArray addObject:item];
+                }];
+                
+                XXRadioChooseViewController *gradeChooseVC = [[XXRadioChooseViewController alloc]initWithConfigArray:configArray withRadioChooseType:XXRadioChooseTypeClonumTwo withFinishBlock:^(NSString *resultString) {
+                    _updateModel.schoolRoll = resultString;
+                    [selectCell setContentText:_updateModel.schoolRoll];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }];
+                [XXCommonUitil setCommonNavigationReturnItemForViewController:gradeChooseVC withBackStepAction:^{
+                    _updateModel.schoolRoll = [gradeChooseVC finialChooseString];
+                    [selectCell setContentText:_updateModel.schoolRoll];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }];
+                [self.navigationController pushViewController:gradeChooseVC animated:YES];
+                
+            }else{
+                XXEditInputViewController *CollegeEditVC = [[XXEditInputViewController alloc]initWithFinishAction:^(NSString *resultText) {
+                    _updateModel.college = resultText;
+                    [selectCell setContentText:resultText];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }];
+                [XXCommonUitil setCommonNavigationReturnItemForViewController:CollegeEditVC withBackStepAction:^{
+                    _updateModel.college = [CollegeEditVC resultText];
+                    [selectCell setContentText:_updateModel.college];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }];
+                [self.navigationController pushViewController:CollegeEditVC animated:YES];
+            }
         }
             break;
         case 4:

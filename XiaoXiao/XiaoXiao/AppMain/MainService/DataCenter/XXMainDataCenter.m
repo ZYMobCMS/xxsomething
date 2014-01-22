@@ -380,6 +380,12 @@
     if(conditionUser.strollSchoolId){
         [params setObject:conditionUser.strollSchoolId forKey:@"stroll_xuexiao_id"];
     }
+    if(conditionUser.schoolRoll){
+        [params setObject:conditionUser.strollSchoolId forKey:@"schoolroll"];
+    }
+    if(conditionUser.college){
+        [params setObject:conditionUser.college forKey:@"college"];
+    }
     DDLogVerbose(@"update user info-->%@",params);
     [self requestXXRequest:XXRequestTypeUpdateUserInfo withParams:params withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
         if(success){

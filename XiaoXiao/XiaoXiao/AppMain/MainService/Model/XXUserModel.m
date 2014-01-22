@@ -40,6 +40,9 @@
         self.distance = @"";
         self.schoolName = @"";
         self.isInSchool = @"0";
+        self.schoolRoll = @"";
+        self.college = @"";
+        self.type = @"2";
 
         //填充获取的值
         self.userId = [contentDict objectForKey:@"id"];
@@ -67,6 +70,10 @@
         self.longtitude = [contentDict objectForKey:@"lng"];
         self.schoolName = [contentDict objectForKey:@"school_name"];
         self.distance = [contentDict objectForKey:@"MQ_DISTANCE"];
+        
+        self.schoolRoll = [contentDict objectForKey:@"schoolroll"];
+        self.college = [contentDict objectForKey:@"college"];
+        self.type = [contentDict objectForKey:@"type"];
     }
     return self;
 }
@@ -102,6 +109,11 @@
         self.schoolName = [aDecoder decodeObjectForKey:@"schoolName"];
         self.isUserInfoWell = [aDecoder decodeObjectForKey:@"isUserInfoWell"];
         self.isInSchool = [aDecoder decodeObjectForKey:@"isInSchool"];
+        
+        self.schoolRoll = [aDecoder decodeObjectForKey:@"schoolRoll"];
+        self.college = [aDecoder decodeObjectForKey:@"college"];
+        self.type = [aDecoder decodeObjectForKey:@"type"];
+
     }
     return self;
 }
@@ -134,6 +146,9 @@
     [aCoder encodeObject:self.schoolName forKey:@"schoolName"];
     [aCoder encodeObject:self.isUserInfoWell forKey:@"isUserInfoWell"];
     [aCoder encodeObject:self.isInSchool forKey:@"isInSchool"];
+    [aCoder encodeObject:self.schoolRoll forKey:@"schoolRoll"];
+    [aCoder encodeObject:self.college forKey:@"college"];
+    [aCoder encodeObject:self.type forKey:@"type"];
 
 }
 

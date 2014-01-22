@@ -54,7 +54,7 @@
     
     DDLogVerbose(@"self view frame :%@",NSStringFromCGRect(self.view.frame));
     //tool bar
-    _chatToolBar = [[XXChatToolBar alloc]initWithFrame:CGRectMake(0,totalHeight-35,self.view.frame.size.width,35) forUse:XXChatToolBarDefault];
+    _chatToolBar = [[XXChatToolBar alloc]initWithFrame:CGRectMake(0,totalHeight-35,self.view.frame.size.width,35+216) forUse:XXChatToolBarDefault];
     [self.view addSubview:_chatToolBar];
     
     DDLogVerbose(@"toobar frame:%@",NSStringFromCGRect(_chatToolBar.frame));
@@ -67,16 +67,23 @@
 
     [self.view addKeyboardNonpanningWithActionHandler:^(CGRect keyboardFrameInView) {
         
-        DDLogVerbose(@"keyborad :%@",NSStringFromCGRect(keyboardFrameInView));
-        CGRect toolBarFrame = weakToolBar.frame;
-        toolBarFrame.origin.y = keyboardFrameInView.origin.y - toolBarFrame.size.height;
-        weakToolBar.frame = toolBarFrame;
-        
-        CGRect makeNewRect = CGRectMake(resultTableRect.origin.x,resultTableRect.origin.y,resultTableRect.size.width,keyboardFrameInView.origin.y-35);
-        weakMsgTable.frame = makeNewRect;
-        NSIndexPath *lastRowIndexPath = [NSIndexPath indexPathForRow:weakRowHeight.count-1 inSection:0];
-        [weakMsgTable scrollToRowAtIndexPath:lastRowIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-        DDLogVerbose(@"new message table frame:%@",NSStringFromCGRect(makeNewRect));
+        if ([weakToolBar barState]!=XXChatToolBarStateEmoji) {
+            CGRect toolBarFrame = weakToolBar.frame;
+            toolBarFrame.origin.y = keyboardFrameInView.origin.y - 35;
+            weakToolBar.frame = toolBarFrame;
+            
+            
+            if (weakRowHeight.count>0) {
+                CGRect makeNewRect = CGRectMake(resultTableRect.origin.x,resultTableRect.origin.y,resultTableRect.size.width,keyboardFrameInView.origin.y-35);
+                weakMsgTable.frame = makeNewRect;
+                if (weakRowHeight.count>1) {
+                    NSIndexPath *lastRowIndexPath = [NSIndexPath indexPathForRow:weakRowHeight.count-1 inSection:0];
+                    [weakMsgTable scrollToRowAtIndexPath:lastRowIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                }
+                DDLogVerbose(@"new message table frame:%@",NSStringFromCGRect(makeNewRect));
+            }
+            
+        }
     }];
     
     _conversationCondition.pageIndex = StringInt(0);
@@ -145,6 +152,8 @@
 }
 - (void)touchDownWhiteBoard
 {
+    [_chatToolBar setBarState:XXChatToolBarStateText];
+    [_chatToolBar setMoveState:NO];
     [_chatToolBar reginFirstResponse];
     [UIView animateWithDuration:0.3 animations:^{
         _whiteBoard.alpha = 0;
@@ -228,6 +237,13 @@
         } withFaildBlock:^(NSString *faildMsg) {
             [SVProgressHUD showErrorWithStatus:faildMsg];
         }];
+        
+    }];
+    
+    //tap emoji
+    [_chatToolBar setChatToolBarEmoji:^(BOOL isMoved) {
+       
+        
         
     }];
     

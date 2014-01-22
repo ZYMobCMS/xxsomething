@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "XXCustomButton.h"
+#import "XXEmojiChooseView.h"
 
 typedef enum{
     
@@ -24,9 +25,18 @@ typedef enum {
     
 }XXChatToolBarInputModel;
 
+typedef enum {
+ 
+    XXChatToolBarStateText = 0,
+    XXChatToolBarStateAudio,
+    XXChatToolBarStateEmoji,
+    XXChatToolBarStateImage,
+    
+}XXChatToolBarState;
+
 typedef void (^XXChatToolBarDidChooseInputMode) (XXChatToolBarInputModel inputModel);
 typedef void (^XXChatToolBarDidChooseImage) (void);
-typedef void (^XXChatToolBarDidChooseEmoji) (void);
+typedef void (^XXChatToolBarDidChooseEmoji) (BOOL isMoved);
 typedef void (^XXChatToolBarDidRecord) (NSString *recordUrl,NSString* amrUrl,NSString *timeLength);
 typedef void (^XXChatToolBarDidTapSend) (NSString *textContent);
 
@@ -41,16 +51,30 @@ typedef void (^XXChatToolBarDidTapSend) (NSString *textContent);
     XXCustomButton *_imageButton;
     
     XXChatToolBarType _barType;
+    XXChatToolBarState _state;
+    BOOL              _isMoved;
     
     XXChatToolBarDidRecord _recordBlock;
     XXChatToolBarDidTapSend _sendBlock;
+    
+    XXChatToolBarDidChooseEmoji _emojiBlock;
+    
+    CGFloat        _controlHeight;
+    XXEmojiChooseView *_emojiChooseView;
 }
+
+- (XXChatToolBarState)barState;
+- (BOOL)movedState;
+- (void)setBarState:(XXChatToolBarState)state;
+- (void)setMoveState:(BOOL)state;
 
 - (id)initWithFrame:(CGRect)frame forUse:(XXChatToolBarType)barType;
 
 - (void)setChatToolBarDidRecord:(XXChatToolBarDidRecord)recordBlock;
 
 - (void)setChatToolBarTapSend:(XXChatToolBarDidTapSend)sendBlock;
+
+- (void)setChatToolBarEmoji:(XXChatToolBarDidChooseEmoji)emojiBlock;
 
 - (void)reginFirstResponse;
 

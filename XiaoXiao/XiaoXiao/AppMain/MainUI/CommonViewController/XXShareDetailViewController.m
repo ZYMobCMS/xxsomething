@@ -67,18 +67,18 @@
     
     DDLogVerbose(@"self view frame :%@",NSStringFromCGRect(self.view.frame));
     //tool bar
-    _chatToolBar = [[XXChatToolBar alloc]initWithFrame:CGRectMake(0,totalHeight-35,self.view.frame.size.width,35) forUse:XXChatToolBarComment];
+    _chatToolBar = [[XXChatToolBar alloc]initWithFrame:CGRectMake(0,totalHeight-35,self.view.frame.size.width,35+216) forUse:XXChatToolBarComment];
     [self.view addSubview:_chatToolBar];
     
     DDLogVerbose(@"toobar frame:%@",NSStringFromCGRect(_chatToolBar.frame));
-    self.view.keyboardTriggerOffset = _chatToolBar.bounds.size.height;
+    self.view.keyboardTriggerOffset = 35;
     
     WeakObj(_chatToolBar) weakToolBar = _chatToolBar;
     [self.view addKeyboardNonpanningWithActionHandler:^(CGRect keyboardFrameInView) {
     
         DDLogVerbose(@"keyborad :%@",NSStringFromCGRect(keyboardFrameInView));
         CGRect toolBarFrame = weakToolBar.frame;
-        toolBarFrame.origin.y = keyboardFrameInView.origin.y - toolBarFrame.size.height;
+        toolBarFrame.origin.y = keyboardFrameInView.origin.y - 35;
         weakToolBar.frame = toolBarFrame;
         
     }];

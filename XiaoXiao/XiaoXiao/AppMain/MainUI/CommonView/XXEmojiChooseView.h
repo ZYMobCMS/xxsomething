@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void (^XXEmojiChooseViewDidChooseEmojiBlock) (NSString *emoji);
+typedef void (^XXEmojiViewDidTapSelectEmojiBlock) (NSString *emoji);
 @interface XXEmojiChooseView : UIView
 {
-    XXEmojiChooseViewDidChooseEmojiBlock _chooseBlock;
+    XXEmojiViewDidTapSelectEmojiBlock _selectBlock;
 }
-- (void)setEmojiChooseBlock:(XXEmojiChooseViewDidChooseEmojiBlock)chooseBlock;
+- (id)initWithDefaultConfig;
+- (id)initWithFrame:(CGRect)frame withEmojisArray:(NSArray*)emojisArray;
+- (void)setEmojiViewDidSelectBlock:(XXEmojiViewDidTapSelectEmojiBlock)selectBlock;
 @end

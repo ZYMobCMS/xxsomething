@@ -105,9 +105,9 @@
     if ([currentUser.nickName isEqualToString:@""]) {
         return NO;
     }
-    if ([currentUser.signature isEqualToString:@""]) {
-        return NO;
-    }
+//    if ([currentUser.signature isEqualToString:@""]) {
+//        return NO;
+//    }
     if ([currentUser.constellation isEqualToString:@""]) {
         return NO;
     }
@@ -117,12 +117,19 @@
     if ([currentUser.grade isEqualToString:@""]) {
         return NO;
     }
-    if ([currentUser.birthDay isEqualToString:@""]) {
-        return NO;
+//    if ([currentUser.birthDay isEqualToString:@""]) {
+//        return NO;
+//    }
+    if ([currentUser.type intValue]==XXUserMiddleSchool||[currentUser.type intValue]==XXUserHighSchool ) {
+        if ([currentUser.schoolRoll isEqualToString:@""]) {
+            return NO;
+        }
+    }else{
+        if ([currentUser.college isEqualToString:@""]) {
+            return NO;
+        }
     }
-    if ([currentUser.schoolName isEqualToString:@""]) {
-        return NO;
-    }
+    
     return YES;
 }
 @end
