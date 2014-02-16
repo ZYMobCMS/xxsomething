@@ -21,7 +21,6 @@
     
     NSMutableArray *guideVCArray;
     
-    MyHomeUserHeadView *_userHeadView;
 }
 
 @end

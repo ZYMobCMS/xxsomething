@@ -34,6 +34,9 @@
     //
     guideVCArray = [[NSMutableArray alloc]init];
     
+    //my info
+    NSDictionary *myInfo = @{@"icon":@""};
+    
     //my share
     NSDictionary *myShare = @{@"icon":@"my_home_photo.png",@"count":@"333",@"title":@"相册",@"vcClass":@"MyShareListViewController"};
     NSArray *shareArray = [NSArray arrayWithObject:myShare];
@@ -42,6 +45,7 @@
     NSDictionary *myPee = @{@"icon":@"my_home_peer.png",@"count":@"333",@"title":@"窥客",@"vcClass":@"MyPeepUserListViewController"};
     NSArray *userArray = @[myCare,myFans,myPee];
 
+    [guideVCArray addObject:myInfo];
     [guideVCArray addObject:shareArray];
     [guideVCArray addObject:userArray];
     
@@ -49,73 +53,14 @@
     CGFloat totalHeight = XXNavContentHeight+originY;
     CGFloat totalWidth = self.view.frame.size.width;
     
-    CGFloat headViewHeight = 250;
-    guideTable = [[UITableView alloc]initWithFrame:CGRectMake(0,headViewHeight,totalWidth,totalHeight-headViewHeight) style:UITableViewStylePlain];
+    guideTable = [[UITableView alloc]initWithFrame:CGRectMake(0,originY,totalWidth,totalHeight) style:UITableViewStylePlain];
     guideTable.dataSource = self;
     guideTable.delegate = self;
     guideTable.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
     guideTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:guideTable];
     
-    //user head view
-
-    _userHeadView = [[MyHomeUserHeadView alloc]initWithFrame:CGRectMake(0,originY,totalWidth,headViewHeight)];
-    _userHeadView.backgroundColor = [UIColor orangeColor];
-    [self.view addSubview:_userHeadView];
-    _userHeadView.layer.shadowOffset = CGSizeMake(0,0.3);
-    _userHeadView.layer.shadowColor = [UIColor blackColor].CGColor;
-    _userHeadView.layer.shadowOpacity = 0.2f;
-    [_userHeadView setContentUser:[XXUserDataCenter currentLoginUser]];
-    [_userHeadView tapOnSettingAddTarget:self withSelector:@selector(tapOnSettingAction)];
     
-    //theme back change
-    _hud.labelText = @"正在更新...";
-    WeakObj(_hud) weakHud = _hud;
-    WeakObj(_userHeadView) weakUserHeadView = _userHeadView;
-    WeakObj(self) weakSelf = self;
-    
-    [_userHeadView setDidTapThemeBackBlock:^{
-       
-        XXPhotoChooseViewController *photoChooseVC = [[XXPhotoChooseViewController alloc]initWithMutilPhotoChooseWithMaxChooseNumber:1 withFinishBlock:^(NSArray *resultImages) {
-            
-            [weakHud show:YES];
-            NSData *imageData = UIImageJPEGRepresentation([resultImages objectAtIndex:0],kCGInterpolationDefault);
-            [[XXMainDataCenter shareCenter]uploadFileWithData:imageData withFileName:@"themeBack.png" withUploadProgressBlock:^(CGFloat progressValue) {
-                [SVProgressHUD showProgress:progressValue status:@"正在上传背景图片..."];
-            } withSuccessBlock:^(XXAttachmentModel *resultModel) {
-                
-                //更新壁纸
-                XXUserModel *updateUser = [[XXUserModel alloc]init];
-                updateUser.userId = [XXUserDataCenter currentLoginUser].userId;
-                updateUser.bgImage = resultModel.link;
-                
-                [[XXMainDataCenter shareCenter]requestUpdateUserInfoWithConditionUser:updateUser withSuccess:^(NSString *successMsg) {
-                   
-                    [weakHud hide:YES];
-                    [weakUserHeadView updateThemeBack:updateUser.bgImage];;
-                    
-                    [weakSelf.navigationController popToViewController:[weakSelf.navigationController.viewControllers objectAtIndex:weakSelf.navigationController.viewControllers.count-2] animated:YES];
-                    [SVProgressHUD showSuccessWithStatus:successMsg];
-                    
-                } withFaild:^(NSString *faildMsg) {
-                    
-                    [weakHud hide:YES];
-                    [SVProgressHUD showErrorWithStatus:faildMsg];
-                }];
-                
-                
-            } withFaildBlock:^(NSString *faildMsg) {
-                [weakHud hide:YES];
-                [SVProgressHUD showErrorWithStatus:faildMsg];
-
-            }];
-            
-        }];
-        photoChooseVC.needCrop = YES;
-        [weakSelf.navigationController pushViewController:photoChooseVC animated:YES];
-        
-    }];
-
     
 }
 
@@ -150,39 +95,126 @@
 }
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"CellIdentifier";
-    XXBaseIconLabelCell *cell = (XXBaseIconLabelCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (!cell) {
-        cell = [[XXBaseIconLabelCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
     if (indexPath.section==0) {
-        [cell setCellType:XXBaseCellTypeRoundSingle withBottomMargin:0.f withCellHeight:47.f];
-    }else if(indexPath.section==1&&indexPath.row==0){
-        [cell setCellType:XXBaseCellTypeTop withBottomMargin:0.f withCellHeight:46.f];
-    }else if(indexPath.section==1&&indexPath.row==[[guideVCArray objectAtIndex:indexPath.section]count]-1){
-        [cell setCellType:XXBaseCellTypeBottom withBottomMargin:0.f withCellHeight:46.5f];
+        
+        static NSString *CellIdentifier = @"InfoIdentifier";
+        UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (!cell) {
+            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            
+            //my home user head
+            MyHomeUserHeadView *headView = [[MyHomeUserHeadView alloc]initWithFrame:CGRectMake(0,0,tableView.frame.size.width,250)];
+            headView.layer.shadowOffset = CGSizeMake(0,0.3);
+            headView.layer.shadowColor = [UIColor blackColor].CGColor;
+            headView.layer.shadowOpacity = 0.2f;
+            [cell.contentView addSubview:headView];
+            headView.tag = 1122;
+            
+            //theme back change
+            _hud.labelText = @"正在更新...";
+            WeakObj(_hud) weakHud = _hud;
+            WeakObj(headView) weakUserHeadView = headView;
+            WeakObj(self) weakSelf = self;
+            
+            [headView setDidTapThemeBackBlock:^{
+                
+                XXPhotoChooseViewController *photoChooseVC = [[XXPhotoChooseViewController alloc]initWithMutilPhotoChooseWithMaxChooseNumber:1 withFinishBlock:^(NSArray *resultImages) {
+                    
+                    [weakHud show:YES];
+                    NSData *imageData = UIImageJPEGRepresentation([resultImages objectAtIndex:0],kCGInterpolationDefault);
+                    [[XXMainDataCenter shareCenter]uploadFileWithData:imageData withFileName:@"themeBack.png" withUploadProgressBlock:^(CGFloat progressValue) {
+                        [SVProgressHUD showProgress:progressValue status:@"正在上传背景图片..."];
+                    } withSuccessBlock:^(XXAttachmentModel *resultModel) {
+                        
+                        //更新壁纸
+                        XXUserModel *updateUser = [[XXUserModel alloc]init];
+                        updateUser.userId = [XXUserDataCenter currentLoginUser].userId;
+                        updateUser.bgImage = resultModel.link;
+                        
+                        [[XXMainDataCenter shareCenter]requestUpdateUserInfoWithConditionUser:updateUser withSuccess:^(NSString *successMsg) {
+                            
+                            [weakHud hide:YES];
+                            [weakUserHeadView updateThemeBack:updateUser.bgImage];;
+                            
+                            [weakSelf.navigationController popToViewController:[weakSelf.navigationController.viewControllers objectAtIndex:weakSelf.navigationController.viewControllers.count-2] animated:YES];
+                            [SVProgressHUD showSuccessWithStatus:successMsg];
+                            
+                        } withFaild:^(NSString *faildMsg) {
+                            
+                            [weakHud hide:YES];
+                            [SVProgressHUD showErrorWithStatus:faildMsg];
+                        }];
+                        
+                        
+                    } withFaildBlock:^(NSString *faildMsg) {
+                        [weakHud hide:YES];
+                        [SVProgressHUD showErrorWithStatus:faildMsg];
+                        
+                    }];
+                    
+                }];
+                photoChooseVC.needCrop = YES;
+                [weakSelf.navigationController pushViewController:photoChooseVC animated:YES];
+                
+            }];
+            [headView tapOnSettingAddTarget:self withSelector:@selector(tapOnSettingAction)];
+
+        }
+        MyHomeUserHeadView *headView = (MyHomeUserHeadView*)[cell.contentView viewWithTag:1122];
+        [headView setContentUser:[XXUserDataCenter currentLoginUser]];
+        
+        return cell;
+        
     }else{
-        [cell setCellType:XXBaseCellTypeMiddel withBottomMargin:0.f withCellHeight:45.5f];
+        
+        static NSString *CellIdentifier = @"CellIdentifier";
+        XXBaseIconLabelCell *cell = (XXBaseIconLabelCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (!cell) {
+            cell = [[XXBaseIconLabelCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+        
+        if (indexPath.section==1) {
+            [cell setCellType:XXBaseCellTypeRoundSingle withBottomMargin:0.f withCellHeight:47.f];
+        }else if(indexPath.section==2){
+            
+            if (indexPath.row==0) {
+                [cell setCellType:XXBaseCellTypeTop withBottomMargin:0.f withCellHeight:46.f];
+                
+            }else if(indexPath.row==[[guideVCArray objectAtIndex:indexPath.section]count]-1){
+                [cell setCellType:XXBaseCellTypeBottom withBottomMargin:0.f withCellHeight:46.5f];
+                
+            }else{
+                [cell setCellType:XXBaseCellTypeMiddel withBottomMargin:0.f withCellHeight:45.5f];
+                
+            }
+            
+        }
+        
+        NSDictionary *item = [[guideVCArray objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
+        [cell setContentDict:item];
+        
+        return cell;
     }
-    NSDictionary *item = [[guideVCArray objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
-    [cell setContentDict:item];
-    
-    return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section==0) {
+        return 0.f;
+    }else if(section==1){
         return 20.f;
+    }else if(section==2){
+        return 30;
     }else{
-        return 30.f;
+        return 0.f;
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return 47;
-    }else if(indexPath.section==1){
+        return 250;
+    }else if(indexPath.section==2){
         
         if (indexPath.row == [[guideVCArray objectAtIndex:indexPath.section]count]-1) {
             return 46.5;
@@ -197,7 +229,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section==1) {
+    if (section==2) {
         return 20.f;
     }else{
         return 0.f;
@@ -218,15 +250,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *item = [[guideVCArray objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
+    if (indexPath.section!=0) {
+        NSDictionary *item = [[guideVCArray objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
+        
+        NSString *VCName = [item objectForKey:@"vcClass"];
+        Class newVC = NSClassFromString(VCName);
+        
+        UIViewController *pushVC = [[newVC alloc]init];
+        pushVC.title = [item objectForKey:@"title"];
+        [self.navigationController pushViewController:pushVC animated:YES];
+        [XXCommonUitil setCommonNavigationReturnItemForViewController:pushVC];
 
-    NSString *VCName = [item objectForKey:@"vcClass"];
-    Class newVC = NSClassFromString(VCName);
-    
-    UIViewController *pushVC = [[newVC alloc]init];
-    pushVC.title = [item objectForKey:@"title"];
-    [self.navigationController pushViewController:pushVC animated:YES];
-    [XXCommonUitil setCommonNavigationReturnItemForViewController:pushVC];
+    }
 }
 
 #pragma mark - setting 
