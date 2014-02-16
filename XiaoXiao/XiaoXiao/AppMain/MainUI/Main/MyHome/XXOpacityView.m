@@ -18,6 +18,8 @@
         
         _backgroundView = [[UIImageView alloc]init];
         _backgroundView.frame = CGRectMake(0,0,frame.size.width,frame.size.height);
+        _backgroundView.backgroundColor = [UIColor blackColor];
+        _backgroundView.alpha = 0.5;
         [self addSubview:_backgroundView];
         
         _contentLabel = [[UILabel alloc]init];

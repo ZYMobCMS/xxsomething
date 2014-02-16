@@ -53,18 +53,6 @@
     
     //navigation next setp
     [XXCommonUitil setCommonNavigationReturnItemForViewController:self];
-    [XXCommonUitil setCommonNavigationNextStepItemForViewController:self withNextStepAction:^{
-        if (_nextStepBlock) {
-            if (_resultSchoolArray.count !=0 && [_resultSchoolArray objectAtIndex:_selectIndex]) {
-                XXSchoolModel *chooseModel = [_resultSchoolArray objectAtIndex:_selectIndex];
-                NSDictionary *resuldDict = @{@"result":chooseModel};
-                _nextStepBlock(resuldDict);
-            }else{
-                [SVProgressHUD showErrorWithStatus:@"未选择学校"];
-
-            }
-        }
-    }];
     
     //search bar input change
     CGRect resultTableRect = _resultTableView.frame;
@@ -164,6 +152,24 @@
 - (void)setNextStepAction:(XXCommonNavigationNextStepBlock)nextStepBlock
 {
     _nextStepBlock = [nextStepBlock copy];
+    _nextStepTitle = @"下一步";
+}
+- (void)setNextStepAction:(XXCommonNavigationNextStepBlock)nextStepBlock withNextStepTitle:(NSString *)title
+{
+    _nextStepBlock = [nextStepBlock copy];
+    _nextStepTitle = title;
+    [XXCommonUitil setCommonNavigationNextStepItemForViewController:self withNextStepAction:^{
+        if (_nextStepBlock) {
+            if (_resultSchoolArray.count !=0 && [_resultSchoolArray objectAtIndex:_selectIndex]) {
+                XXSchoolModel *chooseModel = [_resultSchoolArray objectAtIndex:_selectIndex];
+                NSDictionary *resuldDict = @{@"result":chooseModel};
+                _nextStepBlock(resuldDict);
+            }else{
+                [SVProgressHUD showErrorWithStatus:@"未选择学校"];
+                
+            }
+        }
+    } withTitle:_nextStepTitle];
 }
 
 

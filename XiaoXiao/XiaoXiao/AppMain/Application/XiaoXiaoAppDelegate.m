@@ -55,6 +55,8 @@
             [UIView animateWithDuration:0.5 animations:^{
                 self.mainTabController.view.alpha = 1;
             }];
+            [self.loginGuideNavController.view removeFromSuperview];
+            self.loginGuideNavController = nil;
             
             //build xmpp
             [[ZYXMPPClient shareClient]clientDefaultConfig];

@@ -29,7 +29,7 @@
         _tagLabel = [[UILabel alloc]init];
         _tagLabel.backgroundColor = [UIColor clearColor];
         _tagLabel.font = [UIFont systemFontOfSize:13];
-        _tagLabel.frame= CGRectMake(2*_leftMargin+19+_innerMargin,_topMargin,80,35);
+        _tagLabel.frame= CGRectMake(2*_leftMargin+19+_innerMargin+_innerMargin,_topMargin,80,35);
         [self.contentView addSubview:_tagLabel];
         
         //
@@ -57,5 +57,65 @@
     _tagLabel.text = [contentDict objectForKey:@"title"];
     _detailTagLabel.text = [contentDict objectForKey:@"count"];
 }
+
+- (void)setCellType:(XXBaseCellType)cellType withBottomMargin:(CGFloat)aMargin withCellHeight:(CGFloat)cellHeight
+{
+    _cellLineImageView.hidden = YES;
+    
+    self.customAccessoryView.frame = CGRectMake(self.frame.size.width-15-17,(cellHeight-aMargin-14)/2,7,12);
+    [self bringSubviewToFront:self.customAccessoryView];
+//    _iconImageView.frame = CGRectMake(2*_leftMargin,(cellHeight-17-aMargin)/2,19,17);
+    
+    CGRect oldFrame = _backgroundImageView.frame;
+    UIImage *background = nil;
+    UIImage *selecteBackground = nil;
+    switch (cellType) {
+        case XXBaseCellTypeTop:
+        {
+            background = [[UIImage imageNamed:@"cell_top_normal.png"]makeStretchForCellTop];
+            selecteBackground = [[UIImage imageNamed:@"cell_top_selected.png"]makeStretchForCellTop];
+            
+            oldFrame = CGRectMake(oldFrame.origin.x,oldFrame.origin.y,oldFrame.size.width,cellHeight);
+        }
+            break;
+        case XXBaseCellTypeMiddel:
+        {
+            background = [[UIImage imageNamed:@"cell_middle_normal.png"]makeStretchForCellMiddle];
+            selecteBackground = [[UIImage imageNamed:@"cell_middle_selected.png"]makeStretchForCellMiddle];
+            
+            oldFrame = CGRectMake(oldFrame.origin.x,oldFrame.origin.y,oldFrame.size.width,cellHeight);
+            
+        }
+            break;
+        case XXBaseCellTypeBottom:
+        {
+            background = [[UIImage imageNamed:@"cell_bottom_normal.png"]makeStretchForCellBottom];
+            selecteBackground = [[UIImage imageNamed:@"cell_bottom_selected.png"]makeStretchForCellBottom];
+            
+            oldFrame = CGRectMake(oldFrame.origin.x,oldFrame.origin.y,oldFrame.size.width,cellHeight);
+            
+        }
+            break;
+        case XXBaseCellTypeRoundSingle:
+        {
+            background = [[UIImage imageNamed:@"single_round_cell_normal.png"]makeStretchForSingleRoundCell];
+            selecteBackground = [[UIImage imageNamed:@"single_round_cell_selected.png"]makeStretchForSingleRoundCell];
+        }
+            break;
+        case XXBaseCellTypeCornerSingle:
+        {
+            background = [[UIImage imageNamed:@"single_corner_cell_normal.png"]makeStretchForSingleCornerCell];
+            selecteBackground = [[UIImage imageNamed:@"single_corner_cell_selected.png"]makeStretchForSingleCornerCell];
+        }
+            break;
+        default:
+            break;
+    }
+    _backgroundImageView.highlightedImage = selecteBackground;
+    _backgroundImageView.frame = oldFrame;
+    _backgroundImageView.image = background;
+    
+}
+
 
 @end

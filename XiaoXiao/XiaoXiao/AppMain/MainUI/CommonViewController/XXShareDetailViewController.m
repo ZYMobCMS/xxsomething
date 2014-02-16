@@ -9,6 +9,8 @@
 #import "XXShareDetailViewController.h"
 #import "OtherUserHomeViewController.h"
 #import "XXLoadMoreCell.h"
+#import "MJPhoto.h"
+#import "MJPhotoBrowser.h"
 
 @interface XXShareDetailViewController ()
 
@@ -170,9 +172,29 @@
         
         if (!cell) {
             cell = [[XXShareBaseCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            [cell setTapOnAudioImageBlock:^(NSURL *audioUrl) {
+            [cell setTapOnAudioImageBlock:^(NSURL *audioUrl, XXShareBaseCell *cell){
                 DDLogVerbose(@"audioUrl :%@",audioUrl);
                 [[XXAudioManager shareManager]audioManagerPlayAudioForRemoteAMRUrl:audioUrl.absoluteString];
+            }];
+            [cell setTapOnThumbImageBlock:^(NSURL *imageUrl, UIImageView *originImageView, NSArray *allImages, NSInteger currentIndex) {
+                int count = allImages.count;
+                // 1.封装图片数据
+                NSMutableArray *photos = [NSMutableArray arrayWithCapacity:count];
+                for (int i = 0; i<count; i++) {
+                    // 替换为中等尺寸图片
+                    NSString *url = [allImages objectAtIndex:i];
+                    MJPhoto *photo = [[MJPhoto alloc] init];
+                    photo.url = [NSURL URLWithString:url]; // 图片路径
+                    originImageView.frame = [self.view convertRect:originImageView.frame fromView:self.view];
+                    photo.srcImageView = originImageView; // 来源于哪个UIImageView
+                    [photos addObject:photo];
+                }
+                
+                // 2.显示相册
+                MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
+                browser.currentPhotoIndex = currentIndex; // 弹出相册时显示的第一张图片是？
+                browser.photos = photos; // 设置所有的图片
+                [browser show];
             }];
         }
         [cell setSharePostModelForDetail:[self.commentModelArray objectAtIndex:indexPath.row]];

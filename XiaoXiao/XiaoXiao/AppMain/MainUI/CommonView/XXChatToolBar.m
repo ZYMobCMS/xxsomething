@@ -35,38 +35,47 @@ static inline UIViewAnimationOptions AnimationOptionsForCurve(UIViewAnimationCur
         _controlHeight = 35;
         
         _textButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
-        _textButton.frame = CGRectMake(0,0,35,35);
+        _textButton.frame = CGRectMake(6,6,37,37);
         [_textButton defaultStyle];
-        [_textButton setNormalIconImage:@"chat_bar_text.png" withSelectedImage:@"chat_bar_text.png" withFrame:CGRectMake(5,9,25,14)];
+        _textButton.layer.borderWidth = 2.f;
+        [_textButton setNormalIconImage:@"chat_bar_text.png" withSelectedImage:@"chat_bar_text.png" withFrame:CGRectMake(6,10,25,17)];
         [_textButton addTarget:self action:@selector(switchInputMode:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_textButton];
         
         _audioButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
         _audioButton.frame = _textButton.frame;
         [_audioButton defaultStyle];
+        _audioButton.layer.borderWidth = 2.f;
         [_audioButton addTarget:self action:@selector(switchInputMode:) forControlEvents:UIControlEventTouchUpInside];
-        [_audioButton setNormalIconImage:@"chat_bar_audio.png" withSelectedImage:@"chat_bar_audio.png" withFrame:CGRectMake(5,9,25,14)];
+        [_audioButton setNormalIconImage:@"chat_bar_audio.png" withSelectedImage:@"chat_bar_audio.png" withFrame:CGRectMake(8,5,20.5,27)];
         [self addSubview:_audioButton];
         
         _recordButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
-        _recordButton.frame = CGRectMake(35, 0, 218, 35);
+        _recordButton.frame = CGRectMake(46,6, 187, 37);
         [_recordButton defaultStyle];
+        _recordButton.layer.borderWidth = 2.0f;
+        _recordButton.layer.cornerRadius = 4.0f;
         [_recordButton setTitle:@"按住说话" forState:UIControlStateNormal];
+        [_recordButton setTitle:@"松开结束" forState:UIControlStateSelected];
+        [_recordButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+        [_recordButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        
         [_recordButton addTarget:self action:@selector(startRecord) forControlEvents:UIControlEventTouchDown];
         [_recordButton addTarget:self action:@selector(endRecord) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_recordButton];
         
         //input text view
         _inputBackImageView = [[UIImageView alloc]init];
-        _inputBackImageView.frame = CGRectMake(35,0,218,35);
+        _inputBackImageView.frame = CGRectMake(46,6,187,37);
         _inputBackImageView.backgroundColor = [UIColor whiteColor];
         _inputBackImageView.layer.borderColor = [XXCommonStyle xxThemeButtonBoardColor].CGColor;
-        _inputBackImageView.layer.borderWidth = 1.f;
+        _inputBackImageView.layer.borderWidth = 2.f;
+        _inputBackImageView.layer.cornerRadius = 4.0f;
         [self addSubview:_inputBackImageView];
         
         //input text
         _inputTextView = [[UITextView alloc]init];
-        _inputTextView.frame = CGRectMake(35,0,218,35);
+        _inputTextView.frame = CGRectMake(46,6,187,37);
         _inputTextView.returnKeyType = UIReturnKeySend;
         _inputTextView.delegate = self;
         _inputTextView.backgroundColor = [UIColor clearColor];
@@ -74,17 +83,19 @@ static inline UIViewAnimationOptions AnimationOptionsForCurve(UIViewAnimationCur
         
         //emoji
         _emojiButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
-        _emojiButton.frame = CGRectMake(250,0,35,35);
+        _emojiButton.frame = CGRectMake(236,6,37,37);
         [_emojiButton defaultStyle];
-        [_emojiButton setNormalIconImage:@"chat_bar_emoji.png" withSelectedImage:@"chat_bar_emoji.png" withFrame:CGRectMake(5,9,25,14)];
+        _emojiButton.layer.borderWidth = 2.0f;
+        [_emojiButton setNormalIconImage:@"chat_bar_emoji.png" withSelectedImage:@"chat_bar_emoji.png" withFrame:CGRectMake(7.25,7.25,22.5,22.5)];
         [_emojiButton addTarget:self action:@selector(tapOnEmoji) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_emojiButton];
         
         //image
         _imageButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
-        _imageButton.frame = CGRectMake(285, 0, 35, 35);
+        _imageButton.frame = CGRectMake(276, 6, 37, 37);
         [_imageButton defaultStyle];
-        [_imageButton setNormalIconImage:@"chat_bar_image.png" withSelectedImage:@"chat_bar_image.png" withFrame:CGRectMake(5,9,25,14)];
+        _imageButton.layer.borderWidth = 2.0f;
+        [_imageButton setNormalIconImage:@"chat_bar_image.png" withSelectedImage:@"chat_bar_image.png" withFrame:CGRectMake(7.5,9.5,22,18)];
         [self addSubview:_imageButton];
         
         //emoji choose view
@@ -186,10 +197,10 @@ static inline UIViewAnimationOptions AnimationOptionsForCurve(UIViewAnimationCur
         case XXChatToolBarComment:
         {
             _imageButton.hidden = YES;
-            _inputBackImageView.frame = CGRectMake(_inputBackImageView.frame.origin.x,0,_inputBackImageView.frame.size.width+35,_inputBackImageView.frame.size.height);
-            _inputTextView.frame = CGRectMake(_inputTextView.frame.origin.x,0,_inputTextView.frame.size.width+35,_inputTextView.frame.size.height);
+            _inputBackImageView.frame = CGRectMake(_inputBackImageView.frame.origin.x,0,_inputBackImageView.frame.size.width+49,_inputBackImageView.frame.size.height);
+            _inputTextView.frame = CGRectMake(_inputTextView.frame.origin.x,0,_inputTextView.frame.size.width+49,_inputTextView.frame.size.height);
             _recordButton.frame = _inputBackImageView.frame;
-            _emojiButton.frame = CGRectMake(_emojiButton.frame.origin.x+35,0,_emojiButton.frame.size.width,_emojiButton.frame.size.height);
+            _emojiButton.frame = CGRectMake(_emojiButton.frame.origin.x+49,0,_emojiButton.frame.size.width,_emojiButton.frame.size.height);
         }
             break;
         default:
@@ -289,7 +300,7 @@ static inline UIViewAnimationOptions AnimationOptionsForCurve(UIViewAnimationCur
                          
                          if (!_isMoved) {
                              CGRect toolBarFrame = self.frame;
-                             toolBarFrame.origin.y = keyboardEndFrameView.origin.y - 35;
+                             toolBarFrame.origin.y = keyboardEndFrameView.origin.y - 49;
                              self.frame = toolBarFrame;
                          }
                      }
@@ -315,7 +326,7 @@ static inline UIViewAnimationOptions AnimationOptionsForCurve(UIViewAnimationCur
                          if (_state!=XXChatToolBarStateEmoji) {
                              
                              CGRect toolBarFrame = self.frame;
-                             toolBarFrame.origin.y = keyboardEndFrameView.origin.y - 35;
+                             toolBarFrame.origin.y = keyboardEndFrameView.origin.y - 49;
                              self.frame = toolBarFrame;
                              
                          }
@@ -340,7 +351,7 @@ static inline UIViewAnimationOptions AnimationOptionsForCurve(UIViewAnimationCur
                         options:AnimationOptionsForCurve(keyboardTransitionAnimationCurve)
                      animations:^{
                          CGRect toolBarFrame = self.frame;
-                         toolBarFrame.origin.y = keyboardEndFrameView.origin.y - 35;
+                         toolBarFrame.origin.y = keyboardEndFrameView.origin.y - 49;
                          self.frame = toolBarFrame;
                      }
                      completion:nil];

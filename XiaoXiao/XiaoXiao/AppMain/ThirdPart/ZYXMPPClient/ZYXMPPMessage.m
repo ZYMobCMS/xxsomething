@@ -33,8 +33,27 @@
 }
 + (NSAttributedString*)attributedContentStringWithMessage:(ZYXMPPMessage*)aMessage
 {
-    
-    return [XXBaseTextView formatteCommonTextToAttributedText:aMessage.content];
+    NSString *destContent = Nil;
+    switch ([aMessage.messageType intValue]) {
+        case ZYXMPPMessageTypeText:
+        {
+            destContent = aMessage.content;
+        }
+            break;
+        case ZYXMPPMessageTypeImage:
+        {
+            destContent = @"图片";
+        }
+            break;
+        case ZYXMPPMessageTypeAudio:
+        {
+            destContent = @"语音";
+        }
+            break;
+        default:
+            break;
+    }
+    return [XXBaseTextView formatteCommonTextToAttributedText:destContent];
 }
 
 @end

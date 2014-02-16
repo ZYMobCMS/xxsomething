@@ -27,6 +27,7 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
         XXChatCacheCenterQueue = dispatch_queue_create("com.zyprosoft.chatQueue", NULL);
         [self openDataBase];
         [self observeAllNewMessages];
+        [self readLatestMessageListToCacheDict];
     }
     return self;
 }
@@ -85,27 +86,25 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
 - (void)saveContactUser:(XXUserModel*)contactUser
 {
     //if need save contact user
-    dispatch_async(XXChatCacheCenterQueue, ^{
-        NSString *queryUser = [NSString stringWithFormat:@"select nickname from xxchat_contact where user_id = '%@'",contactUser.userId];
-        FMResultSet *resultSet = [_innerDataBase executeQuery:queryUser];
-        if (resultSet) {
-            DDLogVerbose(@"contact user exist");
-            return;
-        }
-        
-        NSString *insertSql = [NSString stringWithFormat:@"insert into xxchat_contact(user_id,nickname,sex,school_name)values('%@','%@','%@','%@')",contactUser.userId,contactUser.nickName,contactUser.sex,contactUser.schoolName];
-        NSError *saveUserError = nil;
-        [_innerDataBase update:insertSql withErrorAndBindings:&saveUserError];
-        if (saveUserError) {
-            DDLogVerbose(@"save new contact user error:%@",saveUserError);
-        }
-    });
+    NSString *queryUser = [NSString stringWithFormat:@"select nickname from xxchat_contact where user_id = '%@'",contactUser.userId];
+    FMResultSet *resultSet = [_innerDataBase executeQuery:queryUser];
+    if ([resultSet next]) {
+        DDLogVerbose(@"contact user exist");
+        return;
+    }
+    
+    NSString *insertSql = [NSString stringWithFormat:@"insert into xxchat_contact(user_id,nickname,sex,school_name)values('%@','%@','%@','%@')",contactUser.userId,contactUser.nickName,contactUser.sex,contactUser.schoolName];
+    NSError *saveUserError = nil;
+    [_innerDataBase update:insertSql withErrorAndBindings:&saveUserError];
+    if (saveUserError) {
+        DDLogVerbose(@"save new contact user error:%@",saveUserError);
+    }
 }
 - (BOOL)checkContactUserExist:(XXUserModel *)contactUser
 {
     NSString *queryUser = [NSString stringWithFormat:@"select nickname from xxchat_contact where user_id = '%@'",contactUser.userId];
     FMResultSet *resultSet = [_innerDataBase executeQuery:queryUser];
-    if (resultSet) {
+    if ([resultSet next]) {
         DDLogVerbose(@"contact user exist");
         return YES;
     }else{
@@ -117,12 +116,15 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
     //有多少位联系人
     FMResultSet *s = [_innerDataBase executeQuery:@"select * from xxchat_contact"];
     NSMutableArray *resultList = [NSMutableArray array];
+    DDLogVerbose(@"contact set:%@",s);
     while ([s next]) {
         
         NSString *contactUserId = [s stringForColumn:@"user_id"];
-        NSString *querySql = [NSString stringWithFormat:@"select xxchat_table.*,xxchat_contact.* from xxchat_table inner join xxchat_contact as xxchat_table.send_user_id = xxchat_contact.user_id where send_user_id = %@ order by ID DESC limit 1",contactUserId];
+        NSString *querySql = [NSString stringWithFormat:@"select xxchat_table.*,xxchat_contact.* from xxchat_table inner join xxchat_contact on xxchat_table.send_user_id = xxchat_contact.user_id where send_user_id = '%@' order by ID DESC limit 1",contactUserId];
+        DDLogVerbose(@"inner query :%@",querySql);
         
         FMResultSet *resultSet = [_innerDataBase executeQuery:querySql];
+        DDLogVerbose(@"result message set:%@",resultSet);
         while ([resultSet next]) {
             
             ZYXMPPMessage *existMsg = [[ZYXMPPMessage alloc]init];
@@ -141,6 +143,7 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
             existMsg.messageAttributedContent = [ZYXMPPMessage attributedContentStringWithMessage:existMsg];
 
             [resultList addObject:existMsg];
+            DDLogVerbose(@"read existMsg :%@",existMsg);
             [_innerGlobalNewMessagesDict setObject:existMsg forKey:existMsg.conversationId];
         }
     }
@@ -161,6 +164,7 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
 - (void)saveMessage:(ZYXMPPMessage*)newMessage
 {
     NSString *insertSql = [NSString stringWithFormat:@"insert into xxchat_table(send_user_id,status,send_user,add_time,audio_time,body_content,message_type,is_readed,message_id,conversation_id,content)values('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",newMessage.userId,newMessage.sendStatus,newMessage.user,newMessage.addTime,newMessage.audioTime,newMessage.messageAttributedContent,newMessage.messageType,newMessage.isReaded,newMessage.messageId,newMessage.conversationId,newMessage.content];
+    
     NSError *saveMessageError = nil;
     BOOL saveResult = [_innerDataBase update:insertSql withErrorAndBindings:&saveMessageError];
     DDLogVerbose(@"save message :%@ result:%d",newMessage.messageId,saveResult);

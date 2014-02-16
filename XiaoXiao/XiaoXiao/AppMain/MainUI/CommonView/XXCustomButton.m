@@ -35,14 +35,28 @@
     [super setHighlighted:highlighted];
     [self.iconImageView setHighlighted:highlighted];
 }
+
+- (void)setSelected:(BOOL)selected
+{
+    [super setSelected:selected];
+    if (selected) {
+        self.iconImageView.image = [UIImage imageNamed:self.selectIconName];
+    }else{
+        self.iconImageView.image = [UIImage imageNamed:self.normalIconName];
+    }
+}
 - (void)setNormalIconImage:(NSString*)nImage withSelectedImage:(NSString*)sImage withFrame:(CGRect)iconFrame
 {
+    self.normalIconName = nImage;
+    self.selectIconName = sImage;
+    
     self.iconImageView.image = [UIImage imageNamed:nImage];
     self.iconImageView.highlightedImage = [UIImage imageNamed:sImage];
     self.iconImageView.frame = iconFrame;
     [self setTitleEdgeInsets:UIEdgeInsetsMake(0,iconFrame.origin.x,0,0)];
 
 }
+
 - (void)setTitle:(NSString *)title withFrame:(CGRect)titleFrame
 {
     [self setTitle:title forState:UIControlStateNormal];

@@ -18,6 +18,7 @@
 #import "WSAssetPicker.h"
 #import "SVProgressHUD.h"
 #import "MBProgressHUD.h"
+#import "MJPhotoBrowser.h"
 #import "UIImage+Resize.h"
 #import "UIBezierPath+ShadowPath.h"
 #import "ISRefreshControl.h"

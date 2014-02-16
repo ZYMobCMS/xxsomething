@@ -11,25 +11,27 @@ static NSString *toString(id object) {
     return [NSString stringWithFormat: @"%@", object];
 }
 
+@implementation NSDictionary(UrlString)
+
 // 转化为UTF8编码
-static NSString *urlEncode(id object) {
-    NSString *string = toString(object);
+-(NSString *)urlEncode:(id)object {
+    NSString *string = (NSString*)object;
     NSString *encodedValue = (__bridge NSString*)CFURLCreateStringByAddingPercentEscapes(nil,
-                                                                                (CFStringRef)string,
-                                                                                nil,
-                                                                                (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-                                                                                kCFStringEncodingUTF8);
+                                                                                         (CFStringRef)string,
+                                                                                         nil,
+                                                                                         (CFStringRef)@"!*'();:@&=+$,/?%#[]",
+                                                                                         kCFStringEncodingUTF8);
     return encodedValue;
 }
-
-@implementation NSDictionary(UrlString)
 
 -(NSString*) urlEncodedString {
     NSMutableArray *parts = [NSMutableArray array];
     for (id key in self) {
-        id value = [self objectForKey: key];
-        NSString *part = [NSString stringWithFormat: @"%@=%@", urlEncode(key), urlEncode(value)];
-        [parts addObject: part];
+        @autoreleasepool {
+            id value = [self objectForKey: key];
+            NSString *part = [NSString stringWithFormat: @"%@=%@",[self urlEncode:key],[self urlEncode:value]];
+            [parts addObject: part];
+        }
     }
     return [parts componentsJoinedByString: @"&"];//拼装字符串
 }

@@ -36,6 +36,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [XXCommonUitil setCommonNavigationReturnItemForViewController:self];
+    
     _rowHeightArray = [[NSMutableArray alloc]init];
     
     //read cache msg
@@ -45,7 +47,7 @@
 
     CGFloat totalHeight = XXNavContentHeight -44;
     _messageListTable = [[UITableView alloc]init];
-    _messageListTable.frame = CGRectMake(0,0,self.view.frame.size.width,totalHeight-35);
+    _messageListTable.frame = CGRectMake(0,0,self.view.frame.size.width,totalHeight-49);
     _messageListTable.delegate = self;
     _messageListTable.dataSource = self;
     _messageListTable.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
@@ -54,7 +56,7 @@
     
     DDLogVerbose(@"self view frame :%@",NSStringFromCGRect(self.view.frame));
     //tool bar
-    _chatToolBar = [[XXChatToolBar alloc]initWithFrame:CGRectMake(0,totalHeight-35,self.view.frame.size.width,35+216) forUse:XXChatToolBarDefault];
+    _chatToolBar = [[XXChatToolBar alloc]initWithFrame:CGRectMake(0,totalHeight-49,self.view.frame.size.width,49+216) forUse:XXChatToolBarDefault];
     [self.view addSubview:_chatToolBar];
     
     DDLogVerbose(@"toobar frame:%@",NSStringFromCGRect(_chatToolBar.frame));
@@ -69,12 +71,12 @@
         
         if ([weakToolBar barState]!=XXChatToolBarStateEmoji) {
             CGRect toolBarFrame = weakToolBar.frame;
-            toolBarFrame.origin.y = keyboardFrameInView.origin.y - 35;
+            toolBarFrame.origin.y = keyboardFrameInView.origin.y - 49;
             weakToolBar.frame = toolBarFrame;
             
             
             if (weakRowHeight.count>0) {
-                CGRect makeNewRect = CGRectMake(resultTableRect.origin.x,resultTableRect.origin.y,resultTableRect.size.width,keyboardFrameInView.origin.y-35);
+                CGRect makeNewRect = CGRectMake(resultTableRect.origin.x,resultTableRect.origin.y,resultTableRect.size.width,keyboardFrameInView.origin.y-49);
                 weakMsgTable.frame = makeNewRect;
                 if (weakRowHeight.count>1) {
                     NSIndexPath *lastRowIndexPath = [NSIndexPath indexPathForRow:weakRowHeight.count-1 inSection:0];
@@ -108,12 +110,6 @@
     
     [self configChatToolBar];
     [self configMessageAction];
-    
-    //check if first chat
-    _isFirstChat = [[XXChatCacheCenter shareCenter]checkContactUserExist:_chatUser]? @"1":@"0";
-    if ([_isFirstChat boolValue]) {
-        [[XXChatCacheCenter shareCenter]saveContactUser:_chatUser];
-    }
     
     //更新正在前台聊天的对话
     [[XXChatCacheCenter shareCenter]setHappeningConversation:_conversationCondition];
@@ -171,6 +167,8 @@
 {
     [super viewWillAppear:animated];
     [[XXCommonUitil appMainTabController] setTabBarHidden:YES];
+    CGRect naviRect = self.navigationController.view.frame;
+    self.navigationController.view.frame = CGRectMake(naviRect.origin.x,naviRect.origin.y,naviRect.size.width,naviRect.size.height+49);
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -197,6 +195,7 @@
     XXChatCell *cell = (XXChatCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
         cell = [[XXChatCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     ZYXMPPMessage *aMessage = [[[XXChatCacheCenter shareCenter]messagesFromCacheDictForConversationCondition:_conversationCondition]objectAtIndex:indexPath.row];
     DDLogVerbose(@"chat cell index path row:%d",indexPath.row);
@@ -221,8 +220,23 @@
 - (void)configChatToolBar
 {
     
+    //send text comment
+    WeakObj(_chatUser) weakChatUser = _chatUser;
+    NSString *myUserId = [XXUserDataCenter currentLoginUser].userId;
+    NSString *myUserName = [XXUserDataCenter currentLoginUser].nickName;
+    WeakObj(_messageListTable) weakMsgTable = _messageListTable;
+    WeakObj(_rowHeightArray) weakRowHeight = _rowHeightArray;
+    WeakObj(_conversationCondition) weakCondition = _conversationCondition;
+    WeakObj(_isFirstChat) weakIsFirst = _isFirstChat;
     WeakObj(_hud) weakHud = _hud;
+    
     [_chatToolBar setChatToolBarDidRecord:^(NSString *recordUrl, NSString *amrUrl, NSString *timeLength) {
+        
+        //check if first chat
+        weakIsFirst = [[XXChatCacheCenter shareCenter]checkContactUserExist:weakChatUser]? @"0":@"1";
+        if ([weakIsFirst boolValue]) {
+            [[XXChatCacheCenter shareCenter]saveContactUser:weakChatUser];
+        }
         
         DDLogVerbose(@"record time length:%@",timeLength);
         weakHud.labelText = @"正在发表...";
@@ -247,16 +261,15 @@
         
     }];
     
-    //send text comment
-    WeakObj(_chatUser) weakChatUser = _chatUser;
-    NSString *myUserId = [XXUserDataCenter currentLoginUser].userId;
-    NSString *myUserName = [XXUserDataCenter currentLoginUser].nickName;
-    WeakObj(_messageListTable) weakMsgTable = _messageListTable;
-    WeakObj(_rowHeightArray) weakRowHeight = _rowHeightArray;
-    WeakObj(_conversationCondition) weakCondition = _conversationCondition;
-    WeakObj(_isFirstChat) weakIsFirst = _isFirstChat;
+
     
     [_chatToolBar setChatToolBarTapSend:^(NSString *textContent) {
+        
+        //check if first chat
+        weakIsFirst = [[XXChatCacheCenter shareCenter]checkContactUserExist:weakChatUser]? @"0":@"1";
+        if ([weakIsFirst boolValue]) {
+            [[XXChatCacheCenter shareCenter]saveContactUser:weakChatUser];
+        }
         
         ZYXMPPUser *newUser = [[ZYXMPPUser alloc]init];
         newUser.jID = weakChatUser.userId;

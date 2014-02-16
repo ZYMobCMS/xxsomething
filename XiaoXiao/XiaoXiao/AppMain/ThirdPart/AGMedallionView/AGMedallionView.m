@@ -144,10 +144,11 @@
 - (void)drawRect:(CGRect)rect
 {
     // Image rect
-    CGRect imageRect = CGRectMake((self.borderWidth), 
-                                  (self.borderWidth) , 
-                                  rect.size.width - (self.borderWidth * 2), 
-                                  rect.size.height - (self.borderWidth * 2));
+    CGFloat bordWidthAdapt = self.borderWidth;
+    CGRect imageRect = CGRectMake((bordWidthAdapt),
+                                  (bordWidthAdapt) ,
+                                  rect.size.width - (bordWidthAdapt * 2),
+                                  rect.size.height - (bordWidthAdapt * 2));
     
     // Start working with the mask
     CGColorSpaceRef maskColorSpaceRef = CGColorSpaceCreateDeviceGray();
@@ -158,38 +159,38 @@
                                                         rect.size.width, 
                                                         maskColorSpaceRef, 
                                                         0);
-    CGContextRef shineMaskContextRef = CGBitmapContextCreate(NULL,
-                                                             rect.size.width, 
-                                                             rect.size.height, 
-                                                             8, 
-                                                             rect.size.width, 
-                                                             maskColorSpaceRef, 
-                                                             0);
+//    CGContextRef shineMaskContextRef = CGBitmapContextCreate(NULL,
+//                                                             rect.size.width,
+//                                                             rect.size.height, 
+//                                                             8, 
+//                                                             rect.size.width, 
+//                                                             maskColorSpaceRef, 
+//                                                             0);
     CGColorSpaceRelease(maskColorSpaceRef);
     CGContextSetFillColorWithColor(mainMaskContextRef, [UIColor blackColor].CGColor);
-    CGContextSetFillColorWithColor(shineMaskContextRef, [UIColor blackColor].CGColor);
+//    CGContextSetFillColorWithColor(shineMaskContextRef, [UIColor blackColor].CGColor);
     CGContextFillRect(mainMaskContextRef, rect);
-    CGContextFillRect(shineMaskContextRef, rect);
+//    CGContextFillRect(shineMaskContextRef, rect);
     CGContextSetFillColorWithColor(mainMaskContextRef, [UIColor whiteColor].CGColor);
-    CGContextSetFillColorWithColor(shineMaskContextRef, [UIColor whiteColor].CGColor);
+//    CGContextSetFillColorWithColor(shineMaskContextRef, [UIColor whiteColor].CGColor);
     
     // Create main mask shape
     CGContextMoveToPoint(mainMaskContextRef, 0, 0);
     CGContextAddEllipseInRect(mainMaskContextRef, imageRect);
     CGContextFillPath(mainMaskContextRef);
     // Create shine mask shape
-    CGContextTranslateCTM(shineMaskContextRef, -(rect.size.width / 4), rect.size.height / 4 * 3);
-    CGContextRotateCTM(shineMaskContextRef, -45.f);
-    CGContextMoveToPoint(shineMaskContextRef, 0, 0);
-    CGContextFillRect(shineMaskContextRef, CGRectMake(0, 
-                                                      0, 
-                                                      rect.size.width / 8 * 5, 
-                                                      rect.size.height));
+//    CGContextTranslateCTM(shineMaskContextRef, -(rect.size.width / 4), rect.size.height / 4 * 3);
+//    CGContextRotateCTM(shineMaskContextRef, -45.f);
+//    CGContextMoveToPoint(shineMaskContextRef, 0, 0);
+//    CGContextFillRect(shineMaskContextRef, CGRectMake(0, 
+//                                                      0, 
+//                                                      rect.size.width / 8 * 5, 
+//                                                      rect.size.height));
     
     CGImageRef mainMaskImageRef = CGBitmapContextCreateImage(mainMaskContextRef);
-    CGImageRef shineMaskImageRef = CGBitmapContextCreateImage(shineMaskContextRef);
+//    CGImageRef shineMaskImageRef = CGBitmapContextCreateImage(shineMaskContextRef);
     CGContextRelease(mainMaskContextRef);
-    CGContextRelease(shineMaskContextRef);
+//    CGContextRelease(shineMaskContextRef);
     // Done with mask context
     
     CGContextRef contextRef = UIGraphicsGetCurrentContext();
@@ -216,21 +217,31 @@
     CGContextDrawLinearGradient(contextRef, [self alphaGradient], CGPointMake(0, 0), CGPointMake(0, self.bounds.size.height), 0);*/
     
     CGImageRelease(mainMaskImageRef);
-    CGImageRelease(shineMaskImageRef);
+//    CGImageRelease(shineMaskImageRef);
     CGImageRelease(imageRef);
     // Done with image
 
     CGContextRestoreGState(contextRef);
     
-    CGContextSetLineWidth(contextRef, self.borderWidth);
-    CGContextSetStrokeColorWithColor(contextRef, self.borderColor.CGColor);
+//    CGContextSetLineWidth(contextRef, self.borderWidth-1);
+//    CGContextSetStrokeColorWithColor(contextRef, self.borderColor.CGColor);
+//    CGContextMoveToPoint(contextRef, 0, 0);
+//    CGRect newBordRect = CGRectMake(imageRect.origin.x-0.5,imageRect.origin.y-0.5,imageRect.size.width-1,imageRect.size.height-1);
+//    CGContextAddEllipseInRect(contextRef,imageRect);
+    
+    //描边
+    CGContextSetLineWidth(contextRef,1);
+    UIColor *bordColor = rgb(226,227,228,1);
+    CGContextSetStrokeColorWithColor(contextRef,bordColor.CGColor);
     CGContextMoveToPoint(contextRef, 0, 0);
-    CGContextAddEllipseInRect(contextRef, imageRect);
+    CGRect bordRect = CGRectMake(imageRect.origin.x-1.5,imageRect.origin.y-1.5,imageRect.size.width+3, imageRect.size.height+3);
+    CGContextAddEllipseInRect(contextRef,bordRect);
+    
     // Drop shadow
-    CGContextSetShadowWithColor(contextRef, 
-                                self.shadowOffset, 
-                                self.shadowBlur, 
-                                self.shadowColor.CGColor);
+//    CGContextSetShadowWithColor(contextRef, 
+//                                self.shadowOffset,
+//                                self.shadowBlur, 
+//                                self.shadowColor.CGColor);
     CGContextStrokePath(contextRef);
     CGContextRestoreGState(contextRef);
 }

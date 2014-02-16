@@ -29,6 +29,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.title = @"完善资料";
+    [XXCommonUitil setCommonNavigationReturnItemForViewController:self];
     
     _titleArray = [[NSMutableArray alloc]init];
     NSDictionary *item0 = @{@"title":@"名字"};

@@ -34,20 +34,22 @@
         [_backgroundImageView addSubview:_deleteButton];
         
         
+        CGFloat originY = _teaseImageView.frame.origin.y+_teaseImageView.frame.size.height+_topMargin;
+
         _timeLabel = [[UILabel alloc]init];
-        _timeLabel.frame = CGRectMake(160,110,40,20);
+        _timeLabel.frame = CGRectMake(100,originY,80,20);
+        _timeLabel.font = [UIFont systemFontOfSize:12];
         [_backgroundImageView addSubview:_timeLabel];
         
-        CGFloat originY = _teaseImageView.frame.origin.y+_teaseImageView.frame.size.height+_topMargin;
-        
         _iconImageView = [[UIImageView alloc]init];
-        _iconImageView.frame = CGRectMake(_timeLabel.frame.origin.x+_timeLabel.frame.size.width,originY,16,16);
+        _iconImageView.frame = CGRectMake(_timeLabel.frame.origin.x+60,originY,16,16);
         _iconImageView.image = [UIImage imageNamed:@"other_tease.png"];
         [_backgroundImageView addSubview:_iconImageView];
         
         _tagLabel = [[UILabel alloc]init];
         _tagLabel.frame = CGRectMake(_iconImageView.frame.origin.x+_iconImageView.frame.size.width+_leftMargin,originY,50,20);
         _tagLabel.text = @"挑逗了你";
+        _tagLabel.font = [UIFont systemFontOfSize:12];
         _tagLabel.backgroundColor = [UIColor clearColor];
         [_backgroundImageView addSubview:_tagLabel];
         

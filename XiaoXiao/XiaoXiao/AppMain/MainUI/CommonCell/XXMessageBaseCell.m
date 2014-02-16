@@ -57,7 +57,6 @@
 {
     [_headView setHeadWithUserId:aMessage.userId];
     [_contentTextView setAttributedString:aMessage.messageAttributedContent];
-    
 }
 
 @end

@@ -10,7 +10,7 @@
 
 @interface OtherUserHomeHeadView : UIView
 {
-    UIImageView *_themeBackgroundView;
+    XXImageView *_themeBackgroundView;
     UIImageView *_infoBackgroundView;
     XXHeadView  *_headView;
     UILabel     *_nameLabel;

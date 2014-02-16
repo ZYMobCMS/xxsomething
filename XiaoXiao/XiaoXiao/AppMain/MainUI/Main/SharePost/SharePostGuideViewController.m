@@ -249,7 +249,33 @@
             
         } withSuccessBlock:^(XXAttachmentModel *resultModel) {
             
-            [resultImageLinks addObject:resultModel.link];
+            //缩略图，根据图片个数确定图片的大小和宽度
+            CGFloat imageWidth = 0.f;
+            switch (_postImagesArray.count) {
+                case 1:
+                    imageWidth = 274.f;
+                    break;
+                case 2:
+                    imageWidth = 135.f;
+                    break;
+                case 3:
+                    imageWidth = 90.f;
+                    break;
+                case 4:
+                    imageWidth = 90.f;
+                    break;
+                case 5:
+                    imageWidth = 90.f;
+                    break;
+                case 6:
+                    imageWidth = 90.f;
+                    break;
+                
+                default:
+                    break;
+            }
+            NSString *preViewImageLink = [NSString stringWithFormat:@"%@/%d/%d%@",XX_Image_Resize_Url,(int)imageWidth,(int)imageWidth,resultModel.link];
+            [resultImageLinks addObject:preViewImageLink];
             
             NSMutableString *postAllImages = [NSMutableString string];
             [resultImageLinks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -259,6 +285,7 @@
                     [postAllImages appendFormat:@"%@",obj];
                 }
             }];
+            DDLogVerbose(@"post all images:%@",postAllImages);
             _currentPostModel.postImages = postAllImages;
 
             //all image upload finish

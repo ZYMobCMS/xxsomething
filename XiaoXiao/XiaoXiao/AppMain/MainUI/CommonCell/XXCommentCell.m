@@ -34,13 +34,13 @@
         //name label
         _nameLabel = [[UILabel alloc]init];
         _nameLabel.frame = CGRectMake(_headView.frame.origin.x+_headView.frame.size.width+_innerMargin/2,_topMargin+7,_backgroundImageView.frame.size.width-4*_leftMargin-_headView.frame.size.width,20);
-        _nameLabel.backgroundColor = [UIColor blueColor];
+        _nameLabel.backgroundColor = [UIColor clearColor];
         _nameLabel.textColor = [UIColor blackColor];
         [_backgroundImageView addSubview:_nameLabel];
         
         //content text
         _contentTextView = [[XXBaseTextView alloc]initWithFrame:CGRectMake(_nameLabel.frame.origin.x,_nameLabel.frame.origin.y+_nameLabel.frame.size.height+_innerMargin,_backgroundImageView.frame.size.width-4*_leftMargin-_headView.frame.size.width,30)];
-        _contentTextView.backgroundColor = [UIColor redColor];
+        _contentTextView.backgroundColor = [UIColor clearColor];
         [_backgroundImageView addSubview:_contentTextView];
         
         //audio
@@ -56,14 +56,14 @@
         
         //play state icon
         _playStateImageView = [[UIImageView alloc]init];
-        _playStateImageView.frame = CGRectMake(10,5,12,12);
+        _playStateImageView.frame = CGRectMake(30,10,12,12);
         _playStateImageView.image = [UIImage imageNamed:@"audio_play_stop.png"];
         [_audioButton addSubview:_playStateImageView];
         
         //time
         _audioTimeLabel = [[UILabel alloc]init];
         _audioTimeLabel.frame = CGRectMake(40,5,15,35);
-        _audioTimeLabel.backgroundColor = [UIColor greenColor];
+        _audioTimeLabel.backgroundColor = [UIColor clearColor];
         _audioTimeLabel.textColor = [UIColor blackColor];
         _audioTimeLabel.font = [UIFont systemFontOfSize:9];
         [_audioButton addSubview:_audioTimeLabel];
@@ -71,7 +71,7 @@
         //_time label
         _timeLabel = [[UILabel alloc]init];
         _timeLabel.frame = CGRectMake(0,0,80,20);
-        _timeLabel.backgroundColor = [UIColor orangeColor];
+        _timeLabel.backgroundColor = [UIColor clearColor];
         _timeLabel.textColor = [UIColor blackColor];
         _timeLabel.textAlignment = NSTextAlignmentRight;
         _timeLabel.font = [UIFont systemFontOfSize:9];
@@ -105,7 +105,7 @@
     _nameLabel.text = contentModel.userName;
     _timeLabel.text = contentModel.friendAddTime;
     _audioTimeLabel.text = contentModel.postAudioTime;
-    DDLogVerbose(@"comemnt add time:%@",_timeLabel.text);
+    DDLogVerbose(@"comemnt add time:%@",contentModel.userId);
     
     //head
     [_headView setHeadWithUserId:contentModel.userId];

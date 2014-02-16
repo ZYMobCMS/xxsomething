@@ -101,6 +101,12 @@ typedef void (^XXDataCenterRequestSchoolDataBaseUpdateSuccessBlock) (NSString *n
 //更新学校数据库
 - (void)updateSchoolDatabaseWithSuccess:(XXDataCenterRequestSchoolDataBaseUpdateSuccessBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
 
+//取消追捧
+- (void)requestCancelPraiseWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
+
+//删除帖子
+- (void)requestDeletePostWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
+
 //下载文件
 - (void)downloadFileWithLinkPath:(NSString*)linkPath WithDestSavePath:(NSString*)savePath withSuccess:(XXDataCenterRequestSuccessMsgBlock)sucess withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
 

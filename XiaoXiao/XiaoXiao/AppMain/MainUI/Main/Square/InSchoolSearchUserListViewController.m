@@ -32,9 +32,10 @@
     [XXCommonUitil setCommonNavigationReturnItemForViewController:self];
     [XXCommonUitil setCommonNavigationNextStepItemForViewController:self withIconImage:@"nav_share_post_setting.png" withNextStepAction:^{
         InSchoolUserFilterViewController *filterVC = [[InSchoolUserFilterViewController alloc]init];
+        [self.navigationController pushViewController:filterVC animated:YES];
         filterVC.title = @"按条件筛选";
         [XXCommonUitil setCommonNavigationReturnItemForViewController:filterVC];
-        [self.navigationController pushViewController:filterVC animated:YES];
+
     }];
     
     [_refreshControl beginRefreshing];

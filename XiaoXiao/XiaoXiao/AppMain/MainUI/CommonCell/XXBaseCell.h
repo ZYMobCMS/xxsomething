@@ -23,7 +23,7 @@
 @property (nonatomic,strong)UIImage *backImage;
 @property (strong,nonatomic)UILabel *titleLabel;
 @property (nonatomic,assign)BOOL     needCustomLine;
-@property (strong,nonatomic)UIImageView *accessoryView;
+@property (strong,nonatomic)UIImageView *customAccessoryView;
 
 - (void)setCellType:(XXBaseCellType)cellType withBottomMargin:(CGFloat)aMargin withCellHeight:(CGFloat)cellHeight;
 

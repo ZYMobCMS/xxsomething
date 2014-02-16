@@ -8,6 +8,8 @@
 
 #import "MyShareListViewController.h"
 #import "XXMyShareBaseCell.h"
+#import "MJPhoto.h"
+#import "MJPhotoBrowser.h"
 
 @interface MyShareListViewController ()
 
@@ -48,6 +50,26 @@
             NSIndexPath *deletePath = [tableView indexPathForCell:tapOnCell];
             [self deleteActionAtIndexPath:deletePath];
         }];
+        [cell setTapOnThumbImageBlock:^(NSURL *imageUrl, UIImageView *originImageView, NSArray *allImages, NSInteger currentIndex) {
+            int count = allImages.count;
+            // 1.封装图片数据
+            NSMutableArray *photos = [NSMutableArray arrayWithCapacity:count];
+            for (int i = 0; i<count; i++) {
+                // 替换为中等尺寸图片
+                NSString *url = [allImages objectAtIndex:i];
+                MJPhoto *photo = [[MJPhoto alloc] init];
+                photo.url = [NSURL URLWithString:url]; // 图片路径
+                originImageView.frame = [self.view convertRect:originImageView.frame fromView:self.view];
+                photo.srcImageView = originImageView; // 来源于哪个UIImageView
+                [photos addObject:photo];
+            }
+            
+            // 2.显示相册
+            MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
+            browser.currentPhotoIndex = currentIndex; // 弹出相册时显示的第一张图片是？
+            browser.photos = photos; // 设置所有的图片
+            [browser show];
+        }];
     }
     [cell setSharePostModel:[self.sharePostModelArray objectAtIndex:indexPath.row]];
     
@@ -58,7 +80,26 @@
 #pragma mark - deleteAction
 - (void)deleteActionAtIndexPath:(NSIndexPath*)indexPath
 {
-    
+    XXSharePostModel *deletePost = [self.sharePostModelArray objectAtIndex:indexPath.row];
+    XXConditionModel *condition = [[XXConditionModel alloc]init];
+    condition.postId = deletePost.postId;
+    DDLogVerbose(@"deletePostId :%@",deletePost.postId);
+    _hud.labelText = @"正在删除...";
+    [_hud show:YES];
+    [[XXMainDataCenter shareCenter]requestDeletePostWithCondition:condition withSuccess:^(NSString *successMsg) {
+       
+        [_hud hide:YES];
+        [SVProgressHUD showSuccessWithStatus:@"删除成功"];
+        
+        [self.sharePostModelArray removeObjectAtIndex:indexPath.row];
+        [self.sharePostRowHeightArray removeObjectAtIndex:indexPath.row];
+        
+        [_shareListTable deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
+        
+    } withFaild:^(NSString *faildMsg) {
+        [_hud hide:YES];
+        [SVProgressHUD showErrorWithStatus:faildMsg];
+    }];
 }
 
 - (void)requestShareListNow

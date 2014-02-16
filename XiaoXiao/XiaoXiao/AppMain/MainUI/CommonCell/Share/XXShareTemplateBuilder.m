@@ -84,7 +84,8 @@ BOOL const XXLockCommonCSSTemplateState = NO;
     htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$sextag$!" withString:sexTagImageName];
     htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$username$!" withString:name];
     htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$grade$!" withString:grade];
-    htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$college$!" withString:college];
+    NSString *combineCollege = [NSString stringWithFormat:@"来自%@",college];
+    htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$college$!" withString:combineCollege];
 
     return htmlTemplate;
 }
@@ -166,25 +167,33 @@ BOOL const XXLockCommonCSSTemplateState = NO;
 + (NSString*)buildUserCellContentWithCSSTemplate:(NSString*)cssTemplate withUserModel:(XXUserModel*)userModel
 {
     NSString *htmlTemp = nil;
+    DDLogVerbose(@"userModel isInSchool:%@",userModel.isInSchool);
     if ([userModel.isInSchool boolValue]) {
-        htmlTemp= [XXFileUitil loadStringFromBundleForName:XXUserCellHtmlTemplate];
-    }else{
         htmlTemp= [XXFileUitil loadStringFromBundleForName:XXUserCellHtmlTemplate1];
+    }else{
+        htmlTemp= [XXFileUitil loadStringFromBundleForName:XXUserCellHtmlTemplate];
     }
     
     //替换CSS
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$css$!" withString:cssTemplate];
     
     //替换content
-    NSString *sexTagImageName = [NSString stringWithFormat:@"sex_tag_%@.png",userModel.sex];
+    
+    NSString *sexTagImageName = (userModel.sex==nil||[userModel.sex isEqualToString:@""])? @"sex_tag_0@2x.png": [NSString stringWithFormat:@"sex_tag_%@@2x.png",userModel.sex];
+    DDLogVerbose(@"sextag image:%@",sexTagImageName);
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$sextag$!" withString:sexTagImageName];
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$username$!" withString:userModel.nickName];
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$college$!" withString:userModel.schoolName];
-    htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$starscore$!" withString:userModel.constellation];
+    NSString *constellationDefault = (userModel.constellation==nil||[userModel.constellation isEqualToString:@""])? @"天枰座":userModel.constellation;
+    NSString *combineConstellation = [NSString stringWithFormat:@"%@ | 校内知名度:",constellationDefault];
+    htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$starscore$!" withString:combineConstellation];
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$score$!" withString:userModel.score];
-    if (![userModel.isInSchool boolValue]) {
-        htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$profile$!" withString:userModel.signature];
+    DDLogVerbose(@"profile:%@",userModel.signature);
+    if ([userModel.isInSchool boolValue]) {
+        NSString *signature = (userModel.signature==nil||[userModel.signature isEqualToString:@""])? @"青春总是很娘，一直很哈哈哈哈哈哈 ":userModel.signature;
+        htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$profile$!" withString:signature];
     }
+    DDLogVerbose(@"user html final:%@",htmlTemp);
 
     return htmlTemp;
     

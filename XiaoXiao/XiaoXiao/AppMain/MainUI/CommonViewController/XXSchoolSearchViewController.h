@@ -27,8 +27,9 @@ typedef void (^XXSchoolSearchViewControllerFinishChooseBlock) (XXSchoolModel *ch
     NSInteger   _pageSize;
     NSInteger   _selectIndex;
     BOOL        _needLoadMore;
+    NSString    *_nextStepTitle;
 }
 - (void)setFinishChooseSchool:(XXSchoolSearchViewControllerFinishChooseBlock)chooseBlock;
 - (void)setNextStepAction:(XXCommonNavigationNextStepBlock)nextStepBlock;
-
+- (void)setNextStepAction:(XXCommonNavigationNextStepBlock)nextStepBlock withNextStepTitle:(NSString*)title;
 @end

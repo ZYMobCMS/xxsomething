@@ -69,8 +69,10 @@
 {
     _leftMargin = 10.f;
     _topMargin = 10.f;
-    CGFloat headWidth = 35.f;
+    CGFloat headWidth = 41.f;
+    DDLogVerbose(@"xmppMessage userId:%@",aMessage.userId);
     [_headView setHeadWithUserId:aMessage.userId];
+    _headView.backgroundColor = [UIColor redColor];
     
     CGFloat originX = 0.f;
     CGFloat originY = 0.f;
@@ -81,12 +83,14 @@
     //contentHeight
     CGFloat contentHeight = 0.f;
     CGFloat contentWidth = 0.f;
+    CGFloat contentMaxHeight = 46-2*_topMargin;
     
     switch ([aMessage.messageType intValue]) {
         case ZYXMPPMessageTypeText:
         {
             CGSize contentSize = [XXBaseTextView sizeForAttributedText:aMessage.messageAttributedContent forWidth:maxContentWidth];
-            contentHeight = contentSize.height>headWidth? contentSize.height:headWidth;
+            DDLogVerbose(@"chat contentSize:%@",NSStringFromCGSize(contentSize));
+            contentHeight = contentSize.height>contentMaxHeight? contentSize.height+2*_topMargin:46;
             contentWidth = contentSize.width;
             [_contentTextView setAttributedString:aMessage.messageAttributedContent];
             DDLogVerbose(@"set chat cell content :%@",aMessage.messageAttributedContent);
@@ -113,7 +117,7 @@
         
         originX = totalWidth-_leftMargin-headWidth;
         _headView.frame = CGRectMake(originX,originY,headWidth,headWidth);
-        originX = totalWidth-_leftMargin - contentWidth-headWidth;
+        originX = totalWidth-_leftMargin - contentWidth-headWidth-25;
 
     }else{
         originX = _leftMargin;
@@ -144,7 +148,6 @@
     _bubbleBackView.frame = CGRectMake(originX,originY,contentWidth+2*_leftMargin,contentHeight+2*_topMargin);
     if (aMessage.isFromSelf) {
         _activeView.frame = CGRectMake(_bubbleBackView.frame.origin.x-10-5,5,10,10);
-        _bubbleBackView.image = [[UIImage imageNamed:@"chat_right.png"]makeStretchForBubbleRight];
     }else{
         _activeView.frame = CGRectMake(_bubbleBackView.frame.origin.x+_bubbleBackView.frame.size.width+5,5,10,10);
         _bubbleBackView.image = [[UIImage imageNamed:@"chat_left.png"]makeStretchForBubbleLeft];

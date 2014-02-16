@@ -94,7 +94,7 @@
 }
 + (UIColor*)xxThemeBackgroundColor
 {
-    return rgb(242,246,247, 1);
+    return rgb(229,233,238, 1);
 }
 
 //school choose cell

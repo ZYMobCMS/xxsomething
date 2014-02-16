@@ -13,8 +13,13 @@
 #import "XXCustomButton.h"
 #import "XXHeadView.h"
 
-typedef void (^XXShareTextViewDidTapOnThumbImageBlock) (NSURL *imageUrl);
-typedef void (^XXShareTextViewDidTapOnAudioImageBlock) (NSURL *audioUrl);
+@class XXShareBaseCell;
+@class DTLinkButton;
+
+typedef void (^XXShareTextViewDidTapOnThumbImageBlock) (NSURL *imageUrl,UIImageView *originImageView,NSArray *allImages,NSInteger currentIndex);
+typedef void (^XXShareTextViewDidTapOnAudioImageBlock) (NSURL *audioUrl,XXShareBaseCell *cell);
+typedef void (^XXShareTextViewDidTapOnCommentBlock) (XXShareBaseCell *cell);
+typedef void (^XXShareTextViewDidTapOnPraiseBlock) (XXShareBaseCell *cell,BOOL selectState);
 
 //用于加入到超链接中，以实现放大图片，播放音频类型判断 ,例如 ：  xxshare_image:http://www.test.com/1.png xxshare_audio:http://www.test.com/a.amr
 #define XXMIMETypeImageFormatte @"xxshare_image:"
@@ -61,9 +66,13 @@ typedef void (^XXShareTextViewDidTapOnAudioImageBlock) (NSURL *audioUrl);
     CGFloat         _bottomViewFontSize;
     BOOL            _isDetailState;
     
+    //images
+    NSMutableArray        *_allImages;
     
     XXShareTextViewDidTapOnAudioImageBlock _tapAudioBlock;
     XXShareTextViewDidTapOnThumbImageBlock _tapImageBlock;
+    XXShareTextViewDidTapOnCommentBlock _tapCommentBlock;
+    XXShareTextViewDidTapOnPraiseBlock _tapPraiseBlock;
 }
 
 - (void)setSharePostModel:(XXSharePostModel*)postModel;
@@ -77,6 +86,8 @@ typedef void (^XXShareTextViewDidTapOnAudioImageBlock) (NSURL *audioUrl);
 
 - (void)setTapOnAudioImageBlock:(XXShareTextViewDidTapOnAudioImageBlock)tapAudioBlock;
 - (void)setTapOnThumbImageBlock:(XXShareTextViewDidTapOnThumbImageBlock)tapImageBlock;
+- (void)setTapOnCommentBlock:(XXShareTextViewDidTapOnCommentBlock)commentBlock;
+- (void)setTapOnPraiseBlock:(XXShareTextViewDidTapOnPraiseBlock)praiseBlock;
 
 + (NSAttributedString*)buildAttributedStringWithSharePost:(XXSharePostModel*)sharePost forContentWidth:(CGFloat)width;
 

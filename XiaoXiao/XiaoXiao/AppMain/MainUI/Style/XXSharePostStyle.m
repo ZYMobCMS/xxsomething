@@ -16,7 +16,7 @@
 }
 + (NSInteger)sharePostContentFontSize
 {
-    return 14;
+    return 15;
 }
 + (NSString*)sharePostContentTextColor
 {

@@ -71,7 +71,7 @@
     CGFloat totalHeight = XXNavContentHeight-44;
     CGFloat totalWidth = self.view.frame.size.width;
     
-    guideTable = [[UITableView alloc]initWithFrame:CGRectMake(0,0,totalWidth,totalHeight) style:UITableViewStylePlain];
+    guideTable = [[UITableView alloc]initWithFrame:CGRectMake(0,0,totalWidth,totalHeight-40) style:UITableViewStylePlain];
     guideTable.dataSource = self;
     guideTable.delegate = self;
     guideTable.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
@@ -79,15 +79,21 @@
     [self.view addSubview:guideTable];
     
     _careButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
-    _careButton.frame = CGRectMake(0,totalHeight-49,160,49);
+    _careButton.frame = CGRectMake(0,totalHeight-40,160,40);
     [_careButton redStyle];
+    _careButton.layer.cornerRadius = 0.f;
+    [_careButton setNormalIconImage:@"other_home_cancel_care.png" withSelectedImage:@"other_home_care.png" withFrame:CGRectMake(50,10,26,22)];
     [_careButton setTitle:@"关心" forState:UIControlStateNormal];
+    [_careButton setTitleEdgeInsets:UIEdgeInsetsMake(0,30,0,0)];
     [_careButton addTarget:self action:@selector(careAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_careButton];
     
     _leaveMsgButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
-    _leaveMsgButton.frame = CGRectMake(160,totalHeight-49,160,49);
+    _leaveMsgButton.frame = CGRectMake(160,totalHeight-40,160,40);
     [_leaveMsgButton blueStyle];
+    _leaveMsgButton.layer.cornerRadius = 0.f;
+    [_leaveMsgButton setNormalIconImage:@"other_home_leave_msg.png" withSelectedImage:@"other_home_leave_msg.png" withFrame:CGRectMake(50,10,23,23.5)];
+    [_leaveMsgButton setTitleEdgeInsets:UIEdgeInsetsMake(0,30,0,0)];
     [_leaveMsgButton setTitle:@"留声" forState:UIControlStateNormal];
     [_leaveMsgButton addTarget:self action:@selector(leaveMessageAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_leaveMsgButton];
@@ -259,6 +265,7 @@
 - (void)leaveMessageAction
 {
     XXChatViewController *chatViewController = [[XXChatViewController alloc]initWithChatUser:_currentUser];
+    chatViewController.title = _currentUser.nickName;
     [self.navigationController pushViewController:chatViewController animated:YES];
 }
 

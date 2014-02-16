@@ -8,6 +8,8 @@
 
 #import "XXShareListViewController.h"
 #import "XXShareDetailViewController.h"
+#import "MJPhoto.h"
+#import "MJPhotoBrowser.h"
 
 @interface XXShareListViewController ()
 
@@ -71,6 +73,58 @@
     
     if (!cell) {
         cell = [[XXShareBaseCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        
+        //config cell
+        [cell setTapOnPraiseBlock:^(XXShareBaseCell *cell, BOOL selectState) {
+            
+            NSIndexPath *tapIndex = [tableView indexPathForCell:cell];
+            XXSharePostModel *tapPostModel = [self.sharePostModelArray objectAtIndex:tapIndex.row];
+            XXConditionModel *conditionModel = [[XXConditionModel alloc]init];
+            conditionModel.resType = @"posts";
+            conditionModel.resId = tapPostModel.postId;
+            
+            if (selectState) {
+                [[XXMainDataCenter shareCenter]requestPraisePublishWithCondition:conditionModel withSuccess:^(NSString *successMsg) {
+                    DDLogVerbose(@"praise success");
+                } withFaild:^(NSString *faildMsg) {
+                    DDLogVerbose(@"praise faild");
+                }];
+            }else{
+                
+            }
+            
+        }];
+        [cell setTapOnCommentBlock:^(XXShareBaseCell *cell) {
+            NSIndexPath *tapIndex = [tableView indexPathForCell:cell];
+            XXShareDetailViewController *shareDetail = [[XXShareDetailViewController alloc]initWithSharePost:[self.sharePostModelArray objectAtIndex:tapIndex.row]];
+            [self.navigationController pushViewController:shareDetail animated:YES];
+        }];
+        [cell setTapOnAudioImageBlock:^(NSURL *audioUrl, XXShareBaseCell *cell) {
+            NSIndexPath *tapIndex = [tableView indexPathForCell:cell];
+            XXShareDetailViewController *shareDetail = [[XXShareDetailViewController alloc]initWithSharePost:[self.sharePostModelArray objectAtIndex:tapIndex.row]];
+            [self.navigationController pushViewController:shareDetail animated:YES];
+        }];
+        [cell setTapOnThumbImageBlock:^(NSURL *imageUrl, UIImageView *originImageView, NSArray *allImages, NSInteger currentIndex) {
+            int count = allImages.count;
+            // 1.封装图片数据
+            NSMutableArray *photos = [NSMutableArray arrayWithCapacity:count];
+            for (int i = 0; i<count; i++) {
+                // 替换为中等尺寸图片
+                NSString *url = [allImages objectAtIndex:i];
+                MJPhoto *photo = [[MJPhoto alloc] init];
+                photo.url = [NSURL URLWithString:url]; // 图片路径
+                originImageView.frame = [self.view convertRect:originImageView.frame fromView:self.view];
+                photo.srcImageView = originImageView; // 来源于哪个UIImageView
+                [photos addObject:photo];
+            }
+            
+            // 2.显示相册
+            MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
+            browser.currentPhotoIndex = currentIndex; // 弹出相册时显示的第一张图片是？
+            browser.photos = photos; // 设置所有的图片
+            [browser show];
+        }];
+        
     }
     [cell setSharePostModel:[self.sharePostModelArray objectAtIndex:indexPath.row]];
     

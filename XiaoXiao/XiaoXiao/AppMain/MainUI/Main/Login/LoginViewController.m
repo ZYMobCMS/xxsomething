@@ -33,11 +33,11 @@
     CGFloat totalWidth = self.view.frame.size.width;
     CGFloat totalHeight = self.view.frame.size.height-44;
     
-    _FormView = [[XXFormView alloc]initWithFrame:CGRectMake(40,30,totalWidth-40*2,115)];
+    _FormView = [[XXFormView alloc]initWithFrame:CGRectMake(10,30,totalWidth-10*2,115)];
     [self.view addSubview:_FormView];
     
     UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    loginButton.frame = CGRectMake(40,155,totalWidth-40*2,45);
+    loginButton.frame = CGRectMake(10,155,totalWidth-10*2,45);
     [loginButton setTitle:@"马上登陆" forState:UIControlStateNormal];
     [loginButton blueStyle];
     [loginButton addTarget:self action:@selector(loginNowAction) forControlEvents:UIControlEventTouchUpInside];

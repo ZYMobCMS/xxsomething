@@ -16,13 +16,16 @@
     if (self) {
         // Initialization code
         
-        headView = [[XXHeadView alloc]initWithFrame:CGRectMake(10,10,80,80)];
+        headView = [[XXHeadView alloc]initWithFrame:CGRectMake(10,7,86,86)];
         headView.contentImageView.image = [UIImage imageNamed:@"xxx.jpg"];
+        headView.contentImageView.borderWidth = 3.0f;
         [self.contentView addSubview:headView];
         
         contentTextView = [[XXBaseTextView alloc]init];
-        contentTextView.frame = CGRectMake(95,15,[XXUserInfoCellStyle contentWidth],100);
+        contentTextView.frame = CGRectMake(107,18,[XXUserInfoCellStyle contentWidth],64);
         [self.contentView addSubview:contentTextView];
+        
+        
         
     }
     return self;
@@ -58,13 +61,7 @@
 
 + (CGFloat)heightWithContentModel:(XXUserModel *)userModel
 {
-    NSAttributedString *attributedText = [XXUserInfoBaseCell buildAttributedStringWithUserModel:userModel];
-    DTAttributedTextContentView *testView = [[DTAttributedTextContentView alloc]init];
-    [testView setAttributedString:attributedText];
-    
-    CGSize contentSize = [testView suggestedFrameSizeToFitEntireStringConstraintedToWidth:[XXUserInfoCellStyle contentWidth]];
-    
-    return contentSize.height+30;
+    return 100;
 }
 
 @end

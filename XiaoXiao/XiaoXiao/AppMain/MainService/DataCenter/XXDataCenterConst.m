@@ -96,6 +96,12 @@
         case XXRequestTypeUpdateSchoolDatabase:
             resultInterface = XX_School_Update_Interface;
             break;
+        case XXRequestTypeCancelPraise:
+            resultInterface = XX_Cancel_Praise_Interface;
+            break;
+        case XXRequestTypeDeletePost:
+            resultInterface = XX_Delete_Post_Interface;
+            break;
             
         default:
             break;

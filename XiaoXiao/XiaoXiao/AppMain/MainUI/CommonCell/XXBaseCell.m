@@ -35,13 +35,14 @@
         _cellLineImageView.frame = CGRectMake(0,self.frame.size.height-1,self.frame.size.width,1);
         [self.contentView addSubview:_cellLineImageView];
         
-        self.accessoryView = [[UIImageView alloc]init];
-        self.accessoryView.frame = CGRectMake(self.frame.size.width-10-10-17,5,7,12);
-        self.accessoryView.image = [UIImage imageNamed:@"cell_indicator.png"];
-        self.accessoryView.hidden = YES;
-        [self.contentView addSubview:self.accessoryView];
+        self.customAccessoryView = [[UIImageView alloc]init];
+        self.customAccessoryView.frame = CGRectMake(self.frame.size.width-10-10-17,5,7,12);
+        self.customAccessoryView.image = [UIImage imageNamed:@"cell_indicator.png"];
+        self.customAccessoryView.hidden = YES;
+        [self.contentView addSubview:self.customAccessoryView];
         
         UIView *normalBack = [[UIView alloc]initWithFrame:CGRectMake(0,0,self.frame.size.width,self.frame.size.height)];
+        normalBack.backgroundColor = rgb(245,246,248,1);
         self.selectedBackgroundView = normalBack;
         
     }
@@ -57,7 +58,8 @@
 - (void)setCellType:(XXBaseCellType)cellType withBottomMargin:(CGFloat)aMargin withCellHeight:(CGFloat)cellHeight
 {
     _cellLineImageView.hidden = YES;
-    self.accessoryView.frame = CGRectMake(self.accessoryView.frame.origin.x,self.accessoryView.frame.origin.y-aMargin,self.accessoryView.frame.size.width,self.accessoryView.frame.size.height);
+    self.customAccessoryView.frame = CGRectMake(self.frame.size.width-15-17,(cellHeight-aMargin-10)/2,7,12);
+    [self bringSubviewToFront:self.customAccessoryView];
     
     CGRect oldFrame = _backgroundImageView.frame;
     UIImage *background = nil;

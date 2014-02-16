@@ -11,6 +11,7 @@
 
 typedef void (^LoginGuideFinishLoginBlock) (BOOL loginResult);
 
+
 @interface GuideViewController : XXBaseViewController
 {
     LoginGuideFinishLoginBlock _finishBlock;

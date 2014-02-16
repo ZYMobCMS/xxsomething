@@ -29,12 +29,12 @@
         CGFloat originX = _contentLeftMargin+10;
         CGFloat originY = _contentTopHeight+10;
         
-        _headView = [[XXHeadView alloc]initWithFrame:CGRectMake(originX,originY,70,70)];
+        _headView = [[XXHeadView alloc]initWithFrame:CGRectMake(originX,originY,50,50)];
         [backgroundImageView addSubview:_headView];
         
         //user View
         originX = _headView.frame.origin.x+_headView.frame.size.width + 10;
-        _userView = [[XXSharePostUserView alloc]initWithFrame:CGRectMake(originX,originY+10,200,40)];
+        _userView = [[XXSharePostUserView alloc]initWithFrame:CGRectMake(originX,originY+4,200,44)];
         _userView.backgroundColor = [UIColor clearColor];
         [backgroundImageView addSubview:_userView];
         
@@ -55,7 +55,7 @@
         
         //post content
         shareTextView = [[DTAttributedTextContentView alloc]init];
-        shareTextView.frame = CGRectMake(_contentLeftMargin+10,_headLineSep.frame.origin.y+1+_contentTopHeight+10,[XXSharePostStyle sharePostContentWidth],self.frame.size.height);
+        shareTextView.frame = CGRectMake(_contentLeftMargin+10,_headLineSep.frame.origin.y+10+9+1,[XXSharePostStyle sharePostContentWidth],self.frame.size.height);
         shareTextView.delegate = self;
         shareTextView.backgroundColor = [UIColor clearColor];
         [backgroundImageView addSubview:shareTextView];
@@ -68,10 +68,15 @@
         
         //comment button
         _commentButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
-        _commentButton.frame = CGRectMake(_contentLeftMargin,10,(backgroundImageView.frame.size.width-40)/2,45);
-        [_commentButton setNormalIconImage:@"share_post_comment.png" withSelectedImage:@"share_post_comment.png" withFrame:CGRectMake(30,16,12,12)];
+        _commentButton.frame = CGRectMake(_contentLeftMargin+5,10,(backgroundImageView.frame.size.width-20)/2,46);
+        [_commentButton setNormalIconImage:@"share_post_comment.png" withSelectedImage:@"share_post_comment.png" withFrame:CGRectMake(35,18,12,12)];
         [_commentButton setTitle:@"评论" withFrame:CGRectMake(60,3,50,34)];
+        [_commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0,10,0,0)];
+        _commentButton.titleLabel.font = [UIFont systemFontOfSize:15];
+        [_commentButton defaultStyle];
+        _commentButton.layer.borderColor = [UIColor clearColor].CGColor;
         [_commentButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        [_commentButton addTarget:self action:@selector(commentAction) forControlEvents:UIControlEventTouchUpInside];
         [backgroundImageView addSubview:_commentButton];
      
         //verline
@@ -83,10 +88,15 @@
         
         //praise button
         _praiseButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
-        _praiseButton.frame = CGRectMake(_commentButton.frame.origin.x+_commentButton.frame.size.width+10,10,(backgroundImageView.frame.size.width-40)/2,45);
-        [_praiseButton setNormalIconImage:@"share_post_praise_normal.png" withSelectedImage:@"share_post_praise_normal.png" withFrame:CGRectMake(30,16,12,12)];
+        _praiseButton.frame = CGRectMake(_commentButton.frame.origin.x+_commentButton.frame.size.width+5,10,(backgroundImageView.frame.size.width-20)/2,46);
+        [_praiseButton setNormalIconImage:@"share_post_praise_normal.png" withSelectedImage:@"share_post_praise_selected.png" withFrame:CGRectMake(35,19,12.5,11)];
+        _praiseButton.titleLabel.font = [UIFont systemFontOfSize:15];
         [_praiseButton setTitle:@"追捧" withFrame:CGRectMake(60,3,50,34)];
+        [_praiseButton setTitleEdgeInsets:UIEdgeInsetsMake(0,25,0,0)];
+        [_praiseButton defaultStyle];
+        _praiseButton.layer.borderColor = [UIColor clearColor].CGColor;
         [_praiseButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        [_praiseButton addTarget:self action:@selector(praiseAction) forControlEvents:UIControlEventTouchUpInside];
         [backgroundImageView addSubview:_praiseButton];
     }
     return self;
@@ -112,6 +122,32 @@
     [_userView setContentModel:postModel];
     _timeLabel.text = postModel.friendAddTime;
     _isDetailState = NO;
+    NSString *title = [NSString stringWithFormat:@"追捧(%@)",postModel.praiseCount];
+    [_praiseButton setTitle:title withFrame:CGRectMake(60,3,50,34)];
+    if (!_allImages) {
+        _allImages = [[NSMutableArray alloc]init];
+        DDLogVerbose(@"postImages:%@",postModel.postImages);
+        NSArray *imagesArray = [postModel.postImages componentsSeparatedByString:@"|"];
+        [imagesArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            NSString *originLink = (NSString*)obj;
+            NSRange originRange = [originLink rangeOfString:@"/source"];
+            NSString *bigImageLink = [originLink substringWithRange:NSMakeRange(originRange.location,originLink.length-originRange.location)];
+            NSString *hostBigImageLink = [NSString stringWithFormat:@"%@%@",XXBase_Host_Url,bigImageLink];
+            [_allImages addObject:hostBigImageLink];
+        }];
+    }else{
+        [_allImages removeAllObjects];
+        NSArray *imagesArray = [postModel.postImages componentsSeparatedByString:@"|"];
+        [imagesArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            NSString *originLink = (NSString*)obj;
+            NSRange originRange = [originLink rangeOfString:@"/source"];
+            NSString *bigImageLink = [originLink substringWithRange:NSMakeRange(originRange.location,originLink.length-originRange.location)];
+            NSString *hostBigImageLink = [NSString stringWithFormat:@"%@%@",XXBase_Host_Url,bigImageLink];
+            [_allImages addObject:hostBigImageLink];
+        }];
+    }
+    DDLogVerbose(@"allBigImagesArray :%@",_allImages);
+
     
     [shareTextView setAttributedString:postModel.attributedContent];
     CGSize contentSize = [shareTextView suggestedFrameSizeToFitEntireStringConstraintedToWidth:[XXSharePostStyle sharePostContentWidth]];
@@ -124,19 +160,19 @@
     shareTextView.frame = CGRectMake(shareTextView.frame.origin.x,shareTextView.frame.origin.y,shareTextView.frame.size.width,contentSize.height);
     
     //bottom line
-    _bottomLineSep.frame = CGRectMake(0,shareTextView.frame.origin.y+shareTextView.frame.size.height+5,_bottomLineSep.frame.size.width,1);
+    _bottomLineSep.frame = CGRectMake(0,shareTextView.frame.origin.y+shareTextView.frame.size.height+5+9,_bottomLineSep.frame.size.width,1);
     
-    _commentButton.frame = CGRectMake(_commentButton.frame.origin.x,_bottomLineSep.frame.origin.y+_bottomLineSep.frame.size.height+10,_commentButton.frame.size.width,_commentButton.frame.size.height);
-    CGFloat bVerLineOriginx = _commentButton.frame.origin.x+_commentButton.frame.size.width+ 5;
-    _bottomVerLineSep.frame = CGRectMake(bVerLineOriginx,_commentButton.frame.origin.y+5,1,_commentButton.frame.size.height);
-    _praiseButton.frame = CGRectMake(_praiseButton.frame.origin.x,_bottomLineSep.frame.origin.y+_bottomLineSep.frame.size.height+10,_praiseButton.frame.size.width,_praiseButton.frame.size.height);
+    _commentButton.frame = CGRectMake(_commentButton.frame.origin.x,_bottomLineSep.frame.origin.y+_bottomLineSep.frame.size.height+1,_commentButton.frame.size.width,_commentButton.frame.size.height);
+    CGFloat bVerLineOriginx = _commentButton.frame.origin.x+_commentButton.frame.size.width+5;
+    _bottomVerLineSep.frame = CGRectMake(bVerLineOriginx,_commentButton.frame.origin.y+2,1,_commentButton.frame.size.height-4);
+    _praiseButton.frame = CGRectMake(_bottomVerLineSep.frame.origin.x+1+5,_bottomLineSep.frame.origin.y+_bottomLineSep.frame.size.height+1,_praiseButton.frame.size.width,_praiseButton.frame.size.height);
     
 
 }
 
 + (CGFloat)heightWithSharePostModel:(XXSharePostModel *)postModel forContentWidth:(CGFloat)contentWidth
 {
-    CGFloat height = [XXShareBaseCell heightForAttributedText:postModel.attributedContent forWidth:[XXSharePostStyle sharePostContentWidth]] + 10+10+10*2 + 5 + 5 + 50 + 70 + 25;
+    CGFloat height = [XXShareBaseCell heightForAttributedText:postModel.attributedContent forWidth:[XXSharePostStyle sharePostContentWidth]] + 10+10+10*2 + 5 + 5+9 + 50 + 50 + 25;
     
     return height;
 }
@@ -242,10 +278,25 @@
         
         NSString *imageUrl = [linkButton.URL.absoluteString substringWithRange:NSMakeRange(imageRange.length,linkButton.URL.absoluteString.length-imageRange.length)];
         
-        NSURL *imageRealURL = [NSURL URLWithString:imageUrl];
+        NSRange originRange = [imageUrl rangeOfString:@"/source"];
+        NSString *bigImageLink = [imageUrl substringWithRange:NSMakeRange(originRange.location,imageUrl.length-originRange.location)];
+        
+        DDLogVerbose(@"link push big image link:%@",bigImageLink);
+        NSString *hostBigImageLink = [NSString stringWithFormat:@"%@%@",XXBase_Host_Url,bigImageLink];
+
+        NSURL *imageRealURL = [NSURL URLWithString:hostBigImageLink];
+        
+        __block NSInteger currentIndex = 0;
+        DDLogVerbose(@"allImages:%@",_allImages);
+        [_allImages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            if ([hostBigImageLink isEqualToString:obj]) {
+                currentIndex = idx;
+                *stop = YES;
+            }
+        }];
         
         if (_tapImageBlock) {
-            _tapImageBlock(imageRealURL);
+            _tapImageBlock(imageRealURL,(UIImageView*)linkButton.superview,_allImages,currentIndex);
         }
         
     }
@@ -259,7 +310,7 @@
         NSURL *audioRealURL = [NSURL URLWithString:audioUrl];
         
         if (_tapAudioBlock) {
-            _tapAudioBlock(audioRealURL);
+            _tapAudioBlock(audioRealURL,self);
         }
     }
     
@@ -298,6 +349,28 @@
     [_headView setHeadWithUserId:postModel.userId];
     [_userView setContentModel:postModel];
     _timeLabel.text = postModel.friendAddTime;
+    if (!_allImages) {
+        _allImages = [[NSMutableArray alloc]init];
+        DDLogVerbose(@"postImages:%@",postModel.postImages);
+        NSArray *imagesArray = [postModel.postImages componentsSeparatedByString:@"|"];
+        [imagesArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            NSString *originLink = (NSString*)obj;
+            NSRange originRange = [originLink rangeOfString:@"/source"];
+            NSString *bigImageLink = [originLink substringWithRange:NSMakeRange(originRange.location,originLink.length-originRange.location)];
+            NSString *hostBigImageLink = [NSString stringWithFormat:@"%@%@",XXBase_Host_Url,bigImageLink];
+            [_allImages addObject:hostBigImageLink];
+        }];
+    }else{
+        [_allImages removeAllObjects];
+        NSArray *imagesArray = [postModel.postImages componentsSeparatedByString:@"|"];
+        [imagesArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            NSString *originLink = (NSString*)obj;
+            NSRange originRange = [originLink rangeOfString:@"/source"];
+            NSString *bigImageLink = [originLink substringWithRange:NSMakeRange(originRange.location,originLink.length-originRange.location)];
+            NSString *hostBigImageLink = [NSString stringWithFormat:@"%@%@",XXBase_Host_Url,bigImageLink];
+            [_allImages addObject:hostBigImageLink];
+        }];
+    }
     
     [shareTextView setAttributedString:postModel.attributedContent];
     CGSize contentSize = [shareTextView suggestedFrameSizeToFitEntireStringConstraintedToWidth:[XXSharePostStyle sharePostContentWidth]];
@@ -317,9 +390,46 @@
 }
 + (CGFloat)heightWithSharePostModelForDetail:(XXSharePostModel *)postModel forContentWidth:(CGFloat)contentWidth
 {
-    CGFloat height = [XXShareBaseCell heightForAttributedText:postModel.attributedContent forWidth:[XXSharePostStyle sharePostContentWidth]] + 10+10+70+10+27 ;
+    CGFloat height = [XXShareBaseCell heightForAttributedText:postModel.attributedContent forWidth:[XXSharePostStyle sharePostContentWidth]] + 10+10+50+10+27 ;
     DDLogVerbose(@"detail post height:%f",height);
     return height;
+}
+
+- (void)setTapOnCommentBlock:(XXShareTextViewDidTapOnCommentBlock)commentBlock
+{
+    _tapCommentBlock = [commentBlock copy];
+}
+- (void)setTapOnPraiseBlock:(XXShareTextViewDidTapOnPraiseBlock)praiseBlock
+{
+    _tapPraiseBlock = [praiseBlock copy];
+}
+- (void)commentAction
+{
+    if (_tapCommentBlock) {
+        _tapCommentBlock(self);
+    }
+}
+- (void)praiseAction
+{
+    _praiseButton.selected = !_praiseButton.selected;
+    
+    NSRange leftTagRange = [_praiseButton.titleLabel.text rangeOfString:@"("];
+    NSRange rightTagRange = [_praiseButton.titleLabel.text rangeOfString:@")"];
+    
+    NSInteger length = rightTagRange.location-leftTagRange.location;
+    NSString *countString = [_praiseButton.titleLabel.text substringWithRange:NSMakeRange(leftTagRange.location+1,length)];
+    NSInteger count = 0;
+    if (_praiseButton.selected) {
+        count = [countString intValue]+1;
+    }else{
+        count = [countString intValue]-1;
+    }
+    NSString *newCountString = [NSString stringWithFormat:@"追捧(%d)",count];
+    [_praiseButton setTitle:newCountString withFrame:_praiseButton.frame];
+    
+    if (_tapPraiseBlock) {
+        _tapPraiseBlock(self,_praiseButton.selected);
+    }
 }
 
 @end

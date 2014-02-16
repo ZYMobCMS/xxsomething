@@ -8,6 +8,8 @@
 
 #import "MyHomeGuideViewController.h"
 #import "XXPhotoChooseViewController.h"
+#import "SettingGuideViewController.h"
+
 
 @interface MyHomeGuideViewController ()
 
@@ -64,6 +66,7 @@
     _userHeadView.layer.shadowColor = [UIColor blackColor].CGColor;
     _userHeadView.layer.shadowOpacity = 0.2f;
     [_userHeadView setContentUser:[XXUserDataCenter currentLoginUser]];
+    [_userHeadView tapOnSettingAddTarget:self withSelector:@selector(tapOnSettingAction)];
     
     //theme back change
     _hud.labelText = @"正在更新...";
@@ -78,7 +81,7 @@
             [weakHud show:YES];
             NSData *imageData = UIImageJPEGRepresentation([resultImages objectAtIndex:0],kCGInterpolationDefault);
             [[XXMainDataCenter shareCenter]uploadFileWithData:imageData withFileName:@"themeBack.png" withUploadProgressBlock:^(CGFloat progressValue) {
-                
+                [SVProgressHUD showProgress:progressValue status:@"正在上传背景图片..."];
             } withSuccessBlock:^(XXAttachmentModel *resultModel) {
                 
                 //更新壁纸
@@ -91,11 +94,15 @@
                     [weakHud hide:YES];
                     [weakUserHeadView updateThemeBack:updateUser.bgImage];;
                     
+                    [weakSelf.navigationController popToViewController:[weakSelf.navigationController.viewControllers objectAtIndex:weakSelf.navigationController.viewControllers.count-2] animated:YES];
+                    [SVProgressHUD showSuccessWithStatus:successMsg];
+                    
                 } withFaild:^(NSString *faildMsg) {
                     
                     [weakHud hide:YES];
                     [SVProgressHUD showErrorWithStatus:faildMsg];
                 }];
+                
                 
             } withFaildBlock:^(NSString *faildMsg) {
                 [weakHud hide:YES];
@@ -220,6 +227,14 @@
     pushVC.title = [item objectForKey:@"title"];
     [self.navigationController pushViewController:pushVC animated:YES];
     [XXCommonUitil setCommonNavigationReturnItemForViewController:pushVC];
+}
+
+#pragma mark - setting 
+- (void)tapOnSettingAction
+{
+    SettingGuideViewController *settingVC = [[SettingGuideViewController alloc]init];
+    [XXCommonUitil setCommonNavigationReturnItemForViewController:settingVC];
+    [self.navigationController pushViewController:settingVC animated:YES];
 }
 
 @end

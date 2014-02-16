@@ -16,9 +16,7 @@
     if (self) {
         // Initialization code
         
-        _themeBackgroundView = [[XXImageView alloc]init];
-        _themeBackgroundView.frame = CGRectMake(0,0,frame.size.width,frame.size.height * 3/4);
-        _themeBackgroundView.backgroundColor = [UIColor blueColor];
+        _themeBackgroundView = [[XXImageView alloc]initWithFrame:CGRectMake(0,0,frame.size.width,frame.size.height * 3/4)];
         _themeBackgroundView.userInteractionEnabled = YES;
         [self addSubview:_themeBackgroundView];
         UITapGestureRecognizer *themeTapR = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapOnThemeBack:)];
@@ -50,10 +48,14 @@
         
         //
         _wellknowView = [[XXOpacityView alloc]initWithFrame:CGRectMake(0,30,50,25)];
+        _wellknowView.contentLabel.textColor = [UIColor whiteColor];
+        _wellknowView.contentLabel.font = [UIFont systemFontOfSize:9];
         [self addSubview:_wellknowView];
         
         //settingView
         _settingView = [[XXOpacityView alloc]initWithFrame:CGRectMake(270,145,35,35)];
+        _settingView.iconImageView.frame = CGRectMake(8,8,19,19);
+        _settingView.iconImageView.image = [UIImage imageNamed:@"setting.png"];
         [self addSubview:_settingView];
         
         
@@ -75,8 +77,10 @@
     [_headView setHeadWithUserId:aUser.userId];
     _nameLabel.text = aUser.nickName;
     _signuareView.text = aUser.signature;
-    _wellknowView.contentLabel.text = aUser.wellknow;
+    NSString *combineString = [NSString stringWithFormat:@"知名度:%@",aUser.wellknow];
+    _wellknowView.contentLabel.text = combineString;
     
+    DDLogVerbose(@"aUser for content:%@",aUser.bgImage);
     [_themeBackgroundView setImageUrl:aUser.bgImage];
 }
 - (void)setDidTapThemeBackBlock:(MyHomeUserHeadViewDidTapThemeBackBlock)tapBlock
@@ -90,9 +94,14 @@
         _tapBackBlock();
     }
 }
+
 - (void)updateThemeBack:(NSString *)newBackUrl
 {
     [_themeBackgroundView setImageUrl:newBackUrl];
+}
+- (void)tapOnSettingAddTarget:(id)target withSelector:(SEL)selector
+{
+    [_settingView addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
 }
 
 @end

@@ -32,4 +32,6 @@ typedef void (^MyHomeUserHeadViewDidTapThemeBackBlock) (void);
 - (void)setDidTapThemeBackBlock:(MyHomeUserHeadViewDidTapThemeBackBlock)tapBlock;
 - (void)updateThemeBack:(NSString*)newBackUrl;
 
+- (void)tapOnSettingAddTarget:(id)target withSelector:(SEL)selector;
+
 @end

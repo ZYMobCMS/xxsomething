@@ -117,6 +117,21 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[XXCommonUitil appMainTabController] setTabBarHidden:YES];
+    CGRect naviRect = self.navigationController.view.frame;
+    self.navigationController.view.frame = CGRectMake(naviRect.origin.x,naviRect.origin.y,naviRect.size.width,naviRect.size.height+49);
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[XXCommonUitil appMainTabController] setTabBarHidden:NO];
+    CGRect naviRect = self.navigationController.view.frame;
+    self.navigationController.view.frame = CGRectMake(naviRect.origin.x,naviRect.origin.y,naviRect.size.width,naviRect.size.height-49);
+}
+
 #pragma mark - finish crop action
 - (void)finishCropPhotoAction
 {

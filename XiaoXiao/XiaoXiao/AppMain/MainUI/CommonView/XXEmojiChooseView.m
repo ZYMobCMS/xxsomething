@@ -36,17 +36,20 @@
         NSArray *emojisArray = [faceDict allKeys];
         [emojisArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             
-            NSInteger rowIndex = idx/XXEmojiRowCount;
+            NSInteger rowIndex = idx/XXEmojiColunmCount;
             NSInteger cloumIndex =idx%XXEmojiColunmCount;
-            CGFloat originX = itemLeftMargin*cloumIndex+cloumIndex*XXEmojWdith;
-            CGFloat originY = itemTopMargin*rowIndex+rowIndex*XXEmojiHeight;
+            
+            CGFloat originX = itemLeftMargin*(cloumIndex+1)+cloumIndex*XXEmojWdith;
+            CGFloat originY = itemTopMargin*(rowIndex+1)+rowIndex*XXEmojiHeight;
+            
             CGRect itemRect = CGRectMake(originX,originY,XXEmojWdith,XXEmojiHeight);
             
-            DDLogVerbose(@"itemRect :%@",NSStringFromCGRect(itemRect));
             XXEmojiImageView *itemView = [[XXEmojiImageView alloc]init];
             itemView.frame = itemRect;
+            
             itemView.faceName = [emojisArray objectAtIndex:idx];
             [itemView setBackgroundImage:[UIImage imageNamed:[faceDict objectForKey:[emojisArray objectAtIndex:idx]]] forState:UIControlStateNormal];
+            
             [itemView addTarget:self action:@selector(didTapOnEmojiView:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:itemView];
             

@@ -66,7 +66,9 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         if (faild) {
-            faild([error description]);
+            
+            DDLogVerbose(@"connection server error:%@",[error description]);
+            faild(@"连接服务器失败");
         }
         
     }];   
@@ -81,6 +83,8 @@
     NSString *interfaceUrl = [XXDataCenterConst switchRequestTypeToInterfaceUrl:requestType];
     NSString *gParamString = [gParams urlEncodedString];
     interfaceUrl = [NSString stringWithFormat:@"%@?%@",interfaceUrl,gParamString];
+    
+    DDLogVerbose(@"post params:%@",pParams);
     
     [[XXHTTPClient shareClient] postPath:interfaceUrl parameters:pParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -103,7 +107,10 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         if (faild) {
-            faild([error description]);
+            
+            DDLogVerbose(@"connection server error:%@",[error description]);
+
+            faild(@"连接服务器失败");
         }
         
     }];
@@ -900,8 +907,9 @@
                 XXUserModel *newUser = [[XXUserModel alloc]initWithContentDict:userItem];
                 //暂时取代，接口目前没有返回学校名字
                 newUser.schoolName = newUser.grade;
-                newUser.attributedContent = [XXUserInfoBaseCell buildAttributedStringWithUserModel:newUser];
                 newUser.isInSchool = @"1";
+                DDLogVerbose(@"user profile:%@",newUser.signature);
+                newUser.attributedContent = [XXUserInfoBaseCell buildAttributedStringWithUserModel:newUser];
                 [modelArray addObject:newUser];
             }];
             DDLogVerbose(@"model same school:%@",modelArray);
@@ -1063,6 +1071,52 @@
         }
     } withFaild:^(NSString *faildMsg) {
         DDLogVerbose(@"check school database version faild:%@",faildMsg);
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
+}
+
+//取消追捧
+- (void)requestCancelPraiseWithCondition:(XXConditionModel *)condition withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    if (!condition.praiseId) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    
+    NSDictionary *params = @{@"praise_id":condition.praiseId};
+    [self requestXXRequest:XXRequestTypeCancelPraise withParams:params withHttpMethod:@"POST" withSuccess:^(NSDictionary *resultDict) {
+       
+        if (success) {
+            success([resultDict objectForKey:@"msg"]);
+        }
+        
+    } withFaild:^(NSString *faildMsg) {
+        if (faild) {
+            faild(faildMsg);
+        }
+    }];
+}
+
+//删除帖子
+- (void)requestDeletePostWithCondition:(XXConditionModel *)condition withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild
+{
+    if (!condition.postId) {
+        if (faild) {
+            faild(XXLoginErrorInvalidateParam);
+            return;
+        }
+    }
+    
+    NSDictionary *params = @{@"posts_id":condition.postId};
+    [self requestXXRequest:XXRequestTypeDeletePost withPostParams:nil withGetParams:params withSuccess:^(NSDictionary *resultDict) {
+        if (success) {
+            success([resultDict objectForKey:@"msg"]);
+        }
+    } withFaild:^(NSString *faildMsg) {
         if (faild) {
             faild(faildMsg);
         }

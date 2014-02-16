@@ -45,17 +45,17 @@
     CGFloat totalHeight = XXNavContentHeight;
     
     UIImageView *logoImgView = [[UIImageView alloc]init];
-    logoImgView.frame = CGRectMake(130,100,55,55);
+    logoImgView.frame = CGRectMake(115,115,90,90);
     logoImgView.image = [UIImage imageNamed:@"login_logo.png"];
     [self.view addSubview:logoImgView];
     
     UIImageView *logoNameImageView = [[UIImageView alloc]init];
-    logoNameImageView.frame = CGRectMake(130,170,55,55);
+    logoNameImageView.frame = CGRectMake(121,210,79,35);
     logoNameImageView.image = [UIImage imageNamed:@"login_logo_name.png"];
     [self.view addSubview:logoNameImageView];
     
     UIImageView *loginIntroduceImageView = [[UIImageView alloc]init];
-    loginIntroduceImageView.frame = CGRectMake(70,235,150,20);
+    loginIntroduceImageView.frame = CGRectMake(65,260,190,17);
     loginIntroduceImageView.image = [UIImage imageNamed:@"login_introduce.png"];
     [self.view addSubview:loginIntroduceImageView];
     
@@ -110,24 +110,25 @@
 - (void)loginAction
 {
     LoginViewController *loginVC = [[LoginViewController alloc]init];
+    loginVC.title = @"登陆校校";
     [loginVC setLoginResultBlock:^(BOOL resultState) {
         if (resultState) {
             
             //检查是否完善资料了
-            BOOL isUserInfoWellDone = [XXUserDataCenter checkLoginUserInfoIsWellDone];
-            if (!isUserInfoWellDone) {
-                SettingMyProfileGuideViewController *updateVC = [[SettingMyProfileGuideViewController alloc]init];
-                [updateVC setFinishBlock:^(BOOL resultState) {
-                    if (_finishBlock) {
-                        _finishBlock(resultState);
-                    }
-                }];
-                [self.navigationController pushViewController:updateVC animated:YES];
-            }else{
+//            BOOL isUserInfoWellDone = [XXUserDataCenter checkLoginUserInfoIsWellDone];
+//            if (!isUserInfoWellDone) {
+//                SettingMyProfileGuideViewController *updateVC = [[SettingMyProfileGuideViewController alloc]init];
+//                [updateVC setFinishBlock:^(BOOL resultState) {
+//                    if (_finishBlock) {
+//                        _finishBlock(resultState);
+//                    }
+//                }];
+//                [self.navigationController pushViewController:updateVC animated:YES];
+//            }else{
                 if (_finishBlock) {
                     _finishBlock(resultState);
                 }
-            }
+//            }
         }
     }];
     [self.navigationController pushViewController:loginVC animated:YES];
@@ -139,6 +140,7 @@
     
     //school choose
     XXSchoolSearchViewController *chooseSchoolVC = [[XXSchoolSearchViewController alloc]init];
+    chooseSchoolVC.title = @"选择学校";
     [self.navigationController pushViewController:chooseSchoolVC animated:YES];
         
     //can registAction
@@ -190,6 +192,7 @@
     //photo choose
     XXPhotoChooseViewController *chooseVC = [[XXPhotoChooseViewController alloc]initWithMutilPhotoChooseWithMaxChooseNumber:1 withFinishBlock:^(NSArray *resultImages) {
     }];
+    chooseVC.title = @"选择头像";
     chooseVC.needCrop = YES;
     chooseVC.needFilter = YES;
     chooseVC.singleImageCropHeight = 230;
@@ -200,6 +203,7 @@
     
     //grade choose
     XXGradeChooseViewController *gradeChooseVC = [[XXGradeChooseViewController alloc]init];
+    gradeChooseVC.title = @"选择年级";
     [gradeChooseVC setNextStepAction:^(NSDictionary *resultDict) {
         DDLogVerbose(@"grade choose will push photo choose :%@!",chooseVC);
         [self.navigationController pushViewController:chooseVC animated:YES];

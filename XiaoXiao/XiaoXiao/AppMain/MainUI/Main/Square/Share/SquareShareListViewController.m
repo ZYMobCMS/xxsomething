@@ -43,39 +43,43 @@
     backImageView.layer.shadowOffset = CGSizeMake(0,0.3);
     backImageView.layer.shadowColor = [UIColor blackColor].CGColor;
     backImageView.layer.shadowOpacity = 0.2f;
-    backImageView.frame = CGRectMake(0,0,self.view.frame.size.width,40);
+    backImageView.frame = CGRectMake(0,0,self.view.frame.size.width,44);
     [self.view addSubview:backImageView];
     
     _textShareButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
-    _textShareButton.frame = CGRectMake(0,0,106.6,40);
+    _textShareButton.frame = CGRectMake(0,0,106.6,44);
     _textShareButton.backgroundColor = [UIColor whiteColor];
-    [_textShareButton setNormalIconImage:@"share_post_text_normal.png" withSelectedImage:@"share_post_text_selected.png" withFrame:CGRectMake(10,11,18,18)];
-    [_textShareButton setTitle:@"文字" withFrame:CGRectMake(33,3,50,34)];
+    [_textShareButton setNormalIconImage:@"share_post_text_normal.png" withSelectedImage:@"share_post_text_selected.png" withFrame:CGRectMake(33,12.5,19,19)];
+    [_textShareButton setTitle:@"文字" withFrame:CGRectMake(33,3,50,44)];
+    _textShareButton.titleLabel.font = [UIFont systemFontOfSize:10];
     [_textShareButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     [_textShareButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
     [_textShareButton addTarget:self action:@selector(tapOnPostButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_textShareButton];
     
     _aduioShareBtton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
-    _aduioShareBtton.frame = CGRectMake(107,0,106.6,40);
-    [_aduioShareBtton setNormalIconImage:@"share_post_audio_normal.png" withSelectedImage:@"share_post_audio_selected.png" withFrame:CGRectMake(10,11,18,18)];
-    [_aduioShareBtton setTitle:@"语音" withFrame:CGRectMake(33,3,50,34)];
+    _aduioShareBtton.frame = CGRectMake(107,0,106.6,44);
+    [_aduioShareBtton setNormalIconImage:@"share_post_audio_normal.png" withSelectedImage:@"share_post_audio_selected.png" withFrame:CGRectMake(37,11,15,21)];
+    [_aduioShareBtton setTitle:@"语音" withFrame:CGRectMake(33,3,50,44)];
+    _aduioShareBtton.titleLabel.font = [UIFont systemFontOfSize:10];
     [_aduioShareBtton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-    [_aduioShareBtton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];    [_aduioShareBtton addTarget:self action:@selector(tapOnPostButton:) forControlEvents:UIControlEventTouchUpInside];
+    [_aduioShareBtton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+    [_aduioShareBtton addTarget:self action:@selector(tapOnPostButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_aduioShareBtton];
     
     _imageShareButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
-    _imageShareButton.frame = CGRectMake(214,0,106.6,40);
+    _imageShareButton.frame = CGRectMake(214,0,106.6,44);
     _imageShareButton.backgroundColor = [UIColor whiteColor];
-    [_imageShareButton setNormalIconImage:@"share_post_image_normal.png" withSelectedImage:@"share_post_image_selected.png" withFrame:CGRectMake(10,11,18,18)];
-    [_imageShareButton setTitle:@"图片" withFrame:CGRectMake(33,3,50,34)];
+    [_imageShareButton setNormalIconImage:@"share_post_image_normal.png" withSelectedImage:@"share_post_image_selected.png" withFrame:CGRectMake(33,14.5,18.5,14.5)];
+    [_imageShareButton setTitle:@"图片" withFrame:CGRectMake(33,3,50,44)];
+    _imageShareButton.titleLabel.font = [UIFont systemFontOfSize:10];
     [_imageShareButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     [_imageShareButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
     [_imageShareButton addTarget:self action:@selector(tapOnPostButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_imageShareButton];
     
     CGRect tableViewOldFrame = _shareListTable.frame;
-    _shareListTable.frame = CGRectMake(tableViewOldFrame.origin.x,tableViewOldFrame.origin.y+40,tableViewOldFrame.size.width,tableViewOldFrame.size.height-40);
+    _shareListTable.frame = CGRectMake(tableViewOldFrame.origin.x,tableViewOldFrame.origin.y+44,tableViewOldFrame.size.width,tableViewOldFrame.size.height-44);
     //start loading
     [_refreshControl beginRefreshing];
     [self refresh];

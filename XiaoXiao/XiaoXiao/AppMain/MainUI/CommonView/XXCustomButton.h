@@ -12,6 +12,9 @@
 {
 }
 @property (nonatomic,strong)UIImageView *iconImageView;
+@property (nonatomic,strong)NSString *selectIconName;
+@property (nonatomic,strong)NSString *normalIconName;
+
 - (void)setNormalIconImage:(NSString*)nImage withSelectedImage:(NSString*)sImage withFrame:(CGRect)iconFrame;
 
 - (void)setTitle:(NSString*)title withFrame:(CGRect)titleFrame;

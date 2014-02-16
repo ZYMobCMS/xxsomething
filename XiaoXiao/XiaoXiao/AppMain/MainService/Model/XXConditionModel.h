@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface XXConditionModel : NSObject
-@property (nonatomic,strong)NSString *pageSize;
-@property (nonatomic,strong)NSString *pageIndex;
+@property (nonatomic,copy)NSString *pageSize;
+@property (nonatomic,copy)NSString *pageIndex;
 @property (nonatomic,strong)NSString *keyword;
 @property (nonatomic,strong)NSString *resId;
 @property (nonatomic,strong)NSString *resType;
@@ -29,6 +29,7 @@
 @property (nonatomic,strong)NSString *desc;
 @property (nonatomic,strong)NSString *toUserId;
 @property (nonatomic,strong)NSString *isReaded;
+@property (nonatomic,strong)NSString *praiseId;
 @property (nonatomic,assign)BOOL     isRefresh;
 @property (nonatomic,assign)BOOL     hideLoadMore;
 @property (nonatomic,assign)long     latitude;

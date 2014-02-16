@@ -11,6 +11,8 @@
 #import "InSchoolSearchUserListViewController.h"
 #import "NearByUserListViewController.h"
 #import "SquareShareListViewController.h"
+#import "XXLeftNavItem.h"
+#import "LatenceGuideViewController.h"
 
 @interface SquareGuideViewController ()
 
@@ -32,6 +34,18 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.view.backgroundColor=[XXCommonStyle xxThemeBackgroundColor];
+    
+    //left navigation item
+    XXLeftNavItem *customItem = [[XXLeftNavItem alloc]initWithFrame:CGRectMake(0,0,160,44)];
+    UIBarButtonItem *leftNavItem = [[UIBarButtonItem alloc]initWithCustomView:customItem];
+    self.navigationItem.leftBarButtonItem = leftNavItem;
+    [customItem setTitle:[XXUserDataCenter currentLoginUser].schoolName];
+    [customItem setIconName:@"nav_location.png"];
+    
+    [XXCommonUitil setCommonNavigationNextStepItemForViewController:self withNextStepAction:^{
+        LatenceGuideViewController *latenceViewController = [[LatenceGuideViewController alloc]init];
+        [self.navigationController pushViewController:latenceViewController animated:YES];
+    } withTitle:@"潜伏"];
     
     _guideTitleArray = [[NSMutableArray alloc]init];
     //configArray
@@ -85,14 +99,15 @@
     if (!cell) {
         if (indexPath.section==1) {
             cell = [[XXBaseIconLabelCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            cell.accessoryView.hidden = NO;
+            cell.customAccessoryView.hidden = NO;
         }else{
             cell = [[XXBaseIconLabelCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            cell.accessoryView.hidden = NO;
+            cell.customAccessoryView.hidden = NO;
         }
+        cell.tagLabel.font = [UIFont systemFontOfSize:15];
     }
     if (indexPath.section==1) {
-        [cell setCellType:XXBaseCellTypeCornerSingle withBottomMargin:10.f withCellHeight:57.f];
+        [cell setCellType:XXBaseCellTypeCornerSingle withBottomMargin:5.5f withCellHeight:57.f];
     }else if(indexPath.section==0){
         [cell setCellType:XXBaseCellTypeRoundSingle withBottomMargin:10.f withCellHeight:57.f];
     }
@@ -104,7 +119,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 44.f;
+    return 33.f;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -112,8 +127,8 @@
 }
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0,0,tableView.frame.size.width-20,44)];
-    headView.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
+    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0,0,tableView.frame.size.width-20,33)];
+    headView.backgroundColor = [UIColor clearColor];
     return headView;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

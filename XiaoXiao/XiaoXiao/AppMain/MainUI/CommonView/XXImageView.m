@@ -17,6 +17,7 @@
         // Initialization code
         _contentImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0,0,frame.size.width,frame.size.height)];
         [self addSubview:_contentImageView];
+        needOverlay = YES;
         
         _overlayView = [[DAProgressOverlayView alloc]initWithFrame:_contentImageView.bounds];
         [_contentImageView addSubview:_overlayView];
@@ -40,7 +41,8 @@
 }
 - (void)setImageUrl:(NSString *)imageUrl
 {
-    imageUrl = [NSString stringWithFormat:@"%@%@",XXBase_Host_Url,imageUrl];
+    imageUrl = [NSString stringWithFormat:@"%@%@/%d/%d%@",XXBase_Host_Url,XX_Image_Resize_Url,(int)self.frame.size.width,(int)self.frame.size.height,imageUrl];
+    DDLogVerbose(@"theme back image :%@",imageUrl);
     __weak typeof (DAProgressOverlayView*)safeOverlay = _overlayView;
     if (needOverlay) {
         [_contentImageView setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:nil options:SDWebImageContinueInBackground progress:^(NSUInteger receivedSize, long long expectedSize) {
@@ -54,7 +56,6 @@
         } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
             [safeOverlay setProgress:1.0f];
             [safeOverlay displayOperationDidFinishAnimation];
-            
         }];
     }else{
         [_contentImageView setImageWithURL:[NSURL URLWithString:imageUrl]];

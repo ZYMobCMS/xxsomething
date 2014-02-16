@@ -12,6 +12,9 @@
 
 - (UIImage*)makeStretchForBubbleLeft;
 - (UIImage*)makeStretchForBubbleRight;
+- (UIImage*)makeStretchForBubbleLeftVertical;
+- (UIImage*)makeStretchForBubbleRightVertical;
+
 - (UIImage*)makeStretchForSingleRoundCell;
 - (UIImage*)makeStretchForSingleCornerCell;
 - (UIImage*)makeStretchForCellTop;

@@ -16,6 +16,7 @@
     UILabel     *_detailTagLabel;
     UIImageView *_indicatorView;
 }
+@property (nonatomic,strong)UILabel *tagLabel;
 
 - (void)setContentDict:(NSDictionary*)contentDict;
 

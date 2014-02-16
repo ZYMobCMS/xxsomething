@@ -29,6 +29,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor whiteColor];
+    
     CGFloat totoalHeight = XXNavContentHeight -44-49;
     
     _teaseImagesArray = [[NSMutableArray alloc]init];

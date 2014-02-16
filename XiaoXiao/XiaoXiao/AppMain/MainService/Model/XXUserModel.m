@@ -31,7 +31,7 @@
         self.constellation = @"";
         self.postCount = @"";
         self.registTime = @"";
-        self.wellknow = @"";
+        self.wellknow = @"0";
         self.praiseCount = @"";
         self.tooken = @"";
         self.status = @"";

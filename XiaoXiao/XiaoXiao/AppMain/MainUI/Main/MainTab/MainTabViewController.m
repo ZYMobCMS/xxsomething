@@ -46,6 +46,7 @@
     [subVCArray addObject:squareNav];
     
     MessageGuideViewController *messageGuideVC = [[MessageGuideViewController alloc]init];
+    messageGuideVC.title = @"消息";
     UINavigationController *messageNav = [[UINavigationController alloc]initWithRootViewController:messageGuideVC];
     [messageNav.navigationBar setBackgroundImage:navigationImage forBarMetrics:UIBarMetricsDefault];
     [subVCArray addObject:messageNav];

@@ -37,6 +37,8 @@ typedef enum {
     XXRequestTypeAdvicePublish,
     XXRequestTypeReplyMeList,
     XXRequestTypeUpdateSchoolDatabase,
+    XXRequestTypeCancelPraise,
+    XXRequestTypeDeletePost,
     
 }XXRequestType;
 
@@ -275,6 +277,11 @@ typedef enum {
 //图片大小图获取接口
 #define XX_Image_Resize_Url @"/api/preview"
 
+//取消追捧
+#define XX_Cancel_Praise_Interface @"/api/praise/cancel"
+
+//删除帖子
+#define XX_Delete_Post_Interface @"/api/posts/del"
 
 
 @interface XXDataCenterConst : NSObject
