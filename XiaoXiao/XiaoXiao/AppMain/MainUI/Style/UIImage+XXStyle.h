@@ -25,4 +25,8 @@
 - (UIImage*)makeStretchForSharePostDetailMiddle;
 - (UIImage*)makeStretchForSharePostDetailBottom;
 
+- (UIImage*)makeStretchForSegmentLeft;
+- (UIImage*)makeStretchForSegmentMiddle;
+- (UIImage*)makeStretchForSegmentRight;
+
 @end

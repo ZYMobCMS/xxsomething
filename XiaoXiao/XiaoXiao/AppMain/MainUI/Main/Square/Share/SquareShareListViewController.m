@@ -34,8 +34,8 @@
     [XXCommonUitil setCommonNavigationNextStepItemForViewController:self withIconImage:@"nav_share_post_setting.png" withNextStepAction:^{
         ShareUserFilterViewController *filterVC = [[ShareUserFilterViewController alloc]init];
         filterVC.title = @"按条件筛选";
-        [XXCommonUitil setCommonNavigationReturnItemForViewController:filterVC];
         [self.navigationController pushViewController:filterVC animated:YES];
+        [XXCommonUitil setCommonNavigationReturnItemForViewController:filterVC];
     }];
     
     UIImageView *backImageView = [[UIImageView alloc]init];

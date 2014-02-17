@@ -16,7 +16,7 @@
     if (self) {
         // Initialization code
         
-        _themeBackgroundView = [[XXImageView alloc]initWithFrame:CGRectMake(0,0,frame.size.width,frame.size.height * 3/4)];
+        _themeBackgroundView = [[XXImageView alloc]initWithFrame:CGRectMake(0,0,frame.size.width,223)];
         _themeBackgroundView.userInteractionEnabled = YES;
         [self addSubview:_themeBackgroundView];
         UITapGestureRecognizer *themeTapR = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapOnThemeBack:)];
@@ -24,37 +24,55 @@
         
         //
         _infoBackgroundView = [[UIImageView alloc]init];
-        _infoBackgroundView.frame = CGRectMake(0,frame.size.height*3/4,frame.size.width,frame.size.height * 1/4);
+        _infoBackgroundView.frame = CGRectMake(0,223,frame.size.width,83);
         _infoBackgroundView.backgroundColor = [UIColor whiteColor];
+        _infoBackgroundView.layer.shadowColor = [UIColor blackColor].CGColor;
+        _infoBackgroundView.layer.shadowOffset = CGSizeMake(0,3);
+        _infoBackgroundView.layer.shadowOpacity = 0.1;
         [self addSubview:_infoBackgroundView];
         
         //
-        _headView = [[XXHeadView alloc]initWithFrame:CGRectMake(15,_themeBackgroundView.frame.size.height*3/4,100,100)];
+        _headView = [[XXHeadView alloc]initWithFrame:CGRectMake(15,223-58.5,117,117)];
         _headView.contentImageView.borderColor = [UIColor whiteColor];
-        _headView.contentImageView.borderWidth = 2.0f;        
+        _headView.contentImageView.borderWidth = 3.0f;
         [self addSubview:_headView];
         
         //
         _nameLabel = [[UILabel alloc]init];
-        _nameLabel.frame = CGRectMake(135,0,180,35);
+        _nameLabel.frame = CGRectMake(137,5,180,35);
         _nameLabel.backgroundColor = [UIColor clearColor];
-        _nameLabel.textColor = [UIColor blackColor];
+        _nameLabel.font = [UIFont systemFontOfSize:20];
         [_infoBackgroundView addSubview:_nameLabel];
         
         //
-        _signuareView = [[UILabel alloc]initWithFrame:CGRectMake(135,frame.size.height*3/4+25,180,35)];
+        _signuareView = [[UILabel alloc]initWithFrame:CGRectMake(137,frame.size.height*3/4+25,180,35)];
         _signuareView.backgroundColor = [UIColor clearColor];
+        _signuareView.font = [UIFont systemFontOfSize:10];
+        _signuareView.textColor = rgb(199,199,204,1);
         [self addSubview:_signuareView];
         
         //
-        _wellknowView = [[XXOpacityView alloc]initWithFrame:CGRectMake(0,30,50,25)];
+        _wellknowView = [[XXOpacityView alloc]initWithFrame:CGRectMake(-6,14,80,52)];
         _wellknowView.contentLabel.textColor = [UIColor whiteColor];
-        _wellknowView.contentLabel.font = [UIFont systemFontOfSize:9];
+        _wellknowView.contentLabel.font = [UIFont boldSystemFontOfSize:20];
+        _wellknowView.contentLabel.frame = CGRectMake(8,0,68,35);
+        _wellknowView.detailLabel.frame = CGRectMake(8,30,68,17);
+        _wellknowView.detailLabel.backgroundColor = [UIColor clearColor];
+        _wellknowView.detailLabel.textColor = [UIColor whiteColor];
+        _wellknowView.detailLabel.font = [UIFont boldSystemFontOfSize:12];
+        _wellknowView.detailLabel.text = @"校内知名度";
+        _wellknowView.contentLabel.textAlignment = NSTextAlignmentCenter;
+        _wellknowView.detailLabel.textAlignment = NSTextAlignmentCenter;
+        _wellknowView.contentLabel.shadowColor = [UIColor blackColor];
+        _wellknowView.detailLabel.shadowColor = [UIColor blackColor];
+        _wellknowView.contentLabel.shadowOffset = CGSizeMake(0.2,0.2);
+        _wellknowView.detailLabel.shadowOffset = CGSizeMake(0.1,0.1);
+        _wellknowView.userInteractionEnabled = NO;
         [self addSubview:_wellknowView];
         
         //settingView
-        _settingView = [[XXOpacityView alloc]initWithFrame:CGRectMake(270,145,35,35)];
-        _settingView.iconImageView.frame = CGRectMake(8,8,19,19);
+        _settingView = [[XXOpacityView alloc]initWithFrame:CGRectMake(251,152,54,54)];
+        _settingView.iconImageView.frame = CGRectMake(15.25,15.5,23.5,23);
         _settingView.iconImageView.image = [UIImage imageNamed:@"setting.png"];
         [self addSubview:_settingView];
         
@@ -76,8 +94,10 @@
 {
     [_headView setHeadWithUserId:aUser.userId];
     _nameLabel.text = aUser.nickName;
-    _signuareView.text = aUser.signature;
-    NSString *combineString = [NSString stringWithFormat:@"知名度:%@",aUser.wellknow];
+    NSString *signature = (aUser.signature==nil||[aUser.signature isEqualToString:@""])? @"编辑个性签名":aUser.signature;
+    _signuareView.text = signature;
+    
+    NSString *combineString = (aUser.wellknow==nil||[aUser.wellknow isEqualToString:@""])? @"0%":aUser.wellknow;
     _wellknowView.contentLabel.text = combineString;
     
     DDLogVerbose(@"aUser for content:%@",aUser.bgImage);

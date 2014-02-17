@@ -17,6 +17,7 @@
     UIImageView *_indicatorView;
 }
 @property (nonatomic,strong)UILabel *tagLabel;
+@property (nonatomic,strong)UIImageView *iconImageView;
 
 - (void)setContentDict:(NSDictionary*)contentDict;
 

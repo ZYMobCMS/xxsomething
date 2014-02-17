@@ -19,12 +19,17 @@
         _backgroundView = [[UIImageView alloc]init];
         _backgroundView.frame = CGRectMake(0,0,frame.size.width,frame.size.height);
         _backgroundView.backgroundColor = [UIColor blackColor];
-        _backgroundView.alpha = 0.5;
+        _backgroundView.alpha = 0.59;
+        _backgroundView.layer.cornerRadius = 8.f;
         [self addSubview:_backgroundView];
         
         _contentLabel = [[UILabel alloc]init];
         _contentLabel.frame = _backgroundView.frame;
         [self addSubview:_contentLabel];
+        
+        _detailLabel = [[UILabel alloc]init];
+        _detailLabel.frame = CGRectMake(0,10,frame.size.width,frame.size.height-10);
+        [self addSubview:_detailLabel];
         
         _iconImageView = [[UIImageView alloc]init];
         _iconImageView.frame = _backgroundView.frame;
@@ -32,7 +37,15 @@
     }
     return self;
 }
-
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    if (highlighted) {
+        _backgroundView.alpha = 0.9;
+    }else{
+        _backgroundView.alpha = 0.59;
+    }
+}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

@@ -7,6 +7,7 @@
 //
 
 #import "NearByUserListViewController.h"
+#import "NearByUserNormalFilterViewController.h"
 
 @interface NearByUserListViewController ()
 
@@ -28,6 +29,15 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [XXCommonUitil setCommonNavigationReturnItemForViewController:self];
+    
+    [XXCommonUitil setCommonNavigationNextStepItemForViewController:self withIconImage:@"nav_share_post_setting.png" withNextStepAction:^{
+        NearByUserNormalFilterViewController *filterVC = [[NearByUserNormalFilterViewController alloc]init];
+        filterVC.title = @"按条件筛选";
+        [self.navigationController pushViewController:filterVC animated:YES];
+        [XXCommonUitil setCommonNavigationReturnItemForViewController:filterVC];
+        
+    }];
+
     
     _pageSize = 30;
     _currentPageIndex = 0;

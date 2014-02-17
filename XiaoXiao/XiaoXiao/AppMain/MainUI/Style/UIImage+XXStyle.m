@@ -81,4 +81,23 @@
     return [self makeStretchWithEdegeInsets:shareListDetailBottom];
 }
 
+- (UIImage*)makeStretchForSegmentLeft
+{
+    UIEdgeInsets shareListDetailBottom = UIEdgeInsetsMake(3.f,6.f,3.f,3.f);
+    return [self makeStretchWithEdegeInsets:shareListDetailBottom];
+
+}
+- (UIImage*)makeStretchForSegmentMiddle
+{
+    UIEdgeInsets shareListDetailBottom = UIEdgeInsetsMake(3.f,3.f,3.f,3.f);
+    return [self makeStretchWithEdegeInsets:shareListDetailBottom];
+
+}
+- (UIImage*)makeStretchForSegmentRight
+{
+    UIEdgeInsets shareListDetailBottom = UIEdgeInsetsMake(3.f,3.f,3.f,6.f);
+    return [self makeStretchWithEdegeInsets:shareListDetailBottom];
+
+}
+
 @end

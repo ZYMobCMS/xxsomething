@@ -42,7 +42,7 @@
     NSArray *shareArray = [NSArray arrayWithObject:myShare];
     NSDictionary *myCare = @{@"icon":@"my_home_care.png",@"count":@"333",@"title":@"关心",@"vcClass":@"MyCareUserListViewController"};
     NSDictionary *myFans = @{@"icon":@"my_home_fans.png",@"count":@"333",@"title":@"校粉",@"vcClass":@"MyFansUserListViewController"};
-    NSDictionary *myPee = @{@"icon":@"my_home_peer.png",@"count":@"333",@"title":@"窥客",@"vcClass":@"MyPeepUserListViewController"};
+    NSDictionary *myPee = @{@"icon":@"my_home_peer.png",@"count":@"333",@"title":@"瞄客",@"vcClass":@"MyPeepUserListViewController"};
     NSArray *userArray = @[myCare,myFans,myPee];
 
     [guideVCArray addObject:myInfo];
@@ -50,7 +50,7 @@
     [guideVCArray addObject:userArray];
     
     CGFloat originY = IS_IOS_7? 20:0;
-    CGFloat totalHeight = XXNavContentHeight+originY;
+    CGFloat totalHeight = XXNavContentHeight;
     CGFloat totalWidth = self.view.frame.size.width;
     
     guideTable = [[UITableView alloc]initWithFrame:CGRectMake(0,originY,totalWidth,totalHeight) style:UITableViewStylePlain];
@@ -59,8 +59,6 @@
     guideTable.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
     guideTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:guideTable];
-    
-    
     
 }
 
@@ -102,12 +100,13 @@
         
         if (!cell) {
             cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             //my home user head
-            MyHomeUserHeadView *headView = [[MyHomeUserHeadView alloc]initWithFrame:CGRectMake(0,0,tableView.frame.size.width,250)];
+            MyHomeUserHeadView *headView = [[MyHomeUserHeadView alloc]initWithFrame:CGRectMake(0,0,tableView.frame.size.width,309)];
             headView.layer.shadowOffset = CGSizeMake(0,0.3);
             headView.layer.shadowColor = [UIColor blackColor].CGColor;
-            headView.layer.shadowOpacity = 0.2f;
+            headView.layer.shadowOpacity = 0.1f;
             [cell.contentView addSubview:headView];
             headView.tag = 1122;
             
@@ -177,6 +176,14 @@
         
         if (indexPath.section==1) {
             [cell setCellType:XXBaseCellTypeRoundSingle withBottomMargin:0.f withCellHeight:47.f];
+            
+            CGRect iconFrame = cell.iconImageView.frame;
+            cell.iconImageView.frame = CGRectMake(30,iconFrame.origin.y+2,iconFrame.size.width,iconFrame.size.height);
+            
+            cell.tagLabel.font = [UIFont systemFontOfSize:17.5];
+            CGRect tagFrame = cell.tagLabel.frame;
+            cell.tagLabel.frame = CGRectMake(cell.iconImageView.frame.origin.x+cell.iconImageView.frame.size.width+16,tagFrame.origin.y+2,tagFrame.size.width,tagFrame.size.height);
+            
         }else if(indexPath.section==2){
             
             if (indexPath.row==0) {
@@ -189,6 +196,13 @@
                 [cell setCellType:XXBaseCellTypeMiddel withBottomMargin:0.f withCellHeight:45.5f];
                 
             }
+            
+            CGRect iconFrame = cell.iconImageView.frame;
+            cell.iconImageView.frame = CGRectMake(30,iconFrame.origin.y,iconFrame.size.width,iconFrame.size.height);
+            
+            cell.tagLabel.font = [UIFont systemFontOfSize:17.5];
+            CGRect tagFrame = cell.tagLabel.frame;
+            cell.tagLabel.frame = CGRectMake(cell.iconImageView.frame.origin.x+cell.iconImageView.frame.size.width+16,tagFrame.origin.y,tagFrame.size.width,tagFrame.size.height);
             
         }
         
@@ -203,9 +217,9 @@
     if (section==0) {
         return 0.f;
     }else if(section==1){
-        return 20.f;
+        return 15.f;
     }else if(section==2){
-        return 30;
+        return 15.f;
     }else{
         return 0.f;
     }
@@ -213,7 +227,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return 250;
+        return 309;
     }else if(indexPath.section==2){
         
         if (indexPath.row == [[guideVCArray objectAtIndex:indexPath.section]count]-1) {
@@ -223,6 +237,8 @@
         }else{
             return 45.5;
         }
+    }else if(indexPath.section == 1){
+        return 47.f;
     }else{
         return 44.f;
     }
