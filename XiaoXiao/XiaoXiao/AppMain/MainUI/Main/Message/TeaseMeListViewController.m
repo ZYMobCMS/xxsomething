@@ -8,6 +8,7 @@
 
 #import "TeaseMeListViewController.h"
 #import "XXTeaseBaseCell.h"
+#import "OtherUserHomeViewController.h"
 
 @interface TeaseMeListViewController ()
 
@@ -70,6 +71,7 @@
     XXTeaseBaseCell *cell = (XXTeaseBaseCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
         cell = [[XXTeaseBaseCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell.delegate = self;
     }
     [cell setContentModel:[_teasesArray objectAtIndex:indexPath.row]];
     
@@ -77,12 +79,23 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 220+20;
+    return 225+11;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 11.f;
+}
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0,0,tableView.frame.size.width,44)];
+    header.backgroundColor = [UIColor clearColor];
     
+    return header;
 }
 
 #pragma mark - override api
@@ -95,14 +108,25 @@
     
     [[XXMainDataCenter shareCenter]requestTeaseMeListWithCondition:condition withSuccess:^(NSArray *resultList) {
        
+        [XXUserDataCenter currentLoginUser].teaseNewCount = @"0";
+        
         if (_isRefresh) {
+            [XXSimpleAudio playRefreshEffect];
             [_teasesArray removeAllObjects];
+            _isRefresh = NO;
+            [_refreshControl endRefreshing];
         }
         [_teasesArray addObjectsFromArray:resultList];
         [_teaseListTable reloadData];
         
     } withFaild:^(NSString *faildMsg) {
         
+        [SVProgressHUD showErrorWithStatus:faildMsg];
+        [_teaseListTable reloadData];
+        if (_isRefresh) {
+            _isRefresh = NO;
+            [_refreshControl endRefreshing];
+        }
     }];
 }
 - (void)refresh
@@ -110,11 +134,47 @@
     _currentPageIndex = 0;
     _hiddenLoadMore = NO;
     _isRefresh = YES;
+    [_refreshControl beginRefreshing];
     [self requestTeaseMeListNow];
 }
 - (void)loadMoreResult
 {
     
+}
+
+#pragma mark - tease me cell delegate
+- (void)teaseCellDidTapOnDelegate:(XXTeaseBaseCell *)teaseCell
+{
+    _tapPath = [_teaseListTable indexPathForCell:teaseCell];
+    
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"确定删除此挑逗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alert show];
+}
+- (void)teaseCellDidTapOnHeadView:(XXTeaseBaseCell *)teaseCell
+{
+    NSIndexPath *tapHeadPath = [_teaseListTable indexPathForCell:teaseCell];
+    XXTeaseModel *teaseModel = [_teasesArray objectAtIndex:tapHeadPath.row];
+    OtherUserHomeViewController *otherHomeVC = [[OtherUserHomeViewController alloc]initWithContentUser:teaseModel.sendFromUser];
+    [self.superNav pushViewController:otherHomeVC animated:YES];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex==1) {
+        if (_tapPath) {
+            
+            XXTeaseModel *teaseModel = [_teasesArray objectAtIndex:_tapPath.row];
+            
+            [[XXMainDataCenter shareCenter]requestDeleteTeaseWithTeaseModel:teaseModel withSuccess:^(NSString *successMsg) {
+                [SVProgressHUD showSuccessWithStatus:successMsg];
+                [_teasesArray removeObjectAtIndex:_tapPath.row];
+                [_teaseListTable deleteRowsAtIndexPaths:@[_tapPath] withRowAnimation:UITableViewRowAnimationTop];
+                
+            } withFaild:^(NSString *faildMsg) {
+                [SVProgressHUD showErrorWithStatus:faildMsg];
+            }];
+        }
+    }
 }
 
 

@@ -17,6 +17,7 @@ typedef enum {
 
 @interface XXRadioChooseView : UIView
 @property (nonatomic,assign)NSInteger selectIndex;
-- (id)initWithFrame:(CGRect)frame withConfigArray:(NSArray*)configArray withChooseType:(XXRadioChooseType)type;
+
+- (id)initWithFrame:(CGRect)frame withConfigArray:(NSArray*)configArray withChooseType:(XXRadioChooseType)type withDefaultSelectValue:(NSString*)value;
 
 @end

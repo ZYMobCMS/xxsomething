@@ -62,7 +62,7 @@
     NSDictionary *leftItenAboutMe = @{@"title":@"不限",@"normalBack":@"segment_small_left.png",@"selectBack":@"segment_small_left_selected.png",@"normalColor":[UIColor blackColor],@"selectColor":[UIColor whiteColor]};
     
     NSDictionary *midItenAboutMe = @{@"title":@"我关心的",@"normalBack":@"segment_small_middle.png",@"selectBack":@"segment_small_middle_selected.png",@"normalColor":[UIColor blackColor],@"selectColor":[UIColor whiteColor]};
-    NSDictionary *rightitenAboutMe = @{@"title":@"我的校粉",@"normalBack":@"segment_small_right.png",@"selectBack":@"segment_small_right_selected.png",@"normalColor":[UIColor blackColor],@"selectColor":[UIColor whiteColor]};
+    NSDictionary *rightitenAboutMe = @{@"title":@"我的学粉",@"normalBack":@"segment_small_right.png",@"selectBack":@"segment_small_right_selected.png",@"normalColor":[UIColor blackColor],@"selectColor":[UIColor whiteColor]};
     
     
     XXSegmentControl *AboutKnow =[[XXSegmentControl alloc]initWithFrame:CGRectMake(10, 58, 300, 40) withConfigArray:@[leftItenAboutMe,midItenAboutMe,rightitenAboutMe]];

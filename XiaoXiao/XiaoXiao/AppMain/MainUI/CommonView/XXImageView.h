@@ -15,8 +15,12 @@
     DAProgressOverlayView *_overlayView;
     BOOL needOverlay;
 }
+@property (nonatomic,strong)UIImageView *contentImageView;
+
 - (id)initWithFrame:(CGRect)frame withNeedOverlay:(BOOL)needState;
 - (void)setImageUrl:(NSString*)imageUrl;
 - (void)setContentImage:(UIImage*)image;
 - (void)uploadImageWithProgress:(CGFloat)progress;
+- (void)setContentImageViewFrame:(CGRect)frame;
+
 @end

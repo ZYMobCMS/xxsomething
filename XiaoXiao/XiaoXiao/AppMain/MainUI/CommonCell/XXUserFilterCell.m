@@ -17,9 +17,10 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
-        _showItemLbl =[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 300, self.frame.size.height)];
+        _showItemLbl =[[UILabel alloc]initWithFrame:CGRectMake(10, 5, 300, self.frame.size.height-10)];
         _showItemLbl.backgroundColor = [UIColor clearColor];
         _showItemLbl.textAlignment = NSTextAlignmentCenter;
+        _showItemLbl.highlightedTextColor = [UIColor whiteColor];
         [self.contentView addSubview:_showItemLbl];
         
     }
@@ -34,7 +35,7 @@
 - (void)setCellType:(XXBaseCellType)cellType withBottomMargin:(CGFloat)aMargin withCellHeight:(CGFloat)cellHeight
 {
     _cellLineImageView.hidden = YES;
-    self.accessoryView.frame = CGRectMake(self.accessoryView.frame.origin.x,self.accessoryView.frame.origin.y-aMargin,self.accessoryView.frame.size.width,self.accessoryView.frame.size.height);
+    self.customAccessoryView.frame = CGRectMake(self.customAccessoryView.frame.origin.x,self.customAccessoryView.frame.origin.y-aMargin,self.customAccessoryView.frame.size.width,self.customAccessoryView.frame.size.height);
     
     CGRect oldFrame = _backgroundImageView.frame;
     UIImage *background = nil;

@@ -43,7 +43,7 @@ typedef void (^XXImageEffectItemSelectBlock) (XXImageEffectItem *selectItem);
         self.titleLabel.textAlignment = NSTextAlignmentCenter;
         [self addSubview:self.titleLabel];
         
-        _selectBlock = [selectBlock copy];
+        _selectBlock = selectBlock;
         
         //
         [self addTarget:self action:@selector(tapOnSelfAction) forControlEvents:UIControlEventTouchUpInside];
@@ -78,11 +78,11 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (IFFilterType filterType);
 {
     if (self = [super initWithFrame:frame]) {
         
-        _finishBlock = [finishBlock copy];
+        _finishBlock = finishBlock;
         self.currentImage = originImage;
         
         //
-        NSArray *effectNames = [NSArray arrayWithObjects:@"原图",@"LOMO",@"黑白",@"复古",@"锐色",@"淡雅",@"酒红",@"青柠",@"浪漫",@"光晕",@"蓝调",@"梦幻",@"夜色",@"唯美",@"清新",@"阳光",@"怀旧",@"复古",nil];
+        NSArray *effectNames = [NSArray arrayWithObjects:@"原图",@"LOMO",@"浪漫",@"淡雅",@"酒红",@"青柠",@"黑白",@"光晕",@"蓝调",@"梦幻",@"夜色",@"唯美",@"清新",@"阳光",@"怀旧",@"复古",nil];
         UIScrollView *scrollView = [[UIScrollView alloc]init];
         scrollView.backgroundColor = [UIColor blackColor];
         scrollView.frame = CGRectMake(0,0,frame.size.width,frame.size.height);
@@ -91,7 +91,8 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (IFFilterType filterType);
         
             CGRect itemRect = CGRectMake((i+1)*XXImageFilterChooseViewItemMargin+i*XXImageFilterChooseViewItemWidth,XXImageFilterChooseViewTopMargin,XXImageFilterChooseViewItemWidth,frame.size.height-2*XXImageFilterChooseViewTopMargin);
             
-            XXImageEffectItem *item = [[XXImageEffectItem alloc]initWithFrame:itemRect withImage:self.currentImage withSelectBlock:^(XXImageEffectItem *selectItem) {
+            UIImage *effectImage = [UIImage imageNamed:[NSString stringWithFormat:@"ef%d.png",i]];
+            XXImageEffectItem *item = [[XXImageEffectItem alloc]initWithFrame:itemRect withImage:effectImage withSelectBlock:^(XXImageEffectItem *selectItem) {
                 
                 NSInteger selectIndex = selectItem.tag-XXImageFilterItemBaseTag;
                 if (_finishBlock) {
@@ -136,73 +137,68 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (IFFilterType filterType);
             break;
         case 4:
         {
-            filterType = IF_FILTER_TOTAL_NUMBER;
+            filterType = IF_HEFE_FILTER;
         }
             break;
         case 5:
         {
-            filterType = IF_HEFE_FILTER;
+            filterType = IF_HUDSON_FILTER;
         }
             break;
         case 6:
         {
-            filterType = IF_HUDSON_FILTER;
+            filterType = IF_INKWELL_FILTER;
         }
             break;
         case 7:
         {
-            filterType = IF_INKWELL_FILTER;
+            filterType = IF_LOMOFI_FILTER;
         }
             break;
         case 8:
         {
-            filterType = IF_LOMOFI_FILTER;
-        }
-            break;
-        case 9:
-        {
             filterType = IF_LORDKELVIN_FILTER;
         }
             break;
-        case 10:
+        case 9:
         {
             filterType = IF_NASHVILLE_FILTER;
             
         }
             break;
-        case 11:
+        case 10:
         {
             filterType = IF_RISE_FILTER;
             
         }
             break;
-        case 12:
+        case 11:
         {
             filterType = IF_SIERRA_FILTER;
             
         }
             break;
-        case 13 :
+        case 12 :
         {
             filterType = IF_SUTRO_FILTER;
         }
             break;
-        case 14:
+        case 13:
         {
             filterType = IF_TOASTER_FILTER;
         }
             break;
-        case 15:
+        case 14:
         {
             filterType = IF_VALENCIA_FILTER;
         }
             break;
-        case 16:
+        case 15:
         {
             filterType = IF_WALDEN_FILTER;
         }
             break;
-        case 17:
+        case 16:
         {
             filterType = IF_XPROII_FILTER;
         }
@@ -232,8 +228,8 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (IFFilterType filterType);
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
 
-    self.title = @"滤镜效果";
     [XXCommonUitil setCommonNavigationNextStepItemForViewController:self withNextStepAction:^{
         if (_nextStepBlock) {
             if (self.isSettingHeadImage) {
@@ -250,7 +246,8 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (IFFilterType filterType);
     if (self.effectImgViewHeight==0) {
         self.effectImgViewHeight = 250;
     }
-    CGFloat totalHeight = XXNavContentHeight-44;
+    CGFloat contentHeight = IS_IOS_7? XXNavContentHeight:XXNavContentHeight+20;
+    CGFloat totalHeight = contentHeight-44;
     CGFloat totalWidth = self.view.frame.size.width;
     
     //image filter
@@ -262,9 +259,8 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (IFFilterType filterType);
     scaleWidth = scaleWidth>0? scaleWidth:totalWidth;
     
     if (self.isSettingHeadImage) {
-        CGFloat orignx = (totalWidth-77)/2;
-        CGFloat origny = (totalHeight-75-77)/2;
-        _imageFilter = [[ZYImageFilter alloc]initWithSaveQuality:YES withShowEffectImageViewFrame:CGRectMake(orignx,origny,77,77)];
+        self.effectImgViewHeight = 220;
+        _imageFilter = [[ZYImageFilter alloc]initWithSaveQuality:YES withShowEffectImageViewFrame:CGRectMake(20,(totalHeight-220-75)/2,220,220)];
     }else{
         _imageFilter = [[ZYImageFilter alloc]initWithSaveQuality:YES withShowEffectImageViewFrame:CGRectMake(0,0,scaleWidth,self.effectImgViewHeight)];
     }
@@ -275,6 +271,7 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (IFFilterType filterType);
     DDLogVerbose(@"effectViewFrame:%@",NSStringFromCGRect(_imageFilter.gpuImageView.frame));
 
     XXImageFilterChooseView *chooseView = [[XXImageFilterChooseView alloc]initWithFrame:CGRectMake(0,totalHeight-75,totalWidth,75) withOriginImage:self.currentImage withFinishBlock:^(IFFilterType filterType) {
+
         dispatch_async(dispatch_get_main_queue(), ^{
             [_imageFilter switchFilter:filterType];
             UIImage *currentEffectImage = [_imageFilter currentEffectImage];
@@ -295,6 +292,7 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (IFFilterType filterType);
         CGFloat originx = (self.view.frame.size.width-self.effectImgViewHeight)/2;
         effectHeadImgView = [[AGMedallionView alloc] initWithFrame:CGRectMake(originx,80,self.effectImgViewHeight,self.effectImgViewHeight)];
         effectHeadImgView.image = self.currentImage;
+        effectHeadImgView.borderWidth =4 ;
         [self.view addSubview:effectHeadImgView];
         
     }else{
@@ -334,14 +332,14 @@ typedef void (^XXImageFilterChooseViewFinishBlock) (IFFilterType filterType);
         
         self.currentImage = aImage;
         
-        _chooseBlock = [chooseBlock copy];
+        _chooseBlock = chooseBlock;
     }
     return self;
 }
 #pragma mark next step
 - (void)setNextStepAction:(XXCommonNavigationNextStepBlock)nextStepBlock
 {
-    _nextStepBlock = [nextStepBlock copy];
+    _nextStepBlock = nextStepBlock;
 }
 
 @end

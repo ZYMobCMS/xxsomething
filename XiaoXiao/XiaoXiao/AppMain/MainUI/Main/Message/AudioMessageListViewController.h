@@ -7,8 +7,9 @@
 //
 
 #import "XXMessageListViewController.h"
+#import "XXMessageBaseCell.h"
 
-@interface AudioMessageListViewController : XXMessageListViewController
+@interface AudioMessageListViewController : XXMessageListViewController<XXMessageBaseCellDelegate,UIAlertViewDelegate>
 {
     
 }

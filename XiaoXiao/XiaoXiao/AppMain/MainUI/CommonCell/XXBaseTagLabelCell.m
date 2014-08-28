@@ -16,14 +16,15 @@
     if (self) {
         // Initialization code
         _tagLabel = [[UILabel alloc]init];
-        _tagLabel.frame = CGRectMake(10,7,70,30);
+        _tagLabel.frame = CGRectMake(25,7,40,30);
         _tagLabel.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:_tagLabel];
         _tagLabel.textAlignment = NSTextAlignmentRight;
         _tagLabel.textColor = [UIColor blackColor];
         
         _inputTextField = [[UITextField alloc]init];
-        _inputTextField.frame = CGRectMake(84,5,150,34);
+        _inputTextField.frame = CGRectMake(75,5,150,34);
+        _inputTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         [self.contentView addSubview:_inputTextField];
         _inputTextField.enabled = NO;
         _inputTextField.placeholder = @"请输入";

@@ -99,6 +99,12 @@ static dispatch_queue_t ZYXMPPClientQueue = nil;
 {
     needAutoHostForJID = state;
 }
+- (void)loginOutCurrentClient
+{
+    [self goOffline];
+    [xmppStream disconnect];
+    isXmppConnected = NO;
+}
 
 #pragma mark - start client
 - (void)startClientWithJID:(NSString *)jidString withPassword:(NSString *)password
@@ -256,21 +262,14 @@ static dispatch_queue_t ZYXMPPClientQueue = nil;
         [sendUser setStringValue:newMessage.user];
         NSXMLElement *sendUserId = [NSXMLElement elementWithName:@"send_user_id"];
         [sendUserId setStringValue:newMessage.userId];
-        NSXMLElement *sendUserSex = nil;
-        NSXMLElement *sendUserSchoolName = nil;
-        if ([newMessage.isFirstConversation boolValue]) {
-            sendUserSex = [NSXMLElement elementWithName:@"send_user_sex"];
-            [sendUserSex setStringValue:newMessage.sendUserSex];
-            sendUserSchoolName = [NSXMLElement elementWithName:@"send_user_school_name"];
-            [sendUserSchoolName setStringValue:newMessage.sendUserSchoolName];
-        }
+        NSXMLElement *sendUserSex = [NSXMLElement elementWithName:@"send_user_sex"];
+        NSXMLElement *sendUserSchoolName = [NSXMLElement elementWithName:@"send_user_school_name"];
+        [sendUserSex setStringValue:newMessage.sendUserSex];
+        [sendUserSchoolName setStringValue:newMessage.sendUserSchoolName];
         
         NSXMLElement *addTime = [NSXMLElement elementWithName:@"add_time"];
         NSString *currentTime = [self returnCurrentDateTime];
 		[addTime setStringValue:currentTime];
-        if (![newMessage.content isEqualToString:@""]) {
-            newMessage.audioTime = @"0";
-        }
         NSXMLElement *audioTime = [NSXMLElement elementWithName:@"audio_time"];
         [audioTime setStringValue:newMessage.audioTime];
         NSXMLElement *receipt = [NSXMLElement elementWithName:@"request" xmlns:@"urn:xmpp:receipts"];
@@ -284,10 +283,8 @@ static dispatch_queue_t ZYXMPPClientQueue = nil;
         [message addChild:messageType];
         [message addChild:sendUser];
         [message addChild:sendUserId];
-        if ([newMessage.isFirstConversation boolValue]) {
-            [message addChild:sendUserSex];
-            [message addChild:sendUserSchoolName];
-        }
+        [message addChild:sendUserSex];
+        [message addChild:sendUserSchoolName];
         [message addChild:addTime];
         [message addChild:audioTime];
         [message addChild:receipt];
@@ -480,15 +477,9 @@ static dispatch_queue_t ZYXMPPClientQueue = nil;
         NSString *messageType = [[message elementForName:@"message_type"]stringValue];
         NSString *sendUserId = [[message elementForName:@"send_user_id"]stringValue];
         NSString *messageId = [message attributeStringValueForName:@"id"];
-        
-        NSString *sendUserSex = nil;
-        NSString *sendUserSchoolName = nil;
-        if ([message elementsForName:@"send_user_sex"]) {
-            sendUserSex = [[message elementForName:@"send_user_sex"]stringValue];
-        }
-        if ([message elementForName:@"send_user_school_name"]) {
-            sendUserSchoolName = [[message elementForName:@"send_user_school_name"]stringValue];
-        }
+        NSString *sendUserSex = [[message elementForName:@"send_user_sex"]stringValue];
+        NSString *sendUserSchoolName = [[message elementForName:@"send_user_school_name"]stringValue];
+
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
@@ -505,6 +496,9 @@ static dispatch_queue_t ZYXMPPClientQueue = nil;
                 newMessage.userId = sendUserId;
                 newMessage.sendStatus = @"1";
                 newMessage.messageId = messageId;
+                newMessage.sendUserSex = sendUserSex;
+                newMessage.sendUserSchoolName = sendUserSchoolName;
+                
                 newMessage.conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:newMessage.userId withMyUserId:originJId];
                 newMessage.sendUserSex = sendUserSex;
                 newMessage.sendUserSchoolName = sendUserSchoolName;
@@ -531,10 +525,21 @@ static dispatch_queue_t ZYXMPPClientQueue = nil;
                     newMessage.userId = sendUserId;
                     newMessage.sendStatus = @"1";
                     newMessage.messageId = messageId;
+                    newMessage.sendUserSex = sendUserSex;
+                    newMessage.sendUserSchoolName = sendUserSchoolName;
+                    
                     newMessage.conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:newMessage.userId withMyUserId:originJId];
                     if ([newMessage.messageType intValue]==ZYXMPPMessageTypeText) {
                         newMessage.messageAttributedContent = [ZYXMPPMessage attributedContentStringWithMessage:newMessage];
+                        newMessage.content = [XXBaseTextView switchEmojiTextWithSourceText:newMessage.content];
+                        newMessage.userHeadAttributedString = [ZYXMPPMessage userHeadAttributedStringWithMessage:newMessage];
+                    }else if([newMessage.messageType intValue]==ZYXMPPMessageTypeAudio){
+                        newMessage.userHeadAttributedString = [ZYXMPPMessage userHeadAttributedStringWithMessage:newMessage];
+
+                    }else if([newMessage.messageType intValue]==ZYXMPPMessageTypeImage){
+                        newMessage.userHeadAttributedString = [ZYXMPPMessage userHeadAttributedStringWithMessage:newMessage];
                     }
+                    
                     recieveAction (newMessage);
 
                 }

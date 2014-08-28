@@ -21,6 +21,12 @@
         self.contentImageView.borderWidth = 2.0f;
         [self addSubview:self.contentImageView];
         
+        self.roundImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0,0,frame.size.width,frame.size.height)];
+        [self addSubview:self.roundImageView];
+        self.roundImageView.layer.cornerRadius = 12;
+        self.roundImageView.layer.masksToBounds = YES;
+        self.roundImageView.hidden = YES;
+        
     }
     return self;
 }
@@ -35,18 +41,35 @@
 */
 - (void)setHeadWithUserId:(NSString*)userId;
 {
+    self.roundImageView.hidden = YES;
+    self.contentImageView.hidden = NO;
+    
     if (!userId) {
         return;
     }
     _userId = userId;
 
-    NSString *imageSizeNeedUrl = [NSString stringWithFormat:@"%@%@/%d/%d/%@",XXBase_Host_Url,XX_Head_Url_Base_Url,(int)self.frame.size.width,(int)self.frame.size.height,userId];
+    NSString *imageSizeNeedUrl = [NSString stringWithFormat:@"%@%@/%d/%d/%@",XXBase_Host_Url,XX_Head_Url_Base_Url,(int)self.frame.size.width*2,(int)self.frame.size.height*2,userId];
     NSURL *combineUrl = [NSURL URLWithString:imageSizeNeedUrl];
     
-    [[SDWebImageDownloader sharedDownloader]downloadImageWithURL:combineUrl options:SDWebImageDownloaderAllowInvalidSSLCertificates progress:^(NSUInteger receivedSize, long long expectedSize) {
-        
-    } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
-        self.contentImageView.image = image;
+    WeakObj(self.contentImageView) weakContentImageView = self.contentImageView;
+    [self.roundImageView setImageWithURL:combineUrl completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+        weakContentImageView.image = image;
     }];
+}
+- (void)setRoundHeadWithUserId:(NSString *)userId
+{
+    self.contentImageView.hidden = YES;
+    self.roundImageView.hidden = NO;
+    
+    if (!userId) {
+        return;
+    }
+    _userId = userId;
+    
+    NSString *imageSizeNeedUrl = [NSString stringWithFormat:@"%@%@/%d/%d/%@",XXBase_Host_Url,XX_Head_Url_Base_Url,(int)self.frame.size.width*2,(int)self.frame.size.height*2,userId];
+    NSURL *combineUrl = [NSURL URLWithString:imageSizeNeedUrl];
+    [self.roundImageView setImageWithURL:combineUrl];
+    
 }
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "XXShareTemplateBuilder.h"
+#import "XXSharePostUserStyle.h"
 
 BOOL const XXLockShareCSSTemplateState = YES;
 BOOL const XXLockCommonCSSTemplateState = NO;
@@ -56,7 +57,7 @@ BOOL const XXLockCommonCSSTemplateState = NO;
     
     //替换音频
     htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$audio$!" withString:[XXSharePostStyle sharePostAudioSrcImageName]];
-    NSString *audioTagUrl = [NSString stringWithFormat:@"%@%@",XXMIMETypeAudioFormatte,aSharePost.postAudio];
+    NSString *audioTagUrl = [NSString stringWithFormat:@"%@%@$%@",XXMIMETypeAudioFormatte,aSharePost.postAudio,aSharePost.postAudioTime];
     htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$audioUrl$!" withString:audioTagUrl];
 
     //替换图片
@@ -75,9 +76,9 @@ BOOL const XXLockCommonCSSTemplateState = NO;
     return htmlTemplate;
 }
 
-+ (NSString*)buildSharePostHeadHtmlContentWithName:(NSString *)name withGrade:(NSString *)grade withCollege:(NSString *)college withSexTag:(NSString *)sexTag withTimeString:(NSString*)time
++ (NSString*)buildSharePostHeadHtmlContentWithName:(NSString *)name withGrade:(NSString *)grade withCollege:(NSString *)college withSexTag:(NSString *)sexTag withTimeString:(NSString*)time withStyle:(XXSharePostUserStyle*)aStyle
 {
-    NSString *htmlTemplate = [XXFileUitil loadStringFromBundleForName:@"xxshare_post_user.html"];
+    NSString *htmlTemplate = [XXShareTemplateBuilder buildSharePostUserCSSWithFileName:@"xxshare_post_user.html" withStyle:aStyle];
     
     //替换content
     NSString *sexTagImageName = [NSString stringWithFormat:@"sex_tag_%@@2x.png",sexTag];
@@ -87,6 +88,21 @@ BOOL const XXLockCommonCSSTemplateState = NO;
     NSString *combineCollege = [NSString stringWithFormat:@"来自%@",college];
     htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$college$!" withString:combineCollege];
 
+    return htmlTemplate;
+}
++ (NSString*)buildSharePostHeadHtmlContentForMessageListWithName:(NSString *)name withGrade:(NSString *)grade withCollege:(NSString *)college withSexTag:(NSString *)sexTag withTimeString:(NSString*)time withStyle:(XXSharePostUserStyle*)aStyle
+{
+    NSString *htmlTemplate = [XXShareTemplateBuilder buildSharePostUserCSSWithFileName:@"xxshare_post_user.html" withStyle:aStyle];
+    
+    //替换content
+    NSString *sexTagImageName = [NSString stringWithFormat:@"sex_tag_%@@2x.png",sexTag];
+    htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$sextag$!" withString:sexTagImageName];
+    htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$username$!" withString:name];
+//    htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"<span class=\"grade\">!$grade$!</span>" withString:@""];
+    htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$grade$!" withString:grade];
+    NSString *combineCollege = [NSString stringWithFormat:@"%@",college];
+    htmlTemplate = [htmlTemplate stringByReplacingOccurrencesOfString:@"!$college$!" withString:combineCollege];
+    
     return htmlTemplate;
 }
 
@@ -108,6 +124,24 @@ BOOL const XXLockCommonCSSTemplateState = NO;
     
     return [XXShareTemplateBuilder buildCommonCSSTemplateWithFormatte:ccsFormatteString withShareStyle:aStyle];
 }
++ (NSString*)buildCommonCSSTemplateWithBundleFormatteFile:(NSString*)fileName withShareStyle:(XXShareStyle*)aStyle isFromSelf:(BOOL)isFromSelf
+{
+    if (XXLockCommonCSSTemplateState) {
+        if (![fileName isEqualToString:XXCommonTextTemplateCSS]) {
+            
+            DDLogWarn(@"CSS Template has been locked,you can only use css file:%@",XXCommonTextTemplateCSS);
+            
+            NSString *ccsFormatteString = [XXFileUitil loadStringFromBundleForName:XXCommonTextTemplateCSS];
+            
+            return [XXShareTemplateBuilder buildCSSTemplateWithFormatte:ccsFormatteString withShareStyle:aStyle];
+            
+        }
+    }
+    NSString *ccsFormatteString = [XXFileUitil loadStringFromBundleForName:fileName];
+    
+    return [XXShareTemplateBuilder buildCommonCSSTemplateWithFormatte:ccsFormatteString withShareStyle:aStyle];
+}
+
 
 + (NSString*)buildCommonCSSTemplateWithFormatte:(NSString *)cssFormatte withShareStyle:(XXShareStyle *)aStyle
 {
@@ -183,20 +217,32 @@ BOOL const XXLockCommonCSSTemplateState = NO;
     DDLogVerbose(@"sextag image:%@",sexTagImageName);
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$sextag$!" withString:sexTagImageName];
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$username$!" withString:userModel.nickName];
-    htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$college$!" withString:userModel.schoolName];
+    if ([userModel.isInSchool boolValue]) {
+        htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$college$!" withString:userModel.grade];
+    }else{
+        htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$college$!" withString:userModel.schoolName];
+    }
     NSString *constellationDefault = (userModel.constellation==nil||[userModel.constellation isEqualToString:@""])? @"天枰座":userModel.constellation;
-    NSString *combineConstellation = [NSString stringWithFormat:@"%@ | 校内知名度:",constellationDefault];
+    NSString *combineConstellation = [NSString stringWithFormat:@"%@ ",constellationDefault];
     htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$starscore$!" withString:combineConstellation];
-    htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$score$!" withString:userModel.score];
+    htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$score$!" withString:userModel.wellknow];
     DDLogVerbose(@"profile:%@",userModel.signature);
     if ([userModel.isInSchool boolValue]) {
-        NSString *signature = (userModel.signature==nil||[userModel.signature isEqualToString:@""])? @"青春总是很娘，一直很哈哈哈哈哈哈 ":userModel.signature;
+        NSString *signature = (userModel.signature==nil||[userModel.signature isEqualToString:@""])? @"未设置签名":userModel.signature;
         htmlTemp = [htmlTemp stringByReplacingOccurrencesOfString:@"!$profile$!" withString:signature];
     }
-    DDLogVerbose(@"user html final:%@",htmlTemp);
 
     return htmlTemp;
     
+}
+
++ (NSString*)buildSharePostUserCSSWithFileName:(NSString *)fileName withStyle:(XXSharePostUserStyle *)aStyle
+{
+    NSString *cssFormate = [XXFileUitil loadStringFromBundleForName:fileName];
+    
+    cssFormate = [NSString stringWithFormat:cssFormate,aStyle.nameDes.fontSize,aStyle.nameDes.fontColor,aStyle.nameDes.fontAlign,aStyle.nameDes.fontWeight,aStyle.nameDes.fontFamily,aStyle.gradeDes.fontSize,aStyle.gradeDes.fontColor,aStyle.gradeDes.fontAlign,aStyle.gradeDes.fontWeight,aStyle.gradeDes.fontFamily,aStyle.collegeDes.fontSize,aStyle.collegeDes.fontColor,aStyle.collegeDes.fontAlign,aStyle.collegeDes.fontWeight,aStyle.collegeDes.fontFamily,aStyle.sexTagDes.width,aStyle.sexTagDes.height];
+    
+    return cssFormate;
 }
 
 

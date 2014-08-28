@@ -21,6 +21,8 @@ typedef void (^XXGradeChooseViewControllerFinishChooseBlock) (NSString *resultSt
     NSArray *_gradeArray;
     NSInteger _selectIndex;
 }
+- (void)setDefaultSelectValue:(NSString*)value;
+
 - (void)setFinishBlock:(XXGradeChooseViewControllerFinishChooseBlock)finishBlock;
 - (void)setNextStepAction:(XXCommonNavigationNextStepBlock)nextStepBlock;
 @end

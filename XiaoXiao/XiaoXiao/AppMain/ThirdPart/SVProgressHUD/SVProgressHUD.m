@@ -151,7 +151,11 @@ static const CGFloat SVProgressHUDRingThickness = 6;
 
 + (void)showImage:(UIImage *)image status:(NSString *)string {
     NSTimeInterval displayInterval = [[SVProgressHUD sharedView] displayDurationForString:string];
+    if ([string isEqualToString:@"没有人和你同时射!"]) {
+        displayInterval = 2.0f;
+    }
     [[self sharedView] showImage:image status:string duration:displayInterval];
+
 }
 
 

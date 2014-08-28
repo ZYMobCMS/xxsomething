@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "XXBaseViewController.h"
+#import "XXUserInfoBaseCell.h"
 
 /*
  *通用用户列表
  */
 
-@interface XXBaseUserListViewController : XXBaseViewController<UITableViewDelegate,UITableViewDataSource>
+@interface XXBaseUserListViewController : XXBaseViewController<UITableViewDelegate,UITableViewDataSource,UIAlertViewDelegate,XXUserInfoBaseCellDelegate>
 {
     UITableView *_userListTable;
     UIRefreshControl *_refreshControl;

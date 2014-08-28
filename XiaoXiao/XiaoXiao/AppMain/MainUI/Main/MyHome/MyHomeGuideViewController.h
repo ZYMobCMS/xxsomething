@@ -15,7 +15,7 @@
 #import "MyHomeUserHeadView.h"
 #import "XXBaseViewController.h"
 
-@interface MyHomeGuideViewController : XXBaseViewController<UITableViewDataSource,UITableViewDelegate>
+@interface MyHomeGuideViewController : XXBaseViewController<UITableViewDataSource,UITableViewDelegate,MyHomeUserHeadViewDelegate>
 {
     UITableView *guideTable;
     

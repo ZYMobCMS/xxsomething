@@ -54,7 +54,7 @@
     condition.userId = self.otherUserId;
     condition.pageIndex = StringInt(_currentPageIndex);
     condition.pageSize = StringInt(_pageSize);
-    [[XXMainDataCenter shareCenter]requestSameSchoolUsersWithCondition:condition withSuccess:^(NSArray *resultList) {
+    [[XXMainDataCenter shareCenter]requestCareUserFansListWithCondition:condition withSuccess:^(NSArray *resultList) {
         
         if (resultList.count<_pageSize) {
             _hiddenLoadMore = YES;
@@ -68,8 +68,9 @@
         [_userListTable reloadData];
         
     } withFaild:^(NSString *faildMsg) {
-        [_refreshControl endRefreshing];
         [SVProgressHUD showErrorWithStatus:faildMsg];
+        _isRefresh = NO;
+        [_refreshControl endRefreshing];
     }];
 }
 - (void)loadMoreResult

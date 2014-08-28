@@ -10,6 +10,7 @@
 #import "XXShareDetailViewController.h"
 #import "MJPhoto.h"
 #import "MJPhotoBrowser.h"
+#import "XXPraiseDetailViewController.h"
 
 @interface XXShareListViewController ()
 
@@ -79,30 +80,48 @@
             
             NSIndexPath *tapIndex = [tableView indexPathForCell:cell];
             XXSharePostModel *tapPostModel = [self.sharePostModelArray objectAtIndex:tapIndex.row];
-            XXConditionModel *conditionModel = [[XXConditionModel alloc]init];
-            conditionModel.resType = @"posts";
-            conditionModel.resId = tapPostModel.postId;
             
-            if (selectState) {
-                [[XXMainDataCenter shareCenter]requestPraisePublishWithCondition:conditionModel withSuccess:^(NSString *successMsg) {
-                    DDLogVerbose(@"praise success");
-                } withFaild:^(NSString *faildMsg) {
-                    DDLogVerbose(@"praise faild");
-                }];
-            }else{
+            if([tapPostModel.userId isEqualToString:[XXUserDataCenter currentLoginUser].userId]){
+                XXPraiseDetailViewController *praiseDetail = [[XXPraiseDetailViewController alloc]initWithSharePostModel:tapPostModel];
+                praiseDetail.title = @"追捧详情";
+                [self.navigationController pushViewController:praiseDetail animated:YES];
+                [XXCommonUitil setCommonNavigationReturnItemForViewController:praiseDetail];
                 
+            }else{
+                XXConditionModel *conditionModel = [[XXConditionModel alloc]init];
+                conditionModel.resType = @"posts";
+                conditionModel.resId = tapPostModel.postId;
+                
+                if (selectState) {
+                    [[XXMainDataCenter shareCenter]requestPraisePublishWithCondition:conditionModel withSuccess:^(NSString *successMsg) {
+                        DDLogVerbose(@"praise success");
+                    } withFaild:^(NSString *faildMsg) {
+                        DDLogVerbose(@"praise faild");
+                    }];
+                }else{
+                    [[XXMainDataCenter shareCenter]requestCancelPraiseWithCondition:conditionModel withSuccess:^(NSString *successMsg) {
+                        DDLogVerbose(@"un praise success");
+                    } withFaild:^(NSString *faildMsg) {
+                        DDLogVerbose(@"un praise faild");
+                    }];
+                }
             }
+            
             
         }];
         [cell setTapOnCommentBlock:^(XXShareBaseCell *cell) {
             NSIndexPath *tapIndex = [tableView indexPathForCell:cell];
             XXShareDetailViewController *shareDetail = [[XXShareDetailViewController alloc]initWithSharePost:[self.sharePostModelArray objectAtIndex:tapIndex.row]];
+            shareDetail.title = @"故事详情";
             [self.navigationController pushViewController:shareDetail animated:YES];
+            [XXCommonUitil setCommonNavigationReturnItemForViewController:shareDetail];
         }];
         [cell setTapOnAudioImageBlock:^(NSURL *audioUrl, XXShareBaseCell *cell) {
             NSIndexPath *tapIndex = [tableView indexPathForCell:cell];
             XXShareDetailViewController *shareDetail = [[XXShareDetailViewController alloc]initWithSharePost:[self.sharePostModelArray objectAtIndex:tapIndex.row]];
+            shareDetail.title = @"故事详情";
             [self.navigationController pushViewController:shareDetail animated:YES];
+            [XXCommonUitil setCommonNavigationReturnItemForViewController:shareDetail];
         }];
         [cell setTapOnThumbImageBlock:^(NSURL *imageUrl, UIImageView *originImageView, NSArray *allImages, NSInteger currentIndex) {
             int count = allImages.count;
@@ -140,7 +159,10 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     XXShareDetailViewController *shareDetail = [[XXShareDetailViewController alloc]initWithSharePost:[self.sharePostModelArray objectAtIndex:indexPath.row]];
+    shareDetail.title = @"故事详情";
+    shareDetail.isReplyComment = NO;
     [self.navigationController pushViewController:shareDetail animated:YES];
+    [XXCommonUitil setCommonNavigationReturnItemForViewController:shareDetail];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

@@ -20,4 +20,6 @@ typedef void (^OtherHomeHeadCellTeaseBlock) (void);
 - (void)setContentUser:(XXUserModel*)aUser;
 - (void)setTeaseActionBlock:(OtherHomeHeadCellTeaseBlock)teaseBlock;
 
+- (void)updateUserCared:(BOOL)isCared;
+
 @end

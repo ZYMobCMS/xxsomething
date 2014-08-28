@@ -68,6 +68,7 @@
     _pageIndcatorLabel.frame = CGRectMake(110,XXNavContentHeight-80,100,40);
     _pageIndcatorLabel.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_pageIndcatorLabel];
+    _pageIndcatorLabel.hidden = YES;
     
     //addImages
 #define XXPhotoReviewSubImageViewBaseTag 23300
@@ -113,8 +114,7 @@
             }];
             XXActionSheetViewDidChooseIndexBlock finishBlock = ^(BOOL checkState){
                 if (checkState) {
-                    [_reviewImages removeObjectAtIndex:_currentImageIndex];
-                    
+                    [self removeImageViewAtIndex:_currentImageIndex];
                 }
                 [UIView animateWithDuration:0.3 animations:^{
                     _actionSheetView.frame = CGRectMake(0,totalHeight,self.view.frame.size.width,200);
@@ -135,12 +135,37 @@
     }
 }
 
+- (void)loadImageViews
+{
+    
+    [_reviewImages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        
+        CGRect itemRect = CGRectMake(_contentScrollView.frame.size.width*idx,0,_contentScrollView.frame.size.width,_contentScrollView.frame.size.height);
+        UIImageView *newImageView = [[UIImageView alloc]initWithFrame:itemRect];
+        newImageView.tag = XXPhotoReviewSubImageViewBaseTag+idx;
+        newImageView.contentMode = UIViewContentModeScaleAspectFit;
+        [_contentScrollView addSubview:newImageView];
+        newImageView.image = obj;
+    }];
+}
+
 //删除一张照片
 - (void)removeImageViewAtIndex:(NSInteger)index
 {
+    if (index>=_reviewImages.count) {
+        return;
+    }
     if (_isSharePostPhotoReview) {
-        UIImageView *subImageView = [_contentScrollView viewWithTag:XXPhotoReviewSubImageViewBaseTag+index];
-        
+        [_reviewImages removeObjectAtIndex:index];
+        [_contentScrollView.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+           
+            if ([obj isKindOfClass:[UIImageView class]]) {
+                
+                [(UIImageView*)obj removeFromSuperview];
+            }
+            
+        }];
+        [self loadImageViews];
     }
     
 }

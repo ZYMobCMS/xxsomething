@@ -40,6 +40,9 @@ typedef void (^XXChatToolBarDidChooseEmoji) (BOOL isMoved);
 typedef void (^XXChatToolBarDidRecord) (NSString *recordUrl,NSString* amrUrl,NSString *timeLength);
 typedef void (^XXChatToolBarDidTapSend) (NSString *textContent);
 
+@protocol XXChatToolBarDelegate <NSObject>
+- (void)chatToolBarDidTapOnImageButton;
+@end
 @interface XXChatToolBar : UIView<UITextViewDelegate>
 {
     UIImageView*_inputBackImageView;
@@ -62,6 +65,8 @@ typedef void (^XXChatToolBarDidTapSend) (NSString *textContent);
     CGFloat        _controlHeight;
     XXEmojiChooseView *_emojiChooseView;
 }
+@property (nonatomic,weak)id<XXChatToolBarDelegate> delegate;
+@property (nonatomic,strong)UITextView *inputTextView;
 
 - (XXChatToolBarState)barState;
 - (BOOL)movedState;
@@ -77,5 +82,8 @@ typedef void (^XXChatToolBarDidTapSend) (NSString *textContent);
 - (void)setChatToolBarEmoji:(XXChatToolBarDidChooseEmoji)emojiBlock;
 
 - (void)reginFirstResponse;
+
+- (void)clearContentText;
+
 
 @end

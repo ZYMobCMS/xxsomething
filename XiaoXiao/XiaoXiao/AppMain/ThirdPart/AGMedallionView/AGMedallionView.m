@@ -196,6 +196,16 @@
     CGContextRef contextRef = UIGraphicsGetCurrentContext();
     CGContextSaveGState(contextRef);
     
+    //描边
+    CGContextSetLineWidth(contextRef,1);
+    UIColor *bordColor = rgb(226,227,228,1);
+    CGContextSetStrokeColorWithColor(contextRef,[XXCommonStyle xxThemeButtonBoardColor].CGColor);
+    CGContextMoveToPoint(contextRef, 0, 0);
+    CGRect bordRect = CGRectMake(imageRect.origin.x-1.5,imageRect.origin.y-1.5,imageRect.size.width+3, imageRect.size.height+3);
+    CGContextAddEllipseInRect(contextRef,bordRect);
+    CGContextSetFillColorWithColor(contextRef,[UIColor whiteColor].CGColor);
+    CGContextFillEllipseInRect(contextRef,bordRect);
+    
     CGImageRef imageRef = CGImageCreateWithMask(self.image.CGImage, mainMaskImageRef);
     
     CGContextTranslateCTM(contextRef, 0, rect.size.height);
@@ -229,13 +239,7 @@
 //    CGRect newBordRect = CGRectMake(imageRect.origin.x-0.5,imageRect.origin.y-0.5,imageRect.size.width-1,imageRect.size.height-1);
 //    CGContextAddEllipseInRect(contextRef,imageRect);
     
-    //描边
-    CGContextSetLineWidth(contextRef,1);
-    UIColor *bordColor = rgb(226,227,228,1);
-    CGContextSetStrokeColorWithColor(contextRef,bordColor.CGColor);
-    CGContextMoveToPoint(contextRef, 0, 0);
-    CGRect bordRect = CGRectMake(imageRect.origin.x-1.5,imageRect.origin.y-1.5,imageRect.size.width+3, imageRect.size.height+3);
-    CGContextAddEllipseInRect(contextRef,bordRect);
+
     
     // Drop shadow
 //    CGContextSetShadowWithColor(contextRef, 

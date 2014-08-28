@@ -27,6 +27,8 @@
         self.postContent = @"";
         self.postAudioTime = @"0";
         self.postAudio = @"";
+        self.toUserId = @"";
+        self.toUserName = @"";
 
         self.commentId = [contentDict objectForKey:@"id"];
         self.resourceType = [contentDict objectForKey:@"res_type"];
@@ -39,6 +41,14 @@
         self.friendAddTime = [XXCommonUitil getTimeStrWithDateString:self.addTime];
         self.addTime = nil;
         self.userName = [[contentDict objectForKey:@"user"]objectForKey:@"nickname"];
+        self.sex = [[contentDict objectForKey:@"user"]objectForKey:@"sex"];
+        self.schoolName = [[contentDict objectForKey:@"user"]objectForKey:@"school_name"];
+        self.grade = [[contentDict objectForKey:@"user"]objectForKey:@"grade"];
+        
+        //to user
+        NSDictionary *toUserDict = [contentDict objectForKey:@"to_user"];
+        self.toUserId = [toUserDict objectForKey:@"id"];
+        self.toUserName = [toUserDict objectForKey:@"nickname"];
         
         DDLogVerbose(@"user:%@",contentDict);
         //解析content字段
@@ -52,18 +62,22 @@
             //content style
             XXShareStyle *contentStyle = [[XXShareStyle alloc]init];
             contentStyle.contentFontFamily = @"Hevica";
-            contentStyle.contentFontSize = 13;
+            contentStyle.contentFontSize = 12.5;
             contentStyle.contentFontWeight = XXFontWeightNormal;
-            contentStyle.contentLineHeight = 1.0f;
+            contentStyle.contentLineHeight = 1.6;
             contentStyle.contentTextAlign = XXTextAlignLeft;
             contentStyle.contentTextColor = [XXCommonStyle commonPostContentTextColor];
             contentStyle.emojiSize = 13;
             
             DDLogVerbose(@"comment content:%@",self.postContent);
             self.contentAttributedString = [XXBaseTextView formatteTextToAttributedText:self.postContent withHtmlTemplateFile:@"xxbase_common_template.html" withCSSTemplate:@"xxbase_comment_style.css" withShareStyle:contentStyle];
-            self.postContent = nil;
+            
+            
+            self.userHeadContent = [XXSharePostUserView useHeadAttributedStringWithCommnetModel:self];
+//            self.postContent = nil;
             
         }else{
+            self.postContent = @"语音";
             self.postAudio = [customContentDict objectForKey:XXSharePostJSONAudioKey];
         }
         

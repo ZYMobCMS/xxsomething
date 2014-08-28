@@ -30,6 +30,9 @@
 @property (nonatomic,strong)NSString *toUserId;
 @property (nonatomic,strong)NSString *isReaded;
 @property (nonatomic,strong)NSString *praiseId;
+@property (nonatomic,strong)NSString *userWellKnowRank;
+@property (nonatomic,strong)NSString *userScoreRank;
+@property (nonatomic,strong)NSString *schoolRoll;
 @property (nonatomic,assign)BOOL     isRefresh;
 @property (nonatomic,assign)BOOL     hideLoadMore;
 @property (nonatomic,assign)long     latitude;

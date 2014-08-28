@@ -29,7 +29,13 @@ typedef void (^XXSchoolSearchViewControllerFinishChooseBlock) (XXSchoolModel *ch
     BOOL        _needLoadMore;
     NSString    *_nextStepTitle;
 }
+@property (nonatomic,assign)NSInteger   currentResultPageIndex;
+
 - (void)setFinishChooseSchool:(XXSchoolSearchViewControllerFinishChooseBlock)chooseBlock;
 - (void)setNextStepAction:(XXCommonNavigationNextStepBlock)nextStepBlock;
 - (void)setNextStepAction:(XXCommonNavigationNextStepBlock)nextStepBlock withNextStepTitle:(NSString*)title;
+
+- (void)searchSchoolNow;
+- (void)loadMoreResult;
+
 @end

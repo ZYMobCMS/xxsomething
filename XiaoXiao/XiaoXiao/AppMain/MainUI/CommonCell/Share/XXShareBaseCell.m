@@ -7,6 +7,7 @@
 //
 
 #import "XXShareBaseCell.h"
+#import "XXRecordButton.h"
 
 @implementation XXShareBaseCell
 
@@ -29,7 +30,7 @@
         CGFloat originX = _contentLeftMargin+10;
         CGFloat originY = _contentTopHeight+10;
         
-        _headView = [[XXHeadView alloc]initWithFrame:CGRectMake(originX,originY,50,50)];
+        _headView = [[XXHeadView alloc]initWithFrame:CGRectMake(originX,originY,53,53)];
         [backgroundImageView addSubview:_headView];
         
         //user View
@@ -55,7 +56,7 @@
         
         //post content
         shareTextView = [[DTAttributedTextContentView alloc]init];
-        shareTextView.frame = CGRectMake(_contentLeftMargin+10,_headLineSep.frame.origin.y+10+9+1,[XXSharePostStyle sharePostContentWidth],self.frame.size.height);
+        shareTextView.frame = CGRectMake(10,_headLineSep.frame.origin.y+10+4+1,[XXSharePostStyle sharePostContentWidth],self.frame.size.height);
         shareTextView.delegate = self;
         shareTextView.backgroundColor = [UIColor clearColor];
         [backgroundImageView addSubview:shareTextView];
@@ -68,10 +69,10 @@
         
         //comment button
         _commentButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
-        _commentButton.frame = CGRectMake(_contentLeftMargin+5,10,(backgroundImageView.frame.size.width-20)/2,46);
-        [_commentButton setNormalIconImage:@"share_post_comment.png" withSelectedImage:@"share_post_comment.png" withFrame:CGRectMake(35,18,12,12)];
-        [_commentButton setTitle:@"评论" withFrame:CGRectMake(60,3,50,34)];
-        [_commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0,10,0,0)];
+        _commentButton.frame = CGRectMake(_contentLeftMargin+5,12,(backgroundImageView.frame.size.width-20)/2,46);
+        [_commentButton setNormalIconImage:@"share_post_comment.png" withSelectedImage:@"share_post_comment.png" withFrame:CGRectMake(35,15.5,18.5,15)];
+        [_commentButton setTitle:@"评论" withFrame:CGRectMake(80,3,50,34)];
+        [_commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0,25,0,0)];
         _commentButton.titleLabel.font = [UIFont systemFontOfSize:15];
         [_commentButton defaultStyle];
         _commentButton.layer.borderColor = [UIColor clearColor].CGColor;
@@ -88,10 +89,10 @@
         
         //praise button
         _praiseButton = [XXCustomButton buttonWithType:UIButtonTypeCustom];
-        _praiseButton.frame = CGRectMake(_commentButton.frame.origin.x+_commentButton.frame.size.width+5,10,(backgroundImageView.frame.size.width-20)/2,46);
-        [_praiseButton setNormalIconImage:@"share_post_praise_normal.png" withSelectedImage:@"share_post_praise_selected.png" withFrame:CGRectMake(35,19,12.5,11)];
+        _praiseButton.frame = CGRectMake(_commentButton.frame.origin.x+_commentButton.frame.size.width+5,12,(backgroundImageView.frame.size.width-20)/2,46);
+        [_praiseButton setNormalIconImage:@"share_post_praise_normal.png" withSelectedImage:@"share_post_praise_selected.png" withFrame:CGRectMake(35,15.5,18.5,15)];
         _praiseButton.titleLabel.font = [UIFont systemFontOfSize:15];
-        [_praiseButton setTitle:@"追捧" withFrame:CGRectMake(60,3,50,34)];
+        [_praiseButton setTitle:@"追捧" withFrame:CGRectMake(80,3,50,34)];
         [_praiseButton setTitleEdgeInsets:UIEdgeInsetsMake(0,25,0,0)];
         [_praiseButton defaultStyle];
         _praiseButton.layer.borderColor = [UIColor clearColor].CGColor;
@@ -118,12 +119,14 @@
 - (void)setSharePostModel:(XXSharePostModel *)postModel
 {
     //set head view
-    [_headView setHeadWithUserId:postModel.userId];
+    [_headView setRoundHeadWithUserId:postModel.userId];
     [_userView setContentModel:postModel];
     _timeLabel.text = postModel.friendAddTime;
     _isDetailState = NO;
     NSString *title = [NSString stringWithFormat:@"追捧(%@)",postModel.praiseCount];
-    [_praiseButton setTitle:title withFrame:CGRectMake(60,3,50,34)];
+    NSString *commentTitle = [NSString stringWithFormat:@"评论(%@)",postModel.commentCount];
+    [_commentButton setTitle:commentTitle withFrame:CGRectMake(80,3,50,34)];
+    [_praiseButton setTitle:title withFrame:CGRectMake(80,3,50,34)];
     if (!_allImages) {
         _allImages = [[NSMutableArray alloc]init];
         DDLogVerbose(@"postImages:%@",postModel.postImages);
@@ -131,9 +134,12 @@
         [imagesArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             NSString *originLink = (NSString*)obj;
             NSRange originRange = [originLink rangeOfString:@"/source"];
-            NSString *bigImageLink = [originLink substringWithRange:NSMakeRange(originRange.location,originLink.length-originRange.location)];
-            NSString *hostBigImageLink = [NSString stringWithFormat:@"%@%@",XXBase_Host_Url,bigImageLink];
-            [_allImages addObject:hostBigImageLink];
+            if(originRange.location != NSNotFound){
+                NSString *bigImageLink = [originLink substringWithRange:NSMakeRange(originRange.location,originLink.length-originRange.location)];
+                NSString *hostBigImageLink = [NSString stringWithFormat:@"%@%@",XXBase_Host_Url,bigImageLink];
+                [_allImages addObject:hostBigImageLink];
+            }
+            
         }];
     }else{
         [_allImages removeAllObjects];
@@ -141,9 +147,11 @@
         [imagesArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             NSString *originLink = (NSString*)obj;
             NSRange originRange = [originLink rangeOfString:@"/source"];
-            NSString *bigImageLink = [originLink substringWithRange:NSMakeRange(originRange.location,originLink.length-originRange.location)];
-            NSString *hostBigImageLink = [NSString stringWithFormat:@"%@%@",XXBase_Host_Url,bigImageLink];
-            [_allImages addObject:hostBigImageLink];
+            if (originRange.location != NSNotFound) {
+                NSString *bigImageLink = [originLink substringWithRange:NSMakeRange(originRange.location,originLink.length-originRange.location)];
+                NSString *hostBigImageLink = [NSString stringWithFormat:@"%@%@",XXBase_Host_Url,bigImageLink];
+                [_allImages addObject:hostBigImageLink];
+            }
         }];
     }
     DDLogVerbose(@"allBigImagesArray :%@",_allImages);
@@ -162,17 +170,17 @@
     //bottom line
     _bottomLineSep.frame = CGRectMake(0,shareTextView.frame.origin.y+shareTextView.frame.size.height+5+9,_bottomLineSep.frame.size.width,1);
     
-    _commentButton.frame = CGRectMake(_commentButton.frame.origin.x,_bottomLineSep.frame.origin.y+_bottomLineSep.frame.size.height+1,_commentButton.frame.size.width,_commentButton.frame.size.height);
+    _commentButton.frame = CGRectMake(_commentButton.frame.origin.x,_bottomLineSep.frame.origin.y+_bottomLineSep.frame.size.height+4,_commentButton.frame.size.width,_commentButton.frame.size.height);
     CGFloat bVerLineOriginx = _commentButton.frame.origin.x+_commentButton.frame.size.width+5;
     _bottomVerLineSep.frame = CGRectMake(bVerLineOriginx,_commentButton.frame.origin.y+2,1,_commentButton.frame.size.height-4);
-    _praiseButton.frame = CGRectMake(_bottomVerLineSep.frame.origin.x+1+5,_bottomLineSep.frame.origin.y+_bottomLineSep.frame.size.height+1,_praiseButton.frame.size.width,_praiseButton.frame.size.height);
+    _praiseButton.frame = CGRectMake(_bottomVerLineSep.frame.origin.x+1+5,_bottomLineSep.frame.origin.y+_bottomLineSep.frame.size.height+4,_praiseButton.frame.size.width,_praiseButton.frame.size.height);
     
 
 }
 
 + (CGFloat)heightWithSharePostModel:(XXSharePostModel *)postModel forContentWidth:(CGFloat)contentWidth
 {
-    CGFloat height = [XXShareBaseCell heightForAttributedText:postModel.attributedContent forWidth:[XXSharePostStyle sharePostContentWidth]] + 10+10+10*2 + 5 + 5+9 + 50 + 50 + 25;
+    CGFloat height = [XXShareBaseCell heightForAttributedText:postModel.attributedContent forWidth:[XXSharePostStyle sharePostContentWidth]] + 10+10+10*2 + 5 + 5+9 + 50 + 50 + 15;
     
     return height;
 }
@@ -188,7 +196,13 @@
 		imageView.delegate = self;
 		
 		// sets the image if there is one
-		imageView.image = [(DTImageTextAttachment *)attachment image];
+        NSRange audioRange = [attachment.hyperLinkURL.absoluteString rangeOfString:XXMIMETypeAudioFormatte];
+        if (audioRange.location!=NSNotFound) {
+        }else{
+            imageView.image = [(DTImageTextAttachment *)attachment image];
+        }
+        
+        
 		
 		// url for deferred loading
 		imageView.url = attachment.contentURL;
@@ -200,15 +214,30 @@
 			// also, this treats an image with a hyperlink by itself because we don't have the GUID of the link parts
 			imageView.userInteractionEnabled = YES;
 			
-			DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:imageView.bounds];
-			button.URL = attachment.hyperLinkURL;
-			button.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
-			button.GUID = attachment.hyperLinkGUID;
+            if (audioRange.location != NSNotFound) {
+                XXRecordButton *recordButton = [[XXRecordButton alloc]initWithFrame:imageView.bounds];
+                recordButton.URL = attachment.hyperLinkURL;
+                _recordBtn = recordButton;
+                DDLogVerbose(@"link url:%@",recordButton.URL.absoluteString);
+                NSString *audioTime = [[attachment.hyperLinkURL.absoluteString componentsSeparatedByString:@"$"]objectAtIndex:1];
+                recordButton.recordTimeLabel.text = audioTime;
+                recordButton.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
+                recordButton.GUID = attachment.hyperLinkGUID;
+                [recordButton setBackgroundImage:[UIImage imageNamed:@"audio_normal.png"] forState:UIControlStateNormal];
+                [recordButton setBackgroundImage:[UIImage imageNamed:@"audio_selected.png"] forState:UIControlStateSelected];
+                [recordButton addTarget:self action:@selector(linkPushed:) forControlEvents:UIControlEventTouchUpInside];
+                [imageView addSubview:recordButton];
+
+            }else{
+                DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:imageView.bounds];
+                button.URL = attachment.hyperLinkURL;
+                button.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
+                button.GUID = attachment.hyperLinkGUID;
+                // use normal push action for opening URL
+                [button addTarget:self action:@selector(linkPushed:) forControlEvents:UIControlEventTouchUpInside];
+                [imageView addSubview:button];
+            }
 			
-			// use normal push action for opening URL
-			[button addTarget:self action:@selector(linkPushed:) forControlEvents:UIControlEventTouchUpInside];
-			
-			[imageView addSubview:button];
 		}
 		
 		return imageView;
@@ -302,10 +331,11 @@
     }
     
     //音频
-    NSRange audioRange = [linkButton.URL.absoluteString rangeOfString:XXMIMETypeAudioFormatte];
+    NSString *subRealAudioString = [[linkButton.URL.absoluteString componentsSeparatedByString:@"$"]objectAtIndex:0];
+    NSRange audioRange = [subRealAudioString rangeOfString:XXMIMETypeAudioFormatte];
     if (audioRange.location!=NSNotFound) {
         
-        NSString *audioUrl = [linkButton.URL.absoluteString substringWithRange:NSMakeRange(audioRange.length,linkButton.URL.absoluteString.length-audioRange.length)];
+        NSString *audioUrl = [subRealAudioString substringWithRange:NSMakeRange(audioRange.length,subRealAudioString.length-audioRange.length)];
         
         NSURL *audioRealURL = [NSURL URLWithString:audioUrl];
         
@@ -346,7 +376,7 @@
     _isDetailState = YES;
     
     //set head view
-    [_headView setHeadWithUserId:postModel.userId];
+    [_headView setRoundHeadWithUserId:postModel.userId];
     [_userView setContentModel:postModel];
     _timeLabel.text = postModel.friendAddTime;
     if (!_allImages) {
@@ -356,9 +386,12 @@
         [imagesArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             NSString *originLink = (NSString*)obj;
             NSRange originRange = [originLink rangeOfString:@"/source"];
-            NSString *bigImageLink = [originLink substringWithRange:NSMakeRange(originRange.location,originLink.length-originRange.location)];
-            NSString *hostBigImageLink = [NSString stringWithFormat:@"%@%@",XXBase_Host_Url,bigImageLink];
-            [_allImages addObject:hostBigImageLink];
+            if (originRange.location != NSNotFound) {
+                NSString *bigImageLink = [originLink substringWithRange:NSMakeRange(originRange.location,originLink.length-originRange.location)];
+                NSString *hostBigImageLink = [NSString stringWithFormat:@"%@%@",XXBase_Host_Url,bigImageLink];
+                [_allImages addObject:hostBigImageLink];
+            }
+            
         }];
     }else{
         [_allImages removeAllObjects];
@@ -366,9 +399,11 @@
         [imagesArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             NSString *originLink = (NSString*)obj;
             NSRange originRange = [originLink rangeOfString:@"/source"];
-            NSString *bigImageLink = [originLink substringWithRange:NSMakeRange(originRange.location,originLink.length-originRange.location)];
-            NSString *hostBigImageLink = [NSString stringWithFormat:@"%@%@",XXBase_Host_Url,bigImageLink];
-            [_allImages addObject:hostBigImageLink];
+            if (originRange.location != NSNotFound) {
+                NSString *bigImageLink = [originLink substringWithRange:NSMakeRange(originRange.location,originLink.length-originRange.location)];
+                NSString *hostBigImageLink = [NSString stringWithFormat:@"%@%@",XXBase_Host_Url,bigImageLink];
+                [_allImages addObject:hostBigImageLink];
+            }
         }];
     }
     
@@ -390,7 +425,7 @@
 }
 + (CGFloat)heightWithSharePostModelForDetail:(XXSharePostModel *)postModel forContentWidth:(CGFloat)contentWidth
 {
-    CGFloat height = [XXShareBaseCell heightForAttributedText:postModel.attributedContent forWidth:[XXSharePostStyle sharePostContentWidth]] + 10+10+50+10+27 ;
+    CGFloat height = [XXShareBaseCell heightForAttributedText:postModel.attributedContent forWidth:[XXSharePostStyle sharePostContentWidth]] + 10+10+50+10+27+3;
     DDLogVerbose(@"detail post height:%f",height);
     return height;
 }
@@ -411,25 +446,49 @@
 }
 - (void)praiseAction
 {
-    _praiseButton.selected = !_praiseButton.selected;
-    
-    NSRange leftTagRange = [_praiseButton.titleLabel.text rangeOfString:@"("];
-    NSRange rightTagRange = [_praiseButton.titleLabel.text rangeOfString:@")"];
-    
-    NSInteger length = rightTagRange.location-leftTagRange.location;
-    NSString *countString = [_praiseButton.titleLabel.text substringWithRange:NSMakeRange(leftTagRange.location+1,length)];
-    NSInteger count = 0;
-    if (_praiseButton.selected) {
-        count = [countString intValue]+1;
+    if ([_headView.userId isEqualToString:[XXUserDataCenter currentLoginUser].userId]) {
+        if (_tapPraiseBlock) {
+            _tapPraiseBlock(self,_praiseButton.selected);
+        }
     }else{
-        count = [countString intValue]-1;
+        _praiseButton.selected = !_praiseButton.selected;
+        
+        NSRange leftTagRange = [_praiseButton.titleLabel.text rangeOfString:@"("];
+        NSRange rightTagRange = [_praiseButton.titleLabel.text rangeOfString:@")"];
+        
+        NSInteger length = rightTagRange.location-leftTagRange.location;
+        NSString *countString = [_praiseButton.titleLabel.text substringWithRange:NSMakeRange(leftTagRange.location+1,length)];
+        NSInteger count = 0;
+        if (_praiseButton.selected) {
+            count = [countString intValue]+1;
+        }else{
+            count = [countString intValue]-1;
+        }
+        NSString *newCountString = [NSString stringWithFormat:@"追捧(%d)",count];
+        [_praiseButton setTitle:newCountString withFrame:_praiseButton.frame];
+        
+        if (_tapPraiseBlock) {
+            _tapPraiseBlock(self,_praiseButton.selected);
+        }
     }
-    NSString *newCountString = [NSString stringWithFormat:@"追捧(%d)",count];
-    [_praiseButton setTitle:newCountString withFrame:_praiseButton.frame];
     
-    if (_tapPraiseBlock) {
-        _tapPraiseBlock(self,_praiseButton.selected);
-    }
+}
+
+- (void)startAudioPlay
+{
+    [_recordBtn startPlay];
+}
+- (void)startLoadingAudio
+{
+    [_recordBtn startLoading];
+}
+- (void)endAudioPlay
+{
+    [_recordBtn endPlay];
+}
+- (void)endLoadingAudio
+{
+    [_recordBtn endLoading];
 }
 
 @end

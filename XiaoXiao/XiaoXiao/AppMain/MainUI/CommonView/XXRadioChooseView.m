@@ -43,12 +43,13 @@ typedef void (^XXRadioChooseItemSelectBlock) (XXRadioChooseItem *selectItem);
         [self addSubview:self.iconImageView];
         
         self.titleLabel = [[UILabel alloc]init];
-        self.titleLabel.frame = CGRectMake(XXRaidoIconWidth+2,0,frame.size.width-XXRaidoIconWidth-2,frame.size.height);
+        self.titleLabel.frame = CGRectMake(XXRaidoIconWidth+8,0,frame.size.width-XXRaidoIconWidth-8,frame.size.height);
         self.titleLabel.textAlignment = NSTextAlignmentLeft;
         self.titleLabel.textColor = self.normalColor;
         self.titleLabel.font = [UIFont systemFontOfSize:XXRaidoTitleFontSize];
         self.titleLabel.text = title;
         self.titleLabel.backgroundColor = [UIColor clearColor];
+        self.titleLabel.font = [UIFont systemFontOfSize:15];
         [self addSubview:self.titleLabel];
         
         [self addTarget:self action:@selector(tapSelectAction) forControlEvents:UIControlEventTouchUpInside];
@@ -89,29 +90,28 @@ typedef void (^XXRadioChooseItemSelectBlock) (XXRadioChooseItem *selectItem);
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame withConfigArray:(NSArray*)configArray withChooseType:(XXRadioChooseType)type
+- (id)initWithFrame:(CGRect)frame withConfigArray:(NSArray*)configArray withChooseType:(XXRadioChooseType)type withDefaultSelectValue:(NSString *)value
 {
     self = [super initWithFrame:frame];
     if (self) {
 #define XXChooseRadioItemBaseTag 9970080
         
-        CGFloat itemWidth = 0.f;
+        
+        CGFloat itemWidth = 90.f;
         CGFloat itemMargin = 30.0f;
         CGFloat itemTopMargin = 30.f;
         NSInteger rowCount = 0;
-        CGFloat rowHeight = 0.f;
+        CGFloat rowHeight = 23.f;
         switch (type) {
             case XXRadioChooseTypeClonumTwo:
             {
-                itemMargin = 60.0f;
-                itemWidth = (frame.size.width-itemMargin)/2;
+                itemMargin = (frame.size.width-2*90)/3;
                 rowCount = configArray.count/2+1;
                 
             }
                 break;
             case XXRadioChooseTypeClonumThree:
             {
-                itemMargin = 40.0f;
                 itemWidth = (frame.size.width-2*itemMargin)/3;
                 rowCount = configArray.count/3+1;
             }
@@ -119,7 +119,7 @@ typedef void (^XXRadioChooseItemSelectBlock) (XXRadioChooseItem *selectItem);
             default:
                 break;
         }
-        rowHeight = (frame.size.height-rowCount*itemTopMargin)/rowCount;
+//        rowHeight = (frame.size.height-rowCount*itemTopMargin)/rowCount;
 
         
         [configArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -129,8 +129,8 @@ typedef void (^XXRadioChooseItemSelectBlock) (XXRadioChooseItem *selectItem);
                 {
                     NSInteger cloumIndex = idx%2;
                     NSInteger rowIndex = (int)((idx)/2);
-                    CGFloat originX = itemMargin*cloumIndex+cloumIndex*itemWidth;
-                    CGFloat originY = itemTopMargin*rowIndex+rowIndex*rowHeight;
+                    CGFloat originX = itemMargin*(cloumIndex+1)+cloumIndex*itemWidth;
+                    CGFloat originY = itemTopMargin*(rowIndex+1)+rowIndex*rowHeight;
                     CGRect itemRect = CGRectMake(originX,originY,itemWidth,rowHeight);
                     
                     NSDictionary *item = (NSDictionary*)obj;
@@ -148,6 +148,14 @@ typedef void (^XXRadioChooseItemSelectBlock) (XXRadioChooseItem *selectItem);
                         self.selectIndex = selectItem.tag-XXChooseRadioItemBaseTag;
                         [selectItem switchSelectState];
                     }];
+                    if ([title isEqualToString:value]) {
+                        self.selectIndex = idx;
+                        [newItem switchSelectState];
+                    }
+                    if (idx==0&&(value==nil||[value isEqualToString:@""])) {
+                        [newItem switchSelectState];
+                        self.selectIndex = 0;
+                    }
                     [self addSubview:newItem];
                 
                 }
@@ -164,6 +172,7 @@ typedef void (^XXRadioChooseItemSelectBlock) (XXRadioChooseItem *selectItem);
                     NSString *normalBack = [item objectForKey:@"normalBack"];
                     NSString *selectBack = [item objectForKey:@"selectBack"];
                     NSString *title = [item objectForKey:@"title"];
+                    
                     UIColor *normalColor = [item objectForKey:@"normalColor"];
                     UIColor *selectColor = [item objectForKey:@"selectColor"];
                     
@@ -175,6 +184,14 @@ typedef void (^XXRadioChooseItemSelectBlock) (XXRadioChooseItem *selectItem);
                         self.selectIndex = selectItem.tag-XXChooseRadioItemBaseTag;
                         [selectItem switchSelectState];
                     }];
+                    if ([title isEqualToString:value]) {
+                        self.selectIndex = idx;
+                        [newItem switchSelectState];
+                    }
+                    if (idx==0&&(value==nil||[value isEqualToString:@""])) {
+                        [newItem switchSelectState];
+                        self.selectIndex = 0;
+                    }
                     [self addSubview:newItem];
                 }
                     break;

@@ -20,8 +20,9 @@ typedef void (^XXRadioChooseViewControllerFinishBlock) (NSString *resultString);
     NSMutableArray    *_titleArray;
     XXRadioChooseViewControllerFinishBlock _finishBlock;
     XXRadioChooseType _chooseType;
+    NSString          *_defaultValue;
 }
-- (id)initWithConfigArray:(NSArray*)configArray withRadioChooseType:(XXRadioChooseType)chooseType withFinishBlock:(XXRadioChooseViewControllerFinishBlock)finishBlock;
+- (id)initWithConfigArray:(NSArray*)configArray withRadioChooseType:(XXRadioChooseType)chooseType withFinishBlock:(XXRadioChooseViewControllerFinishBlock)finishBlock withDefaultValue:(NSString*)value;
 - (NSString*)finialChooseString;
 
 @end

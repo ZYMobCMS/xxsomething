@@ -9,6 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "TKRoundedView.h"
 
+typedef enum {
+    
+    XXBaseCellTypeTop = 0,
+    XXBaseCellTypeMiddel,
+    XXBaseCellTypeBottom,
+    XXBaseCellTypeRoundSingle,
+    XXBaseCellTypeCornerSingle,
+    
+}XXBaseCellType;
+
+
 @interface XXBaseCell : UITableViewCell
 {
     UIImageView *_backgroundImageView;

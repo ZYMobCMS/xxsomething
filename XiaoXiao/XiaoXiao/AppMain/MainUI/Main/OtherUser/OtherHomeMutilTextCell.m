@@ -17,7 +17,7 @@
         // Initialization code
         
         _tagLabel = [[UILabel alloc]init];
-        _tagLabel.frame = CGRectMake(2*_leftMargin+7,5,60,30);
+        _tagLabel.frame = CGRectMake(2*_leftMargin+7,8,180,29);
         _tagLabel.backgroundColor = [UIColor clearColor];
         _tagLabel.font = [UIFont systemFontOfSize:14];
         [self.contentView addSubview:_tagLabel];
@@ -27,11 +27,13 @@
         _contentLabel.frame = CGRectMake(2*_leftMargin,40,self.contentView.frame.size.width-2*_leftMargin-2*_leftMargin,100);
         _contentLabel.backgroundColor = [UIColor clearColor];
         _contentLabel.font = [UIFont systemFontOfSize:12];
+        _contentLabel.numberOfLines = 0;
         [self.contentView addSubview:_contentLabel];
         
         //
         _countLabel = [[UILabel alloc]init];
         _countLabel.frame = CGRectMake(self.contentView.frame.size.width-60-2*_leftMargin,5,60,30);
+        _countLabel.textAlignment = NSTextAlignmentCenter;
         _countLabel.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:_countLabel];
         
@@ -57,7 +59,7 @@
         CGFloat contentWidth = _contentLabel.frame.size.width;
         CGSize contentSize = [content sizeWithFont:[UIFont systemFontOfSize:13] constrainedToSize:CGSizeMake(contentWidth,99999)];
         CGRect oldContentFrame = _contentLabel.frame;
-        _contentLabel.frame = CGRectMake(oldContentFrame.origin.x,oldContentFrame.origin.y,oldContentFrame.size.width,contentSize.height);
+        _contentLabel.frame = CGRectMake(3*_leftMargin,oldContentFrame.origin.y,oldContentFrame.size.width,contentSize.height);
         _contentLabel.text=content;
         CGRect backOldRect = _backgroundImageView.frame;
         _backgroundImageView.frame = CGRectMake(backOldRect.origin.x,backOldRect.origin.y,backOldRect.size.width,contentSize.height+45);

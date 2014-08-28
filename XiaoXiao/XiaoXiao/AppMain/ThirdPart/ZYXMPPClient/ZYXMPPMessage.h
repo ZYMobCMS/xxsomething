@@ -43,6 +43,7 @@ typedef enum {
 @property (nonatomic,strong)NSString *friendAddTime;
 @property (nonatomic,strong)NSString *sendUserSex;
 @property (nonatomic,strong)NSString *sendUserSchoolName;
+@property (nonatomic,strong)NSAttributedString *userHeadAttributedString;
 
 //校校扩展
 @property (nonatomic,strong)NSString *isFirstConversation;//是不是主页留下的关心信息第一次发信息,第一次发信息需要把性别和学校名字信息发过来
@@ -51,5 +52,6 @@ typedef enum {
 
 + (NSString*)conversationIdWithOtherUserId:(NSString*)oId withMyUserId:(NSString*)myId;
 + (NSAttributedString*)attributedContentStringWithMessage:(ZYXMPPMessage*)aMessage;
++ (NSAttributedString*)userHeadAttributedStringWithMessage:(ZYXMPPMessage*)aMessage;
 
 @end

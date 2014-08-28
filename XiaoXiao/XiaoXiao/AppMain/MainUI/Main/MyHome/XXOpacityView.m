@@ -25,10 +25,12 @@
         
         _contentLabel = [[UILabel alloc]init];
         _contentLabel.frame = _backgroundView.frame;
+        _contentLabel.backgroundColor = [UIColor clearColor];
         [self addSubview:_contentLabel];
         
         _detailLabel = [[UILabel alloc]init];
         _detailLabel.frame = CGRectMake(0,10,frame.size.width,frame.size.height-10);
+        _detailLabel.backgroundColor = [UIColor clearColor];
         [self addSubview:_detailLabel];
         
         _iconImageView = [[UIImageView alloc]init];

@@ -14,7 +14,7 @@
 //conversation_id标示对话的id，用谈话对象的id和自己的id加下划线组成，这个是唯一的  别人的Id_自己的Id
 #define XXChatMessageTableCreate @"create table xxchat_table(ID INTEGER PRIMARY KEY autoincrement ,send_user_id text,status text,send_user text,add_time text,audio_time text,body_content text,message_type text,is_readed text,message_id text,conversation_id text,content text)"
 
-#define XXChatContactTableCreate @"create table xxchat_contact(ID INTEGER PRIMARY KEY autoincrement,user_id text,nickname text,grade text,college text,school_roll text,sex text,school_name text,star text)"
+#define XXChatContactTableCreate @"create table xxchat_contact(ID INTEGER PRIMARY KEY autoincrement,user_id text,nickname text,grade text,college text,school_roll text,sex text,school_name text,star text,own_user text)"
 
 static dispatch_queue_t XXChatCacheCenterQueue = nil;
 
@@ -24,6 +24,7 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
     if (self = [super init]) {
         _innerCacheDict = [[NSMutableDictionary alloc]init];
         _innerGlobalNewMessagesDict = [[NSMutableDictionary alloc]init];
+        _msgNewCountCacheDict = [[NSMutableDictionary alloc]init];
         XXChatCacheCenterQueue = dispatch_queue_create("com.zyprosoft.chatQueue", NULL);
         [self openDataBase];
         [self observeAllNewMessages];
@@ -86,14 +87,14 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
 - (void)saveContactUser:(XXUserModel*)contactUser
 {
     //if need save contact user
-    NSString *queryUser = [NSString stringWithFormat:@"select nickname from xxchat_contact where user_id = '%@'",contactUser.userId];
+    NSString *queryUser = [NSString stringWithFormat:@"select nickname from xxchat_contact where user_id = '%@' and own_user='%@' ",contactUser.userId,[XXUserDataCenter currentLoginUser].userId];
     FMResultSet *resultSet = [_innerDataBase executeQuery:queryUser];
     if ([resultSet next]) {
         DDLogVerbose(@"contact user exist");
         return;
     }
     
-    NSString *insertSql = [NSString stringWithFormat:@"insert into xxchat_contact(user_id,nickname,sex,school_name)values('%@','%@','%@','%@')",contactUser.userId,contactUser.nickName,contactUser.sex,contactUser.schoolName];
+    NSString *insertSql = [NSString stringWithFormat:@"insert into xxchat_contact(user_id,nickname,sex,school_name,own_user)values('%@','%@','%@','%@','%@')",contactUser.userId,contactUser.nickName,contactUser.sex,contactUser.schoolName,[XXUserDataCenter currentLoginUser].userId];
     NSError *saveUserError = nil;
     [_innerDataBase update:insertSql withErrorAndBindings:&saveUserError];
     if (saveUserError) {
@@ -102,7 +103,7 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
 }
 - (BOOL)checkContactUserExist:(XXUserModel *)contactUser
 {
-    NSString *queryUser = [NSString stringWithFormat:@"select nickname from xxchat_contact where user_id = '%@'",contactUser.userId];
+    NSString *queryUser = [NSString stringWithFormat:@"select nickname from xxchat_contact where user_id = '%@' and own_user='%@' ",contactUser.userId,[XXUserDataCenter currentLoginUser].userId];
     FMResultSet *resultSet = [_innerDataBase executeQuery:queryUser];
     if ([resultSet next]) {
         DDLogVerbose(@"contact user exist");
@@ -114,13 +115,16 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
 - (void)readLatestMessageListToCacheDict
 {
     //有多少位联系人
-    FMResultSet *s = [_innerDataBase executeQuery:@"select * from xxchat_contact"];
+    NSString *checkQuery = [NSString stringWithFormat:@"select * from xxchat_contact where own_user='%@'",[XXUserDataCenter currentLoginUser].userId];
+    DDLogVerbose(@"find contact Usersql:%@",checkQuery);
+    FMResultSet *s = [_innerDataBase executeQuery:checkQuery];
     NSMutableArray *resultList = [NSMutableArray array];
     DDLogVerbose(@"contact set:%@",s);
     while ([s next]) {
         
         NSString *contactUserId = [s stringForColumn:@"user_id"];
-        NSString *querySql = [NSString stringWithFormat:@"select xxchat_table.*,xxchat_contact.* from xxchat_table inner join xxchat_contact on xxchat_table.send_user_id = xxchat_contact.user_id where send_user_id = '%@' order by ID DESC limit 1",contactUserId];
+        DDLogVerbose(@"find a contactUser:%@",contactUserId);
+        NSString *querySql = [NSString stringWithFormat:@"select xxchat_table.*,xxchat_contact.* from xxchat_table inner join xxchat_contact on xxchat_table.send_user_id = xxchat_contact.user_id where send_user_id = '%@' order by add_time DESC limit 1",contactUserId];
         DDLogVerbose(@"inner query :%@",querySql);
         
         FMResultSet *resultSet = [_innerDataBase executeQuery:querySql];
@@ -138,12 +142,14 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
             existMsg.messageType = [resultSet stringForColumn:@"message_type"];
             existMsg.isReaded = [resultSet stringForColumn:@"is_readed"];
             existMsg.content = [resultSet stringForColumn:@"content"];
-            existMsg.sendUserSex = [resultSet stringForColumn:@"send_user_sex"];
-            existMsg.sendUserSchoolName = [resultSet stringForColumn:@"send_user_school_name"];
+            existMsg.sendUserSex = [resultSet stringForColumn:@"sex"];
+            existMsg.sendUserSchoolName = [resultSet stringForColumn:@"school_name"];
+            existMsg.friendAddTime = [XXCommonUitil getTimeStrWithDateString:existMsg.addTime];
             existMsg.messageAttributedContent = [ZYXMPPMessage attributedContentStringWithMessage:existMsg];
-
+            existMsg.userHeadAttributedString = [ZYXMPPMessage userHeadAttributedStringWithMessage:existMsg];
+            
             [resultList addObject:existMsg];
-            DDLogVerbose(@"read existMsg :%@",existMsg);
+            DDLogVerbose(@"read existMsg :%@",existMsg.addTime);
             [_innerGlobalNewMessagesDict setObject:existMsg forKey:existMsg.conversationId];
         }
     }
@@ -160,9 +166,31 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
     }];
     return resultArray;
 }
+- (NSInteger)findConversationIndexFromLatesMessageListById:(NSString *)conversationId
+{
+    NSMutableArray *resultArray = [NSMutableArray array];
+    __block NSInteger findIndex = -1;
+    __block NSInteger index = 0;
+    [_innerGlobalNewMessagesDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        
+        index++;
+        [resultArray addObject:obj];
+        if ([(NSString *)key isEqualToString:conversationId]) {
+            findIndex = index;
+            *stop = YES;
+        }
+    }];
+    return findIndex;
+}
 
 - (void)saveMessage:(ZYXMPPMessage*)newMessage
 {
+    NSString *checkExist = [NSString stringWithFormat:@"select status from xxchat_table where add_time = '%@'",newMessage.addTime];
+    FMResultSet *checkResult = [_innerDataBase executeQuery:checkExist];
+    if ([checkResult next]) {
+        return;
+    }
+    
     NSString *insertSql = [NSString stringWithFormat:@"insert into xxchat_table(send_user_id,status,send_user,add_time,audio_time,body_content,message_type,is_readed,message_id,conversation_id,content)values('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",newMessage.userId,newMessage.sendStatus,newMessage.user,newMessage.addTime,newMessage.audioTime,newMessage.messageAttributedContent,newMessage.messageType,newMessage.isReaded,newMessage.messageId,newMessage.conversationId,newMessage.content];
     
     NSError *saveMessageError = nil;
@@ -175,12 +203,10 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
 
 - (void)saveSomeMessages:(NSArray*)messages
 {
-    dispatch_async(XXChatCacheCenterQueue, ^{
-        [messages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            ZYXMPPMessage *aMsg = (ZYXMPPMessage*)obj;
-            [self saveMessage:aMsg];
-        }];
-    });
+    [messages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        ZYXMPPMessage *aMsg = (ZYXMPPMessage*)obj;
+        [self saveMessage:aMsg];
+    }];
 }
 
 - (void)updateMessageSendStatusWithMessageId:(NSString *)messageId
@@ -209,7 +235,7 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
     NSString *currenUserId = [XXUserDataCenter currentLoginUser].userId;
     NSString *conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:condition.toUserId withMyUserId:condition.userId];
     
-    NSString *querySql = [NSString stringWithFormat:@"select * from xxchat_table where conversation_id='%@' order by ID DESC limit %d,%d ",conversationId,[condition.pageIndex intValue],[condition.pageSize intValue]];
+    NSString *querySql = [NSString stringWithFormat:@"select * from xxchat_table where conversation_id='%@' order by id DESC limit %d,%d ",conversationId,[condition.pageIndex intValue],[condition.pageSize intValue]];
     
     DDLogVerbose(@"query cache messages sql --->%@",querySql);
     NSMutableArray *modelArray = [NSMutableArray array];
@@ -227,6 +253,7 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
         existMsg.messageType = [resultSet stringForColumn:@"message_type"];
         existMsg.isReaded = [resultSet stringForColumn:@"is_readed"];
         existMsg.content = [resultSet stringForColumn:@"content"];
+        existMsg.friendAddTime = [XXCommonUitil getTimeStrWithDateString:existMsg.addTime];
         existMsg.isFromSelf = [[resultSet stringForColumn:@"send_user_id"]isEqualToString:currenUserId];
         existMsg.messageAttributedContent = [ZYXMPPMessage attributedContentStringWithMessage:existMsg];
         
@@ -249,7 +276,7 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
     }
     NSString *currenUserId = [XXUserDataCenter currentLoginUser].userId;
     NSString *conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:condition.toUserId withMyUserId:condition.userId];
-    NSString *querySql = [NSString stringWithFormat:@"select * from xxchat_table where conversation_id='%@' and is_readed = '0' order by ID DESC",conversationId];
+    NSString *querySql = [NSString stringWithFormat:@"select * from xxchat_table where conversation_id='%@' and is_readed = '0' order by add_time DESC",conversationId];
     
     DDLogVerbose(@"query unread messages sql --->%@",querySql);
     NSMutableArray *modelArray = [NSMutableArray array];
@@ -268,6 +295,7 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
         existMsg.messageType = [resultSet stringForColumn:@"message_type"];
         existMsg.isReaded = [resultSet stringForColumn:@"is_readed"];
         existMsg.content = [resultSet stringForColumn:@"content"];
+        existMsg.friendAddTime = [XXCommonUitil getTimeStrWithDateString:existMsg.addTime];
         existMsg.isFromSelf = [[resultSet stringForColumn:@"send_user_id"]isEqualToString:currenUserId];
         
         [modelArray addObject:existMsg];
@@ -289,7 +317,7 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
     }  
     [newConversation addObject:newMessage];
     [_innerCacheDict setObject:newConversation forKey:newMessage.conversationId];
-    DDLogVerbose(@"cache dict save message success:%@",newConversation);
+    DDLogVerbose(@"cache dict save message success:%@",newMessage.audioTime);
 }
 - (void)saveSomeMessagesForCacheDict:(NSArray *)messages
 {
@@ -330,6 +358,27 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
     [self performSelector:@selector(removeCacheDictMessagesForCoversation:) withObject:condition afterDelay:0.1f];
     
 }
+- (void)persistConversationWithOtherUserId:(NSString*)otherUserId withMyUserId:(NSString*)myUserId
+{
+    NSString *conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:otherUserId withMyUserId:myUserId];
+    NSMutableArray *conversationMessages = [_innerCacheDict objectForKey:conversationId];
+    DDLogVerbose(@"will persist conversation:%@",conversationMessages);
+    [self saveSomeMessages:conversationMessages];
+    
+    XXConditionModel *condition = [[XXConditionModel alloc]init];
+    condition.toUserId = otherUserId;
+    condition.userId = myUserId;
+    [self performSelector:@selector(removeCacheDictMessagesForCoversation:) withObject:condition afterDelay:0.1f];
+    
+}
+- (void)persistAllConversationNow
+{
+    [_innerGlobalNewMessagesDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+       
+        NSArray *sepratorConversationArr = [(NSString*)key componentsSeparatedByString:@"_"];
+        [self persistConversationWithOtherUserId:[sepratorConversationArr objectAtIndex:0] withMyUserId:[sepratorConversationArr objectAtIndex:1]];
+    }];
+}
 
 - (NSArray*)messagesFromCacheDictForConversationCondition:(XXConditionModel *)condition
 {
@@ -349,6 +398,7 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
         if (resultArray) {
             DDLogVerbose(@"find cache Msgs:%@",resultArray);
             NSString *conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:condition.toUserId withMyUserId:condition.userId];
+            DDLogVerbose(@"find converstion id:%@",conversationId);
             NSMutableArray *conversationMsgs = [NSMutableArray arrayWithArray:resultArray];
             [_innerCacheDict setObject:conversationMsgs forKey:conversationId];
             
@@ -368,19 +418,23 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
     _happeningCoversationCondition.userId = condition.userId;
     _happeningCoversationCondition.toUserId = condition.toUserId;
 }
+- (void)clearHappeningConversation
+{
+    _happeningCoversationCondition.userId = @"";
+    _happeningCoversationCondition.toUserId = @"";
+}
 
 - (void)observeAllNewMessages
 {
     [[ZYXMPPClient shareClient]setDidRecievedMessage:^(ZYXMPPMessage *newMessage) {
         
         //是不是第一次收到这个人的消息
-        if (newMessage.sendUserSex||newMessage.sendUserSchoolName) {
-            XXUserModel *newUser = [[XXUserModel alloc]init];
-            newUser.userId = newMessage.userId;
-            newUser.sex = newMessage.sendUserSex;
-            newUser.schoolName = newMessage.sendUserSchoolName;
-            [[XXChatCacheCenter shareCenter]saveContactUser:newUser];
-        }
+        XXUserModel *newUser = [[XXUserModel alloc]init];
+        newUser.userId = newMessage.userId;
+        newUser.sex = newMessage.sendUserSex;
+        newUser.schoolName = newMessage.sendUserSchoolName;
+        newMessage.messageAttributedContent = [ZYXMPPMessage attributedContentStringWithMessage:newMessage];
+        [[XXChatCacheCenter shareCenter]saveContactUser:newUser];
         
         //是否在聊天
         if ([newMessage.conversationId isEqualToString:[ZYXMPPMessage conversationIdWithOtherUserId:_happeningCoversationCondition.toUserId withMyUserId:_happeningCoversationCondition.userId]]) {
@@ -391,14 +445,34 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
         [self saveMessage:newMessage];//保存消息
 
         //保存最新的一条聊天信息，并且添加联系人信息
-        XXUserModel *contactUserInfo = [self getContactUserInfoWithUserId:newMessage.userId];
-        if (contactUserInfo) {
-            newMessage.sendUserSex = contactUserInfo.sex;
-            newMessage.sendUserSchoolName = contactUserInfo.schoolName;
+        if (![newMessage.conversationId isEqualToString:[ZYXMPPMessage conversationIdWithOtherUserId:_happeningCoversationCondition.toUserId withMyUserId:_happeningCoversationCondition.userId]]) {
+            if (![_msgNewCountCacheDict objectForKey:newMessage.conversationId]) {
+                [_msgNewCountCacheDict setObject:@"1" forKey:newMessage.conversationId];
+            }else{
+                
+                NSInteger oldNewMsgCount = [[_msgNewCountCacheDict objectForKey:newMessage.conversationId]intValue];
+                NSString *newMsgCount = [NSString stringWithFormat:@"%d",oldNewMsgCount+1];
+                [_msgNewCountCacheDict setObject:newMsgCount forKey:newMessage.conversationId];
+            }
+            _currentUnReadMsgCount++;
+        }else{
+            [_msgNewCountCacheDict setObject:@"0" forKey:newMessage.conversationId];
         }
+        
         [_innerGlobalNewMessagesDict setObject:newMessage forKey:newMessage.conversationId];
+        [[NSNotificationCenter defaultCenter]postNotificationName:XXUserHasRecievedNewMsgNoti object:newMessage.conversationId];
+        [[XXCommonUitil appMainTabController]showMsgRemind];//remind
         
     } forReciever:self];
+}
+
+- (NSString*)getConversationNewMsgCount:(NSString *)conversationId
+{
+    return [_msgNewCountCacheDict objectForKey:conversationId];
+}
+- (void)setConvesationNewMsgHasRead:(NSString *)conversationId
+{
+    [_msgNewCountCacheDict setObject:@"0" forKey:conversationId];
 }
 
 - (XXUserModel*)getContactUserInfoWithUserId:(NSString *)userId
@@ -417,6 +491,48 @@ static dispatch_queue_t XXChatCacheCenterQueue = nil;
         
     }else{
         return nil;
+    }
+}
+- (NSInteger)getTotalUnReadMsgCount
+{
+    return _currentUnReadMsgCount;
+}
+- (void)reduceUnReadMessgeCount:(NSInteger)hasReadCount
+{
+    _currentUnReadMsgCount = _currentUnReadMsgCount -hasReadCount;
+}
+- (NSInteger)getUnReadMessagesCountByConversationId:(NSString *)conversationId
+{
+    return [[_msgNewCountCacheDict objectForKey:conversationId]intValue];
+}
+- (void)clearLastUserDataNow
+{
+    [_innerCacheDict removeAllObjects];
+    [_innerGlobalNewMessagesDict removeAllObjects];
+    [_msgNewCountCacheDict removeAllObjects];
+}
+
+//delete conversation
+- (BOOL)deleteConversationByUserId:(NSString*)otherUserId
+{
+    //delete contact 
+    NSString *deleteContactUser = [NSString stringWithFormat:@"delete from xxchat_contact where user_id = '%@' and own_user='%@'",otherUserId,[XXUserDataCenter currentLoginUser].userId];
+    
+    NSString *conversationId = [ZYXMPPMessage conversationIdWithOtherUserId:otherUserId withMyUserId:[XXUserDataCenter currentLoginUser].userId];
+    
+    [_innerGlobalNewMessagesDict removeObjectForKey:conversationId];
+    [_msgNewCountCacheDict removeObjectForKey:conversationId];
+    XXConditionModel *condition = [[XXConditionModel alloc]init];
+    condition.userId = [XXUserDataCenter currentLoginUser].userId;
+    condition.toUserId = otherUserId;
+    [self persistMessagesWithCondition:condition];
+    
+    NSError *deleteUserError = nil;
+    [_innerDataBase update:deleteContactUser withErrorAndBindings:&deleteUserError];
+    if (deleteUserError) {
+        return NO;
+    }else{
+        return YES;
     }
 }
 

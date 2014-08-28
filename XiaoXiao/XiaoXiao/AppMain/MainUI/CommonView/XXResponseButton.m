@@ -48,7 +48,7 @@
 }
 - (void)setResponseButtonTapped:(XXResponseButtonDidTapBlock)tapBlock
 {
-    _tapBlock = [tapBlock copy];
+    _tapBlock = tapBlock;
 }
 
 @end

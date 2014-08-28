@@ -185,7 +185,6 @@
 }
 - (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
 {
-    
     _recordStop = YES;
     if (flag) {
         NSLog(@"record success!");
@@ -246,6 +245,9 @@
     if (![shipList objectForKey:remoteAMRUrl]) {
         
         DDLogVerbose(@"no amr cache!");
+        if ([self.delegate respondsToSelector:@selector(audioManagerDidStartDownload)]) {
+            [self.delegate audioManagerDidStartDownload];
+        }
         //
         NSString *fileName = [self urlToFileName:remoteAMRUrl];
         NSString *cachePath = [self buildCachePathForFileName:fileName];
@@ -253,6 +255,9 @@
             [self saveRemoteAMRToWav:cachePath withRemoteUrl:remoteAMRUrl whileFinishShouldPlay:YES];
         } withFaild:^(NSString *faildMsg) {
             [SVProgressHUD showErrorWithStatus:faildMsg];
+            if ([self.delegate respondsToSelector:@selector(audioManagerDidDownloadFaild)]) {
+                [self.delegate audioManagerDidDownloadFaild];
+            }
         }];
         
     }else{
@@ -263,15 +268,30 @@
 }
 - (void)audioManagerPlayLocalWavWithPath:(NSString *)filePath
 {
+    DDLogVerbose(@"audio will Play local File :%@",filePath);
+    
     [self audioManagerPlayLocalWav:filePath];
 }
 
 - (void)audioManagerPlayLocalWav:(NSString*)filePath
 {
     self.audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:[NSURL URLWithString:filePath] error:nil];
+    self.audioPlayer.delegate = self;
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     [audioSession setCategory:AVAudioSessionCategoryPlayback error:nil];
+    if ([self.delegate respondsToSelector:@selector(audioManagerDidStartPlay)]) {
+        [self.delegate audioManagerDidStartPlay];
+    }
     [self.audioPlayer play];
+}
+- (void)audioManagerEndPlayNow
+{
+    if ([self.audioPlayer isPlaying]) {
+        [self.audioPlayer stop];
+        if ([self.delegate respondsToSelector:@selector(audioManagerDidEndPlay)]) {
+            [self.delegate audioManagerDidEndPlay];
+        }
+    }
 }
 
 - (void)saveLocalAudioFile:(NSString *)localFilePath forRemoteAMRFile:(NSString *)remoteAMRUrl
@@ -297,13 +317,16 @@
     NSString *cachePath = [self buildCachePathForFileName:amrFileName];
     
     [VoiceConverter amrToWav:downloadAMRFilePath wavSavePath:cachePath];
+    if ([self.delegate respondsToSelector:@selector(audioManagerDidFinishDownload)]) {
+        [self.delegate audioManagerDidFinishDownload];
+    }
     
     //建立关系
     NSData *downloadAmrData = [NSData dataWithContentsOfFile:downloadAMRFilePath];
     DDLogVerbose(@"download amr data length:%d",downloadAmrData.length);
     DDLogVerbose(@"save remoteAMRUrl :%@ forLocal:%@",remoteAMRUrl,cachePath);
     
-    [shipList setObject:cachePath forKey:remoteAMRUrl];
+//    [shipList setObject:cachePath forKey:remoteAMRUrl];//没有这个映射关系就没法缓存语音数据
     [[NSUserDefaults standardUserDefaults]setObject:shipList forKey:XXCacheAudioForRemoteAudioRelationShipListUDFKey];
     [[NSUserDefaults standardUserDefaults]synchronize];
     
@@ -319,6 +342,26 @@
 - (void)audioManagerStartRecordWithFinishRecordAction
 {
     
+}
+
+#pragma mark - audio player play delegate
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+    if ([self.delegate respondsToSelector:@selector(audioManagerDidEndPlay)]) {
+        [self.delegate audioManagerDidEndPlay];
+    }
+}
+- (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError *)error
+{
+    if ([self.delegate respondsToSelector:@selector(audioManagerDidEndPlay)]) {
+        [self.delegate audioManagerDidEndPlay];
+    }
+}
+- (void)audioPlayerBeginInterruption:(AVAudioPlayer *)player
+{
+    if ([self.delegate respondsToSelector:@selector(audioManagerDidEndPlay)]) {
+        [self.delegate audioManagerDidEndPlay];
+    }
 }
 
 

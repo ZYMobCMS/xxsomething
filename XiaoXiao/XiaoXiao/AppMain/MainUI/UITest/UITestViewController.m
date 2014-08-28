@@ -36,7 +36,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [XXSimpleAudio playRefreshEffect];
     });
-    
+
     NSString *commonContent =@"美女,一般解释为容貌美丽的女子。营养专家提出的营养学上的美女定义，是从脸蛋比例、体质指数、健康指标和发育程度等方面进行要求，更倾重于一种健康的标准。古代关于美女的形容词和诗词歌赋众多[亲亲]，形成了丰富的美学资料［可怜］。";
     NSString *audio = @"http://pan.baidu.com/share/link?shareid=434720&uk=3157602687";
     NSString *image0 = @"http://a.hiphotos.baidu.com/image/w%3D2048/sign=15e98ef2a586c91708035539fd0571cf/0824ab18972bd407b5d9b9f779899e510fb30999.jpg";

@@ -9,6 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "CTAssetsPickerController.h"
 
+@class XXPhotoChooseViewController;
+@protocol XXPhotoChooseViewControllerDelegate <NSObject>
+
+- (void)photoChooseViewController:(XXPhotoChooseViewController*)aChooseController didFinishChooseImages:(NSArray*)resultImages;
+- (void)photoChooseViewControllerDidSelectNextStep:(XXPhotoChooseViewController*)aChooseController;
+
+@end
+
 typedef enum{
     XXPhotoChooseTypeSingle=0,
     XXPhotoChooseTypeMutil,
@@ -32,6 +40,7 @@ typedef void (^XXPhotoChooseViewControllerFinishChooseBlock) (NSArray *resultIma
 @property (nonatomic, assign) BOOL needCrop;
 @property (nonatomic, assign) BOOL needFilter;
 @property (nonatomic, assign) BOOL isSetHeadImage;
+@property (nonatomic, weak)id<XXPhotoChooseViewControllerDelegate> delegate;
 
 - (id)initWithSinglePhotoChooseFinishAction:(XXPhotoChooseViewControllerFinishChooseBlock)chooseBlock;
 - (id)initWithMutilPhotoChooseWithMaxChooseNumber:(NSInteger)maxNumber withFinishBlock:(XXPhotoChooseViewControllerFinishChooseBlock)chooseBlock;

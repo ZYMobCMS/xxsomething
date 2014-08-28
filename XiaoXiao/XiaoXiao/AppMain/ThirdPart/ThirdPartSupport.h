@@ -14,6 +14,7 @@
 #import "DDTTYLogger.h"
 #import "DTCoreText.h"
 #import "MCSoundBoard.h"
+#import "JSBadgeView.h"
 #import "UIImage+animatedGIF.h"
 #import "WSAssetPicker.h"
 #import "SVProgressHUD.h"

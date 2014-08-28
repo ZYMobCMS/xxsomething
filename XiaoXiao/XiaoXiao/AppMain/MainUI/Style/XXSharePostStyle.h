@@ -25,4 +25,5 @@
 + (NSString*)sharePostImagesSeprator;
 + (CGFloat)sharePostContentWidth;
 
+
 @end

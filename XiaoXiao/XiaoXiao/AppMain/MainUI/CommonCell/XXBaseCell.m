@@ -61,6 +61,7 @@
     [self bringSubviewToFront:self.customAccessoryView];
     
     CGRect oldFrame = _backgroundImageView.frame;
+    CGRect newFrame = CGRectZero;
     UIImage *background = nil;
     UIImage *selecteBackground = nil;
     switch (cellType) {
@@ -69,7 +70,7 @@
             background = [[UIImage imageNamed:@"cell_top_normal.png"]makeStretchForCellTop];
             selecteBackground = [[UIImage imageNamed:@"cell_top_selected.png"]makeStretchForCellTop];
             
-            oldFrame = CGRectMake(oldFrame.origin.x,oldFrame.origin.y,oldFrame.size.width,cellHeight);
+            newFrame = CGRectMake(oldFrame.origin.x,oldFrame.origin.y,oldFrame.size.width,cellHeight);
         }
             break;
         case XXBaseCellTypeMiddel:
@@ -77,7 +78,7 @@
             background = [[UIImage imageNamed:@"cell_middle_normal.png"]makeStretchForCellMiddle];
             selecteBackground = [[UIImage imageNamed:@"cell_middle_selected.png"]makeStretchForCellMiddle];
             
-            oldFrame = CGRectMake(oldFrame.origin.x,oldFrame.origin.y,oldFrame.size.width,cellHeight);
+            newFrame = CGRectMake(oldFrame.origin.x,oldFrame.origin.y,oldFrame.size.width,cellHeight);
             
         }
             break;
@@ -86,7 +87,7 @@
             background = [[UIImage imageNamed:@"cell_bottom_normal.png"]makeStretchForCellBottom];
             selecteBackground = [[UIImage imageNamed:@"cell_bottom_selected.png"]makeStretchForCellBottom];
             
-            oldFrame = CGRectMake(oldFrame.origin.x,oldFrame.origin.y,oldFrame.size.width,cellHeight);
+            newFrame = CGRectMake(oldFrame.origin.x,oldFrame.origin.y,oldFrame.size.width,cellHeight);
             
         }
             break;
@@ -94,19 +95,25 @@
         {
             background = [[UIImage imageNamed:@"single_round_cell_normal.png"]makeStretchForSingleRoundCell];
             selecteBackground = [[UIImage imageNamed:@"single_round_cell_selected.png"]makeStretchForSingleRoundCell];
+            
+            newFrame = CGRectMake(oldFrame.origin.x,oldFrame.origin.y,oldFrame.size.width,cellHeight);
+
         }
             break;
         case XXBaseCellTypeCornerSingle:
         {
             background = [[UIImage imageNamed:@"single_corner_cell_normal.png"]makeStretchForSingleCornerCell];
             selecteBackground = [[UIImage imageNamed:@"single_corner_cell_selected.png"]makeStretchForSingleCornerCell];
+            
+            newFrame = CGRectMake(oldFrame.origin.x,oldFrame.origin.y,oldFrame.size.width,cellHeight);
+
         }
             break;
         default:
             break;
     }
+    _backgroundImageView.frame = newFrame;
     _backgroundImageView.highlightedImage = selecteBackground;
-    _backgroundImageView.frame = oldFrame;
     _backgroundImageView.image = background;
 
 }

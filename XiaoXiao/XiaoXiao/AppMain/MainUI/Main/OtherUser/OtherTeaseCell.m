@@ -74,9 +74,9 @@
 
 - (void)setTeaseImages:(NSArray *)teaseImages
 {
-    NSString *tease0 = [teaseImages objectAtIndex:0];
-    NSString *tease1 = [teaseImages objectAtIndex:1];
-    NSString *tease2 = [teaseImages objectAtIndex:2];
+    NSString *tease0 = [[teaseImages objectAtIndex:0] stringByAppendingString:@".gif"];
+    NSString *tease1 = [[teaseImages objectAtIndex:1] stringByAppendingString:@".gif"];
+    NSString *tease2 = [[teaseImages objectAtIndex:2] stringByAppendingString:@".gif"];
     
     _teaseLeftImgView.image = [UIImage animatedImageWithAnimatedGIFData:[XXFileUitil loadDataFromBundleForName:tease0]];
     _teaseMiddelImgView.image = [UIImage animatedImageWithAnimatedGIFData:[XXFileUitil loadDataFromBundleForName:tease1]];

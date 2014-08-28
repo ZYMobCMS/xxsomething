@@ -32,12 +32,19 @@
         _tagLabel.frame= CGRectMake(2*_leftMargin+19+_innerMargin+_innerMargin,_topMargin,80,35);
         [self.contentView addSubview:_tagLabel];
         
+        //remind icon
+        _remindIconImgView = [[UIImageView alloc]init];
+        _remindIconImgView.frame = CGRectMake(110,20, 9.5,9.5);
+        _remindIconImgView.image = [UIImage imageNamed:@"msg_remind.png"];
+        [self.contentView addSubview:_remindIconImgView];
+        _remindIconImgView.hidden = YES;
+        
         //
         _detailTagLabel = [[UILabel alloc]init];
         _detailTagLabel.textAlignment = NSTextAlignmentRight;
-        _detailTagLabel.font = [UIFont systemFontOfSize:11];
-        _detailTagLabel.textColor = [UIColor lightGrayColor];
-        _detailTagLabel.frame = CGRectMake(_indicatorView.frame.origin.x-_innerMargin-90,_topMargin,90,35);
+        _detailTagLabel.font = [UIFont systemFontOfSize:13];
+        _detailTagLabel.textColor = [XXCommonStyle xxThemeButtonGrayTitleColor];
+        _detailTagLabel.frame = CGRectMake(self.customAccessoryView.frame.origin.x-_innerMargin-150,_topMargin,150,35);
         _detailTagLabel.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:_detailTagLabel];
         
@@ -56,6 +63,7 @@
     _iconImageView.image = [UIImage imageNamed:[contentDict objectForKey:@"icon"]];
     _tagLabel.text = [contentDict objectForKey:@"title"];
     _detailTagLabel.text = [contentDict objectForKey:@"count"];
+    _remindIconImgView.hidden = ![[contentDict objectForKey:@"remind"]boolValue];
 }
 
 - (void)setCellType:(XXBaseCellType)cellType withBottomMargin:(CGFloat)aMargin withCellHeight:(CGFloat)cellHeight

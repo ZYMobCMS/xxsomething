@@ -29,4 +29,10 @@
 - (UIImage*)makeStretchForSegmentMiddle;
 - (UIImage*)makeStretchForSegmentRight;
 
+- (UIImage*)makeStretchForNavigationBar;
+- (UIImage*)makeStretchForNavigationItem;
+- (UIImage*)makeStretchForSearchBar;
+
+- (UIImage*)t:(CGFloat)top l:(CGFloat)left b:(CGFloat)bottom r:(CGFloat)right;
+
 @end

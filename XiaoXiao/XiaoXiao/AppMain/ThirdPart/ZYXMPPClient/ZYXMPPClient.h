@@ -118,6 +118,9 @@ typedef void (^ZYXMPPClientDidRecieveInviteAction) (BOOL resultState,NSString *m
 - (NSManagedObjectContext *)managedObjectContext_roster;
 - (NSManagedObjectContext *)managedObjectContext_capabilities;
 
+//退出当前的登陆的xmpp用户
+- (void)loginOutCurrentClient;
+
 //默认配置
 - (void)clientDefaultConfig;
 - (NSString*)myChatID;

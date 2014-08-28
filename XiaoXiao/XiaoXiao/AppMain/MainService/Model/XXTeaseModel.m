@@ -33,10 +33,12 @@
         self.grade = [[contentDict objectForKey:@"user"]objectForKey:@"grade"];
         self.schoolName = [[contentDict objectForKey:@"user"]objectForKey:@"school_name"];
         self.sex = [[contentDict objectForKey:@"user"]objectForKey:@"sex"];
+        self.sendFromUser = [[XXUserModel alloc]initWithContentDict:[contentDict objectForKey:@"user"]];
         
         //解析内容字段
-        NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:[[contentDict objectForKey:@"content"]dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:nil];
-        self.postEmoji = [dictionary objectForKey:XXTeasePostJSONEmojiKey];
+//        NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:[[contentDict objectForKey:@"content"]dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:nil];
+        self.postEmoji = [contentDict objectForKey:@"content"];
+        DDLogVerbose(@"tease emoji:%@",self.postEmoji);
         self.userHeadContent = [XXSharePostUserView  useHeadAttributedStringWithTeaseModel:self];
         
         

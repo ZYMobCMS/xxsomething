@@ -7,6 +7,7 @@
 //
 
 #import "XXChatToolBar.h"
+#import "UIButton+XXStyle.h"
 
 static inline UIViewAnimationOptions AnimationOptionsForCurve(UIViewAnimationCurve curve)
 {
@@ -59,10 +60,10 @@ static inline UIViewAnimationOptions AnimationOptionsForCurve(UIViewAnimationCur
         [_recordButton setTitle:@"松开结束" forState:UIControlStateSelected];
         [_recordButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
         [_recordButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        
         [_recordButton addTarget:self action:@selector(startRecord) forControlEvents:UIControlEventTouchDown];
         [_recordButton addTarget:self action:@selector(endRecord) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_recordButton];
+        _recordButton.hidden = YES;
         
         //input text view
         _inputBackImageView = [[UIImageView alloc]init];
@@ -75,8 +76,9 @@ static inline UIViewAnimationOptions AnimationOptionsForCurve(UIViewAnimationCur
         
         //input text
         _inputTextView = [[UITextView alloc]init];
-        _inputTextView.frame = CGRectMake(46,6,187,37);
+        _inputTextView.frame = CGRectMake(46,10,187,31);
         _inputTextView.returnKeyType = UIReturnKeySend;
+        _inputTextView.font = [UIFont systemFontOfSize:12.5];
         _inputTextView.delegate = self;
         _inputTextView.backgroundColor = [UIColor clearColor];
         [self addSubview:_inputTextView];
@@ -87,6 +89,8 @@ static inline UIViewAnimationOptions AnimationOptionsForCurve(UIViewAnimationCur
         [_emojiButton defaultStyle];
         _emojiButton.layer.borderWidth = 2.0f;
         [_emojiButton setNormalIconImage:@"chat_bar_emoji.png" withSelectedImage:@"chat_bar_emoji.png" withFrame:CGRectMake(7.25,7.25,22.5,22.5)];
+        [_emojiButton setBackgroundImage:[_emojiButton buttonImageFromColor:[UIColor colorWithRed:235/255.0 green:235/255.0 blue:235/255.0 alpha:1]] forState:UIControlStateSelected];
+        
         [_emojiButton addTarget:self action:@selector(tapOnEmoji) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_emojiButton];
         
@@ -96,10 +100,16 @@ static inline UIViewAnimationOptions AnimationOptionsForCurve(UIViewAnimationCur
         [_imageButton defaultStyle];
         _imageButton.layer.borderWidth = 2.0f;
         [_imageButton setNormalIconImage:@"chat_bar_image.png" withSelectedImage:@"chat_bar_image.png" withFrame:CGRectMake(7.5,9.5,22,18)];
+        [_imageButton addTarget:self action:@selector(tapOnImageButton) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_imageButton];
         
         //emoji choose view
         _emojiChooseView = [[XXEmojiChooseView alloc]initWithFrame:CGRectMake(0,_controlHeight,frame.size.width,216)];
+        WeakObj(_inputTextView) weakInput = _inputTextView;
+        [_emojiChooseView setEmojiViewDidSelectBlock:^(NSString *emoji) {
+            NSString *oldString = weakInput.text;
+            weakInput.text = [NSString stringWithFormat:@"%@[%@]",oldString,emoji];
+        }];
         [self addSubview:_emojiChooseView];
         
         [self adjustFrameForCurrentType];
@@ -141,15 +151,42 @@ static inline UIViewAnimationOptions AnimationOptionsForCurve(UIViewAnimationCur
 }
 - (void)tapOnEmoji
 {
-    _state = XXChatToolBarStateEmoji;
     
-    [_inputTextView resignFirstResponder];
-    
-    [self animationShowEmojiPanel];
-    
-    if (_emojiBlock) {
-        _emojiBlock(_isMoved);
+    if (_state==XXChatToolBarStateAudio) {
+        
+        [self switchInputMode:_textButton];
+        [_inputTextView resignFirstResponder];
+        _state = XXChatToolBarStateEmoji;
+        _isMoved = NO;
+        
+        [self animationShowEmojiPanel];
+        
+        if (_emojiBlock) {
+            _emojiBlock(_isMoved);
+        }
+        _emojiButton.selected = YES;
+        
+    }else if(_state==XXChatToolBarStateText) {
+        [self switchInputMode:_textButton];
+        [_inputTextView resignFirstResponder];
+        _isMoved = NO;
+        _state = XXChatToolBarStateEmoji;
+        
+        [self animationShowEmojiPanel];
+        
+        if (_emojiBlock) {
+            _emojiBlock(_isMoved);
+        }
+        _emojiButton.selected = YES;
+
+    }else if (_state==XXChatToolBarStateEmoji){
+        
+        [_inputTextView becomeFirstResponder];
+        _state = XXChatToolBarStateText;
+        _emojiButton.selected = NO;
+
     }
+
 }
 - (void)setChatToolBarEmoji:(XXChatToolBarDidChooseEmoji)emojiBlock
 {
@@ -165,8 +202,9 @@ static inline UIViewAnimationOptions AnimationOptionsForCurve(UIViewAnimationCur
         _textButton.hidden = YES;
         _audioButton.hidden = NO;
         _state = XXChatToolBarStateText;
+        [_inputTextView becomeFirstResponder];
         _isMoved = YES;
-
+        
     }
     if (sender == _audioButton) {
         _inputBackImageView.hidden = YES;
@@ -177,8 +215,10 @@ static inline UIViewAnimationOptions AnimationOptionsForCurve(UIViewAnimationCur
         _audioButton.hidden = YES;
         _state = XXChatToolBarStateAudio;
         _isMoved = NO;
-
+        
     }
+    _emojiButton.selected = NO;
+    
 }
 
 - (void)adjustFrameForCurrentType
@@ -197,10 +237,16 @@ static inline UIViewAnimationOptions AnimationOptionsForCurve(UIViewAnimationCur
         case XXChatToolBarComment:
         {
             _imageButton.hidden = YES;
-            _inputBackImageView.frame = CGRectMake(_inputBackImageView.frame.origin.x,0,_inputBackImageView.frame.size.width+49,_inputBackImageView.frame.size.height);
-            _inputTextView.frame = CGRectMake(_inputTextView.frame.origin.x,0,_inputTextView.frame.size.width+49,_inputTextView.frame.size.height);
+            CGRect oldInputRect = _inputBackImageView.frame;
+            CGRect oldInpuTextRect = _inputTextView.frame;
+            CGRect oldEmojiButtonRect = _emojiButton.frame;
+            
+            _inputBackImageView.frame = CGRectMake(_inputBackImageView.frame.origin.x,oldInputRect.origin.y,_inputBackImageView.frame.size.width+44,_inputBackImageView.frame.size.height);
+            
+            _inputTextView.frame = CGRectMake(_inputTextView.frame.origin.x,oldInpuTextRect.origin.y,_inputTextView.frame.size.width+40,_inputTextView.frame.size.height);
             _recordButton.frame = _inputBackImageView.frame;
-            _emojiButton.frame = CGRectMake(_emojiButton.frame.origin.x+49,0,_emojiButton.frame.size.width,_emojiButton.frame.size.height);
+            
+            _emojiButton.frame = CGRectMake(_emojiButton.frame.origin.x+44,oldEmojiButtonRect.origin.y,_emojiButton.frame.size.width,_emojiButton.frame.size.height);
         }
             break;
         default:
@@ -239,6 +285,9 @@ static inline UIViewAnimationOptions AnimationOptionsForCurve(UIViewAnimationCur
 #pragma mark - textView delegate
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
+    if (_state==XXChatToolBarStateEmoji) {
+        _emojiButton.selected = !_emojiButton.selected;
+    }
     _state = XXChatToolBarStateText;
     return YES;
 }
@@ -254,6 +303,7 @@ static inline UIViewAnimationOptions AnimationOptionsForCurve(UIViewAnimationCur
         }
         if (_sendBlock) {
             _sendBlock(_inputTextView.text);
+            _inputTextView.text = @"";
         }
         return NO;
     }
@@ -359,6 +409,18 @@ static inline UIViewAnimationOptions AnimationOptionsForCurve(UIViewAnimationCur
 - (void)keyboardDidChange:(NSNotification*)noti
 {
     
+}
+
+- (void)clearContentText
+{
+    _inputTextView.text = @"";
+}
+
+- (void)tapOnImageButton
+{
+    if ([self.delegate respondsToSelector:@selector(chatToolBarDidTapOnImageButton)]) {
+        [self.delegate chatToolBarDidTapOnImageButton];
+    }
 }
 
 @end

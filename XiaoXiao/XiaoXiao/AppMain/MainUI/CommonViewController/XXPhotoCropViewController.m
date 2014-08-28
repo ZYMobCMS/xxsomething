@@ -27,7 +27,7 @@
     if (self = [super init]) {
         
         self.currentImage = originImage;
-        _finishBlock = [finishBlock copy];
+        _finishBlock = finishBlock;
     }
     return self;
 }
@@ -39,6 +39,8 @@
     self.title = @"裁剪图片";
     [XXCommonUitil setCommonNavigationReturnItemForViewController:self];
     
+    CGFloat totalHeight = XXNavContentHeight-44;
+    
     //visiableHeight
     if (self.visiableHeight==0) {
         
@@ -48,9 +50,9 @@
         if (bottomVisiableHeigh==0) {
             bottomVisiableHeigh = 120;
         }
-        self.visiableHeight = self.view.frame.size.height-topVisiableHeight-bottomVisiableHeigh-44;
+        self.visiableHeight = totalHeight-topVisiableHeight-bottomVisiableHeigh;
     }else{
-        CGFloat coverHeight = self.view.frame.size.height-44-self.visiableHeight;
+        CGFloat coverHeight = totalHeight-self.visiableHeight;
         topVisiableHeight = coverHeight * 2/5;
         bottomVisiableHeigh = coverHeight *3/5;
     }
@@ -60,11 +62,12 @@
     [self.view addSubview:progressHUD];
     [progressHUD hide:YES];
     
-    contentScroller = [[BFImageScroller alloc]initWithFrame:CGRectMake(0,0,self.view.frame.size.width,self.view.frame.size.height-44) withTopVisiableHeight:topVisiableHeight];
+    contentScroller = [[BFImageScroller alloc]initWithFrame:CGRectMake(0,0,self.view.frame.size.width,totalHeight) withTopVisiableHeight:topVisiableHeight];
     contentScroller.contentSize = CGSizeMake(contentScroller.frame.size.width,contentScroller.frame.size.height+topVisiableHeight+bottomVisiableHeigh);
     contentScroller.maximumZoomScale = 3.0f;
     contentScroller.minimumZoomScale = 1.0f;
     contentScroller.contentImageView.image = self.currentImage;
+    contentScroller.contentImageView.contentMode = UIViewContentModeScaleAspectFit;
     [self.view addSubview:contentScroller];
     
 
@@ -79,7 +82,7 @@
     [self.view addSubview:topBoard];
     
     UIImageView *bottomBorad = [[UIImageView alloc]init];
-    bottomBorad.frame = CGRectMake(0,topVisiableHeight+self.visiableHeight,self.view.frame.size.width,bottomVisiableHeigh);
+    bottomBorad.frame = CGRectMake(0,totalHeight-bottomVisiableHeigh,self.view.frame.size.width,bottomVisiableHeigh);
     bottomBorad.backgroundColor = blackColor;
     bottomBorad.alpha = boardAlpha;
     [self.view addSubview:bottomBorad];
@@ -88,14 +91,12 @@
     
     //cancel button
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *cancelImage = [UIImage imageNamed:@"red_button.png"];
-    UIImage *chooseImage = [UIImage imageNamed:@"blue_button.png"];
-    
+
     CGFloat leftMagin = (self.view.frame.size.width-100-100)/3;
     CGFloat topMargin = (bottomVisiableHeigh-40)/2;
     cancelButton.frame = CGRectMake(leftMagin,baseBottomOrign+topMargin,100,40);
     cancelButton.layer.cornerRadius = 5.0f;
-    [cancelButton setBackgroundImage:cancelImage forState:UIControlStateNormal];
+    [cancelButton redStyle];
     [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelCropAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:cancelButton];
@@ -103,7 +104,7 @@
     //
     UIButton *chooseButton = [UIButton buttonWithType:UIButtonTypeCustom];
     chooseButton.frame = CGRectMake(cancelButton.frame.origin.x+cancelButton.frame.size.width+leftMagin,baseBottomOrign+topMargin,100,40);
-    [chooseButton setBackgroundImage:chooseImage forState:UIControlStateNormal];
+    [chooseButton blueStyle];
     [chooseButton setTitle:@"确定" forState:UIControlStateNormal];
     chooseButton.layer.cornerRadius = 5.0f;
     [chooseButton addTarget:self action:@selector(finishCropPhotoAction) forControlEvents:UIControlEventTouchUpInside];
@@ -120,16 +121,21 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[XXCommonUitil appMainTabController] setTabBarHidden:YES];
-    CGRect naviRect = self.navigationController.view.frame;
-    self.navigationController.view.frame = CGRectMake(naviRect.origin.x,naviRect.origin.y,naviRect.size.width,naviRect.size.height+49);
+    if ([XXCommonUitil appMainTabController]) {
+        [[XXCommonUitil appMainTabController] setTabBarHidden:YES];
+        CGRect naviRect = self.navigationController.view.frame;
+        self.navigationController.view.frame = CGRectMake(naviRect.origin.x,naviRect.origin.y,naviRect.size.width,naviRect.size.height+49);
+    }
+    
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[XXCommonUitil appMainTabController] setTabBarHidden:NO];
-    CGRect naviRect = self.navigationController.view.frame;
-    self.navigationController.view.frame = CGRectMake(naviRect.origin.x,naviRect.origin.y,naviRect.size.width,naviRect.size.height-49);
+    if ([XXCommonUitil appMainTabController]) {
+        [[XXCommonUitil appMainTabController] setTabBarHidden:NO];
+        CGRect naviRect = self.navigationController.view.frame;
+        self.navigationController.view.frame = CGRectMake(naviRect.origin.x,naviRect.origin.y,naviRect.size.width,naviRect.size.height-49);
+    }
 }
 
 #pragma mark - finish crop action
@@ -138,7 +144,7 @@
     //获取当前的截图
     [SVProgressHUD showWithStatus:@"正在裁剪..."];
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIImage *visiableImage = [contentScroller  imageByRenderingCurrentVisibleRect];
+        UIImage *visiableImage = [self.view imageByRenderingView];
         //截图图片始终会是定义区域的一半，所以我们需要都放大一倍
         CGImageRef cropImageRef = CGImageCreateWithImageInRect(visiableImage.CGImage,CGRectMake(0,topVisiableHeight*2,self.view.frame.size.width*2,self.visiableHeight*2));
         UIImage *cropImage = [UIImage imageWithCGImage:cropImageRef];

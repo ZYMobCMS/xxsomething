@@ -102,6 +102,33 @@
         case XXRequestTypeDeletePost:
             resultInterface = XX_Delete_Post_Interface;
             break;
+        case XXRequestTypeCareUserFansList:
+            resultInterface = XX_Care_User_Fans_List_Interface;
+            break;
+        case XXRequestTypeDeleteTease:
+            resultInterface = XX_Delete_Tease_Interface;
+            break;
+        case XXRequestTypeVisitMySpaceUserList:
+            resultInterface = XX_Visit_Record_Interface;
+            break;
+        case XXRequestTypeVisitUserHome:
+            resultInterface = XX_Visit_User_Home_Interface;
+            break;
+        case XXRequestTypePraiseList:
+            resultInterface = XX_Praise_List_Interface;
+            break;
+        case XXRequestTypeGetRemindNewCount:
+            resultInterface = XX_Get_Remind_Count_Interface;
+            break;
+        case XXRequestTypeIKnowRemindNow:
+            resultInterface = XX_Tell_Me_Has_Read_Remind_Interface;
+            break;
+        case XXRequestTypeSyncLocation:
+            resultInterface = XX_Sync_Location_Interface;
+            break;
+        case XXRequestTypeDeleteComment:
+            resultInterface = XX_Delete_Comment_Interface;
+            break;
             
         default:
             break;

@@ -4,6 +4,12 @@ img.emoji{
     height:%dpx;
     border:0;
 }
+img.icon{
+    -webkit-margin-before:1em;
+    width:12px;
+    height:12px;
+    border:0;
+}
 img.sextag{
     width:%dpx;
     height:%dpx;

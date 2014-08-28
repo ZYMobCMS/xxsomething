@@ -16,11 +16,12 @@
     if (self) {
         // Initialization code
         _contentImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0,0,frame.size.width,frame.size.height)];
+        _contentImageView.backgroundColor = [UIColor clearColor];
         [self addSubview:_contentImageView];
-        needOverlay = YES;
+        needOverlay = NO;
         
-        _overlayView = [[DAProgressOverlayView alloc]initWithFrame:_contentImageView.bounds];
-        [_contentImageView addSubview:_overlayView];
+//        _overlayView = [[DAProgressOverlayView alloc]initWithFrame:_contentImageView.bounds];
+//        [_contentImageView addSubview:_overlayView];
 
     }
     return self;
@@ -39,23 +40,18 @@
     }
     return self;
 }
+- (void)setContentImageViewFrame:(CGRect)frame
+{
+    _contentImageView.frame = CGRectMake(0,0,frame.size.width,frame.size.height);
+}
 - (void)setImageUrl:(NSString *)imageUrl
 {
-    imageUrl = [NSString stringWithFormat:@"%@%@/%d/%d%@",XXBase_Host_Url,XX_Image_Resize_Url,(int)self.frame.size.width,(int)self.frame.size.height,imageUrl];
+    imageUrl = [NSString stringWithFormat:@"%@%@/%d/%d%@",XXBase_Host_Url,XX_Image_Resize_Url,(int)self.frame.size.width*2,(int)self.frame.size.height*2,imageUrl];
     DDLogVerbose(@"theme back image :%@",imageUrl);
-    __weak typeof (DAProgressOverlayView*)safeOverlay = _overlayView;
     if (needOverlay) {
-        [_contentImageView setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:nil options:SDWebImageContinueInBackground progress:^(NSUInteger receivedSize, long long expectedSize) {
-            
-            CGFloat downloadKbSize = floorf(receivedSize);
-            CGFloat totoalSize = floorf(expectedSize);
-            CGFloat progressValue = downloadKbSize/totoalSize;
-            DDLogVerbose(@"download image :%f",progressValue);
-            [safeOverlay setProgress:progressValue];
-            
-        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-            [safeOverlay setProgress:1.0f];
-            [safeOverlay displayOperationDidFinishAnimation];
+        WeakObj(_contentImageView) weakContentView = _contentImageView;
+        [_contentImageView setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:nil options:SDWebImageRetryFailed|SDWebImageLowPriority completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+            weakContentView.image = image;
         }];
     }else{
         [_contentImageView setImageWithURL:[NSURL URLWithString:imageUrl]];

@@ -28,4 +28,6 @@ typedef void (^XXCustomTabBarDidSelectIndexBlock) (NSInteger index);
 
 - (void)setTabBarDidSelectAtIndexBlock:(XXCustomTabBarDidSelectIndexBlock)selectBlock;
 
+- (void)setSelectAtIndex:(NSInteger)index;
+
 @end

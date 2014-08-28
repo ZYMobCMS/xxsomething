@@ -39,6 +39,15 @@ typedef enum {
     XXRequestTypeUpdateSchoolDatabase,
     XXRequestTypeCancelPraise,
     XXRequestTypeDeletePost,
+    XXRequestTypeCareUserFansList,
+    XXRequestTypeDeleteTease,
+    XXRequestTypeVisitMySpaceUserList,
+    XXRequestTypeVisitUserHome,
+    XXRequestTypePraiseList,
+    XXRequestTypeGetRemindNewCount,
+    XXRequestTypeIKnowRemindNow,
+    XXRequestTypeSyncLocation,
+    XXRequestTypeDeleteComment,
     
 }XXRequestType;
 
@@ -127,6 +136,12 @@ typedef enum {
  可选 POST keyword:好友的账号/昵称
  */
 #define XX_Search_Care_Me_Interface @"/api/friends/search2"
+
+//关心他的列表
+/*
+ 关心他的列表
+ */
+#define XX_Care_User_Fans_List_Interface @"/api/friends/search3"
 
 //发表评论
 /*
@@ -282,6 +297,31 @@ typedef enum {
 
 //删除帖子
 #define XX_Delete_Post_Interface @"/api/posts/del"
+
+//删除挑逗
+#define XX_Delete_Tease_Interface @"/api/tease/del"
+
+//访客
+#define XX_Visit_Record_Interface @"/api/statistics/visitRecord"
+
+//拜访空间
+#define XX_Visit_User_Home_Interface @"/api/statistics/visit"
+
+//追捧列表
+#define XX_Praise_List_Interface @"/api/praise/lists"
+
+//获取提醒数据
+#define XX_Get_Remind_Count_Interface @"/api/remind/get"
+
+//告知已读提醒
+#define XX_Tell_Me_Has_Read_Remind_Interface @"/api/remind/know"
+
+//同步经纬度
+#define XX_Sync_Location_Interface @"/api/sync/coord"
+
+//删除评论
+#define XX_Delete_Comment_Interface @"/api/comment/del"
+
 
 
 @interface XXDataCenterConst : NSObject

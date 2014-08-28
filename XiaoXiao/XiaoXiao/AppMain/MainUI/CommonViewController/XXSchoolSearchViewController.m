@@ -37,6 +37,11 @@
     CGFloat totalWidth = self.view.frame.size.width;
     DDLogVerbose(@"totalHeight -->%f",totoalHeight);
     
+    UIView *backBar = [[UIView alloc]init];
+    backBar.frame = CGRectMake(0,0,totalWidth,46);
+    [self.view addSubview:backBar];
+    backBar.backgroundColor = [XXCommonStyle xxThemeDarkBlueColor];
+    
     _searchBar = [[XXSearchBar alloc]initWithFrame:CGRectMake(3,3,totalWidth-6,40)];
     [self.view addSubview:_searchBar];
     DDLogVerbose(@"_searchBar frame:%@",NSStringFromCGRect(_searchBar.frame));
@@ -74,7 +79,7 @@
 }
 - (void)setFinishChooseSchool:(XXSchoolSearchViewControllerFinishChooseBlock)chooseBlock
 {
-    _chooseBlock = [chooseBlock copy];
+    _chooseBlock = chooseBlock;
 }
 #pragma mark - tableView Delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -109,16 +114,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == _resultSchoolArray.count-1 && _needLoadMore) {
-        _currentResultPageIndex++;
-        [[XXCacheCenter shareCenter]searchSchoolWithKeyword:_searchBar.contentTextField.text withResult:^(NSArray *resultArray) {
-            if (resultArray.count!=_pageSize) {
-                _needLoadMore = NO;
-            }else{
-                _needLoadMore = YES;
-            }
-            [_resultSchoolArray addObjectsFromArray:resultArray];
-            [_resultTableView reloadData];
-        } withPageIndex:_currentResultPageIndex withPageSize:_pageSize];
+        [self loadMoreResult];
     }
 }
 #pragma mark - Config Search Bar Action
@@ -151,12 +147,12 @@
 #pragma mark - next step
 - (void)setNextStepAction:(XXCommonNavigationNextStepBlock)nextStepBlock
 {
-    _nextStepBlock = [nextStepBlock copy];
+    _nextStepBlock = nextStepBlock;
     _nextStepTitle = @"下一步";
 }
 - (void)setNextStepAction:(XXCommonNavigationNextStepBlock)nextStepBlock withNextStepTitle:(NSString *)title
 {
-    _nextStepBlock = [nextStepBlock copy];
+    _nextStepBlock = nextStepBlock;
     _nextStepTitle = title;
     [XXCommonUitil setCommonNavigationNextStepItemForViewController:self withNextStepAction:^{
         if (_nextStepBlock) {
@@ -172,5 +168,22 @@
     } withTitle:_nextStepTitle];
 }
 
+- (void)searchSchoolNow
+{
+    [[XXCacheCenter shareCenter]searchSchoolWithKeyword:_searchBar.contentTextField.text withResult:^(NSArray *resultArray) {
+        if (resultArray.count!=_pageSize) {
+            _needLoadMore = NO;
+        }else{
+            _needLoadMore = YES;
+        }
+        [_resultSchoolArray addObjectsFromArray:resultArray];
+        [_resultTableView reloadData];
+    } withPageIndex:_currentResultPageIndex withPageSize:_pageSize];
+}
+- (void)loadMoreResult
+{
+    _currentResultPageIndex++;
+    [self searchSchoolNow];
+}
 
 @end

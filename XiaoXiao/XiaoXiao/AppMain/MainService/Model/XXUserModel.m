@@ -17,7 +17,7 @@
         self.userId = @"";
         self.account = @"";
         self.password = @"";
-        self.nickName = @"";
+        self.nickName = @"未设昵称";
         self.score = @"";
         self.schoolId = @"";
         self.strollSchoolId = @"";
@@ -43,7 +43,20 @@
         self.schoolRoll = @"";
         self.college = @"";
         self.type = @"2";
-
+        self.commentCount = @"";
+        self.teaseCount = @"";
+        self.careMeCount = @"";
+        self.meCareCount = @"";
+        self.schoolRank = @"";
+        self.isCareMe = @"";
+        self.isCareYou = @"";
+        self.visitCount = @"";
+        self.latestDistance = @"";
+        self.lastTime = @"";
+        self.visitTime = @"";
+        self.hasNewPosts = @"0";
+        self.isInMyCareList = @"0";
+        
         //填充获取的值
         self.userId = [contentDict objectForKey:@"id"];
         self.account = [contentDict objectForKey:@"account"];
@@ -60,20 +73,54 @@
         self.signature = [contentDict objectForKey:@"signature"];
         self.bgImage = [contentDict objectForKey:@"bgimage"];
         self.constellation = [contentDict objectForKey:@"constellation"];
-        self.postCount = [contentDict objectForKey:@"post_count"];
+        self.postCount = [contentDict objectForKey:@"posts_count"];
         self.registTime = [contentDict objectForKey:@"reg_time"];
-        self.wellknow = [contentDict objectForKey:@"wellknow"];
+        NSString *wellKonw = [NSString stringWithFormat:@"%@％",[contentDict objectForKey:@"wellknown"]];
+        self.wellknow = wellKonw;
         self.praiseCount = [contentDict objectForKey:@"praise_count"];
         self.tooken = [contentDict objectForKey:@"token"];
         self.status = [contentDict objectForKey:@"status"];
         self.latitude = [contentDict objectForKey:@"lat"];
         self.longtitude = [contentDict objectForKey:@"lng"];
         self.schoolName = [contentDict objectForKey:@"school_name"];
+        if (self.schoolName==nil||[self.schoolName isEqualToString:@""]) {
+            self.schoolName = [[XXCacheCenter shareCenter]returnSchoolNameBySchoolId:self.schoolId];
+        }
         self.distance = [contentDict objectForKey:@"MQ_DISTANCE"];
+        self.commentCount = [contentDict objectForKey:@"comment_count"];
+        self.teaseCount = [contentDict objectForKey:@"tease_count"];
+        self.careMeCount = [contentDict objectForKey:@"count_care_me"];
+        self.meCareCount = [contentDict objectForKey:@"count_me_care"];
+        self.schoolRank = [contentDict objectForKey:@"score_rank"];
+        if ([[contentDict objectForKey:@"distance"]intValue]==0) {
+            self.latestDistance = @"暂无距离";
+        }else{
+            self.latestDistance = [contentDict objectForKey:@"distance"];
+            NSInteger distanceKm = [self.latestDistance intValue]/1000;
+            self.latestDistance = [NSString stringWithFormat:@"%dkm",distanceKm];
+        }
+        self.lastTime = [contentDict objectForKey:@"last_time"];
+        if ([self.lastTime  isEqualToString:@""]||self.lastTime==nil) {
+            self.lastTime = @"刚刚";
+        }else{
+            self.lastTime = [XXCommonUitil getTimeStrWithDateString:self.lastTime];
+        }
         
         self.schoolRoll = [contentDict objectForKey:@"schoolroll"];
         self.college = [contentDict objectForKey:@"college"];
         self.type = [contentDict objectForKey:@"type"];
+        self.isCareMe = [contentDict objectForKey:@"is_care_me"];
+        self.isCareYou = [contentDict objectForKey:@"is_care_you"];
+        self.visitCount = [contentDict objectForKey:@"visit_count"];
+        self.strollSchoolName = [contentDict objectForKey:@"stroll_school_name"];
+        
+        if ([contentDict objectForKey:@"visit_time"]) {
+            self.visitTime = [XXCommonUitil getTimeStrWithDateString:[contentDict objectForKey:@"visit_time"]];
+        }
+        if ([contentDict objectForKey:@"has_new_posts"]) {
+            self.hasNewPosts = [contentDict objectForKey:@"has_new_posts"];
+        }
+        
     }
     return self;
 }
@@ -109,11 +156,34 @@
         self.schoolName = [aDecoder decodeObjectForKey:@"schoolName"];
         self.isUserInfoWell = [aDecoder decodeObjectForKey:@"isUserInfoWell"];
         self.isInSchool = [aDecoder decodeObjectForKey:@"isInSchool"];
-        
+        self.commentCount = [aDecoder decodeObjectForKey:@"commentCount"];
+        self.teaseCount = [aDecoder decodeObjectForKey:@"teaseCount"];
+        self.careMeCount = [aDecoder decodeObjectForKey:@"careMeCount"];
+        self.meCareCount = [aDecoder decodeObjectForKey:@"meCareCount"];
+
         self.schoolRoll = [aDecoder decodeObjectForKey:@"schoolRoll"];
         self.college = [aDecoder decodeObjectForKey:@"college"];
         self.type = [aDecoder decodeObjectForKey:@"type"];
+        self.isCareMe = [aDecoder decodeObjectForKey:@"isCareMe"];
+        self.isCareYou = [aDecoder decodeObjectForKey:@"isCareYou"];
+        self.visitCount = [aDecoder decodeObjectForKey:@"visitCount"];
+        
+        self.careMeNew = [aDecoder decodeObjectForKey:@"careMeNew"];
+        self.meCareNew = [aDecoder decodeObjectForKey:@"meCareNew"];
+        self.schoolRank = [aDecoder decodeObjectForKey:@"schoolRank"];
+        
+        self.city = [aDecoder decodeObjectForKey:@"city"];
+        self.province = [aDecoder decodeObjectForKey:@"province"];
 
+        self.strollSchoolName = [aDecoder decodeObjectForKey:@"strollSchoolName"];
+        
+        self.friendHasNewShareCount = [aDecoder decodeObjectForKey:@"friendHasNewShareCount"];
+        self.visitUserNewCount = [aDecoder decodeObjectForKey:@"visitUserNewCount"];
+        self.commentNewCount = [aDecoder decodeObjectForKey:@"commentNewCount"];
+        self.teaseNewCount = [aDecoder decodeObjectForKey:@"teaseNewCount"];
+
+        self.latestDistance = [aDecoder decodeObjectForKey:@"latestDistance"];
+        self.lastTime = [aDecoder decodeObjectForKey:@"lastTime"];
     }
     return self;
 }
@@ -149,7 +219,28 @@
     [aCoder encodeObject:self.schoolRoll forKey:@"schoolRoll"];
     [aCoder encodeObject:self.college forKey:@"college"];
     [aCoder encodeObject:self.type forKey:@"type"];
+    [aCoder encodeObject:self.isCareMe forKey:@"isCareMe"];
+    [aCoder encodeObject:self.isCareYou forKey:@"isCareYou"];
+    [aCoder encodeObject:self.commentCount forKey:@"commentCount"];
+    [aCoder encodeObject:self.teaseCount forKey:@"teaseCount"];
+    [aCoder encodeObject:self.careMeCount forKey:@"careMeCount"];
+    [aCoder encodeObject:self.meCareCount forKey:@"meCareCount"];
+    [aCoder encodeObject:self.visitCount forKey:@"visitCount"];
 
+    [aCoder encodeObject:self.careMeNew forKey:@"careMeNew"];
+    [aCoder encodeObject:self.meCareNew forKey:@"meCareNew"];
+    [aCoder encodeObject:self.schoolRank forKey:@"schoolRank"];
+    [aCoder encodeObject:self.city forKey:@"city"];
+    [aCoder encodeObject:self.province forKey:@"province"];
+    [aCoder encodeObject:self.strollSchoolName forKey:@"strollSchoolName"];
+    
+    [aCoder encodeObject:self.friendHasNewShareCount forKey:@"friendHasNewShareCount"];
+    [aCoder encodeObject:self.visitUserNewCount forKey:@"visitUserNewCount"];
+    [aCoder encodeObject:self.commentNewCount forKey:@"commentNewCount"];
+    [aCoder encodeObject:self.teaseNewCount forKey:@"teaseNewCount"];
+
+    [aCoder encodeObject:self.latestDistance forKey:@"latestDistance"];
+    [aCoder encodeObject:self.lastTime forKey:@"lastTime"];
 }
 
 @end

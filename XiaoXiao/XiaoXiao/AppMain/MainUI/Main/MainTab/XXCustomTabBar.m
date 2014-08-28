@@ -180,6 +180,16 @@ typedef void (^XXCustomTabBarItemTapSelectBlock) (XXCustomTabBarItem *selectItem
     _selectBlock = [selectBlock copy];
 }
 
+- (void)setSelectAtIndex:(NSInteger)index
+{
+    XXCustomTabBarItem *unSelectedItem = (XXCustomTabBarItem*)[self viewWithTag:XXItemBarItemBaseTag+self.selectedIndex];
+    [unSelectedItem switchToNormal];
+    
+    XXCustomTabBarItem *selectItem = (XXCustomTabBarItem*)[self viewWithTag:XXItemBarItemBaseTag+index];
+    self.selectedIndex = index;
+    [selectItem switchToSelected];
+}
+
 
 /*
 // Only override drawRect: if you perform custom drawing.

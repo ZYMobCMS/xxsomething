@@ -17,12 +17,18 @@
     UIImageView *_sexImageView;
     UILabel     *_starLabel;
     
+    UILabel     *_distanceLabel;
+    UILabel     *_timeLabel;
+    
     XXOpacityView *_wellknowView;
+    UIImageView  *timeView;
     
     XXCustomButton *_teaseButton;
 }
 - (void)setContentUser:(XXUserModel*)aUser;
 
 - (void)addTagert:(id)target forTeaseAction:(SEL)teaseAction;
+
+- (void)updateUserCared:(BOOL)isCared;
 
 @end

@@ -112,4 +112,17 @@
     return shareStyle;
 }
 
++ (XXShareStyle*)chatStyle
+{
+    XXShareStyle *shareStyle = [[XXShareStyle alloc]init];
+    shareStyle.contentFontFamily = [XXChatStyle contentFontFamily];
+    shareStyle.contentFontSize = [XXChatStyle contentFontSize];
+    shareStyle.contentFontWeight = [XXChatStyle contentFontWeight];
+    shareStyle.contentLineHeight = [XXChatStyle contentLineHeight];
+    shareStyle.contentTextAlign = [XXChatStyle contentTextAlign];
+    shareStyle.contentTextColor = [XXChatStyle contentTextColor];
+    shareStyle.emojiSize = [XXChatStyle emojiSize];
+    
+    return shareStyle;
+}
 @end

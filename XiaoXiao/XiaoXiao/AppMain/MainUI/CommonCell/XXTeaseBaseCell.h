@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "XXBaseCell.h"
 #import "XXHeadView.h"
 #import "XXSharePostUserView.h"
 #import "XXTeaseModel.h"
@@ -28,10 +27,23 @@
  content:{xxtease_post_emoji:"[小样]"}
  */
 
+@class XXTeaseBaseCell;
 
+@protocol XXTeaseBaseCellDelegate <NSObject>
+- (void)teaseCellDidTapOnDelegate:(XXTeaseBaseCell*)teaseCell;
+- (void)teaseCellDidTapOnHeadView:(XXTeaseBaseCell*)teaseCell;
+@end
 
-@interface XXTeaseBaseCell : XXBaseCell
+@interface XXTeaseBaseCell : UITableViewCell
 {
+    UIImageView *_backgroundImageView;
+    UIImageView *_cellLineImageView;
+    //
+    CGFloat _leftMargin;
+    CGFloat _rightMargin;
+    CGFloat _innerMargin;
+    CGFloat _topMargin;
+    
     XXHeadView  *_headView;
     XXSharePostUserView *_userView;
     UIImageView *_teaseImageView;
@@ -40,6 +52,7 @@
     UILabel *_tagLabel;
     UIButton    *_deleteButton;
 }
+@property (nonatomic,weak)id<XXTeaseBaseCellDelegate> delegate;
 
 - (void)setContentModel:(XXTeaseModel*)aTease;
 

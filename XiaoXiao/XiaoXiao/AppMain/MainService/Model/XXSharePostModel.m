@@ -68,7 +68,36 @@
         NSArray *imageArray = [images componentsSeparatedByString:@"|"];
         NSMutableString *imageNewString = [NSMutableString string];
         [imageArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            NSString *url = [NSString stringWithFormat:@"%@%@",XXBase_Host_Url,obj];
+            
+            //缩略图，根据图片个数确定图片的大小和宽度
+            CGFloat imageWidth = 0.f;
+            switch (imageArray.count) {
+                case 1:
+                    imageWidth = 274.f;
+                    break;
+                case 2:
+                    imageWidth = 135.f;
+                    break;
+                case 3:
+                    imageWidth = 90.f;
+                    break;
+                case 4:
+                    imageWidth = 90.f;
+                    break;
+                case 5:
+                    imageWidth = 90.f;
+                    break;
+                case 6:
+                    imageWidth = 90.f;
+                    break;
+                    
+                default:
+                    break;
+            }
+            DDLogVerbose(@"link obj:%@",obj);
+            NSString *preViewImageLink = [NSString stringWithFormat:@"%@/%d/%d%@",XX_Image_Resize_Url,(int)imageWidth,(int)imageWidth,obj];
+            NSString *url = [NSString stringWithFormat:@"%@%@",XXBase_Host_Url,preViewImageLink];
+            
             if (idx!=imageArray.count-1) {
                 [imageNewString appendFormat:@"%@|",url];
             }else{

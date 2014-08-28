@@ -15,4 +15,5 @@
 + (void)currentUserLoginOut;
 + (NSString*)currentLoginUserToken;
 + (BOOL)checkLoginUserInfoIsWellDone;
+
 @end

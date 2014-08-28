@@ -1,3 +1,4 @@
+
 //
 //  XXPhotoChooseViewController.m
 //  XiaoXiao
@@ -29,7 +30,7 @@
 {
     if (self = [super init]) {
         
-        _chooseBlock = [chooseBlock copy];
+        _chooseBlock = chooseBlock;
         self.imagePicker = [[UIImagePickerController alloc]init];
         self.imagePicker.delegate = self;
         self.chooseType = XXPhotoChooseTypeSingle;
@@ -41,8 +42,10 @@
 {
     if (self = [super init]) {
         
-        _chooseBlock = [chooseBlock copy];     
+        _chooseBlock = chooseBlock;
         _maxChooseNumber = maxNumber;
+        self.imagePicker = [[UIImagePickerController alloc]init];
+        self.imagePicker.delegate = self;
         if (maxNumber>1) {
             self.chooseType = XXPhotoChooseTypeMutil;
         }else{
@@ -56,11 +59,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [XXCommonUitil setCommonNavigationReturnItemForViewController:self];
     DDLogVerbose(@"self.view :%@",NSStringFromCGRect(self.view.frame));
     
     XXCustomButton *chooseCamerou = [XXCustomButton buttonWithType:UIButtonTypeCustom];
-    chooseCamerou.frame = CGRectMake(20,50,280,40);
+    chooseCamerou.frame = CGRectMake(20,20,280,40);
     chooseCamerou.tag = 238790;
     [chooseCamerou blueStyle];
     chooseCamerou.iconImageView.image = [UIImage imageNamed:@"photo_choose_camerou.png"];
@@ -71,7 +73,7 @@
     [chooseCamerou addTarget:self action:@selector(chooseTypeAction:) forControlEvents:UIControlEventTouchUpInside];
     
     XXCustomButton *chooseLibrary = [XXCustomButton buttonWithType:UIButtonTypeCustom];
-    chooseLibrary.frame = CGRectMake(20,130,280,40);
+    chooseLibrary.frame = CGRectMake(20,80,280,40);
     chooseLibrary.tag = 238791;
     [chooseLibrary blueStyle];
     chooseLibrary.iconImageView.image = [UIImage imageNamed:@"photo_choose_lib.png"];
@@ -92,16 +94,28 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[XXCommonUitil appMainTabController] setTabBarHidden:YES];
-    CGRect naviRect = self.navigationController.view.frame;
-    self.navigationController.view.frame = CGRectMake(naviRect.origin.x,naviRect.origin.y,naviRect.size.width,naviRect.size.height+49);
+    
+    if ([XXCommonUitil appMainTabController]) {
+        [[XXCommonUitil appMainTabController] setTabBarHidden:YES];
+        CGRect naviRect = self.navigationController.view.frame;
+        self.navigationController.view.frame = CGRectMake(naviRect.origin.x,naviRect.origin.y,naviRect.size.width,naviRect.size.height+49);
+    }else{
+        
+    }
+    
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[XXCommonUitil appMainTabController] setTabBarHidden:NO];
-    CGRect naviRect = self.navigationController.view.frame;
-    self.navigationController.view.frame = CGRectMake(naviRect.origin.x,naviRect.origin.y,naviRect.size.width,naviRect.size.height-49);
+    
+    if ([XXCommonUitil appMainTabController]) {
+        [[XXCommonUitil appMainTabController] setTabBarHidden:NO];
+        CGRect naviRect = self.navigationController.view.frame;
+        self.navigationController.view.frame = CGRectMake(naviRect.origin.x,naviRect.origin.y,naviRect.size.width,naviRect.size.height-49);
+    }else{
+        
+    }
+    
 }
 
 #pragma mark - tap
@@ -119,7 +133,6 @@
     if (type==1) {
         
         CTAssetsPickerController *pickController=[[CTAssetsPickerController alloc]init];
-        pickController.maximumNumberOfSelection = _maxChooseNumber;
         pickController.delegate = self;
         [self presentViewController:pickController animated:YES completion:Nil];
     }
@@ -131,6 +144,8 @@
     if (assets.count==0) {
         [self dismissViewControllerAnimated:YES completion:nil];
     }
+    [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    
     NSMutableArray *imageArray = [NSMutableArray array];
     [assets enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
        
@@ -140,6 +155,7 @@
         [imageArray addObject:image];
         
     }];
+    
     if (self.needCrop) {
         ALAssetRepresentation *imageRepresentaion = [[assets objectAtIndex:0]defaultRepresentation];
         UIImage *image = [UIImage imageWithCGImage:[imageRepresentaion fullResolutionImage]];
@@ -155,15 +171,16 @@
                 }];
                 filterVC.effectImgViewHeight = self.singleImageCropHeight;
                 filterVC.isSettingHeadImage = self.isSetHeadImage;
+                filterVC.title = @"选择滤镜";
                 [filterVC setNextStepAction:^(NSDictionary *resultDict) {
                     if (_nextStepBlock) {
                         _nextStepBlock(resultDict);
                     }
                 }];
+                [self.navigationController pushViewController:filterVC animated:YES];
                 [XXCommonUitil setCommonNavigationReturnItemForViewController:filterVC withBackStepAction:^{
                     [self.navigationController popViewControllerAnimated:YES];
                 }];
-                [self.navigationController pushViewController:filterVC animated:YES];
             }else{
                 if (_chooseBlock) {
                     NSArray *resultImages = @[resultImage];
@@ -187,17 +204,18 @@
             }];
             filterVC.effectImgViewHeight = self.singleImageCropHeight;
             filterVC.isSettingHeadImage = self.isSetHeadImage;
+            filterVC.title = @"选择滤镜";
             [filterVC setNextStepAction:^(NSDictionary *resultDict) {
                 if (_nextStepBlock) {
                     _nextStepBlock(resultDict);
                 }
             }];
+            [self.navigationController pushViewController:filterVC animated:YES];
             [XXCommonUitil setCommonNavigationReturnItemForViewController:filterVC withBackStepAction:^{
                 if (_returnStepBlock) {
                     _returnStepBlock();
                 }
             }];
-            [self.navigationController pushViewController:filterVC animated:YES];
         }else{
             if (_chooseBlock) {
                 _chooseBlock(imageArray);
@@ -206,6 +224,35 @@
         }
     }
 }
+- (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset
+{
+    if (picker.selectedAssets.count >= _maxChooseNumber)
+    {
+        NSString *maxMessage = [NSString stringWithFormat:@"不能再选择超过%d张照片",_maxChooseNumber];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                   message:maxMessage
+                                  delegate:nil
+                         cancelButtonTitle:nil
+                         otherButtonTitles:@"确定", nil];
+        
+        [alertView show];
+    }
+    
+    if (!asset.defaultRepresentation)
+    {
+        UIAlertView *alertView =
+        [[UIAlertView alloc] initWithTitle:@"提示"
+                                   message:@"还没有任何照片"
+                                  delegate:nil
+                         cancelButtonTitle:nil
+                         otherButtonTitles:@"确定", nil];
+        
+        [alertView show];
+    }
+    
+    return (picker.selectedAssets.count < _maxChooseNumber && asset.defaultRepresentation != nil);
+}
+
 - (void)assetsPickerControllerDidCancel:(CTAssetsPickerController *)picker
 {
     [self.navigationController popViewControllerAnimated:YES];
@@ -214,9 +261,76 @@
 - (void)imagePickerController:(UIImagePickerController *)aPicker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     DDLogVerbose(@"need crop:%d",self.needCrop);
+    UIImage *resultImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     [self dismissViewControllerAnimated:YES completion:nil];
-    UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
-    
+
+    if (self.needCrop) {
+        UIImage *image = resultImage;
+        XXPhotoCropViewController *cropVC = [[XXPhotoCropViewController alloc]initWithOriginImage:image withFinishCropBlock:^(UIImage *resultImage) {
+            if (self.needFilter) {
+                XXPhotoFilterViewController *filterVC = [[XXPhotoFilterViewController alloc]initWithCurrentImage:resultImage withChooseBlock:^(UIImage *resultImage) {
+                    if (_chooseBlock) {
+                        NSArray *chooseImages = @[resultImage];
+                        if (_chooseBlock) {
+                            _chooseBlock(chooseImages);
+                        }
+                    }
+                }];
+                filterVC.effectImgViewHeight = self.singleImageCropHeight;
+                filterVC.isSettingHeadImage = self.isSetHeadImage;
+                filterVC.title = @"选择滤镜";
+                [filterVC setNextStepAction:^(NSDictionary *resultDict) {
+                    if (_nextStepBlock) {
+                        _nextStepBlock(resultDict);
+                    }
+                }];
+                [self.navigationController pushViewController:filterVC animated:YES];
+                [XXCommonUitil setCommonNavigationReturnItemForViewController:filterVC withBackStepAction:^{
+                    [self.navigationController popViewControllerAnimated:YES];
+                }];
+            }else{
+                if (_chooseBlock) {
+                    NSArray *resultImages = @[resultImage];
+                    _chooseBlock(resultImages);
+                }
+            }
+        }];
+        cropVC.visiableHeight = self.singleImageCropHeight;
+        [self.navigationController pushViewController:cropVC animated:YES];
+    }else{
+        if (self.needFilter) {
+            UIImage *image = resultImage;
+            XXPhotoFilterViewController *filterVC = [[XXPhotoFilterViewController alloc]initWithCurrentImage:image withChooseBlock:^(UIImage *resultImage) {
+                if (_chooseBlock) {
+                    NSArray *chooseImages = @[resultImage];
+                    if (_chooseBlock) {
+                        _chooseBlock(chooseImages);
+                    }
+                }
+            }];
+            filterVC.effectImgViewHeight = self.singleImageCropHeight;
+            filterVC.isSettingHeadImage = self.isSetHeadImage;
+            filterVC.title = @"选择滤镜";
+            [filterVC setNextStepAction:^(NSDictionary *resultDict) {
+                if (_nextStepBlock) {
+                    _nextStepBlock(resultDict);
+                }
+            }];
+            [self.navigationController pushViewController:filterVC animated:YES];
+            [XXCommonUitil setCommonNavigationReturnItemForViewController:filterVC withBackStepAction:^{
+                if (_returnStepBlock) {
+                    _returnStepBlock();
+                }
+            }];
+        }else{
+            if (_chooseBlock) {
+                resultImage = [resultImage resizedImage:CGSizeMake(320,568) interpolationQuality:kCGInterpolationDefault];
+                NSArray *images = [NSArray arrayWithObject:resultImage];
+                _chooseBlock(images);
+            }
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)aPicker
@@ -227,10 +341,10 @@
 #pragma mark - next step
 - (void)setNextStepAction:(XXCommonNavigationNextStepBlock)nextStepBlock
 {
-    _nextStepBlock = [nextStepBlock copy];
+    _nextStepBlock = nextStepBlock;
 }
 - (void)setReturnStepBlock:(XXNavigationNextStepItemBlock)returnStepBlock
 {
-    _returnStepBlock = [returnStepBlock copy];
+    _returnStepBlock = returnStepBlock;
 }
 @end

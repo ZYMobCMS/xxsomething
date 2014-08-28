@@ -7,14 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DTLinkButton.h"
 
-@interface XXRecordButton : UIView
+@interface XXRecordButton : DTLinkButton
 {
     UIButton *_recordButton;
     UIImageView *_playStateImageView;
     UILabel  *_recordTimeLabel;
+    UIActivityIndicatorView *_indicatorView;
+    UIImageView     *_backgroundImageView;
 }
+@property (nonatomic,strong)UILabel *recordTimeLabel;
+@property (nonatomic,strong)UIImageView *backgroundImageView;
 
-- (void)addTarget:(id)target withTapEnventSelector:(SEL)tapSelector;
-
+- (void)startPlay;
+- (void)endPlay;
+- (void)startLoading;
+- (void)endLoading;
 @end

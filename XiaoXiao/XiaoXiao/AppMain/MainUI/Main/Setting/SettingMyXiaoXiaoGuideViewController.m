@@ -8,6 +8,8 @@
 
 #import "SettingMyXiaoXiaoGuideViewController.h"
 #import "SettingAdivceViewController.h"
+#import "SettingAboutXiaoXiaoViewController.h"
+#import "SettingScoreLawViewController.h"
 
 @interface SettingMyXiaoXiaoGuideViewController ()
 
@@ -31,9 +33,9 @@
     _titleArray = [[NSMutableArray alloc]init];
     
     //
-    NSDictionary *profileSetDict = @{@"title":@"关于校校",@"class":@""};
-    NSDictionary *myXiaoXiaoDict = @{@"title":@"我的校分",@"class":@""};
-    NSDictionary *moveHomeDict = @{@"title":@"意见反馈",@"class":@""};
+    NSDictionary *profileSetDict = @{@"title":@"关于学霸",@"class":@"SettingAboutXiaoXiaoViewController"};
+    NSDictionary *myXiaoXiaoDict = @{@"title":@"我的学分",@"class":@"SettingScoreLawViewController"};
+    NSDictionary *moveHomeDict = @{@"title":@"意见反馈",@"class":@"SettingAdivceViewController"};
     [_titleArray addObject:profileSetDict];
     [_titleArray addObject:myXiaoXiaoDict];
     [_titleArray addObject:moveHomeDict];
@@ -68,7 +70,7 @@
     XXBaseLabelCell *cell = (XXBaseLabelCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
         cell = [[XXBaseLabelCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.accessoryView.hidden = NO;
+        cell.customAccessoryView.hidden = NO;
     }
     if(indexPath.row==0){
         [cell setCellType:XXBaseCellTypeTop withBottomMargin:0.f withCellHeight:46.f];
@@ -104,15 +106,16 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row==2) {
-        
-        SettingAdivceViewController *adviceVC = [[SettingAdivceViewController alloc]initWithFinishAction:^(NSString *resultText) {
-            
-        }];
-        [XXCommonUitil setCommonNavigationReturnItemForViewController:adviceVC];
-        [self.navigationController pushViewController:adviceVC animated:YES];
-        
-    }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    NSDictionary *item = [_titleArray objectAtIndex:indexPath.row];
+    Class vcClass = NSClassFromString([item objectForKey:@"class"]);
+    
+    UIViewController *itemVC = [[vcClass alloc]init];
+    itemVC.title = [item objectForKey:@"title"];
+    [self.navigationController pushViewController:itemVC animated:YES];
+    [XXCommonUitil setCommonNavigationReturnItemForViewController:itemVC];
+
 }
 
 

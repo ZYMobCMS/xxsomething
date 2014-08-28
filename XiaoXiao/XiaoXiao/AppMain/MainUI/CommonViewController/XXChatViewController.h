@@ -11,12 +11,14 @@
 #import "XXChatToolBar.h"
 #import "XXUserModel.h"
 #import "XXConditionModel.h"
+#import "XXChatCell.h"
+#import "XXAudioManager.h"
 
 /*
  *基础聊天视图列表
  */
 
-@interface XXChatViewController : XXBaseViewController<UITableViewDelegate,UITableViewDataSource>
+@interface XXChatViewController : XXBaseViewController<UITableViewDelegate,UITableViewDataSource,XXChatCellDelegate,XXAudioManagerDelegate,XXChatToolBarDelegate>
 {
     UITableView *_messageListTable;
     NSMutableArray *_messagesArray;
@@ -29,6 +31,7 @@
     NSString      *_isFirstChat;
     XXConditionModel *_conversationCondition;
     
+    NSIndexPath   *_playingAudioPath;
 }
 
 - (id)initWithChatUser:(XXUserModel*)chatUser;

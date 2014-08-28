@@ -15,6 +15,8 @@
 
 + (NSAttributedString*)formatteCommonTextToAttributedText:(NSString*)contentText;
 
++ (NSAttributedString*)formatteCommonTextToAttributedText:(NSString*)contentText isFromSelf:(BOOL)isFromSelf;
+
 + (NSAttributedString*)formatteTextToAttributedText:(NSString*)contentText withHtmlTemplateFile:(NSString*)htmlTemplate withCSSTemplate:(NSString*)cssTemplate withShareStyle:(XXShareStyle*)aStyle;
 
 - (void)setText:(NSString*)text;

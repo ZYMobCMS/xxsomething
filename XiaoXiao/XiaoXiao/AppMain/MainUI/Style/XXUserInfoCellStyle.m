@@ -18,11 +18,11 @@
 }
 + (NSInteger)sexTagWidth
 {
-    return 10;
+    return 12;
 }
 + (NSInteger)sexTagHeight
 {
-    return 10;
+    return 12;
 }
 + (CGFloat)lineHeight
 {
@@ -30,17 +30,17 @@
 }
 + (CGFloat)contentWidth
 {
-    return 195;
+    return 204;
 }
 
 //username
 + (CGFloat)userNameContentLineHeight
 {
-    return [XXUserInfoCellStyle lineHeight]-0.2;
+    return 0.0;
 }
 + (NSInteger)userNameContentFontSize
 {
-    return 12.5;
+    return 15;
 }
 + (NSString*)userNameContentTextColor
 {
@@ -62,11 +62,11 @@
 //college
 + (CGFloat)collegeContentLineHeight
 {
-    return [XXUserInfoCellStyle lineHeight]-0.2;
+    return 0.0;
 }
 + (NSInteger)collegeContentFontSize
 {
-    return 12.5;
+    return 15;
 }
 + (NSString*)collegeContentTextColor
 {
@@ -74,7 +74,7 @@
 }
 + (NSString*)collegeContentTextAlign
 {
-    return XXTextAlignRight;
+    return XXTextAlignLeft;
 }
 + (NSString*)collegeContentFontFamily
 {
@@ -82,21 +82,21 @@
 }
 + (NSString*)collegeContentFontWeight
 {
-    return XXFontWeightNormal;
+    return XXFontWeightBold;
 }
 
 //starscore
 + (CGFloat)starscoreContentLineHeight
 {
-    return [XXUserInfoCellStyle lineHeight];
+    return 0.0;
 }
 + (NSInteger)starscoreContentFontSize
 {
-    return 10;
+    return 13;
 }
 + (NSString*)starscoreContentTextColor
 {
-    return @"#a5a8ad";
+    return @"#7d8288";
 }
 + (NSString*)starscoreContentTextAlign
 {
@@ -114,11 +114,11 @@
 //score
 + (CGFloat)scoreContentLineHeight
 {
-    return [XXUserInfoCellStyle lineHeight];
+    return 0.0;
 }
 + (NSInteger)scoreContentFontSize
 {
-    return 10;
+    return 15;
 }
 + (NSString*)scoreContentTextColor
 {
@@ -140,15 +140,15 @@
 //profile
 + (CGFloat)profileContentLineHeight
 {
-    return 1.4f;
+    return 0.0;
 }
 + (NSInteger)profileContentFontSize
 {
-    return 12.5;
+    return 14;
 }
 + (NSString*)profileContentTextColor
 {
-    return @"#a5a8ad";
+    return @"#7d8288";
 }
 + (NSString*)profileContentTextAlign
 {

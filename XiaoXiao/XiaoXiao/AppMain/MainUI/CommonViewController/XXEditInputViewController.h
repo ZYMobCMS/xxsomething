@@ -15,10 +15,14 @@ typedef void (^XXEditInputViewControllerFinishBlock) (NSString *resultText);
 
 @interface XXEditInputViewController : UIViewController<UITextViewDelegate>
 {
+    UIImageView *_inputBack;
     UITextView  *_inputTextView;
     UIImageView *_backgroundImageView;
     XXEditInputViewControllerFinishBlock _finishBlock;
 }
+@property (nonatomic,strong)UITextView  *inputTextView;
+@property (nonatomic,assign)NSInteger    maxLength;
+
 - (id)initWithFinishAction:(XXEditInputViewControllerFinishBlock)finishBlock;
 - (NSString*)resultText;
 

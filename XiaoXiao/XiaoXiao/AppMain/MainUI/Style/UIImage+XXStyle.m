@@ -16,12 +16,12 @@
 }
 - (UIImage*)makeStretchForBubbleLeft
 {
-    UIEdgeInsets bLeft = UIEdgeInsetsMake(35.f,15.f,5.f,5.f);
+    UIEdgeInsets bLeft = UIEdgeInsetsMake(33.f,23.f,10.f,10.f);
     return [self makeStretchWithEdegeInsets:bLeft];
 }
 - (UIImage*)makeStretchForBubbleRight
 {
-    UIEdgeInsets bRight = UIEdgeInsetsMake(35.f,5.f,5.f,15.f);
+    UIEdgeInsets bRight = UIEdgeInsetsMake(33.f,10.f,10.f,23.f);
     return [self makeStretchWithEdegeInsets:bRight];
 }
 - (UIImage*)makeStretchForBubbleLeftVertical
@@ -51,7 +51,7 @@
 }
 - (UIImage*)makeStretchForCellMiddle
 {
-    UIEdgeInsets cellMiddle = UIEdgeInsetsMake(3.f,3.f,3.f,3.f);
+    UIEdgeInsets cellMiddle = UIEdgeInsetsMake(5.f,5.f,5.f,5.f);
     return [self makeStretchWithEdegeInsets:cellMiddle];
 }
 - (UIImage*)makeStretchForCellBottom
@@ -98,6 +98,31 @@
     UIEdgeInsets shareListDetailBottom = UIEdgeInsetsMake(3.f,3.f,3.f,6.f);
     return [self makeStretchWithEdegeInsets:shareListDetailBottom];
 
+}
+
+- (UIImage*)makeStretchForNavigationBar
+{
+    UIEdgeInsets navBar = UIEdgeInsetsMake(0,1,0,0);
+    
+    return [self makeStretchWithEdegeInsets:navBar];
+}
+- (UIImage*)makeStretchForNavigationItem
+{
+    UIEdgeInsets navBar = UIEdgeInsetsMake(3,3,3,3);
+    
+    return [self makeStretchWithEdegeInsets:navBar];
+}
+- (UIImage*)makeStretchForSearchBar
+{
+    UIEdgeInsets navBar = UIEdgeInsetsMake(0,20,0,20);
+    
+    return [self makeStretchWithEdegeInsets:navBar];
+}
+- (UIImage*)t:(CGFloat)top l:(CGFloat)left b:(CGFloat)bottom r:(CGFloat)right
+{
+    UIEdgeInsets navBar = UIEdgeInsetsMake(top,left,bottom,right);
+    
+    return [self makeStretchWithEdegeInsets:navBar];
 }
 
 @end

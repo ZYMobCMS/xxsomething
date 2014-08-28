@@ -37,12 +37,14 @@
 + (void)setCommonNavigationTitle:(NSString *)title forViewController:(UIViewController *)aViewController
 {
     UILabel *customTitleLabel = [[UILabel alloc]init];
-    customTitleLabel.frame = CGRectMake(30,4,aViewController.view.frame.size.width-60,aViewController.navigationController.navigationBar.frame.size.height-8);
-    customTitleLabel.backgroundColor = [UIColor clearColor];
+    customTitleLabel.frame = CGRectMake(0,4,150,aViewController.navigationController.navigationBar.frame.size.height-8);
+    customTitleLabel.font = [UIFont boldSystemFontOfSize:17.5];
+    customTitleLabel.backgroundColor = [XXCommonStyle xxThemeDarkBlueColor];
     customTitleLabel.text = aViewController.title;
     customTitleLabel.textAlignment = NSTextAlignmentCenter;
-    customTitleLabel.textColor = [UIColor blackColor];
+    customTitleLabel.textColor = [UIColor whiteColor];
     aViewController.navigationItem.titleView = customTitleLabel;
+    [aViewController.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar.png"] forBarMetrics:UIBarMetricsDefault];
     if (IS_IOS_7) {
         aViewController.edgesForExtendedLayout = UIRectEdgeNone;
         aViewController.automaticallyAdjustsScrollViewInsets = YES;
@@ -52,8 +54,9 @@
 {
     aViewController.view.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
     XXResponseButton *returnCustomButton = [XXResponseButton buttonWithType:UIButtonTypeCustom];
-    returnCustomButton.frame = CGRectMake(0,0,26.5,26.5);
+    returnCustomButton.frame = CGRectMake(0,0,50,20);
     [returnCustomButton setBackgroundImage:[UIImage imageNamed:@"nav_return_button.png"] forState:UIControlStateNormal];
+    [returnCustomButton setBackgroundImage:[UIImage imageNamed:@"nav_return_button_selected.png"] forState:UIControlStateHighlighted];
     [returnCustomButton setButtonSelfTapInside];
     [returnCustomButton setResponseButtonTapped:^{
         [aViewController.navigationController popViewControllerAnimated:YES];
@@ -61,23 +64,32 @@
     UIBarButtonItem *returnNavItem = [[UIBarButtonItem alloc]initWithCustomView:returnCustomButton];
     aViewController.navigationItem.leftBarButtonItem = returnNavItem;
     UILabel *customTitleLabel = [[UILabel alloc]init];
-    customTitleLabel.frame = CGRectMake(30,4,aViewController.view.frame.size.width-60,aViewController.navigationController.navigationBar.frame.size.height-8);
-    customTitleLabel.backgroundColor = [UIColor clearColor];
+    customTitleLabel.frame = CGRectMake(0,4,150,aViewController.navigationController.navigationBar.frame.size.height-8);
+    customTitleLabel.font = [UIFont boldSystemFontOfSize:17.5];
+    customTitleLabel.backgroundColor = [XXCommonStyle xxThemeDarkBlueColor];
     customTitleLabel.text = aViewController.title;
     customTitleLabel.textAlignment = NSTextAlignmentCenter;
-    customTitleLabel.textColor = [UIColor blackColor];
+    customTitleLabel.textColor = [UIColor whiteColor];
     aViewController.navigationItem.titleView = customTitleLabel;
+    [aViewController.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar.png"] forBarMetrics:UIBarMetricsDefault];
     if (IS_IOS_7) {
         aViewController.edgesForExtendedLayout = UIRectEdgeNone;
         aViewController.automaticallyAdjustsScrollViewInsets = YES;
     }
 }
-+ (void)setCommonNavigationReturnItemForViewController:(UIViewController *)aViewController withBackStepAction:(XXNavigationNextStepItemBlock)stepAction
++ (void)setCommonNavigationReturnItemForViewController:(UIViewController *)aViewController withBackStepAction:(XXNavigationNextStepItemBlock)stepAction withIconImage:(NSString *)iconName
 {
     aViewController.view.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
     XXResponseButton *returnCustomButton = [XXResponseButton buttonWithType:UIButtonTypeCustom];
-    returnCustomButton.frame = CGRectMake(0,0,26.5,26.5);
-    [returnCustomButton setBackgroundImage:[UIImage imageNamed:@"nav_return_button.png"] forState:UIControlStateNormal];
+    UIImage *iconImage = [UIImage imageNamed:iconName];
+    CGSize iconSize = [UIImage imageNamed:iconName].size;
+    returnCustomButton.frame = CGRectMake(0,0,iconSize.width,iconSize.height);
+    [returnCustomButton setBackgroundImage:iconImage forState:UIControlStateNormal];
+    NSRange typeRange = [iconName rangeOfString:@".png"];
+    NSString *nameString = [iconName substringWithRange:NSMakeRange(0,typeRange.location)];
+    NSString *selectedName = [NSString stringWithFormat:@"%@_selected.png",nameString];
+    UIImage *selectImage = [UIImage imageNamed:selectedName];
+    [returnCustomButton setBackgroundImage:selectImage forState:UIControlStateHighlighted];
     [returnCustomButton setButtonSelfTapInside];
     [returnCustomButton setResponseButtonTapped:^{
         if (stepAction) {
@@ -87,26 +99,44 @@
     UIBarButtonItem *returnNavItem = [[UIBarButtonItem alloc]initWithCustomView:returnCustomButton];
     aViewController.navigationItem.leftBarButtonItem = returnNavItem;
     UILabel *customTitleLabel = [[UILabel alloc]init];
-    customTitleLabel.frame = CGRectMake(30,4,aViewController.view.frame.size.width-60,aViewController.navigationController.navigationBar.frame.size.height-8);
-    customTitleLabel.backgroundColor = [UIColor clearColor];
+    customTitleLabel.frame = CGRectMake(0,4,150,aViewController.navigationController.navigationBar.frame.size.height-8);
+    customTitleLabel.font = [UIFont boldSystemFontOfSize:17.5];
+    customTitleLabel.backgroundColor = [XXCommonStyle xxThemeDarkBlueColor];
     customTitleLabel.text = aViewController.title;
     customTitleLabel.textAlignment = NSTextAlignmentCenter;
-    customTitleLabel.textColor = [UIColor blackColor];
+    customTitleLabel.textColor = [UIColor whiteColor];
     aViewController.navigationItem.titleView = customTitleLabel;
+    [aViewController.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar.png"] forBarMetrics:UIBarMetricsDefault];
     if (IS_IOS_7) {
         aViewController.edgesForExtendedLayout = UIRectEdgeNone;
         aViewController.automaticallyAdjustsScrollViewInsets = YES;
     }
 }
-+ (void)setCommonNavigationNextStepItemForViewController:(UIViewController *)aViewController withNextStepAction:(XXNavigationNextStepItemBlock)nextAction
+
++ (void)setCommonNavigationNextStepItemForViewController:(UIViewController*)aViewController withIconImage:(NSString*)iconName withNextStepAction:(XXNavigationNextStepItemBlock)nextAction withTitle:(NSString*)title
 {
     aViewController.view.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
     XXResponseButton *returnCustomButton = [XXResponseButton buttonWithType:UIButtonTypeCustom];
-    returnCustomButton.frame = CGRectMake(0,0,60,30);
-    [returnCustomButton defaultStyle];
+    UIImage *iconImage = [UIImage imageNamed:iconName];
+    if ([iconName isEqualToString:@"next_step.png"]||[iconName isEqualToString:@"nav_stroll.png"]) {
+        iconImage =   [[UIImage imageNamed:iconName]makeStretchForNavigationItem];
+        CGSize iconSize = CGSizeMake(60,30);
+        returnCustomButton.frame = CGRectMake(0,0,iconSize.width,iconSize.height);
+    }else{
+        CGSize iconSize = [UIImage imageNamed:iconName].size;
+        returnCustomButton.frame = CGRectMake(0,0,iconSize.width,iconSize.height);
+    }
+    [returnCustomButton setBackgroundImage:iconImage forState:UIControlStateNormal];
+    NSRange typeRange = [iconName rangeOfString:@".png"];
+    NSString *nameString = [iconName substringWithRange:NSMakeRange(0,typeRange.location)];
+    NSString *selectedName = [NSString stringWithFormat:@"%@_selected.png",nameString];
+    UIImage *selectImage = [UIImage imageNamed:selectedName];
+    if ([iconName isEqualToString:@"next_step.png"]||[iconName isEqualToString:@"nav_stroll.png"]) {
+        selectImage =   [[UIImage imageNamed:selectedName]makeStretchForNavigationItem];
+    }
+    [returnCustomButton setBackgroundImage:selectImage forState:UIControlStateHighlighted];
+    [returnCustomButton setTitle:title forState:UIControlStateNormal];
     [returnCustomButton setButtonSelfTapInside];
-    [returnCustomButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
-    [returnCustomButton setTitle:@"下一步" forState:UIControlStateNormal];
     [returnCustomButton setResponseButtonTapped:^{
         if (nextAction) {
             nextAction();
@@ -118,16 +148,75 @@
         aViewController.edgesForExtendedLayout = UIRectEdgeNone;
         aViewController.automaticallyAdjustsScrollViewInsets = YES;
     }
+
+}
+
++ (void)setCommonNavigationReturnItemForViewController:(UIViewController *)aViewController withBackStepAction:(XXNavigationNextStepItemBlock)stepAction
+{
+    aViewController.view.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
+    XXResponseButton *returnCustomButton = [XXResponseButton buttonWithType:UIButtonTypeCustom];
+    returnCustomButton.frame = CGRectMake(0,0,50,20);
+    [returnCustomButton setBackgroundImage:[UIImage imageNamed:@"nav_return_button.png"] forState:UIControlStateNormal];
+    [returnCustomButton setBackgroundImage:[UIImage imageNamed:@"nav_return_button_selected.png"] forState:UIControlStateHighlighted];
+    [returnCustomButton setButtonSelfTapInside];
+    [returnCustomButton setResponseButtonTapped:^{
+        if (stepAction) {
+            stepAction();
+        }
+    }];
+    UIBarButtonItem *returnNavItem = [[UIBarButtonItem alloc]initWithCustomView:returnCustomButton];
+    aViewController.navigationItem.leftBarButtonItem = returnNavItem;
+    UILabel *customTitleLabel = [[UILabel alloc]init];
+    customTitleLabel.frame = CGRectMake(0,4,150,aViewController.navigationController.navigationBar.frame.size.height-8);
+    customTitleLabel.font = [UIFont boldSystemFontOfSize:17.5];
+    customTitleLabel.backgroundColor = [XXCommonStyle xxThemeDarkBlueColor];
+    customTitleLabel.text = aViewController.title;
+    customTitleLabel.textAlignment = NSTextAlignmentCenter;
+    customTitleLabel.textColor = [UIColor whiteColor];
+    aViewController.navigationItem.titleView = customTitleLabel;
+    if (IS_IOS_7) {
+        aViewController.edgesForExtendedLayout = UIRectEdgeNone;
+        aViewController.automaticallyAdjustsScrollViewInsets = YES;
+    }
+}
++ (void)setCommonNavigationNextStepItemForViewController:(UIViewController *)aViewController withNextStepAction:(XXNavigationNextStepItemBlock)nextAction
+{
+    aViewController.view.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
+    XXResponseButton *returnCustomButton = [XXResponseButton buttonWithType:UIButtonTypeCustom];
+    returnCustomButton.frame = CGRectMake(0,0,70,35);
+    [returnCustomButton setBackgroundImage:[[UIImage imageNamed:@"next_step.png"]makeStretchForNavigationItem] forState:UIControlStateNormal];
+    [returnCustomButton setBackgroundImage:[[UIImage imageNamed:@"next_step_selected.png"]makeStretchForNavigationItem] forState:UIControlStateHighlighted];
+    [returnCustomButton setButtonSelfTapInside];
+    [returnCustomButton.titleLabel setFont:[UIFont systemFontOfSize:17]];
+    [returnCustomButton setTitle:@"下一步" forState:UIControlStateNormal];
+    returnCustomButton.layer.cornerRadius = 6.f;
+    [returnCustomButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [returnCustomButton setResponseButtonTapped:^{
+        if (nextAction) {
+            nextAction();
+        }
+    }];
+    returnCustomButton.layer.borderWidth = 2.0f;
+    UIBarButtonItem *returnNavItem = [[UIBarButtonItem alloc]initWithCustomView:returnCustomButton];
+    aViewController.navigationItem.rightBarButtonItem = returnNavItem;
+    if (IS_IOS_7) {
+        aViewController.edgesForExtendedLayout = UIRectEdgeNone;
+        aViewController.automaticallyAdjustsScrollViewInsets = YES;
+    }
 }
 + (void)setCommonNavigationNextStepItemForViewController:(UIViewController *)aViewController withNextStepAction:(XXNavigationNextStepItemBlock)nextAction withTitle:(NSString *)title
 {
     aViewController.view.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
     XXResponseButton *returnCustomButton = [XXResponseButton buttonWithType:UIButtonTypeCustom];
-    returnCustomButton.frame = CGRectMake(0,0,60,30);
-    [returnCustomButton defaultStyle];
-    [returnCustomButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
+    returnCustomButton.frame = CGRectMake(0,0,70,35);
+    returnCustomButton.layer.borderWidth = 2.0f;
+    [returnCustomButton.titleLabel setFont:[UIFont systemFontOfSize:17]];
+    [returnCustomButton setBackgroundImage:[[UIImage imageNamed:@"next_step.png"]makeStretchForNavigationItem] forState:UIControlStateNormal];
+    [returnCustomButton setBackgroundImage:[[UIImage imageNamed:@"next_step_selected.png"]makeStretchForNavigationItem] forState:UIControlStateHighlighted];
+    returnCustomButton.layer.cornerRadius = 6.f;
+    [returnCustomButton setButtonSelfTapInside];
     [returnCustomButton setTitle:title forState:UIControlStateNormal];
-    [returnCustomButton setTitleColor:[XXCommonStyle xxThemeButtonTitleColor] forState:UIControlStateNormal];
+    [returnCustomButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [returnCustomButton setButtonSelfTapInside];
     [returnCustomButton setResponseButtonTapped:^{
         if (nextAction) {
@@ -145,8 +234,24 @@
 {
     aViewController.view.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
     XXResponseButton *returnCustomButton = [XXResponseButton buttonWithType:UIButtonTypeCustom];
-    returnCustomButton.frame = CGRectMake(0,0,30,30);
-    [returnCustomButton setBackgroundImage:[UIImage imageNamed:iconName] forState:UIControlStateNormal];
+    UIImage *iconImage = [UIImage imageNamed:iconName];
+    if ([iconName isEqualToString:@"next_step.png"]||[iconName isEqualToString:@"nav_stroll.png"]) {
+        iconImage =   [[UIImage imageNamed:iconName]makeStretchForNavigationItem];
+        CGSize iconSize = CGSizeMake(60,30);
+        returnCustomButton.frame = CGRectMake(0,0,iconSize.width,iconSize.height);
+    }else{
+        CGSize iconSize = [UIImage imageNamed:iconName].size;
+        returnCustomButton.frame = CGRectMake(0,0,iconSize.width,iconSize.height);
+    }
+    [returnCustomButton setBackgroundImage:iconImage forState:UIControlStateNormal];
+    NSRange typeRange = [iconName rangeOfString:@".png"];
+    NSString *nameString = [iconName substringWithRange:NSMakeRange(0,typeRange.location)];
+    NSString *selectedName = [NSString stringWithFormat:@"%@_selected.png",nameString];
+    UIImage *selectImage = [UIImage imageNamed:selectedName];
+    if ([iconName isEqualToString:@"next_step.png"]||[iconName isEqualToString:@"nav_stroll.png"]) {
+        selectImage =   [[UIImage imageNamed:selectedName]makeStretchForNavigationItem];
+    }
+    [returnCustomButton setBackgroundImage:selectImage forState:UIControlStateHighlighted];
     [returnCustomButton setButtonSelfTapInside];
     [returnCustomButton setResponseButtonTapped:^{
         if (nextAction) {
@@ -413,6 +518,13 @@
     UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return img;
+}
+
++(BOOL)validateEmail:(NSString *)candidate
+{
+    NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:candidate];
 }
 
 @end

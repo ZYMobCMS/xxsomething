@@ -16,6 +16,7 @@
     NSString    *_toUserId;
 }
 @property (nonatomic,strong)NSString *teaseEmoji;
+@property (nonatomic,strong)NSString *toUserId;
 
 - (void)setSelecteTeaseEmoji:(NSString*)teaseName toUser:(NSString*)useId;
 

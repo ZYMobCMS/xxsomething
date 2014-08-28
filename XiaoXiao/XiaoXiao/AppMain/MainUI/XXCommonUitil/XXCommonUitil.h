@@ -21,31 +21,40 @@
 
 #define XXNavContentHeight [UIScreen mainScreen].bounds.size.height-20
 
+#define XXContentHeight [UIScreen mainScreen].bounds.size.height-20
+
 typedef enum {
     XXSchoolTypeHighSchool = 0,
     XXSchoolTypeCollege,
 }XXSchoolType;
 
-typedef enum {
-    
-    XXBaseCellTypeTop = 0,
-    XXBaseCellTypeMiddel,
-    XXBaseCellTypeBottom,
-    XXBaseCellTypeRoundSingle,
-    XXBaseCellTypeCornerSingle,
-    
-}XXBaseCellType;
 
 typedef void (^XXNavigationNextStepItemBlock) (void);
 typedef void (^XXCommonNavigationNextStepBlock) (NSDictionary *resultDict);
 
+//Noti
+#define XXUserInfoHasUpdatedNoti @"XXUserInfoHasUpdatedNoti"
+#define XXUserHasStrollNewSchool @"XXUserHasStrollNewSchool"
+#define XXUserHasMoveHomeSchoolNoti  @"XXUserHasMoveHomeSchoolNoti"
+#define XXUserHasUpdateProfileNoti @"XXUserHasUpdateProfileNoti"
+#define XXUserHasRecievedNewMsgNoti @"XXUserHasRecievedNewMsgNoti"
+#define XXUserHasGetRemindCountNoti @"XXUserHasGetRemindCountNoti"
+
 @interface XXCommonUitil : NSObject
 + (void)setCommonNavigationReturnItemForViewController:(UIViewController*)aViewController;
 + (void)setCommonNavigationReturnItemForViewController:(UIViewController*)aViewController withBackStepAction:(XXNavigationNextStepItemBlock)stepAction;
+
++ (void)setCommonNavigationReturnItemForViewController:(UIViewController*)aViewController withBackStepAction:(XXNavigationNextStepItemBlock)stepAction withIconImage:(NSString*)iconName;
+
 + (void)setCommonNavigationNextStepItemForViewController:(UIViewController*)aViewController withNextStepAction:(XXNavigationNextStepItemBlock)nextAction;
+
 + (void)setCommonNavigationNextStepItemForViewController:(UIViewController*)aViewController withNextStepAction:(XXNavigationNextStepItemBlock)nextAction withTitle:(NSString*)title;
+
 + (void)setCommonNavigationTitle:(NSString*)title forViewController:(UIViewController*)aViewController;
+
 + (void)setCommonNavigationNextStepItemForViewController:(UIViewController*)aViewController withIconImage:(NSString*)iconName withNextStepAction:(XXNavigationNextStepItemBlock)nextAction;
+
++ (void)setCommonNavigationNextStepItemForViewController:(UIViewController*)aViewController withIconImage:(NSString*)iconName withNextStepAction:(XXNavigationNextStepItemBlock)nextAction withTitle:(NSString*)title;
 
 + (void)keywindowShowProgressHUDWithProgressValue:(CGFloat)progressValue withTitle:(NSString*)title;
 + (void)keywindowShowProgressHUDWithTitle:(NSString*)withTitle;
@@ -58,6 +67,9 @@ typedef void (^XXCommonNavigationNextStepBlock) (NSDictionary *resultDict);
 +(NSDateComponents*) getComponent:(long long)time;
 +(NSString*) getTimeStrStyle1:(long long)time;
 +(NSString*) getTimeStrStyle2:(long long)time;
++ (NSString*)getTimeStrStyle3:(NSDate*)date;
+
++ (BOOL)validateEmail:(NSString *)candidate;
 
 + (XiaoXiaoAppDelegate*)appDelegate;
 + (MainTabViewController*)appMainTabController;

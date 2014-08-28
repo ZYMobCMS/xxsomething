@@ -62,11 +62,11 @@
 }
 + (UIColor*)xxThemeTeaseBackColor
 {
-    return rgb(249,79,115,1);
+    return rgb(234,39,80,1);
 }
 + (UIColor *)xxThemeTeaseBackSelectedColor
 {
-    return rgb(238,62,99,1);
+    return rgb(249,79,115,1);
 }
 + (UIColor*)xxThemeButtonBoardColor
 {
@@ -95,6 +95,22 @@
 + (UIColor*)xxThemeBackgroundColor
 {
     return rgb(229,233,238, 1);
+}
++ (UIColor*)xxThemeGrayTitleColor
+{
+    return rgb(222,222,222,1);
+}
++ (UIColor*)xxThemeHomeBackColor
+{
+    return rgb(78,84,87,1);
+}
++ (UIColor*)xxThemeButtonGrayTitleColor
+{
+    return rgb(125,130,136,1);
+}
++ (UIColor*)xxThemeDarkBlueColor
+{
+    return rgb(11,26,36,1);
 }
 
 //school choose cell

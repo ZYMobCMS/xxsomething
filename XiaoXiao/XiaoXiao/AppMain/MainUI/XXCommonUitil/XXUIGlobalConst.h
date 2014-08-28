@@ -8,9 +8,11 @@
 
 //common uitil
 #import "XXCommonUitil.h"
+#import "XXBaseCell.h"
 #import "XXFileUitil.h"
 #import "XXFileSourceConfig.h"
 #import "XXSharePostTypeConfig.h"
+#import "XXChatStyle.h"
 #import "XXShareStyle.h"
 #import "XXSharePostStyle.h"
 #import "XXCommonStyle.h"
@@ -20,7 +22,6 @@
 //Share
 #import "XXShareBaseCell.h"
 #import "XXTeaseBaseCell.h"
-#import "XXBaseCell.h"
 #import "XXBaseIconLabelCell.h"
 #import "XXBaseLabelCell.h"
 #import "XXBaseTagLabelCell.h"
@@ -47,6 +48,7 @@
 #import "XXResponseButton.h"
 
 //common ViewController
+#import "XXBaseViewController.h"
 #import "XXBaseUserListViewController.h"
 #import "XXChatViewController.h"
 #import "XXEditInputViewController.h"

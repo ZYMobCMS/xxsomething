@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "XXUserModel.h"
 
 @interface XXTeaseModel : NSObject
 @property (nonatomic,strong)NSString *postContent;
@@ -22,6 +23,7 @@
 @property (nonatomic,strong)NSString *friendTeaseTime;
 @property (nonatomic,strong)NSString *schoolName;
 @property (nonatomic,strong)NSString *sex;
+@property (nonatomic,strong)XXUserModel *sendFromUser;
 
 - (id)initWithContentDict:(NSDictionary*)contentDict;
 

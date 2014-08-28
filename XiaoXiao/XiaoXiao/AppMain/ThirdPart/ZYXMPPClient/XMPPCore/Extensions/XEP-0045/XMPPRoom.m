@@ -432,16 +432,12 @@ enum XMPPRoomState
 			
 			XMPPIQ *iq = [XMPPIQ iqWithType:@"set" to:roomJID elementID:iqID child:query];
 			
-            DDLogVerbose(@"creat iq:%@",iq);
 			[xmppStream sendElement:iq];
-            DDLogVerbose(@"send creat iq:");
 			
 			[responseTracker addID:iqID
 			                target:self
 			              selector:@selector(handleConfigureRoomResponse:withInfo:)
 			               timeout:60.0];
-            
-            
 		}
 		else
 		{

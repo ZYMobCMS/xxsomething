@@ -7,8 +7,8 @@
 //
 
 #import "XXBaseUserListViewController.h"
-#import "XXUserInfoBaseCell.h"
 #import "OtherUserHomeViewController.h"
+#import "SettingMyProfileGuideViewController.h"
 
 @interface XXBaseUserListViewController ()
 
@@ -33,7 +33,7 @@
     //
     _userListArray = [[NSMutableArray alloc]init];
     _currentPageIndex = 0;
-    _pageSize = 15;
+    _pageSize = 30;
     _hiddenLoadMore = NO;
     
     //
@@ -41,6 +41,7 @@
     CGFloat totalHeight = XXNavContentHeight-44-49;
     _userListTable = [[UITableView alloc]init];
     _userListTable.frame = CGRectMake(0,0,self.view.frame.size.width,totalHeight);
+    _userListTable.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
     _userListTable.delegate = self;
     _userListTable.dataSource = self;
 
@@ -75,6 +76,7 @@
     XXUserInfoBaseCell *cell = (XXUserInfoBaseCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
         cell = [[XXUserInfoBaseCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell.delegate = self;
     }
     [cell setContentModel:[_userListArray objectAtIndex:indexPath.row]];
     
@@ -84,17 +86,41 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    OtherUserHomeViewController *otherHomeVC = [[OtherUserHomeViewController alloc]initWithContentUser:[_userListArray objectAtIndex:indexPath.row]];
-    [self.navigationController pushViewController:otherHomeVC animated:YES];
-
+    if (![XXUserDataCenter checkLoginUserInfoIsWellDone]) {
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提醒" message:@"您需要完善资料才可查看他人主页" delegate:self cancelButtonTitle:@"退出" otherButtonTitles:@"确定", nil];
+        [alert show];
+    }else{
+        OtherUserHomeViewController *otherHomeVC = [[OtherUserHomeViewController alloc]initWithContentUser:[_userListArray objectAtIndex:indexPath.row]];
+        [self.navigationController pushViewController:otherHomeVC animated:YES];
+    }
+    
 }
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == _userListArray.count-1 && !_hiddenLoadMore) {
-        XXLoadMoreView *loadMoreView = [[XXLoadMoreView alloc]initWithFrame:CGRectMake(0,0,cell.frame.size.width,cell.frame.size.height)];
+        XXLoadMoreView *loadMoreView = [[XXLoadMoreView alloc]initWithFrame:CGRectMake(0,0,cell.frame.size.width,44)];
         tableView.tableFooterView = loadMoreView;
+        loadMoreView.backgroundColor = rgb(250,250,250,1);
         [loadMoreView startLoading];
-        [self loadMoreResult];
+        [self performSelector:@selector(loadMoreResult) withObject:nil afterDelay:0.2];
+    }else{
+        XXLoadMoreView *loadMoreView = [[XXLoadMoreView alloc]initWithFrame:CGRectMake(0,0,cell.frame.size.width,44)];
+        if (_userListArray.count==0) {
+            loadMoreView.titleLabel.text = @"这个学校还没有人";
+
+        }else{
+            loadMoreView.titleLabel.text = @"没有更多用户";
+        }
+        [loadMoreView setLabelModel];
+        tableView.tableFooterView = loadMoreView;
+        loadMoreView.backgroundColor = rgb(250,250,250,1);
+    }
+    if (_userListArray.count==0) {
+        XXLoadMoreView *loadMoreView = [[XXLoadMoreView alloc]initWithFrame:CGRectMake(0,0,cell.frame.size.width,44)];
+        loadMoreView.titleLabel.text = @"这个学校还没有人";
+        [loadMoreView setLabelModel];
+        tableView.tableFooterView = loadMoreView;
+        loadMoreView.backgroundColor = rgb(250,250,250,1);
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -102,6 +128,23 @@
     XXUserModel *userModel = [_userListArray objectAtIndex:indexPath.row];
     return [XXUserInfoBaseCell heightWithContentModel:userModel];
 }
+
+#pragma mark - cell delegate
+- (void)userInfoBaseCellDidTapOnHeadView:(XXUserInfoBaseCell *)cell
+{
+    NSIndexPath *indexPath = [_userListTable indexPathForCell:cell];
+    OtherUserHomeViewController *otherHomeVC = [[OtherUserHomeViewController alloc]initWithContentUser:[_userListArray objectAtIndex:indexPath.row]];
+    [self.navigationController pushViewController:otherHomeVC animated:YES];
+}
+
+#pragma mark - alert Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex==1) {
+        [[XXCommonUitil appMainTabController] shouldSelectAtIndex:3];
+    }
+}
+
 #pragma mark - over load method
 - (void)requestUserList
 {

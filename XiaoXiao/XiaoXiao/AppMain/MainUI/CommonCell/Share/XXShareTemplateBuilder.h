@@ -11,6 +11,7 @@
 #import "XXSharePostModel.h"
 #import "XXUserModel.h"
 #import "XXUserCellStyle.h"
+#import "XXSharePostUserStyle.h"
 
 #define XXTextAlignLeft @"left"
 #define XXTextAlignRight @"right"
@@ -29,9 +30,12 @@ extern BOOL const XXLockShareCSSTemplateState;
 
 + (NSString*)buildSharePostContentWithCSSTemplate:(NSString*)cssTemplate withSharePostModel:(XXSharePostModel*)aSharePost;
 
-+ (NSString*)buildSharePostHeadHtmlContentWithName:(NSString*)name withGrade:(NSString*)grade withCollege:(NSString*)college withSexTag:(NSString*)sexTag withTimeString:(NSString*)time;
++ (NSString*)buildSharePostHeadHtmlContentWithName:(NSString*)name withGrade:(NSString*)grade withCollege:(NSString*)college withSexTag:(NSString*)sexTag withTimeString:(NSString*)time  withStyle:(XXSharePostUserStyle*)aStyle;
+
++ (NSString*)buildSharePostHeadHtmlContentForMessageListWithName:(NSString *)name withGrade:(NSString *)grade withCollege:(NSString *)college withSexTag:(NSString *)sexTag withTimeString:(NSString*)time withStyle:(XXSharePostUserStyle*)aStyle;
 
 + (NSString*)buildCommonCSSTemplateWithBundleFormatteFile:(NSString*)fileName withShareStyle:(XXShareStyle*)aStyle;
++ (NSString*)buildCommonCSSTemplateWithBundleFormatteFile:(NSString*)fileName withShareStyle:(XXShareStyle*)aStyle isFromSelf:(BOOL)isFromSelf;
 
 + (NSString*)buildCommonCSSTemplateWithFormatte:(NSString*)cssFormatte withShareStyle:(XXShareStyle*)aStyle;
 
@@ -45,5 +49,6 @@ extern BOOL const XXLockShareCSSTemplateState;
 
 + (NSString*)buildUserCellContentWithCSSTemplate:(NSString*)cssTemplate withUserModel:(XXUserModel*)userModel;
 
++ (NSString*)buildSharePostUserCSSWithFileName:(NSString*)fileName withStyle:(XXSharePostUserStyle*)aStyle;
 
 @end

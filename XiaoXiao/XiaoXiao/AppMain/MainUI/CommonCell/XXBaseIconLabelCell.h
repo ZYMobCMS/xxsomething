@@ -15,9 +15,11 @@
     UILabel     *_tagLabel;
     UILabel     *_detailTagLabel;
     UIImageView *_indicatorView;
+    UIImageView *_remindIconImgView;
 }
 @property (nonatomic,strong)UILabel *tagLabel;
 @property (nonatomic,strong)UIImageView *iconImageView;
+@property (nonatomic,strong)UILabel *detailTagLabel;
 
 - (void)setContentDict:(NSDictionary*)contentDict;
 

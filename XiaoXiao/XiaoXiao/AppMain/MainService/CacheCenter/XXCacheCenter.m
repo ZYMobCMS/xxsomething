@@ -132,5 +132,100 @@ static dispatch_queue_t XXCacheCenterQueue = nil;
         result(resultModelArray);
     }
 }
+- (NSString*)returnUserCityBySchoolId:(NSString *)schoolId
+{
+    NSString *checkSql = [NSString stringWithFormat: @"select city from school where id='%@'",schoolId];
+    FMResultSet *resultSet = [_innerDataBase executeQuery:checkSql];
+    NSString *resultCity=nil;
+    while ([resultSet next]) {
+        resultCity = [resultSet stringForColumn:@"city"];
+    }
+    return resultCity;
+}
+- (NSString*)returnUserProvinceBySchoolId:(NSString *)schoolId
+{
+    NSString *checkSql = [NSString stringWithFormat: @"select province from school where id='%@'",schoolId];
+    FMResultSet *resultSet = [_innerDataBase executeQuery:checkSql];
+    NSString *resultCity=nil;
+    while ([resultSet next]) {
+        resultCity = [resultSet stringForColumn:@"province"];
+    }
+    return resultCity;
+}
+
+- (NSString*)returnUserSchoolTypeBySchoolId:(NSString *)schoolId
+{
+    NSString *checkSql = [NSString stringWithFormat: @"select type from school where id='%@'",schoolId];
+    FMResultSet *resultSet = [_innerDataBase executeQuery:checkSql];
+    NSString *resultCity=nil;
+    while ([resultSet next]) {
+        resultCity = [resultSet stringForColumn:@"type"];
+    }
+    return resultCity;
+}
+- (NSString*)returnSchoolNameBySchoolId:(NSString *)schoolId
+{
+    NSString *checkSql = [NSString stringWithFormat: @"select name from school where id='%@'",schoolId];
+    FMResultSet *resultSet = [_innerDataBase executeQuery:checkSql];
+    NSString *resultCity=nil;
+    while ([resultSet next]) {
+        resultCity = [resultSet stringForColumn:@"name"];
+    }
+    return resultCity;
+}
+- (void)searchSchoolWithCityName:(NSString *)cityName withResult:(void (^)(NSArray *))result withPageIndex:(NSInteger)pageIndex withPageSize:(NSInteger)pageSize
+{
+    NSInteger startIndex = pageIndex*pageSize;
+    NSString *searchSql = [NSString stringWithFormat:@"select * from school where city ='%@' limit %d,%d",cityName,startIndex,pageSize];
+    DDLogVerbose(@"search sql -->%@",searchSql);
+    NSMutableArray *resultModelArray = [NSMutableArray array];
+    
+    FMResultSet *resultSet = [_innerDataBase executeQuery:searchSql];
+    while ([resultSet next]) {
+        
+        XXSchoolModel *newSchool = [[XXSchoolModel alloc]init];
+        newSchool.schoolId = [resultSet stringForColumn:@"id"];
+        newSchool.province = [resultSet stringForColumn:@"province"];
+        newSchool.city = [resultSet stringForColumn:@"city"];
+        newSchool.area = [resultSet stringForColumn:@"area"];
+        newSchool.type = [resultSet stringForColumn:@"type"];
+        newSchool.schoolName = [resultSet stringForColumn:@"name"];
+        [resultModelArray addObject:newSchool];
+    }
+    if (result) {
+        result(resultModelArray);
+    }
+
+}
+- (void)searchSchoolWithCityName:(NSString *)cityName withResult:(void (^)(NSArray *))result withPageIndex:(NSInteger)pageIndex withPageSize:(NSInteger)pageSize withSchoolType:(NSString *)schoolType
+{
+    NSInteger startIndex = pageIndex*pageSize;
+    NSString *searchSql = nil;
+    if ([schoolType intValue]==0) {
+        searchSql = [NSString stringWithFormat:@"select * from school where province ='%@' and type='%@' limit %d,%d",cityName,schoolType,startIndex,pageSize];
+    }else{
+        searchSql = [NSString stringWithFormat:@"select * from school where city ='%@' and type='%@' limit %d,%d",cityName,schoolType,startIndex,pageSize];
+    }
+    
+    DDLogVerbose(@"search sql -->%@",searchSql);
+    NSMutableArray *resultModelArray = [NSMutableArray array];
+    
+    FMResultSet *resultSet = [_innerDataBase executeQuery:searchSql];
+    while ([resultSet next]) {
+        
+        XXSchoolModel *newSchool = [[XXSchoolModel alloc]init];
+        newSchool.schoolId = [resultSet stringForColumn:@"id"];
+        newSchool.province = [resultSet stringForColumn:@"province"];
+        newSchool.city = [resultSet stringForColumn:@"city"];
+        newSchool.area = [resultSet stringForColumn:@"area"];
+        newSchool.type = [resultSet stringForColumn:@"type"];
+        newSchool.schoolName = [resultSet stringForColumn:@"name"];
+        [resultModelArray addObject:newSchool];
+    }
+    if (result) {
+        result(resultModelArray);
+    }
+
+}
 
 @end

@@ -12,6 +12,7 @@
 #import "XXSharePostUserView.h"
 #import "XXCustomButton.h"
 #import "XXHeadView.h"
+#import "XXRecordButton.h"
 
 @class XXShareBaseCell;
 @class DTLinkButton;
@@ -59,6 +60,9 @@ typedef void (^XXShareTextViewDidTapOnPraiseBlock) (XXShareBaseCell *cell,BOOL s
     UIImageView     *_bottomLineSep;
     UIImageView     *_bottomVerLineSep;
     
+    //refrence for record
+    XXRecordButton *_recordBtn;
+    
     //config
     CGFloat         _headViewSize;
     CGFloat         _contentLeftMargin;
@@ -90,5 +94,10 @@ typedef void (^XXShareTextViewDidTapOnPraiseBlock) (XXShareBaseCell *cell,BOOL s
 - (void)setTapOnPraiseBlock:(XXShareTextViewDidTapOnPraiseBlock)praiseBlock;
 
 + (NSAttributedString*)buildAttributedStringWithSharePost:(XXSharePostModel*)sharePost forContentWidth:(CGFloat)width;
+
+- (void)startAudioPlay;
+- (void)endAudioPlay;
+- (void)startLoadingAudio;
+- (void)endLoadingAudio;
 
 @end

@@ -9,8 +9,8 @@
 #import "SharePostPhotoBox.h"
 
 #define XXSharePhotoBoxImageViewBaseTag 2233440
-#define XXSharePhotoBoxMargin 5
-#define XXSharePhotoBoxImageWidth 50
+#define XXSharePhotoBoxMargin 7.5
+#define XXSharePhotoBoxImageWidth 48
 #define XXSharePhotoBoxMaxNumber 6
 
 @implementation SharePostPhotoBox
@@ -31,13 +31,14 @@
         _addNewButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _addNewButton.frame = CGRectMake(XXSharePhotoBoxMargin,XXSharePhotoBoxMargin,XXSharePhotoBoxImageWidth,XXSharePhotoBoxImageWidth);
         [_addNewButton defaultStyle];
-        _addNewButton.layer.borderColor = [XXCommonStyle xxThemeButtonBoardColor].CGColor;
-        _addNewButton.layer.cornerRadius = 5.0f;
-        _addNewButton.layer.borderWidth = 1.0f;
+        _addNewButton.layer.borderColor = rgb(217, 217, 217, 1).CGColor;
+        _addNewButton.layer.cornerRadius = 4.0f;
+        _addNewButton.layer.borderWidth = 2.0f;
         _addNewButton.titleLabel.numberOfLines = 0;
         [_addNewButton addTarget:self action:@selector(tapOnAddNewButton:) forControlEvents:UIControlEventTouchUpInside];
         [_addNewButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_addNewButton setTitle:@"添加图片" forState:UIControlStateNormal];
+        _addNewButton.titleLabel.font = [UIFont systemFontOfSize:9];
         [self addSubview:_addNewButton];
         
         //tap on sub image or box
@@ -89,6 +90,15 @@
     }
     CGRect _addButtonNewFrame = CGRectOffset(_addButtonFrame,XXSharePhotoBoxMargin+XXSharePhotoBoxImageWidth,0);
     _addNewButton.frame = _addButtonNewFrame;
+    if (_addNewButton.frame.origin.x>=300-15-XXSharePhotoBoxImageWidth) {
+        _addNewButton.frame = CGRectMake(XXSharePhotoBoxMargin,_addNewButton.frame.origin.y+7.5+XXSharePhotoBoxImageWidth,_addNewButton.frame.size.width,_addNewButton.frame.size.height);
+        CGRect oldRect = self.frame;
+        CGRect newRect = CGRectMake(oldRect.origin.x,oldRect.origin.y,oldRect.size.width,XXSharePhotoBoxMargin*3+XXSharePhotoBoxImageWidth*2);
+        _backgroundImageView.frame = CGRectMake(0, 0, newRect.size.width,newRect.size.height);
+        if (_changeBlock) {
+            _changeBlock(newRect);
+        }
+    }
     aNewImageView.frame = _addButtonFrame;
     [self addSubview:aNewImageView];
     _currentImagesNumber++;

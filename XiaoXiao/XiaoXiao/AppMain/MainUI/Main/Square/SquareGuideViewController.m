@@ -13,6 +13,7 @@
 #import "SquareShareListViewController.h"
 #import "XXLeftNavItem.h"
 #import "LatenceGuideViewController.h"
+#import "LonelyShootViewController.h"
 
 @interface SquareGuideViewController ()
 
@@ -57,7 +58,7 @@
     
     //section 1
     NSMutableArray *secondSecction = [NSMutableArray array];
-    NSDictionary *item2 = @{@"icon":@"cell_shoot.png",@"title":@"射孤独",@"count":@"",@"class":@""};
+    NSDictionary *item2 = @{@"icon":@"cell_shoot.png",@"title":@"射孤独",@"count":@"",@"class":@"LonelyShootViewController"};
     NSDictionary *item3 = @{@"icon":@"cell_nearby.png",@"title":@"附近得同学",@"count":@"",@"class":@"NearByUserListViewController"};
     [secondSecction addObject:item2];
     [secondSecction addObject:item3];

@@ -15,5 +15,6 @@
 - (void)blueStyle;
 - (void)redStyle;
 - (void)teaseStyle;
+- (UIImage *) buttonImageFromColor:(UIColor *)color;
 
 @end

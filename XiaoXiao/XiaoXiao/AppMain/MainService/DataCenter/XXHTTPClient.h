@@ -10,4 +10,5 @@
 
 @interface XXHTTPClient : AFHTTPClient
 + (XXHTTPClient*)shareClient;
+- (void)updateToken;
 @end

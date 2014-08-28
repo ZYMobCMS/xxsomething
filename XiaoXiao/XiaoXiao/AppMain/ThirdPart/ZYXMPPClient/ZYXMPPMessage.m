@@ -55,5 +55,29 @@
     }
     return [XXBaseTextView formatteCommonTextToAttributedText:destContent];
 }
++ (NSAttributedString*)userHeadAttributedStringWithMessage:(ZYXMPPMessage *)aMessage
+{
+    XXCommentModel *convertCommentModel = [[XXCommentModel alloc]init];
+    convertCommentModel.userName = aMessage.user;
+    convertCommentModel.sex = aMessage.sendUserSex;
+    if ([aMessage.messageType intValue]==ZYXMPPMessageTypeAudio) {
+        convertCommentModel.schoolName = @"语音";
+    }
+    if ([aMessage.messageType intValue]==ZYXMPPMessageTypeImage) {
+        convertCommentModel.schoolName = @"图片";
+    }
+    if ([aMessage.messageType intValue]==ZYXMPPMessageTypeText) {
+        convertCommentModel.schoolName = aMessage.content;
+    }
+    convertCommentModel.grade = aMessage.sendUserSchoolName;
+    
+    XXSharePostUserStyle *style = [[XXSharePostUserStyle alloc]init];
+    style.nameDes.fontSize = 12.5;
+    style.nameDes.fontWeight = XXFontWeightNormal;
+    
+    NSAttributedString *resultAttributedString = [XXSharePostUserView useHeadAttributedStringWithCommnetModelForMessageList:convertCommentModel withShareUserPostStyle:style];
+    
+    return resultAttributedString;
+}
 
 @end

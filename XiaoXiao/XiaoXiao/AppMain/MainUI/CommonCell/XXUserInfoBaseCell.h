@@ -11,12 +11,22 @@
 #import "XXUserModel.h"
 #import "XXHeadView.h"
 #import "XXBaseCell.h"
+#import "XXBadgeView.h"
 
+@class XXUserInfoBaseCell;
+@protocol XXUserInfoBaseCellDelegate <NSObject>
+
+- (void)userInfoBaseCellDidTapOnHeadView:(XXUserInfoBaseCell*)cell;
+
+@end
 @interface XXUserInfoBaseCell : XXBaseCell
 {
     XXBaseTextView *contentTextView;
     XXHeadView     *headView;
+    XXBadgeView    *remindNewImgView;
 }
+@property (nonatomic,weak)id<XXUserInfoBaseCellDelegate> delegate;
+@property (nonatomic,strong)UILabel  *visitTimeLabel;
 
 + (NSAttributedString*)buildAttributedStringWithUserModel:(XXUserModel*)userModel;
 

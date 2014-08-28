@@ -37,7 +37,22 @@ NSString *const XXEmojiTagFormate = @"[]";
 #pragma mark - Interface
 + (NSAttributedString*)formatteCommonTextToAttributedText:(NSString *)contentText
 {
-    NSString *commonCss = [XXShareTemplateBuilder buildCommonCSSTemplateWithBundleFormatteFile:XXCommonTextTemplateCSS withShareStyle:[XXShareStyle commonStyle]];
+    NSString *commonCss = [XXShareTemplateBuilder buildCommonCSSTemplateWithBundleFormatteFile:XXCommonTextTemplateCSS withShareStyle:[XXShareStyle chatStyle]];
+    NSString *htmlString = [XXShareTemplateBuilder buildCommonTextContentWithCSSTemplate:commonCss withConentText:contentText];
+    
+    NSAttributedString *attributedString = [[NSAttributedString alloc]initWithHTMLData:[htmlString dataUsingEncoding:NSUTF8StringEncoding] documentAttributes:nil];
+    
+    return attributedString;
+}
+
+#pragma mark - Interface
++ (NSAttributedString*)formatteCommonTextToAttributedText:(NSString *)contentText isFromSelf:(BOOL)isFromSelf
+{
+    XXShareStyle *chatStyle = [XXShareStyle chatStyle];
+    if (isFromSelf) {
+        chatStyle.contentTextAlign = XXTextAlignRight;
+    }
+    NSString *commonCss = [XXShareTemplateBuilder buildCommonCSSTemplateWithBundleFormatteFile:XXCommonTextTemplateCSS withShareStyle:chatStyle];
     NSString *htmlString = [XXShareTemplateBuilder buildCommonTextContentWithCSSTemplate:commonCss withConentText:contentText];
     
     NSAttributedString *attributedString = [[NSAttributedString alloc]initWithHTMLData:[htmlString dataUsingEncoding:NSUTF8StringEncoding] documentAttributes:nil];

@@ -10,6 +10,16 @@
 #import <AVFoundation/AVFoundation.h>
 #import "XXMainDataCenter.h"
 
+@protocol XXAudioManagerDelegate <NSObject>
+
+- (void)audioManagerDidEndPlay;
+- (void)audioManagerDidStartPlay;
+- (void)audioManagerDidCancelPlay;
+- (void)audioManagerDidStartDownload;
+- (void)audioManagerDidFinishDownload;
+- (void)audioManagerDidDownloadFaild;
+
+@end
 typedef void (^XXAudioManagerFinishRecordBlock) (NSString *audioSavePath,NSString *wavSavePath,NSString *timeLength);
 
 @interface XXAudioManager : NSObject <AVAudioRecorderDelegate, AVAudioPlayerDelegate>
@@ -21,6 +31,7 @@ typedef void (^XXAudioManagerFinishRecordBlock) (NSString *audioSavePath,NSStrin
 }
 @property (nonatomic,strong)AVAudioRecorder *audioRecorder;
 @property (nonatomic,strong)AVAudioPlayer *audioPlayer;
+@property (nonatomic,weak)id<XXAudioManagerDelegate> delegate;
 
 + (XXAudioManager*)shareManager;
 
@@ -29,6 +40,7 @@ typedef void (^XXAudioManagerFinishRecordBlock) (NSString *audioSavePath,NSStrin
 
 - (void)audioManagerPlayAudioForRemoteAMRUrl:(NSString*)remoteAMRUrl;
 - (void)audioManagerPlayLocalWavWithPath:(NSString*)filePath;
+- (void)audioManagerEndPlayNow;
 
 - (NSString*)getFileNameFromUrl:(NSString*)urlString;
 

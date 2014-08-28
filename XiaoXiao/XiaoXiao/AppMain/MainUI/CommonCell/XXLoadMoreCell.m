@@ -15,11 +15,15 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        UIView *normalBack = [[UIView alloc]initWithFrame:CGRectMake(0,0,self.frame.size.width,self.frame.size.height)];
+        self.selectedBackgroundView = normalBack;
+        self.contentView.backgroundColor = [UIColor clearColor];
         self.backgroundColor = [UIColor clearColor];
         
         _backgroundImageView = [[UIImageView alloc]init];
         _backgroundImageView.frame = CGRectMake(10,0,self.frame.size.width-20,46);
-        _backgroundImageView.image = [[UIImage imageNamed:@"share_post_detail_bottom.png"]makeStretchForSharePostDetailBottom];
+        _backgroundImageView.image = [[UIImage imageNamed:@"cell_bottom_normal.png"]makeStretchForCellBottom];
+        _backgroundImageView.highlightedImage = [[UIImage imageNamed:@"cell_bottom_selected.png"]makeStretchForCellBottom];
         [self.contentView addSubview:_backgroundImageView];
         
         _indicatorView = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];

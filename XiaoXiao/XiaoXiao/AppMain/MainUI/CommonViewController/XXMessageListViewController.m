@@ -34,7 +34,7 @@
     
     CGFloat totalHeight = XXNavContentHeight -44-49;
     _messageListTable = [[UITableView alloc]init];
-    _messageListTable.frame = CGRectMake(0,0,self.view.frame.size.width,totalHeight);
+    _messageListTable.frame = CGRectMake(0,0,self.view.frame.size.width,totalHeight-44);
     _messageListTable.delegate = self;
     _messageListTable.dataSource = self;
     _messageListTable.backgroundColor = [XXCommonStyle xxThemeBackgroundColor];
@@ -67,6 +67,7 @@
     XXMessageBaseCell *cell = (XXMessageBaseCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
         cell = [[XXMessageBaseCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell.delegate = self;
     }
     NSObject *modelObj = [_messagesArray objectAtIndex:indexPath.row];
     if ([modelObj isKindOfClass:[ZYXMPPMessage class]]) {
@@ -82,7 +83,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 100.f;
+    return 75.f;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -100,6 +101,21 @@
     
 }
 - (void)loadMoreResult
+{
+    
+}
+#pragma mark - message cell delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex==1) {
+        [self deletePathAction];
+    }
+}
+- (void)deletePathAction
+{
+    
+}
+- (void)messageBaseCellDidCallLongTapDelete:(XXMessageBaseCell *)cell
 {
     
 }

@@ -14,6 +14,10 @@
     UILabel *_contentLabel;
     UILabel *_countLabel;
 }
+@property (nonatomic,strong)UILabel *tagLabel;
+@property (nonatomic,strong)UILabel *contentLabel;
+@property (nonatomic,strong)UILabel *countLabel;
+
 - (void)setContentDict:(NSDictionary*)contentDict;
 + (CGFloat)heightForContentDict:(NSDictionary*)contentDict forWidth:(CGFloat)width;
 

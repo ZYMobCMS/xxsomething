@@ -46,11 +46,41 @@ typedef enum{
 @property (nonatomic,strong)NSString *college;//学院
 @property (nonatomic,strong)NSString *schoolRoll;//学级
 @property (nonatomic,strong)NSString *type;//用户类型
+@property (nonatomic,strong)NSString *isCareMe;
+@property (nonatomic,strong)NSString *isCareYou;
+@property (nonatomic,strong)NSString *teaseCount;
+@property (nonatomic,strong)NSString *commentCount;
+@property (nonatomic,strong)NSString *careMeCount;
+@property (nonatomic,strong)NSString *meCareCount;
+@property (nonatomic,strong)NSString *schoolRank;
+@property (nonatomic,strong)NSString *visitCount;
+@property (nonatomic,strong)NSString *city;
+@property (nonatomic,strong)NSString *province;
+@property (nonatomic,strong)NSString *strollSchoolName;
+@property (nonatomic,strong)NSString *latestDistance;
+@property (nonatomic,strong)NSString *lastTime;
+@property (nonatomic,strong)NSString *visitTime;
+@property (nonatomic,strong)NSString *hasNewPosts;
+
+//temp
+@property (nonatomic,strong)NSString *careMeNew;
+@property (nonatomic,strong)NSString *meCareNew;
+@property (nonatomic,strong)NSString *isInMyCareList;
+
+//remind
+@property (nonatomic,strong)NSString *friendHasNewShareCount;
+@property (nonatomic,strong)NSString *visitUserNewCount;
+@property (nonatomic,strong)NSString *commentNewCount;
+@property (nonatomic,strong)NSString *teaseNewCount;
 
 @property (nonatomic,strong)NSString *keyword;//搜索关心列表时用来传值用,可以不编码保存
 @property (nonatomic,strong)NSString *allowBackgroundChatMessageRecieve;//是否支持后台接收xmpp消息
 @property (nonatomic,strong)NSString *isUserInfoWell;//资料是否完善
 @property (nonatomic,strong)NSString *isInSchool;//是不是校内人
+
+//user save contact
+@property (nonatomic,strong)NSString *ownUser;
+
 
 - (id)initWithContentDict:(NSDictionary*)contentDict;
 

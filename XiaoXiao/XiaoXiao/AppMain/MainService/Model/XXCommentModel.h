@@ -22,7 +22,13 @@
 @property (nonatomic,strong)NSString *postAudio;
 @property (nonatomic,strong)NSString *postAudioTime;
 @property (nonatomic,strong)NSString *postContent;
+@property (nonatomic,strong)NSString *schoolName;
+@property (nonatomic,strong)NSString *sex;
+@property (nonatomic,strong)NSString *grade;
+@property (nonatomic,strong)NSString *toUserId;
+@property (nonatomic,strong)NSString *toUserName;
 @property (nonatomic,strong)NSAttributedString *contentAttributedString;
+@property (nonatomic,strong)NSAttributedString *userHeadContent;
 
 - (id)initWithContentDict:(NSDictionary*)contentDict;
 

@@ -25,6 +25,8 @@
 
 + (XXShareStyle*)commonStyle;
 
++ (XXShareStyle*)chatStyle;
+
 + (XXShareStyle*)userInfoCellStyle;
 
 @end

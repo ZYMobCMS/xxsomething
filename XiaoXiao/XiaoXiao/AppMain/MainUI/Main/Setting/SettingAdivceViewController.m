@@ -30,11 +30,13 @@
     
     //commit
     UIButton *commitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    commitButton.frame = CGRectMake(10,_inputTextView.frame.origin.y+_inputTextView.frame.size.height+10,self.view.frame.size.width-2*10,40);
+    commitButton.frame = CGRectMake(10,_inputTextView.frame.origin.y+_inputTextView.frame.size.height+20,self.view.frame.size.width-2*10,40);
     [commitButton blueStyle];
     [commitButton setTitle:@"提交建议" forState:UIControlStateNormal];
     [commitButton addTarget:self action:@selector(commitAdviceAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:commitButton];
+    
+    self.navigationItem.rightBarButtonItem = nil;
     
 }
 

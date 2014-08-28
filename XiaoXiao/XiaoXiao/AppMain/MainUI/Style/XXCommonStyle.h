@@ -33,6 +33,11 @@
 + (CGFloat)xxThemeLoginGuideButtonRadius;
 + (UIView*)xxThemeNormalCellBackground;
 + (UIColor*)xxThemeBackgroundColor;
++ (UIColor*)xxThemeGrayTitleColor;
++ (UIColor*)xxThemeHomeBackColor;
++ (UIColor*)xxThemeButtonGrayTitleColor;
++ (UIColor*)xxThemeDarkBlueColor;
+
 
 //school choose cell
 + (UIColor*)schoolChooseCellTitleColor;

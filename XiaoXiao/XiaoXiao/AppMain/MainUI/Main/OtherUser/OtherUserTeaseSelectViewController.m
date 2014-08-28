@@ -29,7 +29,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.title = @"表情选择";
+    [XXCommonUitil setCommonNavigationReturnItemForViewController:self];
     self.view.backgroundColor = [UIColor whiteColor];
+
     
     CGFloat totoalHeight = XXNavContentHeight -44-49;
     
@@ -37,7 +40,7 @@
     NSMutableArray *itemArray = [NSMutableArray array];
     for (int i=1; i<52;i++) {
         
-        [itemArray addObject:[NSString stringWithFormat:@"%d.gif",i]];
+        [itemArray addObject:[NSString stringWithFormat:@"%d",i]];
         if (itemArray.count==3) {
             NSMutableArray *rowData = [NSMutableArray array];
             [rowData addObjectsFromArray:itemArray];
@@ -98,8 +101,9 @@
     OtherUserSendTeaseViewController *sendVC = [[OtherUserSendTeaseViewController alloc]init];
     sendVC.title = @"发送挑逗";
     sendVC.teaseEmoji = [[_teaseImagesArray objectAtIndex:rowIndex]objectAtIndex:selectIndex];
+    sendVC.toUserId = self.selectUser;
     [self.navigationController pushViewController:sendVC animated:YES];
-    [sendVC setSelecteTeaseEmoji:[[_teaseImagesArray objectAtIndex:rowIndex]objectAtIndex:selectIndex]  toUser:self.selectUser];
+    
 }
 
 @end

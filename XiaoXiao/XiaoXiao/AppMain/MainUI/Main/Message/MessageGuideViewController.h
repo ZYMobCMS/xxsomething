@@ -12,10 +12,18 @@
 #import "TeaseMeListViewController.h"
 #import "XXCustomTabBar.h"
 #import "MessageGuideTabBar.h"
+#import "XXBadgeView.h"
 
 @interface MessageGuideViewController : UIViewController
 {
     NSMutableArray *_viewControllers;
     MessageGuideTabBar *_menuBar;
+    
+    UIImageView     *_selectTagView;
+    
+    XXBadgeView     *_commentBadgeView;
+    XXBadgeView     *_teaseMeBageView;
+    XXBadgeView     *_msgBadgeView;
+    
 }
 @end

@@ -48,7 +48,7 @@ typedef void (^XXDataCenterRequestSchoolDataBaseUpdateSuccessBlock) (NSString *n
 - (void)requestCancelFriendCareWithConditionFriend:(XXUserModel*)conditionFriend withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
 
 //我关心的列表搜索
-- (void)requestMyCareFriendWithConditionFriend:(XXUserModel*)conditionFriend withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
+- (void)requestMyCareFriendWithConditionFriend:(XXConditionModel*)conditionFriend withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
 
 //关心我的列表搜索
 - (void)requestCareMeFriendWithConditionFriend:(XXUserModel*)conditionFriend withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
@@ -107,8 +107,36 @@ typedef void (^XXDataCenterRequestSchoolDataBaseUpdateSuccessBlock) (NSString *n
 //删除帖子
 - (void)requestDeletePostWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
 
+//删除挑逗
+- (void)requestDeleteTeaseWithTeaseModel:(XXTeaseModel*)tease withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
+
 //下载文件
 - (void)downloadFileWithLinkPath:(NSString*)linkPath WithDestSavePath:(NSString*)savePath withSuccess:(XXDataCenterRequestSuccessMsgBlock)sucess withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
+
+//关心他的列表
+- (void)requestCareUserFansListWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
+
+//访客列表
+- (void)requestVisitRecordListWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
+
+//访问空间
+- (void)requestVisitUserHomeWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
+
+//获取新的提醒
+- (void)requestGetRemindNewCountWithSuccess:(XXDataCenterRequestDetailUserBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
+
+//告知已经读取提醒
+- (void)requestIKnowNewRemindWithCondition:(XXConditionModel*)condition WithSuccess:(XXDataCenterRequestSuccessMsgBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
+
+//追捧列表
+- (void)requestPraiseListWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
+
+//同步经纬度
+- (void)requestSyncLocationWithCondition:(XXConditionModel*)condition withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
+
+//删除评论
+- (void)requestDeleteCommentWithComment:(XXCommentModel*)comment withSuccess:(XXDataCenterRequestSuccessListBlock)success withFaild:(XXDataCenterRequestFaildMsgBlock)faild;
+
 
 //退出上传请求
 - (void)cancelAllUploadRequest;

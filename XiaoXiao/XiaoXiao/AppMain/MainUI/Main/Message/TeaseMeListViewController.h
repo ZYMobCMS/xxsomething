@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XXTeaseBaseCell.h"
 
-@interface TeaseMeListViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+@interface TeaseMeListViewController : UIViewController <UITableViewDelegate,UITableViewDataSource,XXTeaseBaseCellDelegate,UIAlertViewDelegate>
 {
     UITableView *_teaseListTable;
     UIRefreshControl *_refreshControl;
@@ -18,6 +19,10 @@
     BOOL        _isRefresh;
     
     NSMutableArray *_teasesArray;
+    NSIndexPath *_tapPath;
 }
+@property (nonatomic,weak)UINavigationController *superNav;
+
+- (void)refresh;
 
 @end
