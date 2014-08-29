@@ -63,6 +63,7 @@
     [UIView animateWithDuration:0.5 animations:^{
         self.mainTabController.view.alpha = 1;
     }];
+    [self.loginGuideNavController.viewControllers makeObjectsPerformSelector:@selector(removeFromParentViewController)];
     [self.loginGuideNavController.view removeFromSuperview];
     self.loginGuideNavController = nil;
 }

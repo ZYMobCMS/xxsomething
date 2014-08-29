@@ -5898,7 +5898,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: hu tao (ZCHH929E72)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: ZHANPENG CHENG (H5ECH8KQCT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: ZHANPENG CHENG (H5ECH8KQCT)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "XiaoXiao/XiaoXiao-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
@@ -5910,7 +5911,7 @@
 					"\"$(SRCROOT)/XiaoXiao/AppMain/ThirdPart/ZYXMPPClient/XMPPCore/Vendor/libidn\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "FD5EC503-80A6-4B88-834B-685FE75110ED";
+				PROVISIONING_PROFILE = "8FC6D3ED-DC05-4FF3-B5EC-D0D64C383F0D";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/XiaoXiao/ThirdPart/DTCoreText/Core";
 				VALID_ARCHS = "arm64 armv7 armv7s";
@@ -5922,7 +5923,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: hu tao (ZCHH929E72)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: ZHANPENG CHENG (H5ECH8KQCT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: ZHANPENG CHENG (H5ECH8KQCT)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "XiaoXiao/XiaoXiao-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
@@ -5934,7 +5936,7 @@
 					"\"$(SRCROOT)/XiaoXiao/AppMain/ThirdPart/ZYXMPPClient/XMPPCore/Vendor/libidn\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "FD5EC503-80A6-4B88-834B-685FE75110ED";
+				PROVISIONING_PROFILE = "8FC6D3ED-DC05-4FF3-B5EC-D0D64C383F0D";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/XiaoXiao/ThirdPart/DTCoreText/Core";
 				VALID_ARCHS = "arm64 armv7 armv7s";

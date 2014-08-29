@@ -160,6 +160,7 @@
                 XXSchoolModel *chooseModel = [_resultSchoolArray objectAtIndex:_selectIndex];
                 NSDictionary *resuldDict = @{@"result":chooseModel};
                 _nextStepBlock(resuldDict);
+                _nextStepBlock = nil;//强制破除引用
             }else{
                 [SVProgressHUD showErrorWithStatus:@"未选择学校"];
                 

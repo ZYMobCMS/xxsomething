@@ -17,6 +17,12 @@
 
 @implementation XXPhotoChooseViewController
 
+- (void)dealloc
+{
+    _nextStepBlock = nil;
+    _chooseBlock = nil;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -283,6 +289,7 @@
                     if (_nextStepBlock) {
                         _nextStepBlock(resultDict);
                     }
+                    
                 }];
                 [self.navigationController pushViewController:filterVC animated:YES];
                 [XXCommonUitil setCommonNavigationReturnItemForViewController:filterVC withBackStepAction:^{

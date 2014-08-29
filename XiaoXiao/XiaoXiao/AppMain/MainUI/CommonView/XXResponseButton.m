@@ -31,6 +31,12 @@
     // Drawing code
 }
 */
+
+- (void)dealloc
+{
+    _tapBlock = nil;
+}
+
 - (void)didTapOnSelf
 {
     if (_tapBlock) {

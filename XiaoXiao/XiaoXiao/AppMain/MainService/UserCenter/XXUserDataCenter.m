@@ -140,6 +140,9 @@
 }
 + (BOOL)checkLoginUserInfoIsWellDone
 {
+    /*更新接口有问题，为了继续能用，默认就是完善资料状态吧*/
+    return YES;
+    
     XXUserModel *currentUser = [XXUserDataCenter currentLoginUser];
     DDLogVerbose(@"user nick name:%@",currentUser.nickName);
     if ([currentUser.nickName isEqualToString:@""]||currentUser.nickName==nil) {
