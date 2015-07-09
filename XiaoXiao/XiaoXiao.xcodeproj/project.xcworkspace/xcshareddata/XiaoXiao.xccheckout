@@ -10,29 +10,60 @@
 	<string>XiaoXiao</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>6264AD7F-BCD1-4CF2-96DB-6F04AD03CCC5</key>
+		<key>1a0beb16-39a9-491a-8432-0dfbb1476d54++7897</key>
+		<string>https://svn.duapp.com/appid9kgedf0yca/1/iphone/MeiJiaLove/MeiJiaLove/UIImage-Extensions</string>
+		<key>D1DB2E701C698AF1A2DABAB65BA3496148024942</key>
 		<string>https://github.com/ZYMobCMS/xxsomething.git</string>
+		<key>eccd39b4-39d4-47ab-bb89-e81f4763b8b8++3220</key>
+		<string>svn://192.168.0.240/repository/taojinroad/mobile/iphone/TJRtaojinroad/TJRtaojinroad/TJRManagerUI/VoiceConvert</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>XiaoXiao/XiaoXiao.xcodeproj/project.xcworkspace</string>
+	<string>XiaoXiao/XiaoXiao.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>6264AD7F-BCD1-4CF2-96DB-6F04AD03CCC5</key>
+		<key>1a0beb16-39a9-491a-8432-0dfbb1476d54++7897</key>
+		<string>../../..XiaoXiao/XiaoXiao/AppMain/ThirdPart/ImageFilter/UIImage-Extensions</string>
+		<key>D1DB2E701C698AF1A2DABAB65BA3496148024942</key>
 		<string>../../..</string>
+		<key>eccd39b4-39d4-47ab-bb89-e81f4763b8b8++3220</key>
+		<string>../../..XiaoXiao/XiaoXiao/AppMain/MainService/ChatCenter/AudioChat/VoiceConvert</string>
+	</dict>
+	<key>IDESourceControlProjectRepositoryRootDictionary</key>
+	<dict>
+		<key>1a0beb16-39a9-491a-8432-0dfbb1476d54++7897</key>
+		<string>https://svn.duapp.com/appid9kgedf0yca</string>
+		<key>eccd39b4-39d4-47ab-bb89-e81f4763b8b8++3220</key>
+		<string>svn://192.168.0.240/repository</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/ZYMobCMS/xxsomething.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>6264AD7F-BCD1-4CF2-96DB-6F04AD03CCC5</string>
+	<string>D1DB2E701C698AF1A2DABAB65BA3496148024942</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>1a0beb16-39a9-491a-8432-0dfbb1476d54++7897</string>
+			<key>IDESourceControlWCCName</key>
+			<string>UIImage-Extensions</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>eccd39b4-39d4-47ab-bb89-e81f4763b8b8++3220</string>
+			<key>IDESourceControlWCCName</key>
+			<string>VoiceConvert</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>6264AD7F-BCD1-4CF2-96DB-6F04AD03CCC5</string>
+			<string>D1DB2E701C698AF1A2DABAB65BA3496148024942</string>
 			<key>IDESourceControlWCCName</key>
 			<string>xxsomething</string>
 		</dict>

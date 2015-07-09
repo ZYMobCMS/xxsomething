@@ -17,14 +17,13 @@
         //默认值
         self.attachementId = @"";
         self.createUserId = @"";
-        self.description = @"";
         self.link = @"";
         self.fileName = @"";
         self.addTime = @"";
 
         self.attachementId = [contentDict objectForKey:@"attachment_id"];
-        self.createUserId = [contentDict objectForKey:@"user_id"];
-        self.description = [contentDict objectForKey:@"description"];
+//        self.createUserId = [contentDict objectForKey:@"user_id"];
+//        self.description = [contentDict objectForKey:@"description"];
         self.link = [contentDict objectForKey:@"link"];
         self.fileName = [contentDict objectForKey:@"filename"];
     }
